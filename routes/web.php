@@ -15,9 +15,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test', function (){
-    return \App\Usuario::get();
-});
+Route::get('/usuarios', 'UsuariosController@index')
+    ->name('usuarios.index');
+
+Route::get('/usuario/{usuario}', 'UsuariosController@show')
+    ->name('usuario.show');
+
+Route::get('/usuario/{usuario}/edit', 'UsuariosController@edit')
+    ->name('usuario.edit');
+
+Route::post('/usuario', 'UsuariosController@store')
+    ->name('usuario.store');
 
 Auth::routes();
 
