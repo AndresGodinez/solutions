@@ -3,6 +3,9 @@
 @section('content')
     <div class="container">
         <div class="row">
+            <a href="{{ route('usuario.create') }}" class="btn btn-primary">Crear</a>
+        </div>
+        <div class="row">
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -41,12 +44,12 @@
                         <td>{{ $usuario->cambiar }}</td>
                         <td>{{ $usuario->planta }}</td>
                         <td>
-                            <a href="{{ route('usuario.show', ['Usuario' => $usuario->id] ) }}">
+                            <a href="{{ route('usuario.show', ['usuario' => $usuario->id] ) }}">
                                 Detalles
                             </a>
                         </td>
                         <td>
-                            <a href="{{ route('usuario.edit', ['Usuario' => $usuario->id]) }}">
+                            <a href="{{ route('usuario.edit', ['usuario' => $usuario->id]) }}">
                                 Editar
                             </a>
                         </td>

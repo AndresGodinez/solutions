@@ -40,4 +40,9 @@ class UsuariosController extends Controller
     {
         dd($request->all());
     }
+
+    public function create()
+    {
+        return view('Usuarios.create');
+    }
 }
