@@ -12,7 +12,6 @@ class UsuariosController extends Controller
     public function index(Request $request)
     {
         $usuarios = Usuario::orderByDesc('id')
-            ->where('activo', 1)
             ->paginate();
 
         return view('Usuarios.index', compact('usuarios'));
