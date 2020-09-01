@@ -21,6 +21,8 @@ class Usuario extends Authenticatable
 
     protected $table = 'usuarios';
 
+    public $timestamps = false;
+
     public function country():BelongsTo
     {
         return $this->belongsTo(
