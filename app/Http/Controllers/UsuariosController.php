@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Country;
+use App\Departamento;
 use App\Http\Requests\UsuarioStoreRequest;
 use App\Http\Requests\UsuarioUpdateRequest;
 use App\Usuario;
 use Illuminate\Http\Request;
+use function compact;
+use function redirect;
+use function route;
 
 class UsuariosController extends Controller
 {
@@ -25,27 +28,51 @@ class UsuariosController extends Controller
 
     public function edit(Usuario $usuario)
     {
-        $countries = Country::get();
+        $departamentos = Departamento::all();
+
         return view('Usuarios/edit',
-            compact(
-                'usuario',
-                'countries'
-            ));
+            compact('usuario', 'departamentos'));
     }
 
     public function store(UsuarioStoreRequest $request)
     {
-        dd($request->all());
+        $depto = Departamento::find($request->get('depto'));
 
+        Usuario::create([
+            'nombre' => $request->get('nombre'),
+            'username' => $request->get('username'),
+            'mail' => $request->get('mail'),
+            'depto' => $depto->departamento ?? '',
+            'planta' => $request->get('planta'),
+            'id_contry' => $request->get('country'),
+            'id_region' => $request->get('region'),
+            'cliente' => $request->get('cliente')
+        ]);
+
+        return redirect(route('usuarios.index'));
     }
 
-    public function update(UsuarioUpdateRequest $request)
+    public function update(UsuarioUpdateRequest $request, Usuario $usuario)
     {
-        dd($request->all());
+        $depto = Departamento::find($request->get('depto'));
+
+        $usuario->update([
+            'nombre' => $request->get('nombre'),
+            'username' => $request->get('username'),
+            'mail' => $request->get('mail'),
+            'depto' => $depto->departamento ?? '',
+            'planta' => $request->get('planta'),
+            'id_contry' => $request->get('country'),
+            'id_region' => $request->get('region'),
+            'cliente' => $request->get('cliente')
+        ]);
+
+        return redirect(route('usuarios.index'));
     }
 
     public function create()
     {
-        return view('Usuarios.create');
+        $departamentos = Departamento::all();
+        return view('Usuarios.create', compact('departamentos'));
     }
 }
