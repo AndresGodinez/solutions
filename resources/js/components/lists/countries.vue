@@ -1,8 +1,8 @@
 <template>
     <div class="form-row">
-        <div class="form-group">
+        <div class="form-group col-md-4">
             <label for="country">País</label>
-            <b-form-select v-model="country" :options="optionCountries">
+            <b-form-select v-model="country" :options="optionCountries" @change="getRegion" name="country">
                 <template v-slot:first>
                     <b-form-select-option :value="null" disabled>
                         -- Seleccione una opción --
@@ -11,9 +11,9 @@
             </b-form-select>
         </div>
 
-        <div class="form-group">
-            <label for="country">Región</label>
-            <b-form-select v-model="region" :options="optionRegion">
+        <div class="form-group col-md-4 pl-2">
+            <label for="region">Región</label>
+            <b-form-select v-model="region" :options="optionRegion" name="region">
                 <template v-slot:first>
                     <b-form-select-option :value="null" disabled>
                         -- Seleccione una opción --
@@ -41,7 +41,6 @@ export default {
     },
     mounted() {
         this.getCountries();
-        this.getRegion();
     },
     methods: {
         async getCountries() {
@@ -52,11 +51,16 @@ export default {
                     value : item.id
                 }
             } );
+            if (!!this.$attrs.usuario){
+                this.country = this.$attrs.usuario.id_contry;
+                this.getRegion();
+                this.region = this.$attrs.usuario.id_region;
+            }
         },
         async getRegion() {
             let regiones = await axios.get('/get-regiones', {
                 params:{
-                    country : 2
+                    country : this.country
                 }
             });
 
