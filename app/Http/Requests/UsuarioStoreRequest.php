@@ -25,9 +25,8 @@ class UsuarioStoreRequest extends FormRequest
     {
         return [
             'nombre' => 'required',
-            'username' => 'required',
-            'depto' => 'required',
-            'jefe' => 'required'
+            'username' => 'required|unique:usuarios',
+            'mail' => 'required|email|unique:usuarios',
         ];
     }
 }

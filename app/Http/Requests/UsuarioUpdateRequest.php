@@ -24,11 +24,9 @@ class UsuarioUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        dd($this->usuario);
         return [
-            'nombre' => 'required',
-            'username' => 'required',
-            'depto' => 'required',
+                'nombre' => 'required',
+                'username' => 'required|unique:usuarios',
             'mail' => [
                 Rule::unique('usuarios', 'mail')->ignore($this->usuario)
             ]
