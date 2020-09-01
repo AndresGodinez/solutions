@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Country;
 use App\Http\Requests\UsuarioStoreRequest;
 use App\Http\Requests\UsuarioUpdateRequest;
 use App\Usuario;
@@ -24,9 +25,12 @@ class UsuariosController extends Controller
 
     public function edit(Usuario $usuario)
     {
-//        dd('edit');
-
-        return view('Usuarios/edit', compact('usuario'));
+        $countries = Country::get();
+        return view('Usuarios/edit',
+            compact(
+                'usuario',
+                'countries'
+            ));
     }
 
     public function store(UsuarioStoreRequest $request)

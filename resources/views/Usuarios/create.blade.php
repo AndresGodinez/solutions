@@ -11,6 +11,7 @@
     <div class="container">
 
         <form action="{{ route('usuario.store') }}" method="post">
+            <countries-lists></countries-lists>
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="nombre">Nombre</label>

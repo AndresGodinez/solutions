@@ -8,7 +8,18 @@
             </div>
         </div>
         <div class="card-body">
-            <form action="{{ route('usuario.update') }}" method="post">
+            <form action="{{ route('usuario.update', ['usuario'=> $usuario->id]) }}" method="post">
+                @csrf
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="country"></label>
+                        <select name="country" id="country" class="form-control">
+                            @foreach($countries as $country)
+                                <option value="{{ $country->id }}">{{ $country->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="nombre">Nombre</label>
