@@ -33,7 +33,7 @@ Route::post('/usuario/{usuario}', 'UsuariosController@update')
 Route::post('/usuario', 'UsuariosController@store')
     ->name('usuario.store');
 
-Route::get('/create', 'UsuariosController@create')
+Route::get('/usuario-create', 'UsuariosController@create')
     ->name('usuario.create');
 
 Auth::routes();
