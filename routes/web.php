@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//Usuarios
 Route::get('/usuarios-export', 'UsersExportController')
     ->name('usuarios.export');
 
@@ -35,6 +36,20 @@ Route::post('/usuario', 'UsuariosController@store')
 
 Route::get('/usuario-create', 'UsuariosController@create')
     ->name('usuario.create');
+
+//Materiales
+Route::get('/t', function (){
+    return sha1('123456789');
+});
+
+Route::get('/materiales', 'MaterialesController@search')
+    ->name('materiales.search');
+
+Route::get('/materiales-consulta', 'MaterialesController@consulta')
+    ->name('materiales.consulta');
+
+Route::get('/materiales-download', 'DownloadMaterialesController')
+    ->name('downloadMateriales');
 
 Auth::routes();
 

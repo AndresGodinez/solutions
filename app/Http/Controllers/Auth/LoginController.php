@@ -55,8 +55,6 @@ class LoginController extends Controller
         if (method_exists($this, 'hasTooManyLoginAttempts') &&
             $this->hasTooManyLoginAttempts($request)) {
 
-            dd('method exist');
-
             $this->fireLockoutEvent($request);
 
             return $this->sendLockoutResponse($request);
