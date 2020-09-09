@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ConsultaMaterialesRequest;
 use App\Material;
 use App\Stock;
 use App\Sustituto;
@@ -41,7 +42,7 @@ class MaterialesController extends Controller
         return view('Materiales/search');
     }
 
-    public function consulta(Request $request)
+    public function consulta(ConsultaMaterialesRequest $request)
     {
         $material = Material::where('part_number', $request->get('ipt_material'))->first();
 
