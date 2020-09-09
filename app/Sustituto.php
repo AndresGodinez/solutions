@@ -401,5 +401,4 @@ class Sustituto extends Model
             ->where('id', $id)
             ->update(   ['id_status'     => $id_status]);
     }
-
 }

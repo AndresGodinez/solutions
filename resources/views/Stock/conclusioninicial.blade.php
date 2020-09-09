@@ -2,6 +2,7 @@
 
 @section('content')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/app-assets/vendors/css/tables/datatable/datatables.min.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/app-assets/vendors/css/extensions/sweetalert2.min.css">
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 
 <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -12,7 +13,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Stock Final</h4>
+                    <h4 class="card-title">Conclusion Inicial</h4>
                 </div>
                 <div class="card-content">
                     <div class="card-body card-dashboard">
@@ -21,8 +22,7 @@
                             <i class="bx bx-excel"></i> Descargar Excel
                         </a>
 
-
-                        <table id="example" class="table table-striped table-bordered complex-headers dataTable" style="width:100%">
+                        <table id="example" class="table table-striped table-bordered complex-headers dataTable" style="width:100%" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>NUM PARTE</th>
@@ -30,12 +30,8 @@
                                     <th class="text-center">MODELO</th>
                                     <th class="text-center">TIPO MATERIAL</th>
                                     <th class="text-center">CATEGORIA</th>
-                                    <th class="text-center">PROVEEDOR</th>
-                                    <th class="text-center">FECHA OBSOLETA (AAAA/MM/DD)</th>
-                                    <th class="text-center">SOLICITANTE</th>
-                                    <th class="text-center">USUARIO MATERIALES</th>
-                                    <th class="text-center">FECHA CREACION</th>
-                                    <th class="text-center">FECHA CIERRE</th>
+                                    <th class="text-center">USUARIO</th>
+                                    <th class="text-center">FECHA CARGA</th>
                                     <th class="text-center">DIAS PENDIENTE</th>
                                     <th class="text-center">Accion</th>
                                 </tr>
@@ -98,16 +94,68 @@
 <script src="{{ asset('assets') }}/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
 <script src="{{ asset('assets') }}/app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js"></script>
 
+<script src="{{ asset('assets') }}/app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
+
 <script>
+
+    function autorizando(){
+        var next = 0;
+        $('.formulariovalidacion').each(function(index){
+            var v = $(this).val();
+            if(v != ''){
+                $(this).removeClass('is-invalid');
+                $(this).addClass('is-valid'); 
+                next = 1;                               
+            }else{
+                $(this).removeClass('is-valid');
+                $(this).addClass('is-invalid');
+            }                        
+        });
+       
+        if(next == 1){
+            Swal.fire({
+                title: '¡Atención!',
+                text: "¿Deseas seguir con esta acción?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí',
+                cancelButtonText: 'No',
+                confirmButtonClass: 'btn btn-primary',
+                cancelButtonClass: 'btn btn-danger ml-1',
+                buttonsStyling: false,
+                }).then(function (result) {
+                if (result.value) {
+                    var form = $('.formenvio').serialize();
+                    $.post("{{ url('stock/conclusioninicial_update')}}",form,function(data){
+                        console.log(data);
+                        Swal.fire({
+                                    type: "success",
+                                    title: '¡Hecho!',
+                                    text: '',
+                                    confirmButtonClass: 'btn btn-success',
+                                });
+                    });
+                    
+                }
+            });
+            
+        }
+        
+
+        
+    };
+
     $(document).ready(function() {
         $('#example').DataTable({
             "serverSide": true,
             "processing": true,
-            "responsive":true,
             "language": {
                 "url": "{{ asset('assets') }}/dt-lang/Spanish.json"
             },
-            "ajax": "{{ url('stock/datofinal')}}",
+            "ajax": "{{ url('stock/conclusioninicial_dt')}}",
+
             "order": [
                 [6, "desc"]
             ],
@@ -125,29 +173,12 @@
                 }, {
                     data: 'categoria'
                 }, {
-                    data: 'proveedor'
-                },
-                {
-                    data: 'fecha_obsoleta'
-                },
-                {
                     data: 'nombre'
-                },
-                {
-                    data: 'usuario_materiales'
-                },
-                {
+                }, {
                     data: 'fecha_carga'
-                },
-                {
-                    data: 'fecha_finalizacion'
-                },
-
-                {
-                "render": diaspendientes,
-                "data": null
-                },
-                {
+                }, {
+                    data: 'fecha_usuario'
+                }, {
                     "render": createManageBtn,
                     "data": null
                 }
@@ -155,26 +186,23 @@
 
         });
 
+
+
     });
 
-    function diaspendientes(e){
-        var retorno = "";
-        if(e["fecha_finalizacion"] == ""){
-            retorno = e["fecha_usuario"];
-        }else{
-            retorno = e["fecha_usuario2"];
-        }
-        return retorno;
-    }
     function createManageBtn(e) {
         return '<button id="manageBtn" type="button" style="padding: 10px;" onclick="openDetalles(' + e.id + ')" class="btn btn-success btn-xs">' + "<i class='bx bx-show-alt' style='font-size:25px'></i>" + '</button>';
     }
 
     function openDetalles(id) {
+
+
+
         $('.contenido-modal').html('');
         $('.contenido-modal').hide();
         $('.loader-modal').show();
         $("#detalles").modal();
+
 
         $.ajaxSetup({
             headers: {
@@ -185,7 +213,7 @@
 
 
         $.ajax({
-            url: "{{ url('stock/detallefinal')}}",
+            url: "{{ url('stock/conclusioninicial_detalle')}}",
             type: 'POST',
             data: {
                 'id': id
@@ -196,6 +224,7 @@
                 $('.contenido-modal').show();
             }
         });
+
     }
 </script>
 

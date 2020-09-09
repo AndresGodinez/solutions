@@ -26,76 +26,168 @@ class StockController extends Controller
         return view('Stock.final', compact(null));
     }
 
+    public function cargainicial(Request $request)
+    {
+        return view('Stock.cargainicial', compact(null));
+    }
+    public function cargainicialapi(Request $request)
+    {
+        $token = $request->ajax() ? $request->header('X-CSRF-Token') : $request->input('_token');
+        return $_FILES;
+    }
+
+    public function conclusioninicial(Request $request)
+    {
+        return view('Stock.conclusioninicial', compact(null));
+    }
+
+    public function conclusioninicial_dt(Request $request)
+    {
+        return datatables()->of(Stock::query()->selectRaw('
+        stock_inicial.id,
+        stock_inicial.no_parte,
+        stock_inicial.descripcion,
+        stock_inicial.tipo_material,
+        stock_inicial.precio_usd,
+        stock_inicial.sir_anual,
+        stock_inicial.proyecto,
+        stock_inicial.categoria,
+        stock_inicial.proveedor,
+        stock_inicial.ots,
+        stock_inicial.modelo,
+        stock_inicial.produccion_inicial,
+        stock_inicial.fecha_carga,
+        datediff(curdate(),fecha_carga) as fecha_usuario,
+        usuarios.nombre')
+            ->from('stock_inicial')
+            ->leftJoin('usuarios', 'stock_inicial.usuario', '=', 'usuarios.username')
+            ->whereRaw('stock_inicial.activo=1')
+            // ->limit(2)
+            ->get())->toJson();
+    }
+
+    public function conclusioninicial_detalle(Request $request)
+    {
+        $token = $request->ajax() ? $request->header('X-CSRF-Token') : $request->input('_token');
+        return view('Stock.conclusioninicial_detalle', compact(null));
+    }
+
+    public function conclusioninicial_update(Request $request)
+    {
+        $token = $request->ajax() ? $request->header('X-CSRF-Token') : $request->input('_token');
+
+
+        // $stock_id = @$_POST['stock_id'];
+        // $stock = @$_SESSION['stock'];
+        // $username = @$_SESSION['username'];
+        // $comentario = $_POST['comentario'];
+        // $conclusion = $_POST['conclusion'];
+        // $tipo_conclusion = $_POST['tipo_conclusion'];
+        // $no_sust = $_POST['no_sust'];
+        // $po = $_POST['po'];
+
+        // $usuario = @$_SESSION['usuario'];
+
+        // if ($tipo_conclusion == '1') {
+        //     $tipo_conclusion = 'Pieza Activa Por 3 Meses';
+        // } elseif ($tipo_conclusion == '2') {
+        //     $tipo_conclusion = 'Sustituto Activo Disponible (Con Proveedor)';
+        // } elseif ($tipo_conclusion == '3') {
+        //     $tipo_conclusion = 'Stock Suficiente (Inv Disponible)';
+        // } elseif ($tipo_conclusion == '4') {
+        //     $tipo_conclusion = 'Pieza con SIR 0  (Sin Consumo)';
+        // } elseif ($tipo_conclusion == '5') {
+        //     $tipo_conclusion = 'Sin Espacio En Almacén/MOQ Grande (Compra No Rentable)';
+        // } elseif ($tipo_conclusion == '6') {
+        //     $tipo_conclusion = 'Error En El Número De Parte';
+        // } elseif ($tipo_conclusion == '7') {
+        //     $tipo_conclusion = 'Otro';
+        // }
+
+        // $row = Stock::table('stock_final')
+        //     ->where('id', $stock_id)
+        //     ->update(
+        //         [
+        //             'fecha_finalizacion' => 'CURDATE()',
+        //             'activo' => 0,
+        //             'conclusion' => $conclusion,
+        //             'comentarios' => $comentario,
+        //             'usuario_materiales' => $username,
+        //             'po' => $po,
+        //             'tipo_conclusion' => $tipo_conclusion,
+        //             'no_sust' => $no_sust
+        //         ]
+        //     );
+        // $row = Stock::query()
+        //     ->selectRaw('usuarios.mail, stock_final.no_parte')
+        //     ->from('usuarios')
+        //     ->leftJoin('stock_final', 'usuarios.username', '=', 'stock_final.usuario')
+        //     ->whereRaw('id=' . $stock_id)
+        //     ->get();
+
+        // $row = $row[0];
+        // $correo = $row['mail'];
+        // $no_parte = $row['no_parte'];
+
+
+        // if ($conclusion == 'RECHAZADA') {
+
+        //     $email_message = "
+        //     <html>
+        //     <head>
+        //     <title>E-Mail HTML</title>
+        //     </head>
+        //     <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
+
+        //     <style>
+
+        // body, P.msoNormal, LI.msoNormal
+        // {
+        // background-position: top;
+        // margin-left:  1em;
+        // margin-top: 1em;
+        // font-family: 'Arial';
+        // font-size:   9pt;
+        // color:    '000000';
+        // }
+
+        // table
+        // {
+        // font-family: 'Arial';
+        // font-size:   9pt;
+
+        // }
+        // </style>
+
+        //     <body>
+        //     <p></p>
+        //     <p>Por este medio te informamos que se ha rechazado la solicitud del n&uacute;mero de parte " . $no_parte . " de stock final.<br> </p>
+        //     <p></p>
+        //     <p></p>
+
+        // ";
+
+
+        //     $to = $correo;
+        //     $subject = 'Rechazo de Stock Final No. Parte ' . $no_parte;
+        //     $type = "Content-type: text/html\r\n";
+        //     $headers = "MIME-Version: 1.0 \r\n";
+        //     $headers = $headers . "Content-type: text/html;charset=iso-8859-1\r\n";
+        //     $headers = $headers . "From: Whirlpool Service<no-responder@whirlpool.com>\r\n";
+
+
+        //     $mail_sent = @mail($to, $subject, $email_message, $headers);
+        // }
+    }
+
     public function descagainicial(Request $request)
     {
         set_time_limit(0);
         ini_set('memory_limit', '1000M');
         header('Content-type: application/vnd.ms-excel;charset=iso-8859-15');
         header('Content-Disposition: attachment; filename=REPORTE STOCK INICIAL.xls');
-        $orders = Stock::query()
-            ->selectRaw('stock_inicial.id,
-            stock_inicial.no_parte,
-            stock_inicial.descripcion,
-            stock_inicial.tipo_material,
-            stock_inicial.precio_usd,
-            stock_inicial.sir_anual,
-            stock_inicial.proyecto,
-            stock_inicial.categoria,
-            stock_inicial.proveedor,
-            stock_inicial.ots,
-            stock_inicial.modelo,
-            stock_inicial.produccion_inicial,
-            stock_inicial.fecha_carga,
-            datediff(curdate(),fecha_carga) as fecha_usuario,
-            usuarios.nombre')
-            ->from('stock_inicial')
-            ->leftJoin('usuarios', 'stock_inicial.usuario', '=', 'usuarios.username')
-            ->whereRaw('stock_inicial.activo=1')
-            ->get();
-?>
-        <style>
-            table,
-            th,
-            td {
-                border: 1px solid black;
-                border-collapse: collapse;
-            }
-        </style>
-        <table border="1" cellpadding="2" cellspacing="0" width="100%">
-            <div class="col-6">
-                <fieldset class="form-group">
-                    <th>NUM PARTE</th>
-                    <th class="text-center">DESCRIPCION</th>
-                    <th class="text-center">MODELO</th>
-                    <th class="text-center">TIPO MATERIAL</th>
-                    <th class="text-center">CATEGORIA</th>
-                    <th class="text-center">USUARIO</th>
-                    <th class="text-center">FECHA CARGA</th>
-                    <th class="text-center">DIAS PENDIENTE</th>
-                </fieldset>
-            </div>
-            <?php
-            foreach ($orders as $k => $v) {
-            ?>
-                <div class="col-6">
-                    <fieldset class="form-group">
-                        <?= $v->no_parte ?>
-                        <?= $v->descripcion ?>
-                        <?= $v->modelo ?>
-                        <?= $v->tipo_material ?>
-                        <?= $v->categoria ?>
-                        <?= $v->nombre ?>
-                        <?= $v->fecha_carga ?>
-                        <?= $v->fecha_usuario ?>
-                    </fieldset>
-                </div>
-            <?php
-            } ?>
-
-        </table>
-    <?php
+        return view('Stock.descagainicial', compact(null));
     }
-
 
     public function datoinicial(Request $request)
     {
@@ -125,162 +217,43 @@ class StockController extends Controller
 
     public function detalleinicial(Request $request)
     {
+
         $token = $request->ajax() ? $request->header('X-CSRF-Token') : $request->input('_token');
-        $row = Stock::query()
-            ->selectRaw('stock_inicial.id,
-            stock_inicial.no_parte,
-            stock_inicial.descripcion,
-            stock_inicial.tipo_material,
-            stock_inicial.precio_usd,
-            stock_inicial.sir_anual,
-            stock_inicial.proyecto,
-            stock_inicial.categoria,
-            stock_inicial.proveedor,
-            stock_inicial.ots,
-            stock_inicial.modelo,
-            stock_inicial.produccion_inicial,
-            stock_inicial.fecha_carga,
+        return view('Stock.detalleinicial', compact(null));
+    }
+
+    public function datofinal(Request $request)
+    {
+
+        return datatables()->of(Stock::query()->selectRaw('
+            stock_final.id,
+            stock_final.no_parte,
+            stock_final.descripcion,
+            stock_final.tipo_material,
+            stock_final.categoria,
+            stock_final.proveedor,
+            stock_final.fecha_obsoleta,
+            stock_final.modelo,
+            stock_final.fecha_carga,
+            usuarios.nombre,
             datediff(curdate(),fecha_carga) as fecha_usuario,
-            usuarios.nombre')
-            ->from('stock_inicial')
-            ->leftJoin('usuarios', 'stock_inicial.usuario', '=', 'usuarios.username')
-            ->whereRaw('stock_inicial.id=' . $_POST['id'])
-            ->get();
+            datediff(fecha_finalizacion,fecha_carga) as fecha_usuario2,
+            stock_final.fecha_finalizacion,
+            a.nombre as usuario_materiales')
+            ->from('stock_final')
+            ->leftJoin('usuarios', 'stock_final.usuario', '=', 'usuarios.username')
+            ->leftjoin('usuarios as A', function ($join) {
+                $join->on('stock_final.usuario_materiales', '=', 'A.username');
+            })
+            ->whereRaw('stock_final.activo=1 OR stock_final.fecha_finalizacion <>\'\'')
+            //->limit(2)
+            ->get())->toJson();
+    }
 
-        $row = $row[0];
+    public function detallefinal(Request $request)
+    {
 
-    ?>
-        <div class="row">
-            <div class="col-6">
-                <fieldset class="form-group">
-                    <label for="basicInput">No Parte:</label>
-                    <input class="form-control" name="parte" type="text" readonly id="parte" size="40" value="<?php echo ($row['no_parte']); ?>">
-                </fieldset>
-            </div>
-            <?php if ($row['no_parte_original'] != '') { ?>
-                <div class="col-6">
-                    <fieldset class="form-group">
-                        <label for="basicInput">No. Parte Original (Se cambio por sustituto):</label>
-                        <input class="form-control" type="text" maxlength="20" size='40' id="po" readonly name="po" style="text-transform:uppercase" value='<?php echo ($row['no_parte_original']); ?>' />
-                    </fieldset>
-                </div>
-            <?php } ?>
-            <div class="col-6">
-                <fieldset class="form-group">
-                    <label for="basicInput">Descripción:</label>
-                    <input class="form-control" name="descripcion" type="text" readonly id="descripcion" size="40" value="<?php echo ($row['descripcion']); ?>">
-                </fieldset>
-            </div>
-            <div class="col-6">
-                <fieldset class="form-group">
-                    <label for="basicInput">Tipo Material:</label>
-                    <input class="form-control" name="descripcion" type="text" readonly id="descripcion" size="40" value="<?php echo ($row['tipo_material']); ?>">
-                </fieldset>
-            </div>
-
-
-
-            <div class="col-6">
-                <fieldset class="form-group">
-                    <label for="basicInput">Precio USD:</label>
-                    <input class="form-control" name="descripcion" type="text" readonly id="descripcion" size="40" value="<?php echo ($row['precio_usd']); ?>">
-                </fieldset>
-            </div>
-            <div class="col-6">
-                <fieldset class="form-group">
-                    <label for="basicInput">SIR Anual:</label>
-                    <input class="form-control" name='username' type='text' readonly id='username' size="40" value='<?php echo ($row['sir_anual']); ?>'>
-                </fieldset>
-            </div>
-
-
-            <div class="col-6">
-                <fieldset class="form-group">
-                    <label for="basicInput">Proyecto:</label>
-                    <input class="form-control" name='motivo' type='text' readonly id='motivo' size='40' value='<?php echo ($row['proyecto']); ?>'>
-                </fieldset>
-            </div>
-            <div class="col-6">
-                <fieldset class="form-group">
-                    <label for="basicInput">Categor&iacute;a:</label>
-                    <input class="form-control" name='motivo' type='text' readonly id='motivo' size='40' value='<?php echo ($row['categoria']); ?>'>
-                </fieldset>
-
-            </div>
-
-            <div class="col-6">
-                <fieldset class="form-group">
-                    <label for="basicInput">Proveedor:</label>
-                    <input class="form-control" name='motivo' type='text' readonly id='motivo' size='40' value='<?php echo ($row['proveedor']); ?>'>
-                </fieldset>
-            </div>
-            <div class="col-6">
-                <fieldset class="form-group">
-                    <label for="basicInput">OTS:</label>
-                    <input class="form-control" name='motivo' type='text' readonly id='motivo' size='40' value='<?php echo ($row['ots']); ?>'>
-                </fieldset>
-            </div>
-            <div class="col-6">
-                <fieldset class="form-group">
-                    <!-- Producci&oacute;n Inicial: -->
-                    <label for="basicInput">Cantidad de Piezas por SKU:</label>
-                    <input class="form-control" name='motivo' type='text' readonly id='motivo' size='40' value='<?php echo ($row['produccion_inicial']); ?>'>
-                </fieldset>
-            </div>
-            <div class="col-6">
-                <fieldset class="form-group">
-                    <label for="basicInput">A&ntilde;os de Garant&iacute;a:</label>
-                    <input class="form-control" name='motivo' type='text' readonly id='motivo' size='40' value='<?php echo ($row['garantia']); ?>'>
-                </fieldset>
-            </div>
-            <div class="col-6">
-                <fieldset class="form-group">
-                    <label for="basicInput">V&oacute;lumen de Venta Anual</label>
-                    <input class="form-control" name='motivo' type='text' readonly id='motivo' size='40' value='<?php echo ($row['vol_vta_anual']); ?>'>
-                </fieldset>
-            </div>
-
-            <div class="col-6">
-                <fieldset class="form-group">
-                    <label for="basicInput">Usuario Materiales:</label>
-                    <input class="form-control" name='motivo' type='text' readonly id='motivo' size='40' value='<?php echo ($row['nombre']); ?>'>
-                </fieldset>
-            </div>
-            <div class="col-6">
-                <fieldset class="form-group">
-                    <label for="basicInput">Conclusi&oacute;n</label>
-                    <input class="form-control" name='motivo' type='text' readonly id='motivo' size='40' value='<?php echo ($row['conclusion']); ?>'>
-                </fieldset>
-            </div>
-            <?if($row['conclusion']=='PO COLOCADA'){?>
-            <div class="col-6">
-                <fieldset class="form-group">
-                    <label for="basicInput">PO:</label>
-                    <input class="form-control" type="text" maxlength="20" id="po" readonly name="po" style="text-transform:uppercase" value='<?php echo ($row['po']); ?>' />
-
-                </fieldset>
-            </div>
-            <?}?>
-            <?if($row['conclusion']=='RECHAZADA'){?>
-            <div class="col-6">
-                <fieldset class="form-group">
-                    <label for="basicInput">Tipo Conclusion:</label>
-                    <input class="form-control" type="text" size='40' maxlength="0" id="po" readonly name="po" style="text-transform:uppercase" value='<?php echo ($row['tipo_conclusion']); ?>' />
-                </fieldset>
-            </div>
-            <?}?>
-            <div class="col-6">
-                <fieldset class="form-group">
-                    <label for="basicInput">Comentarios Ingeniero:</label>
-                    <textarea class="form-control" name="comentario" readonly id="comentario" rows="4" cols="41" style="text-transform:uppercase"><?php echo ($row['comentario']); ?></textarea class="form-control" >
-                </fieldset>
-            </div>
-                <div class="col-6">
-                <fieldset class="form-group">
-                <label for="basicInput">Comentarios</label>
-                    <textarea class="form-control"  name="comentario" readonly id="comentario" rows="4" cols="41" style="text-transform:uppercase"><?php echo ($row['comentarios']); ?></textarea class="form-control" >
-                </fieldset>
-            </div>
-    <?php
+        $token = $request->ajax() ? $request->header('X-CSRF-Token') : $request->input('_token');
+        return view('Stock.detallefinal', compact(null));
     }
 }

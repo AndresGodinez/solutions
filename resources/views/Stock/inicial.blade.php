@@ -3,6 +3,8 @@
 @section('content')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/app-assets/vendors/css/tables/datatable/datatables.min.css">
 
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+
 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 <section id="basic-datatable">

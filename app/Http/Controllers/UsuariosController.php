@@ -89,6 +89,11 @@ class UsuariosController extends Controller
             ->orderBy('wpx_menu_cat.id')
             ->get();
 
+
+//        dd([
+//            'permision' => $permissions
+//        ]);
+
         return view('Usuarios/edit',
             compact('usuario', 'departamentos', 'countries'));
     }

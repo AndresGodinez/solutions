@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html class="loading" lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-textdirection="ltr">
 <!-- BEGIN: Head-->
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -113,10 +112,14 @@
 
                 <li class=" nav-item">
                     <a href="">
-                        <i class="bx bx-home" data-icon="desktop"></i><span class="menu-title" data-i18n="Dashboard">Stock</span></a>
+                        <i class="bx bx-box" data-icon="desktop"></i><span class="menu-title" data-i18n="Dashboard">Stock</span></a>
                     <ul class="menu-content">
-                        <li class="active is-shown"><a href="{{url('stock/inicial')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Stock Inicial</span></a>
-                        </li>
+                        <li class="active is-shown"><a href="{{url('stock/inicial')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Consulta Inicial</span></a></li>
+                        <li class="active is-shown"><a href="{{url('stock/conclusioninicial')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Conclusion Inicial</span></a></li>
+                        <li class="active is-shown"><a href="{{url('stock/cargainicial')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Carga Inicial</span></a></li>
+                        <li class="active is-shown"><a href="{{url('stock/final')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Consulta Final</span></a></li>
+                        <li class="active is-shown"><a href="{{url('stock/final')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Conclusion Final (50%)</span></a></li>
+                        <li class="active is-shown"><a href="{{url('stock/final')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Carga Final (50%)</span></a></li>
                     </ul>
                 </li>
                 <li class="nav-item">

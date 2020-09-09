@@ -15,7 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::middleware('auth')->group(function () {
 
 //Materiales Susitutos
@@ -31,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/carga-sustituto', 'MaterialesController@cargaSustitutos')
         ->name('materiales-sustitutos.cargaSustitutos');
 });
+
 // sustitutos
 Route::middleware('auth')->group(function () {
     Route::get('/solicitudes-sustituto', 'MaterialesController@index')
@@ -74,7 +74,7 @@ Route::middleware('auth')->group(function () {
 });
 
 //Materiales
-Route::get('/t', function (){
+Route::get('/t', function () {
     return sha1('123456789');
 });
 
@@ -111,7 +111,8 @@ Route::get('/get-countries', 'CountriesController@list')
 Route::get('/get-regiones', 'CountriesController@regiones')
     ->name('getRegiones');
 
-//Stocks
+
+/////////////////////// [[ Stocks START ]] /////////////////////
 
 Route::get('/stock', 'StockController@index')
     ->name('stock.index');
@@ -120,15 +121,57 @@ Route::get('/stock', 'StockController@index')
 Route::get('/stock/inicial', 'StockController@inicial')
     ->name('stock.inicial');
 
-Route::get('/stock/descagainicial', 'StockController@descagainicial')
-    ->name('stock.descagainicial');
+// api json Dato Inicial [[Data Table JSON]]
+Route::get('/stock/datoinicial', 'StockController@datoinicial')
+    ->name('stock.datoinicial');
 
 Route::get('/stock/datoinicial', 'StockController@datoinicial')
     ->name('stock.datoinicial');
 
+//api DOM [[Detallamiento]]
 Route::post('/stock/detalleinicial', 'StockController@detalleinicial')
     ->name('stock.detalleinicial');
 
 // Stock Final
 Route::get('/stock/final', 'StockController@final')
     ->name('stock.final');
+
+//view
+Route::get('/stock/cargainicial', 'StockController@cargainicial')
+    ->name('stock.cargainicial');
+
+//VIEW API MULTPART
+Route::post('/stock/cargainicialapi', 'StockController@cargainicialapi')->name('stock.cargainicialapi');
+
+// Consusion Inicial -> view
+Route::get('/stock/conclusioninicial', 'StockController@conclusioninicial')
+    ->name('stock.conclusioninicial');
+// api json Dato Inicial [[Data Table JSON]]
+Route::get('/stock/conclusioninicial_dt', 'StockController@conclusioninicial_dt')
+    ->name('stock.conclusioninicial_dt');
+//api DOM [[Detallamiento]]
+Route::post('/stock/conclusioninicial_detalle', 'StockController@conclusioninicial_detalle')
+    ->name('stock.conclusioninicial_detalle');
+//api UPDATE
+Route::post('/stock/conclusioninicial_update', 'StockController@conclusioninicial_update
+')
+    ->name('stock.conclusioninicial_update');
+
+// Stock Final
+Route::get('/stock/final', 'StockController@final')
+    ->name('stock.final');
+// api/multpart descar de XLS de Consulta Inicial
+Route::get('/stock/descagafinal', 'StockController@descagafinal')
+    ->name('stock.descagafinal');
+// api json Dato Inicial [[Data Table JSON]]
+Route::get('/stock/datofinal', 'StockController@datofinal')
+    ->name('stock.datofinal');
+//api DOM [[Detallamiento]]
+Route::post('/stock/detallefinal', 'StockController@detallefinal')
+    ->name('stock.detallefinal');
+//view
+Route::get('/stock/cargafinal', 'StockController@cargafinal')
+    ->name('stock.cargafinal');
+
+
+/////////////////////// [[ Stocks END ]] /////////////////////
