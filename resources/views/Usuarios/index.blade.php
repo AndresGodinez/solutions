@@ -17,7 +17,7 @@
                 </div>
                 <div class="card-content">
                     <div class="card-body card-dashboard">
-                        <table id="example" class="table table-striped table-bordered complex-headers dataTable" style="width:100%">
+                        <table id="example" class="table table-striped table-bordered table-responsive complex-headers dataTable" style="width:100%">
                             <thead>
                             <tr>
                                 <th class="text-center">Usuario</th>
@@ -98,11 +98,7 @@
             confirmButtonText: 'ok'
         });
         if (value.isConfirmed){
-            let responseDelete = await axios.delete('/delete-usuario',{
-                params:{
-                    user_id: e
-                }
-            });
+            let responseDelete = await axios.post('/delete-usuario',{user_id: e});
 
             if (responseDelete){
                 location.href = "{{url('usuarios')}}";

@@ -5,7 +5,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/usuarios-export', 'UsuariosController@download')
         ->name('usuarios.export');
 
-    Route::delete('/delete-usuario', 'UsuariosController@destroy')
+    Route::post('/delete-usuario', 'UsuariosController@destroy')
         ->name('usuario.delete');
 
     Route::get('usuario-edit-password', 'UsuariosController@editPassword')

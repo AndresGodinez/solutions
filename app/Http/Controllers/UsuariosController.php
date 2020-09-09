@@ -109,8 +109,8 @@ class UsuariosController extends Controller
             'password' => Hash::make($request->get('username')),
             'depto' => $depto->departamento ?? '',
             'planta' => $request->get('planta'),
-            'id_contry' => $request->get('country'),
-            'id_region' => $request->get('region'),
+            'id_contry' => $request->get('country_id'),
+            'id_region' => $request->get('region_id'),
             'cliente' => $request->get('cliente')
         ]);
 
@@ -160,7 +160,7 @@ class UsuariosController extends Controller
                 return  redirect(route('login'));
             }
         }
-        return redirect(route('usuario.updateOldPassword'))->with([
+        return redirect(route('change.oldpassword'))->with([
             'message' => 'Las contraseñas no coinciden'
         ]);
     }

@@ -162,7 +162,7 @@
 
             }
 
-            $('#region_id').focus(async function() {
+            $('#country_id').change(async function() {
                 let region = $('#region_id');
                 let country = $('#country_id');
                 try {
@@ -171,6 +171,10 @@
                             country :country.val()
                         }
                     });
+                    region.empty();
+                    region.append(`<option value="">
+                                       Seleccione una opción
+                                  </option>`);
                     response.data.forEach((item) => {
                         region.append(`<option value="${item.id}">
                                        ${item.short_name}
