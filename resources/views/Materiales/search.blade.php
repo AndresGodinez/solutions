@@ -26,7 +26,7 @@
                 </form>
             </div>
             <div class="col-md-6">
-                <a href="{{ route('downloadMateriales') }}"
+                <a href="{{ route('materiales.download') }}"
                    class="btn btn-success"
                 >
                     Descargar Reporte

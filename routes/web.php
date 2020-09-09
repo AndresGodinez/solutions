@@ -15,27 +15,63 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Usuarios
-Route::get('/usuarios-export', 'UsersExportController')
-    ->name('usuarios.export');
 
-Route::get('/usuarios', 'UsuariosController@index')
-    ->name('usuarios.index');
+Route::middleware('auth')->group(function () {
 
-Route::get('/usuario/{usuario}', 'UsuariosController@show')
-    ->name('usuario.show');
+//Materiales Susitutos
+    Route::get('/materiales', 'MaterialesController@search')
+        ->name('materiales.search');
 
-Route::get('/usuario/{usuario}/edit', 'UsuariosController@edit')
-    ->name('usuario.edit');
+    Route::get('/materiales-consulta', 'MaterialesController@consulta')
+        ->name('materiales.consulta');
 
-Route::post('/usuario/{usuario}', 'UsuariosController@update')
-    ->name('usuario.update');
+    Route::get('/materiales-download', 'MaterialesController@download')
+        ->name('materiales.download');
 
-Route::post('/usuario', 'UsuariosController@store')
-    ->name('usuario.store');
+    Route::get('/carga-sustituto', 'MaterialesController@cargaSustitutos')
+        ->name('materiales-sustitutos.cargaSustitutos');
+});
+// sustitutos
+Route::middleware('auth')->group(function () {
+    Route::get('/solicitudes-sustituto', 'MaterialesController@index')
+        ->name('materiales-sustitutos.index');
 
-Route::get('/usuario-create', 'UsuariosController@create')
-    ->name('usuario.create');
+    Route::get('/solicitud-sustituto', 'MaterialesController@solicitud')
+        ->name('materiales-sustitutos.solicitud');
+
+    Route::get('solicitudes/datoinicial', 'MaterialesController@datoinicial')
+        ->name('solicitudes.datoinicial');
+
+    Route::get('sustitutos', 'MaterialesController@index');
+
+    Route::get('sustitutos/detalle/{id}', 'MaterialesController@detail');
+
+    Route::post('sustitutos/process/set-track/contribute', 'MaterialesController@set_track');
+
+    Route::post('/sustitutos/process', 'MaterialesController@process');
+
+    Route::post('/process/{np}', 'MaterialesController@get_description_by_np');
+
+    //Solicitudes ingenieria
+    Route::get('/solicitud-ingenieria-create', 'SolicitudesIngenieriaController@create')
+        ->name('solicitud-ingenieria.create');
+
+    //Stocks
+
+    Route::get('/stock', 'StockController@index')
+        ->name('stock.index');
+
+    Route::get('/stock/inicial', 'StockController@inicial')
+        ->name('stock.inicial');
+
+    Route::get('/stock/descagainicial', 'StockController@descagainicial')
+        ->name('stock.descagainicial');
+
+    Route::get('/stock/datoinicial', 'StockController@datoinicial')
+        ->name('stock.datoinicial');
+
+
+});
 
 //Materiales
 Route::get('/t', function (){

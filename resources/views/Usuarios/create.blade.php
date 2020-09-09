@@ -56,6 +56,23 @@
                 </div>
             </div>
 
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="country_id">País</label>
+                    <select name="country_id" id="country_id" class="form-control">
+                        <option value="">Seleccione una opcion</option>
+                        @foreach($countries as $country)
+                            <option value="{{ $country->id }}">{{ $country->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="region_id">Región</label>
+                    <select name="region_id" id="region_id" class="form-control">
+                    </select>
+                </div>
+            </div>
 
             <div class="form-row">
                 <div class="form-group col-md-4">
@@ -85,4 +102,35 @@
         </form>
 
     </div>
+
+    <script src="{{ asset('assets') }}/app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js" integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg==" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#region_id').focus(async function() {
+                let region = $('#region_id');
+                let country = $('#country_id');
+                try {
+                    let response = await axios.get('get-regiones', {
+                        params:{
+                            country :country.val()
+                        }
+                    });
+                    response.data.forEach((item) => {
+                        region.append(`<option value="${item.id}">
+                                       ${item.short_name}
+                                  </option>`);
+                    });
+
+                }catch (e) {
+                    console.error(e)
+                }
+
+            })
+        });
+
+    </script>
+
 @endsection

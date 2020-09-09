@@ -12,3 +12,7 @@ npm-debug.log
 yarn-error.log
 .idea
 /public/js/app.js
+.env.example
+public/uploads/
+/public/public/uploads/2020/09/
+/public/public/uploads/*

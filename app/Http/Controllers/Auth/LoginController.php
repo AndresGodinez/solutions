@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\BitacoraUsuario;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use function redirect;
 
 class LoginController extends Controller
 {
@@ -70,5 +72,28 @@ class LoginController extends Controller
         $this->incrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);
+    }
+
+    protected function sendLoginResponse(Request $request)
+    {
+        $request->session()->regenerate();
+
+        $this->clearLoginAttempts($request);
+
+        return $this->authenticated($request, $this->guard()->user())
+            ?: redirect()->intended($this->redirectPath());
+    }
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        BitacoraUsuario::create([
+            'usuario_id' => $user->id
+        ]);
     }
 }
