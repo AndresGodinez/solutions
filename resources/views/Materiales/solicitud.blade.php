@@ -83,6 +83,7 @@
                                        id="ipt_componente"
                                        name="ipt_componente"
                                        class="form-control"
+                                       required
                                 >
                             </div>
                             <div class="form-group col-md-3" id="informacion_componente">

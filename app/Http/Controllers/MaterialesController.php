@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use function compact;
 use function datatables;
 use function json_encode;
+use function redirect;
 use function response;
 use function url;
 use function view;
@@ -196,7 +197,7 @@ class MaterialesController extends Controller
         $response['target'] = $target;
         $response['redirect'] = $redirect;
 
-        return response()->json($response);
+        return redirect(url('sustitutos'))->with(['message' => $message]);
     }
 
     public function get_description_by_np(Request $request)
