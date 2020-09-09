@@ -82,6 +82,7 @@
                     </div>
                 </div>
 
+
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="cliente">Cliente</label>
@@ -124,6 +125,7 @@
                         </select>
                     </div>
                 </div>
+
 
                 <div class="form-row">
                     <input type="submit" class="btn btn-primary" value="Actualizar">

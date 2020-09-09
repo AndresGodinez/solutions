@@ -2,8 +2,10 @@
 
 @section('content')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/app-assets/vendors/css/tables/datatable/datatables.min.css">
+<meta name="csrf-token" content="{{ csrf_token() }}" />
 
 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
 
 <section id="basic-datatable">
     <div class="row">
@@ -131,6 +133,8 @@
 
         });
 
+
+
     });
 
     function createManageBtn(e) {
@@ -138,6 +142,8 @@
     }
 
     function openDetalles(id) {
+
+
 
         $('.contenido-modal').html('');
         $('.contenido-modal').hide();
@@ -150,6 +156,8 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+
 
         $.ajax({
             url: "{{ url('stock/detalleinicial')}}",

@@ -12,7 +12,6 @@
         </div>
     </div>
 
-
     <div class="container">
         <div class="row">
             <h5>Lista de Sustitutos</h5>
@@ -113,7 +112,6 @@
                                 </button>
                             </div>
                         </div>
-
                     </form>
 
                 </div>
@@ -121,8 +119,6 @@
             </div>
         </div>
     </div>
-
-
 
     <script>
         $('#ipt_componente').blur(function(){

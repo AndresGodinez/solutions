@@ -78,14 +78,27 @@ Route::get('/t', function (){
     return sha1('123456789');
 });
 
+//Materiales Susitutos
 Route::get('/materiales', 'MaterialesController@search')
     ->name('materiales.search');
 
 Route::get('/materiales-consulta', 'MaterialesController@consulta')
     ->name('materiales.consulta');
 
-Route::get('/materiales-download', 'DownloadMaterialesController')
-    ->name('downloadMateriales');
+Route::get('/materiales-download', 'MaterialesController@download')
+    ->name('materiales.download');
+
+Route::get('/carga-sustituto', 'MaterialesController@cargaSustitutos')
+    ->name('materiales-sustitutos.cargaSustitutos');
+
+// sustitutos
+
+Route::get('/solicitud-sustituto', 'MaterialesController@solicitud')
+    ->name('materiales-sustitutos.solicitud');
+
+//Solicitudes
+Route::get('/solicitud-ingenieria-create', 'SolicitudesIngenieriaController@create')
+    ->name('solicitud-ingenieria.create');
 
 Auth::routes();
 
@@ -98,4 +111,24 @@ Route::get('/get-countries', 'CountriesController@list')
 Route::get('/get-regiones', 'CountriesController@regiones')
     ->name('getRegiones');
 
+//Stocks
 
+Route::get('/stock', 'StockController@index')
+    ->name('stock.index');
+
+// Stock Inicial
+Route::get('/stock/inicial', 'StockController@inicial')
+    ->name('stock.inicial');
+
+Route::get('/stock/descagainicial', 'StockController@descagainicial')
+    ->name('stock.descagainicial');
+
+Route::get('/stock/datoinicial', 'StockController@datoinicial')
+    ->name('stock.datoinicial');
+
+Route::post('/stock/detalleinicial', 'StockController@detalleinicial')
+    ->name('stock.detalleinicial');
+
+// Stock Final
+Route::get('/stock/final', 'StockController@final')
+    ->name('stock.final');
