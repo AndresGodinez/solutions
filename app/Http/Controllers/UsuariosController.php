@@ -127,8 +127,8 @@ class UsuariosController extends Controller
             'mail' => $request->get('mail'),
             'depto' => $depto->departamento ?? '',
             'planta' => $request->get('planta'),
-            'id_contry' => $request->get('country'),
-            'id_region' => $request->get('region'),
+            'id_contry' => $request->get('country_id'),
+            'id_region' => $request->get('country_id'),
             'cliente' => $request->get('cliente')
         ]);
 
