@@ -319,11 +319,11 @@
 
 
         $('.saveedit').click(function(){
-            var id = $('.edita_form_id').val();
-            var material = $('.edita_form_material').val();
-            var max = $('.edita_form_max').val();
-            var stock = $('.edita_form_stock').val();
-            var surtir = $('.edita_form_surtir').val();
+            let id = $('.edita_form_id').val();
+            let material = $('.edita_form_material').val();
+            let max = $('.edita_form_max').val();
+            let stock = $('.edita_form_stock').val();
+            let surtir = $('.edita_form_surtir').val();
 
             $.ajax({
                 url: "{{ url('stock-basico-tecnico/saveedit')}}",
@@ -338,12 +338,12 @@
                 success: function(data) {
                     dtb.ajax.reload();
                     Swal.fire({
-                                    type: "success",
-                                    title: '¡Hecho!',
-                                    text: '',
-                                    confirmButtonClass: 'btn btn-success',
-                                });
-                                $('#default').modal('hidden');
+                                type: "success",
+                                title: '¡Hecho!',
+                                text: '',
+                                confirmButtonClass: 'btn btn-success',
+                            });
+                            $('#default').modal('hidden');
 
 
 
@@ -355,13 +355,12 @@
 
         $('.saveadd').click(function(){
 
-
-            var material = $('.add_form_material').val();
-            var max = $('.add_form_max').val();
-            var stock = $('.add_form_stock').val();
-            var surtir = $('.add_form_surtir').val();
-            var bin = $('.binvalue').val();
-            var sloc = $('.slocvalue').val();
+            let material = $('.add_form_material').val();
+            let max = $('.add_form_max').val();
+            let stock = $('.add_form_stock').val();
+            let surtir = $('.add_form_surtir').val();
+            let bin = $('.binvalue').val();
+            let sloc = $('.slocvalue').val();
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -382,10 +381,10 @@
                     console.log(data);
                     dtb.ajax.reload();
                     Swal.fire({
-                                    type: "success",
-                                    title: '¡Hecho!',
-                                    text: '',
-                                    confirmButtonClass: 'btn btn-success',
+                                type: "success",
+                                title: '¡Hecho!',
+                                text: '',
+                                confirmButtonClass: 'btn btn-success',
                                 });
                     $('.formadd').reset();
                     $('#add').modal('hidden');

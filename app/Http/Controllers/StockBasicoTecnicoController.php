@@ -140,9 +140,12 @@ class StockBasicoTecnicoController extends Controller
 
         $nameFile = MyUtils::saveAndReturnCompleteNameFile($file);
 
+        $planta = Auth::user()->planta;
+        $bin = $request->get('bin');
+
         DB::connection($connection)
             ->table('stockbasico_tecnico')
-            ->whereRaw('planta=\'' . Auth::user()->planta . '\' and bin=\'' . $_SESSION['bin'] . '\'')
+            ->whereRaw('planta=\'' . $planta . '\' and bin=\'' . $bin . '\'')
             // ->where('planta', Auth::user()->planta)
             // ->where('bin', $_SESSION['bin'])
             ->delete();
