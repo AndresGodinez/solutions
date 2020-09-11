@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
+        @include('Partials.errors')
         <div class="row">
             <h5>Consulta General de Materiales</h5>
         </div>
@@ -8,7 +9,7 @@
             <div class="col-md-6">
                 <form action="{{ route('materiales.consulta') }}">
                     <div class="form-row">
-                        <div class="form-group">
+                        <div class="form-group col-md-8">
                             <label for="ipt_material">No. de parte</label>
                             <input type="text"
                                    id="ipt_material"
