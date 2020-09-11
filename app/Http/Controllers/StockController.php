@@ -178,6 +178,8 @@ class StockController extends Controller
 
         //     $mail_sent = @mail($to, $subject, $email_message, $headers);
         // }
+
+        return view('Stock.inicial', compact(null));
     }
 
     public function descagainicial(Request $request)
@@ -186,8 +188,67 @@ class StockController extends Controller
         ini_set('memory_limit', '1000M');
         header('Content-type: application/vnd.ms-excel;charset=iso-8859-15');
         header('Content-Disposition: attachment; filename=REPORTE STOCK INICIAL.xls');
-        return view('Stock.descagainicial', compact(null));
+
+        $orders = Stock::query()
+            ->selectRaw('stock_inicial.id,
+            stock_inicial.no_parte,
+            stock_inicial.descripcion,
+            stock_inicial.tipo_material,
+            stock_inicial.precio_usd,
+            stock_inicial.sir_anual,
+            stock_inicial.proyecto,
+            stock_inicial.categoria,
+            stock_inicial.proveedor,
+            stock_inicial.ots,
+            stock_inicial.modelo,
+            stock_inicial.produccion_inicial,
+            stock_inicial.fecha_carga,
+            datediff(curdate(),fecha_carga) as fecha_usuario,
+            usuarios.nombre')
+            ->from('stock_inicial')
+            ->leftJoin('usuarios', 'stock_inicial.usuario', '=', 'usuarios.username')
+            ->whereRaw('stock_inicial.activo=1')
+            ->get();
+?>
+        <style>
+            table,
+            th,
+            td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+        </style>
+        <table rder="1" cellpadding="2" cellspacing="0" width="100%">
+            <tr>
+                <th>NUM PARTE</th>
+                <th class="text-center">DESCRIPCION</th>
+                <th class="text-center">MODELO</th>
+                <th class="text-center">TIPO MATERIAL</th>
+                <th class="text-center">CATEGORIA</th>
+                <th class="text-center">USUARIO</th>
+                <th class="text-center">FECHA CARGA</th>
+                <th class="text-center">DIAS PENDIENTE</th>
+            </tr>
+            <?php
+            foreach ($orders as $k => $v) {
+            ?>
+                <tr>
+                    <td><?= $v->no_parte ?></td>
+                    <td><?= $v->descripcion ?></td>
+                    <td><?= $v->modelo ?></td>
+                    <td><?= $v->tipo_material ?></td>
+                    <td><?= $v->categoria ?></td>
+                    <td><?= $v->nombre ?></td>
+                    <td><?= $v->fecha_carga ?></td>
+                    <td><?= $v->fecha_usuario ?></td>
+                </tr>
+            <?php
+            } ?>
+
+        </table>
+<?php
     }
+
 
     public function datoinicial(Request $request)
     {
@@ -211,49 +272,28 @@ class StockController extends Controller
             ->from('stock_inicial')
             ->leftJoin('usuarios', 'stock_inicial.usuario', '=', 'usuarios.username')
             ->whereRaw('stock_inicial.activo=1')
-            // ->limit(2)
+            // ->limit(10)
             ->get())->toJson();
-    }
 
-    public function detalleinicial(Request $request)
-    {
 
-        $token = $request->ajax() ? $request->header('X-CSRF-Token') : $request->input('_token');
-        return view('Stock.detalleinicial', compact(null));
-    }
-
-    public function datofinal(Request $request)
-    {
-
-        return datatables()->of(Stock::query()->selectRaw('
-            stock_final.id,
-            stock_final.no_parte,
-            stock_final.descripcion,
-            stock_final.tipo_material,
-            stock_final.categoria,
-            stock_final.proveedor,
-            stock_final.fecha_obsoleta,
-            stock_final.modelo,
-            stock_final.fecha_carga,
-            usuarios.nombre,
-            datediff(curdate(),fecha_carga) as fecha_usuario,
-            datediff(fecha_finalizacion,fecha_carga) as fecha_usuario2,
-            stock_final.fecha_finalizacion,
-            a.nombre as usuario_materiales')
-            ->from('stock_final')
-            ->leftJoin('usuarios', 'stock_final.usuario', '=', 'usuarios.username')
-            ->leftjoin('usuarios as A', function ($join) {
-                $join->on('stock_final.usuario_materiales', '=', 'A.username');
-            })
-            ->whereRaw('stock_final.activo=1 OR stock_final.fecha_finalizacion <>\'\'')
-            //->limit(2)
-            ->get())->toJson();
-    }
-
-    public function detallefinal(Request $request)
-    {
-
-        $token = $request->ajax() ? $request->header('X-CSRF-Token') : $request->input('_token');
-        return view('Stock.detallefinal', compact(null));
+        // SELECT
+        // stock_inicial.id,
+        // stock_inicial.no_parte,
+        // stock_inicial.descripcion,
+        // stock_inicial.tipo_material,
+        // stock_inicial.precio_usd,
+        // stock_inicial.sir_anual,
+        // stock_inicial.proyecto,
+        // stock_inicial.categoria,
+        // stock_inicial.proveedor,
+        // stock_inicial.ots,
+        // stock_inicial.modelo,
+        // stock_inicial.produccion_inicial,
+        // stock_inicial.fecha_carga,
+        // datediff(curdate(),fecha_carga) as fecha_usuario,
+        // usuarios.nombre
+        // 			FROM stock_inicial
+        // 			left join usuarios ON stock_inicial.usuario = usuarios.username
+        // 			WHERE stock_inicial.activo=1
     }
 }

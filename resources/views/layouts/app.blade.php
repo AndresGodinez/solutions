@@ -112,14 +112,11 @@
 
                 <li class=" nav-item">
                     <a href="">
-                        <i class="bx bx-box" data-icon="desktop"></i><span class="menu-title" data-i18n="Dashboard">Stock</span></a>
+                        <i class="bx bx-box" data-icon="box"></i><span class="menu-title" data-i18n="Stocks">Stock</span></a>
                     <ul class="menu-content">
-                        <li class="active is-shown"><a href="{{url('stock/inicial')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Consulta Inicial</span></a></li>
-                        <li class="active is-shown"><a href="{{url('stock/conclusioninicial')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Conclusion Inicial</span></a></li>
-                        <li class="active is-shown"><a href="{{url('stock/cargainicial')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Carga Inicial</span></a></li>
-                        <li class="active is-shown"><a href="{{url('stock/final')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Consulta Final</span></a></li>
-                        <li class="active is-shown"><a href="{{url('stock/final')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Conclusion Final (50%)</span></a></li>
-                        <li class="active is-shown"><a href="{{url('stock/final')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Carga Final (50%)</span></a></li>
+                        <li><a href="{{url('stocks')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Stock Inicial</span></a></li>
+                        <li><a href="{{url('stocks/final')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Stock Final</span></a></li>
+                        <li><a href="{{url('stocks/cargas')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Stock Carga</span></a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -141,7 +138,6 @@
                         <li class="active is-shown"><a href="{{route('materiales.search')}}"><i
                                     class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Busqueda</span></a>
                         </li>
-
                         <li class="active is-shown"><a href="{{route('materiales-sustitutos.cargaSustitutos')}}"><i
                                     class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">
                                     Carga Masiva

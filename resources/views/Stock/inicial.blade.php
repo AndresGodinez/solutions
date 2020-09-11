@@ -46,47 +46,6 @@
     </div>
 </section>
 
-<div class="modal fade text-left modal-borderless" id="detalles" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Detalle</h3>
-                <button type="button" class="close rounded-pill" data-dismiss="modal" aria-label="Close">
-                    <i class="bx bx-x"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="card-content">
-                    <div class="card-body loader-modal">
-                        <center>
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-
-                            <div class="spinner-border text-warning" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-
-                            <div class="spinner-border text-dark" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                        </center>
-                    </div>
-                    <div class="card-body contenido-modal" style="display:none;">
-
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light-primary" data-dismiss="modal">
-                    <i class="bx bx-x d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Regresar</span>
-                </button>
-
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
@@ -98,9 +57,6 @@
         $('#example').DataTable({
             "serverSide": true,
             "processing": true,
-            "language": {
-                "url": "{{ asset('assets') }}/dt-lang/Spanish.json"
-            },
             "ajax": "{{ url('stock/datoinicial')}}",
 
             "order": [
@@ -136,36 +92,11 @@
     });
 
     function createManageBtn(e) {
-        return '<button id="manageBtn" type="button" style="padding: 10px;" onclick="openDetalles(' + e.id + ')" class="btn btn-success btn-xs">' + "<i class='bx bx-show-alt' style='font-size:25px'></i>" + '</button>';
+        return '<button id="manageBtn" type="button" onclick="myFunc(' + e.id + ')" class="btn btn-success btn-xs">Acción</button>';
     }
 
-    function openDetalles(id) {
-
-        $('.contenido-modal').html('');
-        $('.contenido-modal').hide();
-        $('.loader-modal').show();
-        $("#detalles").modal();
-
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $.ajax({
-            url: "{{ url('stock/detalleinicial')}}",
-            type: 'POST',
-            data: {
-                'id': id
-            },
-            success: function(data) {
-                $('.loader-modal').hide();
-                $('.contenido-modal').html(data);
-                $('.contenido-modal').show();
-            }
-        });
-
+    function myFunc(id) {
+        location.href = "{{url('usuario')}}/" + id + "/edit";
     }
 </script>
 

@@ -90,7 +90,6 @@
         return '<button id="manageBtn" type="button" onclick="del('+e.id+')" class="btn btn-danger btn-xs">Eliminar</button>';
     }
     async function del(e) {
-        console.log(e);
         let value = await Swal.fire({
             title: 'Cuidado',
             text: 'Desea eliminar el usuario',
@@ -104,7 +103,6 @@
                 location.href = "{{url('usuarios')}}";
             }
         }
-        console.log({value});
     }
 </script>
 
