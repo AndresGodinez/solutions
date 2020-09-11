@@ -149,6 +149,17 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a href="">
+                        <i class="bx bx-home" data-icon="desktop"></i><span class="menu-title" data-i18n="Dashboard">Stock Técnico</span></a>
+                    <ul class="menu-content">
+                        <li class="active is-shown"><a href="#"><i
+                                    class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">
+                                    Lista
+                                </span></a>
+                        </li>
+                    </ul>
+                </li>
 
             </ul>
         </div>
@@ -166,6 +177,7 @@
             <script src="{{ asset('assets') }}/app-assets/fonts/LivIconsEvo/js/LivIconsEvo.min.js"></script>
 
             <div class="content-body">
+                @include('Partials.message')
                 @yield('content')
             </div>
         </div>
