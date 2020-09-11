@@ -4,11 +4,6 @@
     <link rel="stylesheet" type="text/css"
           href="{{ asset('assets') }}/app-assets/vendors/css/tables/datatable/datatables.min.css">
 
-
-               
-
-            
-
     <section id="basic-datatable">
         <div class="row">
             <div class="col-12">
@@ -18,7 +13,7 @@
                         Carga Archivo General de Stocks</h4>
                     <a href="{{url('stock-basico-tecnico/descarga')}}" style="position:absolute; top 5px; right:25px;" class="btn btn-success">Descargar Reporte General</a>
                 </div>
-                
+
                     <div class="card-body">
                         <form action="{{route('uploadStock.process')}}" enctype="multipart/form-data" method="post">
                             @csrf
@@ -40,7 +35,7 @@
                     <div class="card-header">
                         <h4 class="card-title">Stock Básico de Técnicos</h4>
                     </div>
-                    
+
                         <div class="card-body">
                             <table id="ListaStockBasicoTecnico"
                                     class="table table-striped table-bordered complex-headers dataTable">
@@ -55,7 +50,7 @@
                             </table>
 
                         </div>
-                    
+
                 </div>
             </div>
         </div>

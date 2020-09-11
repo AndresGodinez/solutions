@@ -11,15 +11,17 @@
         <section id="basic-datatable">
             <div class="row">
                 <div class=" col-12">
-                    <div class="card">                    
+                    <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Subir Archivo Stock Básico de Técnicos <small>[Cargar Archivo Bin]</small></h4>
-                            <a href="{{url('stock-basico-tecnico/descargabin')}}/<?=$_GET['bin']?>" style="position:absolute; top 5px; right:25px;" class="btn btn-success">Descargar Reporte</a>
-                        </div>                  
+                            <a href="{{url('stock-basico-tecnico/descargabin')}}/<?=$_GET['bin']?>"
+                               style="position:absolute; top: 5px; right:25px;"
+                               class="btn btn-success">Descargar Reporte</a>
+                        </div>
                         <div class="card-body">
                             <form action="{{route('upload-stock-tecnico.process')}}" enctype="multipart/form-data" method="post">
                                 @csrf
-                                <div class="form-group">                                    
+                                <div class="form-group">
                                     <input type="file" id="file_bin" name="file_bin" class="form-control-file" required>
                                     <input name="bin" hidden class="bin" value="<?=$_GET['bin']?>" />
                                 </div>
@@ -29,12 +31,17 @@
                             </form>
                         </div>
                     </div>
-                </div>    
+                </div>
             </div>
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title">Stock Básico de Técnicos</h4>
-                    <button class="btn btn-success"  data-toggle="modal" data-target="#add" style="position: absolute; right:25px; top:15px;"> <i class="bx bx-plus"></i> Agregar</button>
+                    <button class="btn btn-success"
+                            data-toggle="modal"
+                            data-target="#add"
+                            style="position: absolute; right:25px; top:15px;">
+                        <i class="bx bx-plus"></i> Agregar
+                    </button>
                 </div>
                 <div class="card-content">
                     <div class="card-body card-dashboard">
@@ -61,7 +68,7 @@
 
         </section>
 
-    
+
         <div class="modal fade text-left" id="default" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable" role="document">
                 <div class="modal-content">
@@ -87,7 +94,7 @@
                         </center>
                     </div>
                     <div class="modal-body contenido-modal" style="display:none;">
-                        
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
@@ -113,28 +120,45 @@
                         <button type="button" class="close rounded-pill" data-dismiss="modal" aria-label="Close">
                             <i class="bx bx-x"></i>
                         </button>
-                    </div>                    
+                    </div>
                     <div class="modal-body contenido-modal">
                         <form class="formadd">
                             <div class="input-group input-group-lg">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="sizing-addon1">Material</span>
                                 </div>
-                                <input name="material" type="text" class="form-control add_form_material" value="" placeholder="Material" aria-describedby="sizing-addon1">
+                                <input name="material"
+                                       type="text"
+                                       class="form-control add_form_material"
+                                       value=""
+                                       placeholder="Material"
+                                       aria-describedby="sizing-addon1">
                             </div>
                             <br>
                             <div class="input-group input-group-lg">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="sizing-addon1">MAX</span>
                                 </div>
-                                <input name="max" type="text" class="form-control add_form_max" value="" placeholder="MAX" aria-describedby="sizing-addon1">
+                                <input
+                                    name="max"
+                                    type="text"
+                                    class="form-control add_form_max"
+                                    value=""
+                                    placeholder="MAX"
+                                    aria-describedby="sizing-addon1">
                             </div>
                             <br>
                             <div class="input-group input-group-lg">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="sizing-addon1">Stock</span>
                                 </div>
-                                <input name="stock" type="text" class="form-control add_form_stock" value="" placeholder="Stock" aria-describedby="sizing-addon1">
+                                <input
+                                    name="stock"
+                                    type="text"
+                                    class="form-control add_form_stock"
+                                    value=""
+                                    placeholder="Stock"
+                                    aria-describedby="sizing-addon1">
                             </div>
                             <br>
                             <div class="input-group input-group-lg">
@@ -144,7 +168,7 @@
                                 <input name="surtir" type="text" class="form-control add_form_surtir" value="" placeholder="Surtir" aria-describedby="sizing-addon1">
                             </div>
                         </form>
-                        
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
@@ -164,10 +188,10 @@
     <script src="{{ asset('assets') }}/app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js"></script>
     <script src="{{ asset('assets') }}/app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
 
-    
+
 
     <script>
-        
+
             dtb = $('#ListaStockBasicoTecnico').DataTable({
                 'serverSide': true,
                 'processing': true,
@@ -202,14 +226,14 @@
                 ],
 
             });
-        
-  
+
+
         function buttonEdit(e) {
             return `<button id="manageBtn" type="button" onclick="edit('${e.id}')"
                     class="btn btn-success btn-xs">  Editar </button>`;
         }
         function edit(id) {
-        
+
             $('.contenido-modal').html('');
             $('.contenido-modal').hide();
             $('.loader-modal').show();
@@ -230,12 +254,12 @@
                     'id': id
                 },
                 success: function(data) {
-                    
-                    
+
+
                     $('.loader-modal').hide();
                 $('.contenido-modal').html(data);
                 $('.contenido-modal').show();
-                    
+
                 }
             });
         }
@@ -260,7 +284,7 @@
                 buttonsStyling: false,
                 }).then(function (result) {
                 if (result.value) {
-                    
+
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -276,7 +300,7 @@
                             'id': id
                         },
                         success: function(data) {
-                            
+
                             dtb.ajax.reload();
                                 Swal.fire({
                                     type: "success",
@@ -284,23 +308,23 @@
                                     text: '',
                                     confirmButtonClass: 'btn btn-success',
                                 });
-                            
+
                         }
                     });
-                  
-                    
+
+
                 }
             });
         }
 
-      
+
         $('.saveedit').click(function(){
             var id = $('.edita_form_id').val();
             var material = $('.edita_form_material').val();
             var max = $('.edita_form_max').val();
             var stock = $('.edita_form_stock').val();
             var surtir = $('.edita_form_surtir').val();
-          
+
             $.ajax({
                 url: "{{ url('stock-basico-tecnico/saveedit')}}",
                 type: 'POST',
@@ -320,17 +344,17 @@
                                     confirmButtonClass: 'btn btn-success',
                                 });
                                 $('#default').modal('hidden');
-                    
-                    
-                    
+
+
+
                 }
             });
-            
+
         });
 
 
         $('.saveadd').click(function(){
-            
+
 
             var material = $('.add_form_material').val();
             var max = $('.add_form_max').val();
@@ -365,10 +389,10 @@
                                 });
                     $('.formadd').reset();
                     $('#add').modal('hidden');
-                    
+
                 }
             });
-            
+
         });
     </script>
 
