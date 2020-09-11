@@ -119,6 +119,13 @@
                         <li><a href="{{url('stocks/cargas')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Stock Carga</span></a></li>
                     </ul>
                 </li>
+                <li class=" nav-item">
+                    <a href="">
+                        <i class="bx bx-box" data-icon="box"></i><span class="menu-title" data-i18n="Stocks">Stock Técnico</span></a>
+                    <ul class="menu-content">
+                        <li><a href="{{url('stock-basico-tecnico')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Stock Básico de Técnicos</span></a></li>                        
+                    </ul>
+                </li>
                 <li class="nav-item">
                     <a href="">
                         <i class="bx bx-home" data-icon="desktop"></i><span class="menu-title" data-i18n="Dashboard">Sustitutos</span></a>
@@ -145,17 +152,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="">
-                        <i class="bx bx-home" data-icon="desktop"></i><span class="menu-title" data-i18n="Dashboard">Stock Técnico</span></a>
-                    <ul class="menu-content">
-                        <li class="active is-shown"><a href="#"><i
-                                    class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">
-                                    Lista
-                                </span></a>
-                        </li>
-                    </ul>
-                </li>
+                
 
             </ul>
         </div>
