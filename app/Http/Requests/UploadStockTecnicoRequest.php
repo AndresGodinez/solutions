@@ -27,4 +27,11 @@ class UploadStockTecnicoRequest extends FormRequest
             'file_bin' => 'required|mimes:csv,txt'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'file_bin.mimes' => 'El archivo a procesar tiene que ser csv o txt'
+        ];
+    }
 }
