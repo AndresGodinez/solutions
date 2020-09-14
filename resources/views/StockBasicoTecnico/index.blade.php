@@ -11,14 +11,19 @@
                 <div class="card-header">
                     <h4 class="card-title">
                         Carga Archivo General de Stocks</h4>
-                    <a href="{{url('stock-basico-tecnico/descarga')}}" style="position:absolute; top 5px; right:25px;" class="btn btn-success">Descargar Reporte General</a>
+                    <a href="{{url('stock-basico-tecnico/descarga')}}" style="position:absolute; top: 5px; right:25px;" class="btn btn-success">Descargar Reporte General</a>
                 </div>
 
                     <div class="card-body">
                         <form action="{{route('uploadStock.process')}}" enctype="multipart/form-data" method="post">
                             @csrf
                             <div class="form-group">
-                                <input type="file" id="file_bin" name="file_bin" class="form-control-file" required>
+                                <input type="file"
+                                       id="file_bin"
+                                       name="file_bin"
+                                       class="form-control-file"
+                                       accept="text/csv"
+                                       required>
                             </div>
                             <div class="form-group">
                                 <input type="submit" class="btn btn-primary" value="Enviar">

@@ -5,7 +5,7 @@
 	<div class="modal-dialog" role="document">
 	    <div class="modal-content">
 		    <div class="modal-body">
-		        
+
 		    </div>
 		    <div class="modal-footer">
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -19,7 +19,7 @@
         <div class="col-sm-12">
             <div class="alert alert-info" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">×</span> 
+                    <span aria-hidden="true">×</span>
                 </button>
                 <strong><i>**NOTA</i></strong> El archivo TIENE QUE SER en formato <strong>.CSV</strong>  para todas las cargas
             </div>
@@ -30,7 +30,7 @@
                 <hr>
                 <div class="card-content">
                     <div class="card-body">
-                      
+
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
                             <li class="nav-item current">
@@ -61,9 +61,9 @@
                                 <form method="POST" enctype="multipart/form-data" action="{{ url('stocks/process/stock-inicial') }}">
                                     {{ csrf_field() }}
                                     <h4 style="margin-bottom: 15px;">Aquí cargaras el archivo para <strong><mark>Stock Inicial</mark></strong> (ING)</h4>
-                                    
+
                                     <div class="custom-file">
-                                        <input type="file"  name="file" class="custom-file-input" id="file">
+                                        <input type="file"  name="file" class="custom-file-input" id="file" required>
                                         <label class="custom-file-label" for="inputGroupFile01">Elija el archivo</label>
                                     </div>
                                     {{-- <input type="file" id="file" name="file" class="form-control form-control-input-file"/> --}}
@@ -79,9 +79,9 @@
                                     {{ csrf_field() }}
                                     <h4 style="margin-bottom: 15px;">Aquí cargaras el archivo para la Conclusión de <strong><mark>Stock Inicial</mark></strong> (ISC)</h4>
                                  <input type="hidden" name="k" value="upload_file_inicial_isc" />
-                                 
+
                                  <div class="custom-file">
-                                    <input type="file"  name="file" class="custom-file-input" id="file">
+                                    <input type="file"  name="file" class="custom-file-input" id="file" required>
                                     <label class="custom-file-label" for="inputGroupFile01">Elija el archivo</label>
                                 </div>
                                  <div style="height: 15px;"></div>
@@ -95,9 +95,9 @@
                                     {{ csrf_field() }}
                                     <h4 style="margin-bottom: 15px;">Aquí cargaras el archivo para <strong><mark>Stock Final</mark></strong> (ING)</h4>
                                       <input type="hidden" name="k" value="upload_file_final_ing" />
-                                     
+
                                       <div class="custom-file">
-                                        <input type="file"  name="file" class="custom-file-input" id="file">
+                                        <input type="file"  name="file" class="custom-file-input" id="file" required>
                                         <label class="custom-file-label" for="inputGroupFile01">Elija el archivo</label>
                                     </div>
                                       <div style="height: 15px;"></div>
@@ -111,9 +111,9 @@
                                     {{ csrf_field() }}
                                     <h4 style="margin-bottom: 15px;">Aquí cargaras el archivo para la Conclusión de <strong><mark>Stock Final</mark></strong> (ISC)</h4>
                                       <input type="hidden" name="k" value="upload_file_final_isc" />
-                                      
+
                                       <div class="custom-file">
-                                        <input type="file"  name="file" class="custom-file-input" id="file">
+                                        <input type="file"  name="file" class="custom-file-input" id="file" required>
                                         <label class="custom-file-label" for="inputGroupFile01">Elija el archivo</label>
                                     </div>
                                       <div style="height: 15px;"></div>

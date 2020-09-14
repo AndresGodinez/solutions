@@ -99,7 +99,6 @@ class StocksController extends Controller
     {
         $user       = Auth::user()->username;
 
-
         $date   = date("Y-m-d");
         $file   = $request->file('file');
         $valid = true;

@@ -22,7 +22,12 @@
                             <form action="{{route('upload-stock-tecnico.process')}}" enctype="multipart/form-data" method="post">
                                 @csrf
                                 <div class="form-group">
-                                    <input type="file" id="file_bin" name="file_bin" class="form-control-file" required>
+                                    <input type="file"
+                                           id="file_bin"
+                                           name="file_bin"
+                                           class="form-control-file"
+                                           accept="text/csv"
+                                           required>
                                     <input name="bin" hidden class="bin" value="<?=$_GET['bin']?>" />
                                 </div>
                                 <div class="form-group">
