@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UploadStockFinalRequest;
 use App\Models\Menu;
 use App\Models\StocksModel;
+use App\Utils\MyUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use function compact;
+use function date;
 
 
 date_default_timezone_set("America/Mexico_City");
@@ -23,11 +27,10 @@ class StocksController extends Controller
     // Stocks inicial
     public function index()
     {
-
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
         $get_records = StocksModel::get_all_records($user, $id_region);
-        return view("Stocks.index", ['get_records' => $get_records]);
+        return view("Stocks.index", compact('get_records'));
     }
 
 
@@ -167,10 +170,9 @@ class StocksController extends Controller
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
 
-
         $get_records = StocksModel::get_all_records_stocks_final($user, $id_region);
 
-        return view("Stocks.indexStocksFinal", ['get_records' => $get_records]);
+        return view("Stocks.indexStocksFinal", compact('get_records'));
     }
 
     public function indexPendingList_stocks_final()
@@ -205,39 +207,44 @@ class StocksController extends Controller
     }
 
     // Carga para stocks iniciales
-    public function upload_stock_final(Request $request)
+    public function upload_stock_final(UploadStockFinalRequest $request)
     {
         $user       = Auth::user()->username;
-
+        $file   = $request->file('file');
 
         $date   = date("Y-m-d");
-        $file   = $request->file('file');
+
         $valid = true;
+
         $redirect = url("stocks/final/");
 
-        if (!empty($file)) {
-            $final_file = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $file->storeAS('stock-final/c/' . $date . '/', $final_file);
-        } else {
-            $valid = false;
-            $redirect = url("stocks/cargas/");
-        }
+        $nameFile = MyUtils::saveAndReturnCompleteNameFile($file);
 
-        if ($valid) {
-            $handle = fopen(base_path() . $this->dirupload . "stock-final\\c\\" . $date . "\\" . $final_file, "r+");
-            $start = 0;
+        StocksModel::insert_load_stocks_final($nameFile, $user);
 
-            while (($data = fgetcsv($handle)) !== FALSE) {
-                if ($start > 1) {
-                    // most be insert
-                    StocksModel::insert_load_stocks_final($data, $user, date("Y-m-d H:i:s"));
-                }
-
-                $start++;
-            };
-
-            // Envio de correo alerta por id_region gente ISC.
-        }
+//        if (!empty($file)) {
+//            $final_file = Str::uuid() . '.' . $file->getClientOriginalExtension();
+//            $file->storeAS('stock-final/c/' . $date . '/', $final_file);
+//        } else {
+//            $valid = false;
+//            $redirect = url("stocks/cargas/");
+//        }
+//
+//        if ($valid) {
+//            $handle = fopen(base_path() . $this->dirupload . "stock-final\\c\\" . $date . "\\" . $final_file, "r+");
+//            $start = 0;
+//
+//            while (($data = fgetcsv($handle)) !== FALSE) {
+//                if ($start > 1) {
+//                    // most be insert
+//                    StocksModel::insert_load_stocks_final($data, $user, date("Y-m-d H:i:s"));
+//                }
+//
+//                $start++;
+//            };
+//
+//            // Envio de correo alerta por id_region gente ISC.
+//        }
 
         echo '<script>window.location.href = "' . $redirect . '";</script>';
     }

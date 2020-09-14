@@ -895,12 +895,20 @@ class StocksModel extends ModelBase
         }
     }
 
-    public static function insert_load_stocks_final($data, $username, $date)
+    public static function insert_load_stocks_final($nameFile, $username)
     {
+        $file = fopen($nameFile, "r+");
+        $data = fgetcsv($file);
+
+        dd([
+            'open' => $data
+        ]);
+
         $id_region_one = 0;
         $id_region_two = 0;
         $id_region_three = 0;
         $id_region_four = 0;
+
 
         if ($data[19] == 1) {
             // mex1

@@ -176,6 +176,10 @@ class Sustituto extends Model
 
     public static function get_access($username, $depto)
     {
+        dd([
+            'user name' => $username,
+            'depto' => $depto
+        ]);
         return DB::table('wpx_ligas_sustitutos_vobo')->select('wpx_ligas_sustitutos_vobo.*')
             ->whereRaw('wpx_ligas_sustitutos_vobo.username = "'.$username.'" AND depto = "'.$depto.'"')
             ->get();

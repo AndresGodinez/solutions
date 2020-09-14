@@ -8,11 +8,11 @@
 		<div class="col-sm-12">
 			<h2><strong>Stock Final</strong></h2>
 			<h5>
-				<a href="{{ url('stocks/descarga/3') }}"  class="btn btn-success">Descargar reporte (general)</a> 
+				<a href="{{ url('stocks/descarga/3') }}"  class="btn btn-success">Descargar reporte (general)</a>
 				<a  href="{{ url('stocks/descarga/4') }}" class="btn btn-warning" >Descargar reporte (pendientes)</a>
 				<a href="{{ url('stocks/final/pendientes/') }}" class="btn btn-primary">Ver mis proyectos (pendientes)</a>
 			</h5>
-		</div>	
+		</div>
 	</div>
 </section>
 <div style="height: 30px;"></div>
@@ -20,7 +20,7 @@
 	<div class="card p-1">
 	<div class="row">
 		<div class="col-sm-12">
-			<table class="table table-striped table-bordered complex-headers">
+			<table class="table table-striped table-bordered complex-headers table-responsive">
 				<thead>
 					<tr>
 					    <th>Folio</th>
@@ -53,7 +53,7 @@
 					    <td>{{ $get_records->user_carga }}</td>
 					    <td>{{ $get_records->created_at }}</td>
 					    <td>
-					    	<?php 
+					    	<?php
                             $date_one = new DateTime($get_records->created_at);
                             $date_two = new DateTime(date("Y-m-d H:i:s"));
                             $diff = $date_one->diff($date_two);
@@ -88,10 +88,10 @@
 <script src="{{ asset('assets') }}/app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js"></script>
 <script>
 
-        $('.table').DataTable({                        
+        $('.table').DataTable({
             "language": {
                 "url": "{{ asset('assets') }}/dt-lang/Spanish.json"
-            }        
-		});	
+            }
+		});
 </script>
 @endsection
