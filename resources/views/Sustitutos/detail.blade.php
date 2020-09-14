@@ -19,7 +19,7 @@
                             <label for="ipt_comments">Agrega el porque estas cancelando esta solicitud <sup
                                     style="color: red;"><strong>*</strong></sup>:</label>
                             <textarea class="form-control" id="ipt_comments" name="ipt_comments"
-                                      style="height: 120px;"></textarea>
+                                      cols="30" rows="3" required></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -158,7 +158,7 @@
                                         o rechazas esta solicitud <sup
                                             style="color: red;"><strong>*</strong></sup>:</label>
                                     <textarea class="form-control" id="ipt_comments" name="ipt_comments"
-                                              style="height: 120px;"></textarea>
+                                              cols="30" rows="3" required></textarea>
                                 </div>
                             @else
                                 @foreach($data_log as $data_log_ing)
@@ -206,7 +206,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="ipt_action">Acción <sup style="color: red;"><strong>*</strong></sup>:</label>
-                                        <select id="ipt_action" name="ipt_action" class="form-control">
+                                        <select id="ipt_action" name="ipt_action" class="form-control" required>
                                             <option value="">Selecciona una opción...</option>
                                             <option value="Autorizar">Autorizar</option>
                                             <option value="Rechazar">Rechazar</option>
@@ -248,7 +248,7 @@
                                         o rechazas esta solicitud <sup
                                             style="color: red;"><strong>*</strong></sup>:</label>
                                     <textarea class="form-control" id="ipt_comments" name="ipt_comments"
-                                              style="height: 120px;"></textarea>
+                                              cols="30" rows="3" required></textarea>
                                 </div>
                             @else
                                 @foreach($data_log as $data_log_mat)
@@ -290,7 +290,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="ipt_action">Acción <sup style="color: red;"><strong>*</strong></sup>:</label>
-                                        <select id="ipt_action" name="ipt_action" class="form-control">
+                                        <select id="ipt_action" name="ipt_action" class="form-control" required>
                                             <option value="">Selecciona una opción...</option>
                                             <option value="Autorizar">Autorizar</option>
                                             <option value="Rechazar">Rechazar</option>
@@ -332,7 +332,7 @@
                                         o rechazas esta solicitud <sup
                                             style="color: red;"><strong>*</strong></sup>:</label>
                                     <textarea class="form-control" id="ipt_comments" name="ipt_comments"
-                                              style="height: 120px;"></textarea>
+                                              cols="30" rows="3" required></textarea>
                                 </div>
                             @else
                                 @foreach($data_log as $data_log_ven)
@@ -374,7 +374,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="ipt_action">Acción <sup style="color: red;"><strong>*</strong></sup>:</label>
-                                        <select id="ipt_action" name="ipt_action" class="form-control">
+                                        <select id="ipt_action" name="ipt_action" class="form-control" required>
                                             <option value="">Selecciona una opción...</option>
                                             <option value="Autorizar">Autorizar</option>
                                             <option value="Rechazar">Rechazar</option>
