@@ -27,4 +27,11 @@ class ConsultaMaterialesRequest extends FormRequest
             'ipt_material' => 'required|exists:materiales,part_number'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'ipt_material.exists' => 'El material solicitado no existe',
+        ];
+    }
 }

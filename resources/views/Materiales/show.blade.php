@@ -7,7 +7,7 @@
                     Datos del material
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped table-bordered">
+                    <table class="table table-striped table-bordered table-responsive">
                         <thead>
                         <th>Número de parte</th>
                         <th>Descripción</th>
@@ -36,7 +36,7 @@
                     Disponibilidad del material
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped table-bordered">
+                    <table class="table table-striped table-bordered table-responsive">
                         <thead>
                         <th>RS01</th>
                         <th>RS02</th>
@@ -71,7 +71,7 @@
                     Datos del material y sustituto
                 </div>
                 <div class="card-body">
-                    <table class="table table-striped table-bordered">
+                    <table class="table table-striped table-bordered table-responsive">
                         <thead>
                         <th>Número de parte</th>
                         <th>Descripción</th>

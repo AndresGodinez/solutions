@@ -113,7 +113,7 @@ class Menu extends ModelBase
             ->select('wpx_menu_cat.id_cat', 'wpx_menu_cat.name as name_cat', 'wpx_menu_modulos.name as name_mod', 'wpx_menu_modulos.link as link_mod')
             ->get();
 
-		if(empty($raw_menu)){
+		if(empty($raw_menu) || count($raw_menu) < 1){
 			return [];
 		}
 

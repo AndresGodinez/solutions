@@ -11,12 +11,15 @@ class CountriesController extends Controller
 {
     public function list()
     {
-        return response()->json(Country::get());
+        $countries = Country::all()->sortBy('name');
+
+        return response()->json($countries);
     }
 
     public function regiones(Request $request)
     {
         $regiones = Region::where('id_contry', $request->get('country'))
+            ->orderBy('name')
             ->get();
         return response()->json($regiones);
     }
