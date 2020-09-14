@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\Finder\Finder;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -59,25 +60,10 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/web.php'));
-
-        Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/usuarios.php'));
-
-        Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/carga-masiva-sustitutos.php'));
-
-        Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/stock-tecnico.php'));
-
-        Route::middleware('web')
             ->namespace($this->namespace)
-            ->group(base_path('routes/stocks.php'));
-
+            ->group(function(){
+                $this->requireRoutes('routes/web');
+            });
     }
 
     /**
@@ -92,6 +78,18 @@ class RouteServiceProvider extends ServiceProvider
         Route::prefix('api')
             ->middleware('api')
             ->namespace($this->namespace)
-            ->group(base_path('routes/api.php'));
+            ->group(function(){
+                $this->requireRoutes('routes/api');
+            });
+    }
+
+
+    public function requireRoutes($path)
+    {
+        return collect(
+            Finder::create()->in(base_path($path))->name('*.php')
+        )->each(function($file){
+            require $file->getRealPath();
+        });
     }
 }

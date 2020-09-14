@@ -655,6 +655,7 @@ class StocksModel extends ModelBase
     // Stock Final
     public static function get_all_records_stocks_final($user, $id_region)
     {
+        $data = [];
         // Records for Managers.
         if ($user == "munoznd") {
             $data = StocksModel::select('stock_gral_serv.id', 'stock_gral_serv.material', 'stock_gral_serv.descripcion', 'stock_gral_serv.modelo', 'stock_gral_serv.proyecto', 'stock_gral_serv.proveedor', 'stock_gral_serv.user_carga', 'stock_gral_serv.created_at', 'stock_gral_serv.ok')
