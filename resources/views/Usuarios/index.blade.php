@@ -46,11 +46,15 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js" integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg==" crossorigin="anonymous"></script>
 
+
 <script>
     $(document).ready(function() {
         $('#example').DataTable({
             "serverSide": true,
             "processing": true,
+            "language": {
+                "url": "{{ asset('assets') }}/dt-lang/Spanish.json"
+            },
             "ajax": "{{ url('usuario/datoinicial')}}",
             "order": [
                 [1, "desc"]
