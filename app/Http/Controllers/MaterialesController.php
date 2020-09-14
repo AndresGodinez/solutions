@@ -27,11 +27,13 @@ class MaterialesController extends Controller
         return view("Sustitutos.index", compact('get_records'));
     }
 
-    public function detail(Request $request)
+    public function detail(Request $request, int $id)
     {
         $user = Auth::user()->username;
-        $data       = Sustituto::get_sol_by_id($request->id);
-        $data_log   = Sustituto::get_log_sol_by_id($request->id);
+
+        $data       = Sustituto::get_sol_by_id($id);
+        $data_log   = Sustituto::get_log_sol_by_id($id);
+
         $access     = Sustituto::get_access(Auth::user()->username, Auth::user()->depto);
 
         return view("Sustitutos.detail", compact('data', 'data_log', 'access', 'user'));
