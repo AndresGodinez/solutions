@@ -27,7 +27,7 @@
                                 <tr>
                                     <td>{{ $get_records->id }}</td>
                                     <td>
-                                        <a href="{{	url('sustitutos/detalle/'.$get_records->id) }}">
+                                        <a href="{{ url('sustitutos/detalle/'.$get_records->id) }}">
                                             {{ $get_records->np }} - <strong>{{ $get_records->np_sust }}</strong>
                                         </a>
                                     </td>

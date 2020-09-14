@@ -143,13 +143,9 @@
                             <h5>
                                 >> Departamento de Ingenieria
                                 @if($data[0]->depto_ing == 0)
-                                    <i class="material-icons cancel">
-                                        cancel
-                                    </i>
+                                    <box-icon name='x-circle' type='solid' color='#cb2146' ></box-icon>
                                 @else
-                                    <i class="material-icons ok">
-                                        check_circle
-                                    </i>
+                                    <box-icon name='check-circle' type='solid' color='#9ebf88' ></box-icon>
                                 @endif
                             </h5>
                         </div>
@@ -237,13 +233,9 @@
                             <h5>
                                 >> Departamento de Materiales
                                 @if($data[0]->depto_mat == 0)
-                                    <i class="material-icons cancel">
-                                        cancel
-                                    </i>
+                                    <box-icon name='x-circle' type='solid' color='#cb2146' ></box-icon>
                                 @else
-                                    <i class="material-icons ok">
-                                        check_circle
-                                    </i>
+                                    <box-icon name='check-circle' type='solid' color='#9ebf88' ></box-icon>
                                 @endif
                             </h5>
                         </div>
@@ -325,13 +317,9 @@
                             <h5>
                                 >> Departamento de Ventas
                                 @if($data[0]->depto_ven == 0)
-                                    <i class="material-icons cancel">
-                                        cancel
-                                    </i>
+                                    <box-icon name='x-circle' type='solid' color='#cb2146' ></box-icon>
                                 @else
-                                    <i class="material-icons ok">
-                                        check_circle
-                                    </i>
+                                    <box-icon name='check-circle' type='solid' color='#9ebf88' ></box-icon>
                                 @endif
                             </h5>
                         </div>
@@ -404,5 +392,6 @@
         </div>
     </div>
     <div style="height: 60px;"></div>
+    <script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
 
 @endsection
