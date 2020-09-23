@@ -1,7 +1,10 @@
 @if(Session::has('message'))
     <div class="row ">
-        <p class="alert alert-success col text-center">
+        <div class="alert col alert-success alert-dismissible fade show" role="alert">
             {{Session::get('message')}}
-        </p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
     </div>
 @endif

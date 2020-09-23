@@ -60,6 +60,7 @@ return [
             'engine' => null,
             'options' => [PDO::MYSQL_ATTR_LOCAL_INFILE=>true],
         ],
+
         'logistica' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),

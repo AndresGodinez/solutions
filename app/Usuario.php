@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use function config;
+use function in_array;
 
 class Usuario extends Authenticatable
 {
@@ -37,5 +39,10 @@ class Usuario extends Authenticatable
             'id_region',
             'id'
         );
+    }
+
+    public function HasPerm($key):bool
+    {
+        return in_array($this->username, config($key));
     }
 }
