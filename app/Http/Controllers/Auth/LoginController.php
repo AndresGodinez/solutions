@@ -9,13 +9,8 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Session;
-use function app_path;
 use function redirect;
-use function session_destroy;
 
-use Illuminate\Support\Facades\Auth;
-use Session;
-use function redirect;
 
 class LoginController extends Controller
 {
