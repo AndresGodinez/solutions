@@ -16,6 +16,8 @@
         "maatwebsite/excel": "^3.1",
         "spatie/laravel-permission": "^3.16",
         "yajra/laravel-datatables-oracle": "~9.0"
+        "yajra/laravel-datatables-oracle": "~9.0",
+      "ext-json": "*"
     },
     "require-dev": {
         "facade/ignition": "^1.4",

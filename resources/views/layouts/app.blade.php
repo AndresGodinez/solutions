@@ -109,7 +109,6 @@
                         </li>
                     </ul>
                 </li>
-
                 <li class=" nav-item">
                     <a href="">
                         <i class="bx bx-box" data-icon="box"></i><span class="menu-title" data-i18n="Stocks">Stock</span></a>
@@ -153,7 +152,6 @@
                     </ul>
                 </li>
 
-
                 <li class="nav-item">
                     <a href="">
                         <i class="bx bx-home" data-icon="desktop"></i>
@@ -170,9 +168,26 @@
                     </ul>
                 </li>
 
+                <li class="nav-item">
+                    <a href="">
+                        <i class="bx bx-home" data-icon="desktop"></i>
+                        <span class="menu-title" data-i18n="Dashboard">
+                            Conteo Ciclos
+                        </span>
+                    </a>
+                    <ul class="menu-content">
+                        <li class="active is-shown"><a href="{{route('conteo-ciclos.index')}}"><i
+                                    class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">
+                                    Carga Ciclos
+                                </span></a>
+                        </li>
+                    </ul>
+                </li>
+
             </ul>
         </div>
         @endif
+
     </div>
     <!-- END: Main Menu-->
 

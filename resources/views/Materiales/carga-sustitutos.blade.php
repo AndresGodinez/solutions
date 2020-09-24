@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    @include('Partials.message')
     <div class="container">
         <div class="row">
             <h5>Proceso masivo de cálculo de sustitutos</h5>

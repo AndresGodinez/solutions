@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use function compact;
 use function datatables;
-use function json_encode;
 use function redirect;
 use function response;
 use function url;

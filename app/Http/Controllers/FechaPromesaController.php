@@ -240,7 +240,7 @@ class FechaPromesaController extends Controller
             new ExecuteByConnection($query, $connection)
         );
 
-        return redirect(route('fechas-promesa.search'))->with(['message', 'El archivo está siendo procesado']);
+        return Redirect::route('fechas-promesa.search')->with('message', 'El archivo está siendo procesado');
 
     }
 
@@ -271,7 +271,7 @@ class FechaPromesaController extends Controller
             new ExecuteByConnection($query, $connection)
         );
 
-        return redirect(route('fechas-promesa.search'))->with(['message', 'El archivo está siendo procesado']);
+        return Redirect::route('fechas-promesa.search')->with('message', 'El archivo está siendo procesado');
 
     }
 
@@ -320,7 +320,7 @@ class FechaPromesaController extends Controller
             new ExecuteByConnection($query, $connection)
         );
 
-        return redirect(route('fechas-promesa.search'))->with(['message', 'El archivo está siendo procesado']);
+        return Redirect::route('fechas-promesa.search')->with('message', 'El archivo está siendo procesado');
 
     }
 

@@ -24,9 +24,15 @@ class MyUtils
 
     public static function saveAndReturnCompleteNameFile(UploadedFile $file)
     {
-        $name = time().'-'.$file->getClientOriginalName();
+        $name = time().'-'.$file->hashName();
         $path = 'public/uploads/'.date('Y/m/');
         $file->move($path, $name);
         return $path.$name;
+    }
+
+
+    public static function deleteFiles( str $name)
+    {
+//        TODO implements service
     }
 }

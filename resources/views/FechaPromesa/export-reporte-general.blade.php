@@ -9,7 +9,6 @@
 
 <table border="1" cellpadding="2" cellspacing="0" width="100%">
     <tr>
-        <th>Id</th>
         <th class="text-center">PEDIDO</th>
         <th class="text-center">FECHA PEDIDO</th>
         <th class="text-center">STATUS</th>

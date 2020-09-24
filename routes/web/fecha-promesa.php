@@ -7,19 +7,19 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/', 'FechaPromesaController@search')
             ->name('fechas-promesa.search');
-
-        Route::get('/download-report-fecha-promesa-general', 'FechaPromesaController@downloadFechaPromesaGeneral')
-            ->name('download.report.fecha.promesa.general');
-
-        Route::get('/download-report-fecha-promesa-detalle', 'FechaPromesaController@downloadFechaPromesaDetalle')
-            ->name('download.report.fecha.promesa.detalle');
-
         Route::post('consulta', 'FechaPromesaController@consulta')
             ->name('fechas-promesa.consulta');
 
         Route::post('update-fechas-promesas', 'FechaPromesaController@actualizarFechasPromesas')
             ->name('actualizarFechasPromesas');
 
+//        Reports
+
+        Route::get('/download-report-fecha-promesa-general', 'FechaPromesaController@downloadFechaPromesaGeneral')
+            ->name('download.report.fecha.promesa.general');
+
+        Route::get('/download-report-fecha-promesa-detalle', 'FechaPromesaController@downloadFechaPromesaDetalle')
+            ->name('download.report.fecha.promesa.detalle');
 
 //        CARGAS DE ARCHIVOS
 
