@@ -20,8 +20,7 @@ use function ini_set;
 use function pclose;
 use function php_uname;
 use function popen;
-use function redirect;
-use function route;
+use function response;
 use function set_time_limit;
 use function substr;
 use function view;
@@ -88,36 +87,32 @@ class FechaPromesaController extends Controller
 
     public function downloadTemplatePromesasTracker()
     {
-        header('Content-Type: text/csv; charset=UTF-8');
-        header('Content-Description: File Transfer');
-        header('Content-Disposition: attachment; filename="template-fecha-promesa-tracker.csv"');
-
         $record = ['pedido', 'fecha_promesa'];
         $writer = Writer::createFromString();
         $writer->insertOne($record);
-        $writer->setEscape('');
-        echo $writer->getContent();
+
+        return response((string) $writer, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Transfer-Encoding' => 'binary',
+            'Content-Disposition' => 'attachment; filename="template-fecha-promesa-tracker.csv"',
+        ]);
     }
 
     public function downloadTemplateLeadTime()
     {
-        header('Content-Type: text/csv; charset=UTF-8');
-        header('Content-Description: File Transfer');
-        header('Content-Disposition: attachment; filename="template-lead-time.csv"');
-
         $record = ['vendedor', 'nombre', 'lt'];
         $writer = Writer::createFromString();
         $writer->insertOne($record);
-        $writer->setEscape('');
-        echo $writer->getContent();
+
+        return response((string) $writer, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Transfer-Encoding' => 'binary',
+            'Content-Disposition' => 'attachment; filename="template-lead-time.csv"',
+        ]);
     }
 
     public function downloadTemplateBackorder()
     {
-        header('Content-Type: text/csv; charset=UTF-8');
-        header('Content-Description: File Transfer');
-        header('Content-Disposition: attachment; filename="template-fecha-backorder.csv"');
-
         $record = [
             'almacen',
             'parte',
@@ -210,7 +205,13 @@ class FechaPromesaController extends Controller
         $writer->insertOne($example1);
         $writer->insertOne($example2);
         $writer->insertOne($example3);
-        echo $writer->getContent();
+
+        return response((string) $writer, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Transfer-Encoding' => 'binary',
+            'Content-Disposition' => 'attachment; filename="template-backorder.csv"',
+        ]);
+
     }
 
     public function uploadTrackerProcess(UploadTrackerProcessRequest $request)
