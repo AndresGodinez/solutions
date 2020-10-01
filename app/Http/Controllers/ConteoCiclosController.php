@@ -3,11 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\CiclosTemp;
+use App\Exports\HojasConteoExport;
 use App\Http\Requests\UploadHojasConteoRequest;
 use App\Jobs\ExecuteByConnection;
+use App\Jobs\UpdateCiclicosJob;
 use App\Utils\MyUtils;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
+use function compact;
+use function view;
 
 class ConteoCiclosController extends Controller
 {
@@ -19,6 +25,7 @@ class ConteoCiclosController extends Controller
     public function processHojasConteoCiclos(UploadHojasConteoRequest $request)
     {
         $user = $request->user();
+
         $planta = $user->planta;
 
         CiclosTemp::deletePlanta($user->planta);
@@ -54,64 +61,33 @@ class ConteoCiclosController extends Controller
                 invrec=TRIM(@invrec)
             ';
 
-//        TODO
-//        Elimar en reforig_logistica.ciclicos where planta = $planta
-
-
-//        mysql_query("INSERT INTO reforig_logistica.ciclicos
-//SELECT * FROM reforig_logistica.ciclicos_temp
-//WHERE ciclicos_temp.planta='$planta'") or die(mysql_error());
-
-//        mysql_query("DELETE FROM reforig_logistica.ciclicos_temp
-//WHERE
-//ciclicos_temp.planta='$planta'") or die(mysql_error());
-
-
-//        mysql_query("DELETE FROM reforig_logistica.ciclicos WHERE ciclicos.material IS NULL ") or die(mysql_error());
-
-
-//        mysql_query("UPDATE reforig_logistica.ciclicos
-//LEFT JOIN reforig_logistica.materiales_costo ON ciclicos.material = materiales_costo.material
-//SET ciclicos.costo=materiales_costo.costo ") or die(mysql_error());
-
-
-//
-//
-//
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=UPPER(TRIM(ciclicos.descripcion)) ") or die(mysql_error());
-//
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'|','') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,';','') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'\'','') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'&',' AND ') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'\"','') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'-','') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'Ì','') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'.','') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'%','') ") or die(mysql_error());
-//
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'/','') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'*','') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'+','') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'(','') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,')','') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'ó','') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,',','') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'×','') ") or die(mysql_error());
-//
-//
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'Á','A') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'É','E') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'Í','I') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'Ó','O') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'Ú','U') ") or die(mysql_error());
-//        mysql_query("UPDATE reforig_logistica.ciclicos SET ciclicos.descripcion=replace(ciclicos.descripcion,'Ñ','N') ") or die(mysql_error());
         $this->dispatch(
             new ExecuteByConnection($query, $connection)
+        );
+
+        $this->dispatch(
+            new UpdateCiclicosJob($planta)
         );
 
         return Redirect::route('conteo-ciclos.index')->with('message', 'El archivo está siendo procesado');
 
     }
+
+    public function hojasConteoCiclos()
+    {
+        return view('ConteoCiclos.impresionHojas');
+    }
+
+    public function obtenerHojas(Request $request)
+    {
+        if($request->get('xls')){
+            return Excel::download(new HojasConteoExport($request->user()->planta), 'conteo.xlsx');
+        }
+        else{
+            dd('pdf');
+        }
+
+    }
+
 
 }

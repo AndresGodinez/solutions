@@ -181,6 +181,11 @@
                                     Carga Ciclos
                                 </span></a>
                         </li>
+                        <li class="active is-shown"><a href="{{route('hojas-conteo-ciclicos')}}"><i
+                                    class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">
+                                    Hojas Conteo
+                                </span></a>
+                        </li>
                     </ul>
                 </li>
 
