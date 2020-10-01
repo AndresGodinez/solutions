@@ -125,6 +125,23 @@
                         <li><a href="{{url('stock-basico-tecnico')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Stock Básico de Técnicos</span></a></li>
                     </ul>
                 </li>
+
+                <li class=" nav-item">
+                    <a href="">
+                        <i class="bx bx-box" data-icon="box"></i><span class="menu-title" data-i18n="Stocks">Alta de Partes</span></a>
+                    <ul class="menu-content">
+                        <li><a href="{{url('alcopar/altamaterial')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Solicitud de Alta</span></a></li>
+                        <li><a href="{{url('alcopar/reving')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Rev Ingenieria/Alta SAP</span></a></li>
+                        <li><a href="{{url('alcopar/factible')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Rev Materiales/Alta Costo</span></a></li>
+                        <li><a href="{{url('alcopar/classat')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Clasificación SAT</span></a></li>
+                        <li><a href="{{url('alcopar/precio')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Alta Precio</span></a></li>
+                        <li><a href="{{url('alcopar/oow')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Alta OOW</span></a></li>
+                    </ul>
+                </li>
+
+                
+
+
                 <li class="nav-item">
                     <a href="">
                         <i class="bx bx-home" data-icon="desktop"></i><span class="menu-title" data-i18n="Dashboard">Sustitutos</span></a>

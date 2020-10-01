@@ -131,7 +131,7 @@ class StocksController extends Controller
             // Envio de correo alerta por id_region gente ISC.
         }
 
-        echo '<script>window.location.href = "' . $redirect . '";</script>';
+        #echo '<script>window.location.href = "' . $redirect . '";</script>';
     }
 
     // Carga para stocks iniciales (conclusion ISC)
