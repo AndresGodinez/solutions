@@ -8,10 +8,12 @@ use App\Http\Requests\UploadHojasConteoRequest;
 use App\Jobs\ExecuteByConnection;
 use App\Jobs\UpdateCiclicosJob;
 use App\Utils\MyUtils;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
+use function ceil;
 use function compact;
 use function view;
 
@@ -84,7 +86,32 @@ class ConteoCiclosController extends Controller
             return Excel::download(new HojasConteoExport($request->user()->planta), 'conteo.xlsx');
         }
         else{
-            dd('pdf');
+            $numPer = $request->get('num_per');
+
+            $data = DB::connection('logistica')->table('ciclicos')->select(
+                'material',
+                'descripcion',
+                'bin',
+                'stock',
+                'type',
+                'invrec',
+                'costo'
+            )
+                ->where('planta', $request->user()->planta)
+                ->orderBy('type', 'asc')
+                ->orderBy('bin', 'asc')
+                ->orderBy('material', 'asc')
+                ->get();
+
+            $totalRecords = $data->count();
+
+            $prom = ceil($totalRecords / $numPer);
+
+
+//            $pdf = app('dompdf.wrapper');
+            $pdf = PDF::loadView('ConteoCiclos.pdf', compact('data', 'prom', 'numPer', 'totalRecords'))->setPaper('a4', 'landscape');
+
+            return $pdf->download('conteo.pdf');
         }
 
     }
