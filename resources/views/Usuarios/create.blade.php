@@ -34,6 +34,20 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                @foreach($roles as $role)
+                    <div class="custom-control custom-radio">
+                        <input type="radio"
+                               id="role"
+                               name="role"
+                               class="custom-control-input"
+                               value="{{ $role->name }}"
+                        >
+                        <label class="custom-control-label" for="role">{{ ucfirst($role->name) }}</label>
+                    </div>
+                @endforeach
+            </div>
+
 
             <div class="form-row">
                 <div class="form-group col-md-4">

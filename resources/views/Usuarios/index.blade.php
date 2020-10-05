@@ -6,8 +6,12 @@
     <div class="container">
 
         <div class="row d-flex justify-content-between my-3 ">
+            @can('crear usuarios')
             <a href="{{ route('usuario.create') }}" class="btn btn-primary">Nuevo Usuario</a>
+            @endcan
+            @can('exportar usuarios')
             <a href="{{ route('usuarios.export') }}" class="btn btn-success">Descargar Usuarios</a>
+            @endcan
         </div>
 
         <section id="basic-datatable">
@@ -22,6 +26,7 @@
                             <tr>
                                 <th class="text-center">Usuario</th>
                                 <th class="text-center">Nombre</th>
+                                <th class="text-center">Role</th>
                                 <th class="text-center">Correo</th>
                                 <th class="text-center">Editar</th>
                                 <th class="text-center">Eliminar</th>
@@ -65,7 +70,7 @@
                 },
                 {
                     data: 'nombre'
-                },
+                },{data:'role'},
                 {
                     data: 'mail'
                 }, {
@@ -84,14 +89,14 @@
 <script type="text/javascript">
     function buttonEdit(e) {
 
-        return '<button id="manageBtn" type="button" onclick="myFunc('+e.id+')" class="btn btn-success btn-xs">Editar</button>';
+        return '@can("editar usuarios")<button id="manageBtn" type="button" onclick="myFunc('+e.id+')" class="btn btn-success btn-xs">Editar</button>@endcan';
     }
     function myFunc(id) {
         location.href = "{{url('usuario')}}/" + id + "/edit";
     }
     function buttonDelete(e) {
 
-        return '<button id="manageBtn" type="button" onclick="del('+e.id+')" class="btn btn-danger btn-xs">Eliminar</button>';
+        return '@can("eliminar usuarios")<button id="manageBtn" type="button" onclick="del('+e.id+')" class="btn btn-danger btn-xs">Eliminar</button>@endcan';
     }
     async function del(e) {
         let value = await Swal.fire({

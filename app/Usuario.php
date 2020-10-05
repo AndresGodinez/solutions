@@ -5,12 +5,15 @@ namespace App;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 use function config;
 use function in_array;
 
 class Usuario extends Authenticatable
 {
     use Notifiable;
+    use HasRoles;
+
 
     /**
      * The attributes that are mass assignable.

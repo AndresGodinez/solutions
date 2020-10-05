@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 use function compact;
 use function redirect;
 use function response;
@@ -28,12 +29,15 @@ class UsuariosController extends Controller
     public function datoinicial(Request $request)
     {
         return datatables()->of(Usuario::query()->selectRaw('
-        username,
-        nombre,
-        mail,
-        id
+        usuarios.username,
+        usuarios.nombre,
+        usuarios.mail,
+        usuarios.id,
+        roles.name as role
         ')
             ->from('usuarios')
+            ->leftJoin('model_has_roles', 'model_has_roles.model_id', '=', 'usuarios.id')
+            ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
             ->get())->toJson();
     }
 
@@ -71,33 +75,17 @@ class UsuariosController extends Controller
         $departamentos = Departamento::all();
         $countries = Country::get();
 
-        $permissions = DB::table('wpx_menu_users_access')
-            ->select(
-                'wpx_menu_modulos.id_cat',
-                'wpx_menu_modulos.id_modulo',
-                'wpx_menu_cat.name',
-                'wpx_menu_cat.active as active_cat',
-                'wpx_menu_modulos.name as name_mod',
-                'wpx_menu_modulos.link as link_mod',
-                'wpx_menu_modulos.rw',
-                'wpx_menu_modulos.active as active_mod'
-            )->leftJoin('wpx_menu_cat', 'wpx_menu_users_access.id_cat', '=', 'wpx_menu_cat.id')
-            ->leftJoin('wpx_menu_modulos', 'wpx_menu_users_access.id_modulo', '=', 'wpx_menu_modulos.id_modulo')
-            ->where('wpx_menu_users_access.id_user', '=', 'consiss1')
-            ->where('wpx_menu_modulos.active', '=', 1)
-            ->where('wpx_menu_cat.active', '=', 1)
-            ->orderBy('wpx_menu_cat.id')
-            ->get();
+        $roles = Role::get();
 
         return view('Usuarios/edit',
-            compact('usuario', 'departamentos', 'countries'));
+            compact('usuario', 'departamentos', 'countries', 'roles'));
     }
 
     public function store(UsuarioStoreRequest $request)
     {
         $depto = Departamento::find($request->get('depto'));
 
-        Usuario::create([
+        $usuario = Usuario::create([
             'nombre' => $request->get('nombre'),
             'username' => $request->get('username'),
             'mail' => $request->get('mail'),
@@ -108,6 +96,8 @@ class UsuariosController extends Controller
             'id_region' => $request->get('region_id'),
             'cliente' => $request->get('cliente')
         ]);
+
+        $usuario->syncRoles([$request->get('role')]);
 
         return redirect(route('usuarios.index'));
     }
@@ -127,6 +117,8 @@ class UsuariosController extends Controller
             'cliente' => $request->get('cliente')
         ]);
 
+        $usuario->syncRoles([$request->get('role')]);
+
         return redirect(route('usuarios.index'));
     }
 
@@ -135,7 +127,13 @@ class UsuariosController extends Controller
         $departamentos = Departamento::all();
         $countries = Country::get();
 
-        return view('Usuarios.create', compact('departamentos', 'countries'));
+        $roles = Role::get();
+
+        return view('Usuarios.create', compact(
+            'departamentos',
+            'countries',
+            'roles'
+        ));
     }
 
     public function changeOldPassword(Request $request)
