@@ -49,7 +49,7 @@ class SustitutosController extends Controller
             new SqlJob($queryUpdate)
         );
 
-        return redirect()->back()->with(['message' => 'El arvhivo esta siendo procesado']);
+        return redirect()->back()->with(['message' => 'El archivo esta siendo procesado']);
     }
 
     public function cargaFechaCreacionPiezas(CargaMasivaFechaCreacionPiezas $request)
@@ -84,7 +84,7 @@ class SustitutosController extends Controller
             new SqlJob($queryUpdate)
         );
 
-        return redirect()->back()->with(['message' => 'El arvhivo esta siendo procesado']);
+        return redirect()->back()->with(['message' => 'El archivo esta siendo procesado']);
     }
 
     public function cargaMasivaSustitutos(CargaMasivaSustitutosRequest $request)
@@ -112,7 +112,7 @@ class SustitutosController extends Controller
             new CargaMasivaSustitutos($query)
         );
 
-        return redirect()->back()->with(['message' => 'El arvhivo esta siendo procesado']);
+        return redirect()->back()->with(['message' => 'El archivo esta siendo procesado']);
 
     }
 
