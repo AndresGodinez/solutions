@@ -127,7 +127,7 @@ class StockBasicoTecnicoController extends Controller
             ->orWhere('planta', null)
             ->delete();
         return redirect(url('stock-basico-tecnico'))
-            ->with(['message' => 'El arvhivo esta siendo procesado']);
+            ->with(['message' => 'El archivo esta siendo procesado']);
     }
 
     public function uploadStockTecnico(UploadStockTecnicoRequest $request)
@@ -183,9 +183,7 @@ class StockBasicoTecnicoController extends Controller
             ->orWhere('planta', null)
             ->delete();
         return redirect(url('stock-basico-tecnico'))
-            ->with(['message' => 'El arvhivo esta siendo procesado']);
-        return redirect(url('stock-basico-tecnico'))
-            ->with(['message' => 'El arvhivo esta siendo procesado']);
+            ->with(['message' => 'El archivo esta siendo procesado']);
     }
     public function deleteBin(Request $request)
     {

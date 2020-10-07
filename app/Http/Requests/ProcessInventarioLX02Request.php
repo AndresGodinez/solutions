@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UsuarioUpdateRequest extends FormRequest
+class ProcessInventarioLX02Request extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,13 +24,15 @@ class UsuarioUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'nombre' => 'required',
-            'username' => [
-                Rule::unique('usuarios', 'username')->ignore($this->route('usuario'))
-            ],
-            'mail' => [
-                Rule::unique('usuarios', 'mail')->ignore($this->route('usuario'))
-            ]
+            'inventario_lx02' => 'required|mimes:csv,txt'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'inventario_lx02.required' => 'El archivo de LX02 es requerido.',
+            'inventario_lx02.mimes' => 'El archivo a procesar tiene que ser csv o txt.'
         ];
     }
 }
