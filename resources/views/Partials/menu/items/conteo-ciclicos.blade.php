@@ -7,7 +7,7 @@
             </span>
         </a>
         <ul class="menu-content">
-            <li class="active is-shown">
+            <li class="">
                 <a href="{{route('conteo-ciclos.index')}}">
                     <i class="bx bx-right-arrow-alt"></i>
                     <span class="menu-item" data-i18n="eCommerce">
@@ -16,7 +16,7 @@
                 </a>
             </li>
 
-            <li class="active is-shown">
+            <li class="">
                 <a href="{{route('hojas-conteo-ciclicos')}}">
                     <i class="bx bx-right-arrow-alt"></i>
                     <span class="menu-item" data-i18n="eCommerce">

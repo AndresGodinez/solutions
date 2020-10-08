@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\CiclosTemp;
 use App\Http\Requests\ProcessInventarioLX02Request;
-use App\InventarioLX02;
+use App\Http\Requests\ProcessReciboBinsRequest;
 use App\Jobs\ExecuteByConnection;
-use App\Surtimiento;
-use App\SurtimientoReserva;
+use App\Jobs\UpdateLX02Job;
 use App\Utils\MyUtils;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use function view;
 
 class Lx02Controller extends Controller
@@ -21,7 +20,7 @@ class Lx02Controller extends Controller
 
     public function processInventarioLx02(ProcessInventarioLX02Request $request)
     {
-        dd($request->all());
+        dd('en construcción');
 
         $user = $request->user();
 
@@ -64,23 +63,44 @@ class Lx02Controller extends Controller
             new ExecuteByConnection($query, $connection)
         );
 
-        InventarioLX02::updateDescription($planta);
+        $this->dispatch(
+            new UpdateLX02Job($planta)
+        );
 
-        Surtimiento::deletePlanta($planta);
+        return Redirect::route('lx02.index')
+            ->with('message', 'El archivo está siendo procesado');
 
-        SurtimientoReserva::deletePlanta($planta);
+    }
 
-        SurtimientoReserva::updatePlanta($planta);
+    public function processReciboBins(ProcessReciboBinsRequest $request)
+    {
 
-        SurtimientoReserva::markAsBorrar($planta);
+        $file = $request->file('recibo_bins');
 
-        SurtimientoReserva::markAsBorrarReserva($planta);
+        $nameFile = MyUtils::saveAndReturnCompleteNameFile($file);
 
-        SurtimientoReserva::consolidarReserva($planta);
+        $connection = 'logistica';
 
-        Surtimiento::insertConsolidado($planta);
+        DB::connection($connection)->table('recibo_bins')->truncate();
 
+        $query = 'LOAD DATA LOCAL INFILE "'.$nameFile.'"
+                  INTO TABLE reforig_logistica.recibo_bins
+                  FIELDS TERMINATED BY ","
+                  LINES TERMINATED BY "\r\n"
+                  IGNORE 1 LINES
+                  (@planta, @material, @bin, @fecha)
+                  SET
+                    planta = TRIM(@planta),
+                    material = TRIM(@material),
+                    bin = TRIM(@bin),
+                    fecha = STR_TO_DATE(@fecha, "%m/%d/%Y")';
 
+        $this->dispatch(
+            new ExecuteByConnection($query, $connection)
+        );
+
+        return Redirect::route('lx02.index')
+            ->with('message', 'El archivo está siendo procesado');
 
     }
 }

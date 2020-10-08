@@ -22,7 +22,6 @@ class Ciclicos extends Model
             ->select()
             ->where('planta', $planta)
             ->get()
-            ->take(3)
             ->toArray();
 
         $result = [];

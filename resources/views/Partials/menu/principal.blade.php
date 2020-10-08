@@ -37,5 +37,7 @@
         @include('Partials.menu.items.sustitutos')
         @include('Partials.menu.items.fechas-promesas')
         @include('Partials.menu.items.conteo-ciclicos')
+        @include('Partials.menu.items.lx02')
+
     </ul>
 </div>

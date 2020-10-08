@@ -9,7 +9,7 @@
 
     <ul class="menu-content">
         @can('ver roles')
-        <li class="active is-shown">
+        <li class="">
             <a href="{{route('roles.index')}}">
                 <i class="bx bx-right-arrow-alt"></i>
                 <span class="menu-item" data-i18n="eCommerce">
@@ -19,7 +19,7 @@
         </li>
         @endcan
         @can('crear roles')
-        <li class="active is-shown">
+        <li class="">
             <a href="{{route('role.create')}}">
                 <i class="bx bx-right-arrow-alt"></i>
                 <span class="menu-item" data-i18n="eCommerce">

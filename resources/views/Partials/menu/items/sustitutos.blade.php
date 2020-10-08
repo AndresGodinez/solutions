@@ -8,7 +8,7 @@
         </a>
 
         <ul class="menu-content">
-            <li class="active is-shown">
+            <li class="">
                 <a href="{{route('materiales-sustitutos.solicitud')}}">
                     <i class="bx bx-right-arrow-alt"></i>
                     <span class="menu-item" data-i18n="eCommerce">
@@ -17,7 +17,7 @@
                 </a>
             </li>
 
-            <li class="active is-shown">
+            <li class="">
                 <a href="{{url('sustitutos')}}">
                     <i class="bx bx-right-arrow-alt"></i>
                     <span class="menu-item" data-i18n="eCommerce">
@@ -26,14 +26,14 @@
                 </a>
             </li>
 
-            <li class="active is-shown">
+            <li class="">
                 <a href="{{route('materiales.search')}}">
                     <i class="bx bx-right-arrow-alt"></i>
                     <span class="menu-item" data-i18n="eCommerce">Busqueda</span>
                 </a>
             </li>
 
-            <li class="active is-shown">
+            <li class="">
                 <a href="{{route('materiales-sustitutos.cargaSustitutos')}}">
                     <i class="bx bx-right-arrow-alt"></i>
                     <span class="menu-item" data-i18n="eCommerce">

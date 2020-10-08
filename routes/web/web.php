@@ -12,11 +12,16 @@
 */
 
 
+use App\Surtimiento;
+use App\SurtimientoConcentrado;
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test', 'UsuariosController@datoinicial');
+Route::get('/test', function (){
+    SurtimientoConcentrado::binesParaPicking('RS01');
+});
 
 
 

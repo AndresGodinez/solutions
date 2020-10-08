@@ -61,42 +61,7 @@ class SurtimientoReserva extends Model
         // OBTIENE EL NUMERO DE LA RESERVA A BORRAR POR INCOMPLETA Y BORRA TODAS LAS LINEAS
         // HASTA QUE TODA LA RESERVA ESTE COMPLETA
 
-        //        $result=mysql_query("
-//SELECT
-//surtimiento_reserva.reserva,
-//surtimiento_reserva.status
-//FROM
-//reforig_logistica.surtimiento_reserva
-//WHERE
-//surtimiento_reserva.status = 'BORRAR'
-//ORDER BY
-//surtimiento_reserva.fecha ASC,
-//surtimiento_reserva.reserva ASC
-//") or die(mysql_error());
-
-
-        $surtimientos = SurtimientoReserva::where('status', 'BORRAR')->get();
-
-        foreach ($surtimientos as $surtimiento) {
-
-        }
-
-
-
-
-        while($row = mysql_fetch_array( $result )) {
-
-            $reserva=$row['reserva'];
-            mysql_query("
-DELETE
-FROM
-reforig_logistica.surtimiento_reserva
-WHERE
-surtimiento_reserva.reserva = '$reserva'
-") or die(mysql_error());
-
-        }
-
+        $surtimientos = SurtimientoReserva::where('status', 'BORRAR')->get()->delete();
 
     }
 }
