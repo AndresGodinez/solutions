@@ -36,15 +36,19 @@
 
             <div class="form-group">
                 @foreach($roles as $role)
-                    <div class="custom-control custom-radio">
-                        <input type="radio"
-                               id="role"
-                               name="role"
-                               class="custom-control-input"
+                    <div class="form-check">
+                        <input
+                            class="form-check-input"
+                            type="radio"
+                            name="role"
+                            id="exampleRadios1"
                                value="{{ $role->name }}"
                         >
-                        <label class="custom-control-label" for="role">{{ ucfirst($role->name) }}</label>
+                        <label class="form-check-label" for="exampleRadios1">
+                            {{ ucfirst($role->name) }}
+                        </label>
                     </div>
+
                 @endforeach
             </div>
 

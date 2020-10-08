@@ -2,7 +2,7 @@
 
 
 Route::middleware('auth')->group(function () {
-    //Fechas Promesa
+    //LX02
     Route::group(['prefix' => 'lx02'], function () {
 
         Route::get('/', 'Lx02Controller@index')
