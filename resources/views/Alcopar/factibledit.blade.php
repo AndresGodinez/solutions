@@ -308,7 +308,7 @@ $data = $get_records;
 					<fieldset class="form-group">
 						<label for="basicInput">Costo de Pieza:
 					</label> 																
-					<input name="costo" type="text" id="costo" size="40" value="0.00" required="" data-validation-required-message="This First Name field is required" class="form-control">
+					<input name="costo" type="number" id="costo" size="40" value="0.00" required="" data-validation-required-message="This First Name field is required" class="form-control">
 						</fieldset>
 				</div>
 					

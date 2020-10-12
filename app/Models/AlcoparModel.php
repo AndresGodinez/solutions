@@ -456,7 +456,7 @@ class AlcoparModel extends ModelBase
                 ->where('material', $pieza)
                 ->update(['costostd' => session('costo'), 'costo' => session('costo')]);
         } else {
-            DB::table('altapartes')->insert(
+            DB::table('reforig_logistica.materiales_costo')->insert(
                 [
                     'material' => $pieza,
                     'costostd' => session('costo'),
@@ -549,14 +549,15 @@ class AlcoparModel extends ModelBase
         $alcopar_nivel = session('alcopar_nivel');
         $comentario = session('comentario');
         $username = session('username');
-
+        
+        
 
         $rows = AlcoparModel::query()
             ->selectRaw('descripcion,motivo,username,parte,dispatch,tipo_material')
             ->from('alcopar_partes')->whereRaw("id = " . $alcopar_id)->get();
 
         $row = $rows[0];
-
+        
         $descripcion = $row['descripcion'];
         $motivo = $row['motivo'];
         $username_alcopar = $row['username'];
@@ -701,86 +702,89 @@ class AlcoparModel extends ModelBase
 
             $mail_sent = @mail($to, $subject, $email_message, $headers);
         } else {
+                echo $alcopar_id;
+                $rows = AlcoparModel::query()
+                    ->selectRaw("GROUP_CONCAT( mail SEPARATOR ', ') as mail3")
+                    ->from('alcopar_partes_mail')->whereRaw("idalcopar = " . $alcopar_id)->get();
+                    
+                $num_rows = $rows->count();                
+                if($num_rows > 0){
+                
+                $row2 = $rows[0];
+                
+                $mail3 = $row2['mail3'];
+                
+                
+                $rows = AlcoparModel::query()
+                    ->selectRaw('talleres.supervisor, a.mail, b.mail AS mail2')
+                    ->from('alcopar_partes')
+                    ->leftJoin('usuarios AS a', 'alcopar_partes.username', '=', 'a.username')
+                    ->leftJoin('talleres', 'alcopar_partes.taller', '=', 'talleres.taller')
+                    ->leftJoin('usuarios AS b', 'talleres.supervisor', '=', 'b.nombre')
+                    ->whereRaw("alcopar_partes.id = '" . $alcopar_id . "'")->get();
 
-            $rows = AlcoparModel::query()
-                ->selectRaw('GROUP_CONCAT( mail SEPARATOR ', ') as mail3')
-                ->from('alcopar_partes_mail')->whereRaw("idalcopar = " . $alcopar_id)->get();
-
-            $row2 = $rows[0];
-
-            $mail3 = $row2['mail3'];
-
-
-            $rows = AlcoparModel::query()
-                ->selectRaw('talleres.supervisor, a.mail, b.mail AS mail2')
-                ->from('alcopar_partes')
-                ->leftJoin('usuarios AS a', 'alcopar_partes.username', '=', 'a.username')
-                ->leftJoin('talleres', 'alcopar_partes.taller', '=', 'talleres.taller')
-                ->leftJoin('usuarios AS b', 'talleres.supervisor', '=', 'b.nombre')
-                ->whereRaw("alcopar_partes.id = '" . $alcopar_id . "'")->get();
-
-            $row = $rows[0];
-
-
-            $mail = $row['mail'];
-            $mail2 = $row['mail2'];
-
+                $row = $rows[0];
 
 
-            $email_message = "	
-            <html>
-            <head>
-            <title>E-Mail HTML</title>
-            </head>
-            <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
+                $mail = $row['mail'];
+                $mail2 = $row['mail2'];
 
-            <style>
 
-        body, P.msoNormal, LI.msoNormal
-        {
-        background-position: top;
-        margin-left:  1em;
-        margin-top: 1em;
-        font-family: 'Arial';
-        font-size:   9pt;
-        color:    '000000';
-        }
 
-        table
-        {
-        font-family: 'Arial';
-        font-size:   9pt;
+                $email_message = "	
+                <html>
+                <head>
+                <title>E-Mail HTML</title>
+                </head>
+                <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
 
-        }
-        </style>
-            
-            <body>
-            <p></p>
-            <p>Por este medio te informamos que el n&uacute;mero de parte solicitado ya cuenta con Costo</p>
-            <p>Por lo que si fue solicitado para un servicio en garant&iacute;a, el pedido o la reserva ya puede ser colocado en SAP.</p>
-            <p></p>   
-            <br>
-            <p>De ser requerida para un Servicio con Cargo, en m&aacute;ximo tres d&iacute;as h&aacute;biles quedar&aacute; colocado el precio.</p>
-            <p></p>
-            <br>
-            INFORMACION DE LA SOLICITUD
-            <p></p>
-            N&uacute;mero de Parte : " . $parte . "<br>
-            Descripci&oacute;n : " . $descripcion . "<br>	
-            Dispatch : " . $dispatch . "<br>
-            Comentarios : " . $motivo . "<br>
-            <p></p>
-            <p>
-        ";
+                <style>
 
-            $to = $mail . "," . $mail2 . "," . $mail3;
-            $subject = 'Alta de Parte lista para pedidos de garantia.';
-            $type = "Content-type: text/html\r\n";
-            $headers = "MIME-Version: 1.0 \r\n";
-            $headers = $headers . "Content-type: text/html;charset=iso-8859-1\r\n";
-            $headers = $headers . "From: Whirlpool Service<no-responder@whirlpool.com>\r\n";
+                    body, P.msoNormal, LI.msoNormal
+                    {
+                    background-position: top;
+                    margin-left:  1em;
+                    margin-top: 1em;
+                    font-family: 'Arial';
+                    font-size:   9pt;
+                    color:    '000000';
+                    }
 
-            $mail_sent = @mail($to, $subject, $email_message, $headers);
+                    table
+                    {
+                    font-family: 'Arial';
+                    font-size:   9pt;
+
+                    }
+                    </style>
+                        
+                        <body>
+                        <p></p>
+                        <p>Por este medio te informamos que el n&uacute;mero de parte solicitado ya cuenta con Costo</p>
+                        <p>Por lo que si fue solicitado para un servicio en garant&iacute;a, el pedido o la reserva ya puede ser colocado en SAP.</p>
+                        <p></p>   
+                        <br>
+                        <p>De ser requerida para un Servicio con Cargo, en m&aacute;ximo tres d&iacute;as h&aacute;biles quedar&aacute; colocado el precio.</p>
+                        <p></p>
+                        <br>
+                        INFORMACION DE LA SOLICITUD
+                        <p></p>
+                        N&uacute;mero de Parte : " . $parte . "<br>
+                        Descripci&oacute;n : " . $descripcion . "<br>	
+                        Dispatch : " . $dispatch . "<br>
+                        Comentarios : " . $motivo . "<br>
+                        <p></p>
+                        <p>";
+
+                $to = $mail . "," . $mail2 . "," . $mail3;
+                $subject = 'Alta de Parte lista para pedidos de garantia.';
+                $type = "Content-type: text/html\r\n";
+                $headers = "MIME-Version: 1.0 \r\n";
+                $headers = $headers . "Content-type: text/html;charset=iso-8859-1\r\n";
+                $headers = $headers . "From: Whirlpool Service<no-responder@whirlpool.com>\r\n";
+
+                $mail_sent = @mail($to, $subject, $email_message, $headers);
+            }
         }
     }
 
@@ -1510,6 +1514,7 @@ class AlcoparModel extends ModelBase
 
     public static function rechazar2()
     {
+        
 
         $nombre = Auth::user()->nombre;
         $username = Auth::user()->username;
@@ -1548,289 +1553,137 @@ class AlcoparModel extends ModelBase
         $tipo_extra = $row['tipo_extra'];
         $nomenclatura = $row['nomenclatura_service'];
 
-
-        if ($tipo == 'ALTERNO') {
-
-            $rows = AlcoparModel::query()
-                ->selectRaw('MAX(id) AS id ')
-                ->from('altapartes')->get();
-            $row = $rows[0];
-            $resulta = $row['id'] + 1;
-
-
-            DB::table('altapartes')->insert(
-                [
-                    'id' => $resulta,
-                    'fecha' => date('Ymd'),
-                    'parte' => $parte,
-                    'sust' => $sustituto,
-                    'username' => $username,
-                    'motivo' => 'REVISION SUSTITUTO',
-                    'status' => 'EN REVISION DE LA INFORMACION DEL NUM DE PARTE',
-                    'sustituto' => '1',
-                    'depto' => $depto,
-                    'modelo' => $modelo,
-                    'taller' => $taller,
-                    'descripcion' => $descripcion,
-                    'dispatch' => $dispatch
-                ]
-            );
-
-            $rows = AlcoparModel::query()
-                ->selectRaw('id as alcopar_id')
-                ->from('altapartes')->whereRaw("id = " . $resulta)->get();
-            $row = $rows[0];
-            $_SESSION['alcopar_id'] = $row['alcopar_id'];
-
-            // echo " 
-            // <script language='JavaScript'> 
-            // window.open( 'https://soluciones.refaccionoriginal.com/altapartes/revsust/procesarechazar.php')
-            // </script>";
-
-            if ($existe == "SI") {
-
-                $rows = AlcoparModel::query()
-                    ->selectRaw('material,costo')
-                    ->from('reforig_logistica.materiales_costo')->whereRaw("material = '" . $sustituto . "'")->get();
-                $num_rows = $rows->count();
-
-
-
-                if ($num_rows > 0) {
-                    $result = $rows[0];
-                    if ($result['costo'] == '0.00') {
-
-                        $rows = AlcoparModel::query()
-                            ->selectRaw('MAX(id) AS id ')
-                            ->from('alcopar_partes')->get();
-
-                        $row = $rows[0];
-                        $resulta = $row['id'] + 1;
-
-
-                        DB::table('alcopar_partes')->insert(
-                            [
-                                'id' => $resulta,
-                                'fecha' => $fecha,
-                                'parte' => $sustituto,
-                                'sust' => '',
-                                'depto' => $depto,
-                                'descripcion' => $descripcion,
-                                'modelo' => $modelo,
-                                'username' => $username_alcopar,
-                                'motivo' => $motivo,
-                                'dispatch' => $dispatch,
-                                'taller' => $taller,
-                                'status' => 'EN REVISION DE FACTIBILIDAD DE SURTIMIENTO',
-                                'reving' => '0',
-                                'otros' => 'Otros',
-                                'comentario_reving' => 'SE GENERÓ PARTE POR RECHAZO DE SUSTITUTO Y NO CUENTA CON COSTO',
-                                'ing' => $username,
-                                'fechareving' => date('Ymd'),
-                                'factible'  => '1',
-                                //'pedido_flag' =>$pedido_flag,
-                                'tipo_material' => $tipo_material,
-                                'categoria' => $categoria,
-                                'familia' => $familia,
-                                'marca' => $marca,
-                                'tipo_extra' => $tipo_extra,
-                                'nomenclatura_service' => $nomenclatura,
-                                'clas_sat_status' => 'PENDIENTE CLASIFICACION SAT',
-                                'clasif_sat' => '1'
-                            ]
-                        );
-
-
-                        DB::table('alcopar_partes')
-                            ->where('id', $alcopar_id)
-                            ->update([
-                                'sust' => '$sustituto',
-                                'fechareving' => date('Ymd'),
-                                'reving' => 0,
-                                'status' => 'RECHAZADA',
-                                'comentario' => 'EL MATERIAL CUENTA CON SUSTITUTO',
-                                'ing' => $username,
-                                'comentario_reving' => $comentario,
-                                'tipo' => $tipo
-                            ]);
-
-                        $descripcion_pedido = $descripcion . ',' . 'SE RECHAZÓ SOLICITUD DE ALTA DE PARTE DEBIDO A QUE CUENTA CON SUSTITUTO ALTERNO';
-                    } else {
-                        $rows = AlcoparModel::query()
-                            ->selectRaw('usuarios.username')
-                            ->from('alcopar_partes')
-                            ->leftJoin('talleres', ' alcopar_partes.taller', '=', 'talleres.taller')
-                            ->leftJoin('usuarios', ' talleres.supervisor', '=', 'usuarios.nombre')
-                            ->whereRaw("alcopar_partes.parte = '" . $parte . "'")
-                            ->get();
-                        $row_sql = $rows[0];
-
-                        DB::table('alcopar_partes')
-                            ->where('id', $alcopar_id)
-                            ->update([
-                                'sust' => $sustituto,
-                                'fechareving' => date('Ymd'),
-                                'reving' => 0,
-                                'status' => 'RECHAZADA',
-                                'comentario' => 'EL MATERIAL CUENTA CON SUSTITUTO',
-                                'ing' => $username,
-                                'comentario_reving' => $comentario,
-                                'tipo' => $tipo
-                            ]);
-                    }
-                } else {
-                    $rows = AlcoparModel::query()
-                        ->selectRaw('MAX(id) AS id ')
-                        ->from('altapartes')->get();
-                    $row = $rows[0];
-                    $resulta = $row['id'] + 1;
-
-
-                    DB::table('alcopar_partes')->insert(
-                        [
-                            'id' => $resulta,
-                            'fecha' => $fecha,
-                            'parte' => $sustituto,
-                            'sust' => '',
-                            'depto' => $depto,
-                            'descripcion' => $descripcion,
-                            'modelo' => $modelo,
-                            'username' => $username_alcopar,
-                            'motivo' => $motivo,
-                            'dispatch' => $dispatch,
-                            'taller' => $taller,
-                            'status' => 'EN REVISION DE FACTIBILIDAD DE SURTIMIENTO',
-                            'reving' => '0',
-                            'otros' => 'Otros',
-                            'comentario_reving' => 'SE GENERÓ PARTE POR RECHAZO DE SUSTITUTO Y NO CUENTA CON COSTO',
-                            'ing' => $username,
-                            'fechareving' => date('Ymd'),
-                            'factible'  => '1',
-                            //'pedido_flag' =>$pedido_flag,
-                            'tipo_material' => $tipo_material,
-                            'categoria' => $categoria,
-                            'familia' => $familia,
-                            'marca' => $marca,
-                            'tipo_extra' => $tipo_extra,
-                            'nomenclatura_service' => $nomenclatura,
-                            'clas_sat_status' => 'PENDIENTE CLASIFICACION SAT',
-                            'clasif_sat' => '1'
-                        ]
-                    );
-                    DB::table('alcopar_partes')
-                        ->where('id', $alcopar_id)
-                        ->update([
-                            'sust' => $sustituto,
-                            'fechareving' => date('Ymd'),
-                            'reving' => 0,
-                            'status' => 'RECHAZADA',
-                            'comentario' => 'EL MATERIAL CUENTA CON SUSTITUTO',
-                            'ing' => $username,
-                            'comentario_reving' => $comentario,
-                            'tipo' => $tipo
-                        ]);
-                }
-            } else {
-                DB::table('alcopar_partes')
-                    ->where('id', $alcopar_id)
-                    ->update([
-                        'sust' => $sustituto,
-                        'fechareving' => date('Ymd'),
-                        'reving' => 0,
-                        'status' => 'RECHAZADA',
-                        'comentario' => 'EL MATERIAL CUENTA CON SUSTITUTO',
-                        'ing' => $username,
-                        'comentario_reving' => $comentario,
-                        'tipo' => $tipo
-                    ]);
-
-
-
-                $rows = AlcoparModel::query()
-                    ->selectRaw('descripcion,dispatch, motivo,taller, username, parte, comentario,comentario_reving,descripcion,taller')
-                    ->from('alcopar_partes')->whereRaw("id = " . $alcopar_id)->get();
-                $row = $rows[0];
-
-                $fecha = $row['fecha'];
-                $descripcion = $row['descripcion'];
-                $modelo = $row['modelo'];
-                $username_alcopar = $row['username'];
-                $motivo = $row['motivo'];
-                $dispatch = $row['dispatch'];
-                $taller = $row['taller'];
-
-
+        try{
+            if ($tipo == 'ALTERNO') {
 
                 $rows = AlcoparModel::query()
                     ->selectRaw('MAX(id) AS id ')
-                    ->from('alcopar_partes')->get();
+                    ->from('altapartes')->get();
                 $row = $rows[0];
                 $resulta = $row['id'] + 1;
 
 
-                DB::table('alcopar_partes')->insert(
+                DB::table('altapartes')->insert(
                     [
                         'id' => $resulta,
-                        'fecha' => $fecha,
-                        'parte' => $sustituto,
-                        'sust' => '',
-                        'depto' => $depto,
-                        'descripcion' => $descripcion,
-                        'modelo' => $modelo,
-                        'username' => $username_alcopar,
-                        'motivo' => $motivo,
-                        'dispatch' => $dispatch,
-                        'taller' => $taller,
+                        'fecha' => date('Ymd'),
+                        'parte' => $parte,
+                        'sust' => $sustituto,
+                        'username' => $username,
+                        'motivo' => 'REVISION SUSTITUTO',
                         'status' => 'EN REVISION DE LA INFORMACION DEL NUM DE PARTE',
-                        'reving' => '1',
-                        'otros' => 'Otros',
-                        'tipo_material' => $tipo_material,
-                        'categoria' => $categoria,
-                        'familia' => $familia,
-                        'marca' => $marca,
-                        'tipo_extra' => $tipo_extra,
-                        'nomenclatura_service' => $nomenclatura
+                        'sustituto' => '1',
+                        'depto' => $depto,
+                        'modelo' => $modelo,
+                        'taller' => $taller,
+                        'descripcion' => $descripcion,
+                        'dispatch' => $dispatch
                     ]
                 );
-            }
-        } else {
-            $rows = AlcoparModel::query()
-                ->selectRaw('MAX(id) AS id ')
-                ->from('altapartes')->get();
-            $row = $rows[0];
-            $resulta = $row['id'] + 1;
 
-            DB::table('altapartes')->insert(
-                [
-                    'id' => $resulta,
-                    'fecha' => date('Ymd'),
-                    'parte' => $parte,
-                    'sust' => $sustituto,
-                    'username' => $username,
-                    'motivo' => 'REVISION SUSTITUTO',
-                    'status' => 'CERRADO',
-                    'comentario' => 'PARTE CUENTA CON SUSTITUTO DIRECTO',
-                    'sustituto' => '0',
-                    'depto' => $depto,
-                    'modelo' => $modelo,
-                    'taller' => $taller,
-                    'descripcion' => $descripcion,
-                    'dispatch' => $dispatch,
-                    'fechasust' => date('Ymd'),
-                    'ingeniero' => $username
-                ]
-            );
-
-
-            if ($existe == "SI") {
                 $rows = AlcoparModel::query()
-                    ->selectRaw('material,costo')
-                    ->from('reforig_logistica.materiales_costo')->whereRaw("material = '" . $sustituto . "'")->get();
-                $num_rows = $rows->count();
+                    ->selectRaw('id as alcopar_id')
+                    ->from('altapartes')->whereRaw("id = " . $resulta)->get();
+                $row = $rows[0];
+                $_SESSION['alcopar_id'] = $row['alcopar_id'];
 
-                if ($num_rows > 0) {
-                    $result = $rows[0];
-                    if ($result['costo'] == '0.00') {
+                // echo " 
+                // <script language='JavaScript'> 
+                // window.open( 'https://soluciones.refaccionoriginal.com/altapartes/revsust/procesarechazar.php')
+                // </script>";
+
+                if ($existe == "SI") {
+
+                    $rows = AlcoparModel::query()
+                        ->selectRaw('material,costo')
+                        ->from('reforig_logistica.materiales_costo')->whereRaw("material = '" . $sustituto . "'")->get();
+                    $num_rows = $rows->count();
+
+
+
+                    if ($num_rows > 0) {
+                        $result = $rows[0];
+                        if ($result['costo'] == '0.00') {
+
+                            $rows = AlcoparModel::query()
+                                ->selectRaw('MAX(id) AS id ')
+                                ->from('alcopar_partes')->get();
+
+                            $row = $rows[0];
+                            $resulta = $row['id'] + 1;
+
+
+                            DB::table('alcopar_partes')->insert(
+                                [
+                                    'id' => $resulta,
+                                    'fecha' => $fecha,
+                                    'parte' => $sustituto,
+                                    'sust' => '',
+                                    'depto' => $depto,
+                                    'descripcion' => $descripcion,
+                                    'modelo' => $modelo,
+                                    'username' => $username_alcopar,
+                                    'motivo' => $motivo,
+                                    'dispatch' => $dispatch,
+                                    'taller' => $taller,
+                                    'status' => 'EN REVISION DE FACTIBILIDAD DE SURTIMIENTO',
+                                    'reving' => '0',
+                                    'otros' => 'Otros',
+                                    'comentario_reving' => 'SE GENERÓ PARTE POR RECHAZO DE SUSTITUTO Y NO CUENTA CON COSTO',
+                                    'ing' => $username,
+                                    'fechareving' => date('Ymd'),
+                                    'factible'  => '1',
+                                    //'pedido_flag' =>$pedido_flag,
+                                    'tipo_material' => $tipo_material,
+                                    'categoria' => $categoria,
+                                    'familia' => $familia,
+                                    'marca' => $marca,
+                                    'tipo_extra' => $tipo_extra,
+                                    'nomenclatura_service' => $nomenclatura,
+                                    'clas_sat_status' => 'PENDIENTE CLASIFICACION SAT',
+                                    'clasif_sat' => '1'
+                                ]
+                            );
+
+
+                            DB::table('alcopar_partes')
+                                ->where('id', $alcopar_id)
+                                ->update([
+                                    'sust' => '$sustituto',
+                                    'fechareving' => date('Ymd'),
+                                    'reving' => 0,
+                                    'status' => 'RECHAZADA',
+                                    'comentario' => 'EL MATERIAL CUENTA CON SUSTITUTO',
+                                    'ing' => $username,
+                                    'comentario_reving' => $comentario,
+                                    'tipo' => $tipo
+                                ]);
+
+                            $descripcion_pedido = $descripcion . ',' . 'SE RECHAZÓ SOLICITUD DE ALTA DE PARTE DEBIDO A QUE CUENTA CON SUSTITUTO ALTERNO';
+                        } else {
+                            $rows = AlcoparModel::query()
+                                ->selectRaw('usuarios.username')
+                                ->from('alcopar_partes')
+                                ->leftJoin('talleres', ' alcopar_partes.taller', '=', 'talleres.taller')
+                                ->leftJoin('usuarios', ' talleres.supervisor', '=', 'usuarios.nombre')
+                                ->whereRaw("alcopar_partes.parte = '" . $parte . "'")
+                                ->get();
+                            $row_sql = $rows[0];
+
+                            DB::table('alcopar_partes')
+                                ->where('id', $alcopar_id)
+                                ->update([
+                                    'sust' => $sustituto,
+                                    'fechareving' => date('Ymd'),
+                                    'reving' => 0,
+                                    'status' => 'RECHAZADA',
+                                    'comentario' => 'EL MATERIAL CUENTA CON SUSTITUTO',
+                                    'ing' => $username,
+                                    'comentario_reving' => $comentario,
+                                    'tipo' => $tipo
+                                ]);
+                        }
+                    } else {
                         $rows = AlcoparModel::query()
                             ->selectRaw('MAX(id) AS id ')
                             ->from('altapartes')->get();
@@ -1869,32 +1722,6 @@ class AlcoparModel extends ModelBase
                                 'clasif_sat' => '1'
                             ]
                         );
-
-
-                        DB::table('alcopar_partes')
-                            ->where('id', $alcopar_id)
-                            ->update([
-                                'sust' => '$sustituto',
-                                'fechareving' => date('Ymd'),
-                                'reving' => 0,
-                                'status' => 'RECHAZADA',
-                                'comentario' => 'EL MATERIAL CUENTA CON SUSTITUTO',
-                                'ing' => $username,
-                                'comentario_reving' => $comentario,
-                                'tipo' => $tipo
-                            ]);
-
-                        $descripcion_pedido = $descripcion . ',' . 'SE RECHAZÓ SOLICITUD DE ALTA DE PARTE DEBIDO A QUE CUENTA CON SUSTITUTO ALTERNO';
-                    } else {
-                        $rows = AlcoparModel::query()
-                            ->selectRaw('usuarios.username')
-                            ->from('alcopar_partes')
-                            ->leftJoin('talleres', ' alcopar_partes.taller', '=', 'talleres.taller')
-                            ->leftJoin('usuarios', ' talleres.supervisor', '=', 'usuarios.nombre')
-                            ->whereRaw("alcopar_partes.parte = '" . $parte . "'")
-                            ->get();
-                        $row_sql = $rows[0];
-
                         DB::table('alcopar_partes')
                             ->where('id', $alcopar_id)
                             ->update([
@@ -1909,6 +1736,36 @@ class AlcoparModel extends ModelBase
                             ]);
                     }
                 } else {
+                    DB::table('alcopar_partes')
+                        ->where('id', $alcopar_id)
+                        ->update([
+                            'sust' => $sustituto,
+                            'fechareving' => date('Ymd'),
+                            'reving' => 0,
+                            'status' => 'RECHAZADA',
+                            'comentario' => 'EL MATERIAL CUENTA CON SUSTITUTO',
+                            'ing' => $username,
+                            'comentario_reving' => $comentario,
+                            'tipo' => $tipo
+                        ]);
+
+
+
+                    $rows = AlcoparModel::query()
+                        ->selectRaw('descripcion,dispatch, motivo,taller, username, parte, comentario,comentario_reving,descripcion,taller')
+                        ->from('alcopar_partes')->whereRaw("id = " . $alcopar_id)->get();
+                    $row = $rows[0];
+
+                    $fecha = $row['fecha'];
+                    $descripcion = $row['descripcion'];
+                    $modelo = $row['modelo'];
+                    $username_alcopar = $row['username'];
+                    $motivo = $row['motivo'];
+                    $dispatch = $row['dispatch'];
+                    $taller = $row['taller'];
+
+
+
                     $rows = AlcoparModel::query()
                         ->selectRaw('MAX(id) AS id ')
                         ->from('alcopar_partes')->get();
@@ -1929,24 +1786,186 @@ class AlcoparModel extends ModelBase
                             'motivo' => $motivo,
                             'dispatch' => $dispatch,
                             'taller' => $taller,
-                            'status' => 'EN REVISION DE FACTIBILIDAD DE SURTIMIENTO',
-                            'reving' => '0',
+                            'status' => 'EN REVISION DE LA INFORMACION DEL NUM DE PARTE',
+                            'reving' => '1',
                             'otros' => 'Otros',
-                            'comentario_reving' => 'SE GENERÓ PARTE POR RECHAZO DE SUSTITUTO Y NO CUENTA CON COSTO',
-                            'ing' => $username,
-                            'fechareving' => date('Ymd'),
-                            'factible'  => '1',
-                            //'pedido_flag' =>$pedido_flag,
                             'tipo_material' => $tipo_material,
                             'categoria' => $categoria,
                             'familia' => $familia,
                             'marca' => $marca,
                             'tipo_extra' => $tipo_extra,
-                            'nomenclatura_service' => $nomenclatura,
-                            'clas_sat_status' => 'PENDIENTE CLASIFICACION SAT',
-                            'clasif_sat' => '1'
+                            'nomenclatura_service' => $nomenclatura
                         ]
                     );
+                }
+            } else {
+                $rows = AlcoparModel::query()
+                    ->selectRaw('MAX(id) AS id ')
+                    ->from('altapartes')->get();
+                $row = $rows[0];
+                $resulta = $row['id'] + 1;
+
+                DB::table('altapartes')->insert(
+                    [
+                        'id' => $resulta,
+                        'fecha' => date('Ymd'),
+                        'parte' => $parte,
+                        'sust' => $sustituto,
+                        'username' => $username,
+                        'motivo' => 'REVISION SUSTITUTO',
+                        'status' => 'CERRADO',
+                        'comentario' => 'PARTE CUENTA CON SUSTITUTO DIRECTO',
+                        'sustituto' => '0',
+                        'depto' => $depto,
+                        'modelo' => $modelo,
+                        'taller' => $taller,
+                        'descripcion' => $descripcion,
+                        'dispatch' => $dispatch,
+                        'fechasust' => date('Ymd'),
+                        'ingeniero' => $username
+                    ]
+                );
+
+
+                if ($existe == "SI") {
+                    $rows = AlcoparModel::query()
+                        ->selectRaw('material,costo')
+                        ->from('reforig_logistica.materiales_costo')->whereRaw("material = '" . $sustituto . "'")->get();
+                    $num_rows = $rows->count();
+
+                    if ($num_rows > 0) {
+                        $result = $rows[0];
+                        if ($result['costo'] == '0.00') {
+                            $rows = AlcoparModel::query()
+                                ->selectRaw('MAX(id) AS id ')
+                                ->from('altapartes')->get();
+                            $row = $rows[0];
+                            $resulta = $row['id'] + 1;
+
+
+                            DB::table('alcopar_partes')->insert(
+                                [
+                                    'id' => $resulta,
+                                    'fecha' => $fecha,
+                                    'parte' => $sustituto,
+                                    'sust' => '',
+                                    'depto' => $depto,
+                                    'descripcion' => $descripcion,
+                                    'modelo' => $modelo,
+                                    'username' => $username_alcopar,
+                                    'motivo' => $motivo,
+                                    'dispatch' => $dispatch,
+                                    'taller' => $taller,
+                                    'status' => 'EN REVISION DE FACTIBILIDAD DE SURTIMIENTO',
+                                    'reving' => '0',
+                                    'otros' => 'Otros',
+                                    'comentario_reving' => 'SE GENERÓ PARTE POR RECHAZO DE SUSTITUTO Y NO CUENTA CON COSTO',
+                                    'ing' => $username,
+                                    'fechareving' => date('Ymd'),
+                                    'factible'  => '1',
+                                    //'pedido_flag' =>$pedido_flag,
+                                    'tipo_material' => $tipo_material,
+                                    'categoria' => $categoria,
+                                    'familia' => $familia,
+                                    'marca' => $marca,
+                                    'tipo_extra' => $tipo_extra,
+                                    'nomenclatura_service' => $nomenclatura,
+                                    'clas_sat_status' => 'PENDIENTE CLASIFICACION SAT',
+                                    'clasif_sat' => '1'
+                                ]
+                            );
+
+
+                            DB::table('alcopar_partes')
+                                ->where('id', $alcopar_id)
+                                ->update([
+                                    'sust' => '$sustituto',
+                                    'fechareving' => date('Ymd'),
+                                    'reving' => 0,
+                                    'status' => 'RECHAZADA',
+                                    'comentario' => 'EL MATERIAL CUENTA CON SUSTITUTO',
+                                    'ing' => $username,
+                                    'comentario_reving' => $comentario,
+                                    'tipo' => $tipo
+                                ]);
+
+                            $descripcion_pedido = $descripcion . ',' . 'SE RECHAZÓ SOLICITUD DE ALTA DE PARTE DEBIDO A QUE CUENTA CON SUSTITUTO ALTERNO';
+                        } else {
+                            $rows = AlcoparModel::query()
+                                ->selectRaw('usuarios.username')
+                                ->from('alcopar_partes')
+                                ->leftJoin('talleres', ' alcopar_partes.taller', '=', 'talleres.taller')
+                                ->leftJoin('usuarios', ' talleres.supervisor', '=', 'usuarios.nombre')
+                                ->whereRaw("alcopar_partes.parte = '" . $parte . "'")
+                                ->get();
+                            $row_sql = $rows[0];
+
+                            DB::table('alcopar_partes')
+                                ->where('id', $alcopar_id)
+                                ->update([
+                                    'sust' => $sustituto,
+                                    'fechareving' => date('Ymd'),
+                                    'reving' => 0,
+                                    'status' => 'RECHAZADA',
+                                    'comentario' => 'EL MATERIAL CUENTA CON SUSTITUTO',
+                                    'ing' => $username,
+                                    'comentario_reving' => $comentario,
+                                    'tipo' => $tipo
+                                ]);
+                        }
+                    } else {
+                        $rows = AlcoparModel::query()
+                            ->selectRaw('MAX(id) AS id ')
+                            ->from('alcopar_partes')->get();
+                        $row = $rows[0];
+                        $resulta = $row['id'] + 1;
+
+
+                        DB::table('alcopar_partes')->insert(
+                            [
+                                'id' => $resulta,
+                                'fecha' => $fecha,
+                                'parte' => $sustituto,
+                                'sust' => '',
+                                'depto' => $depto,
+                                'descripcion' => $descripcion,
+                                'modelo' => $modelo,
+                                'username' => $username_alcopar,
+                                'motivo' => $motivo,
+                                'dispatch' => $dispatch,
+                                'taller' => $taller,
+                                'status' => 'EN REVISION DE FACTIBILIDAD DE SURTIMIENTO',
+                                'reving' => '0',
+                                'otros' => 'Otros',
+                                'comentario_reving' => 'SE GENERÓ PARTE POR RECHAZO DE SUSTITUTO Y NO CUENTA CON COSTO',
+                                'ing' => $username,
+                                'fechareving' => date('Ymd'),
+                                'factible'  => '1',
+                                //'pedido_flag' =>$pedido_flag,
+                                'tipo_material' => $tipo_material,
+                                'categoria' => $categoria,
+                                'familia' => $familia,
+                                'marca' => $marca,
+                                'tipo_extra' => $tipo_extra,
+                                'nomenclatura_service' => $nomenclatura,
+                                'clas_sat_status' => 'PENDIENTE CLASIFICACION SAT',
+                                'clasif_sat' => '1'
+                            ]
+                        );
+                        DB::table('alcopar_partes')
+                            ->where('id', $alcopar_id)
+                            ->update([
+                                'sust' => $sustituto,
+                                'fechareving' => date('Ymd'),
+                                'reving' => 0,
+                                'status' => 'RECHAZADA',
+                                'comentario' => 'EL MATERIAL CUENTA CON SUSTITUTO',
+                                'ing' => $username,
+                                'comentario_reving' => $comentario,
+                                'tipo' => $tipo
+                            ]);
+                    }
+                } else {
                     DB::table('alcopar_partes')
                         ->where('id', $alcopar_id)
                         ->update([
@@ -1959,72 +1978,61 @@ class AlcoparModel extends ModelBase
                             'comentario_reving' => $comentario,
                             'tipo' => $tipo
                         ]);
+
+
+
+                    $rows = AlcoparModel::query()
+                        ->selectRaw('descripcion,dispatch, motivo,taller, username, parte, comentario,comentario_reving,descripcion,taller')
+                        ->from('alcopar_partes')->whereRaw("id = " . $alcopar_id)->get();
+                    $row = $rows[0];
+
+                    $fecha = $row['fecha'];
+                    $descripcion = $row['descripcion'];
+                    $modelo = $row['modelo'];
+                    $username_alcopar = $row['username'];
+                    $motivo = $row['motivo'];
+                    $dispatch = $row['dispatch'];
+                    $taller = $row['taller'];
+
+
+
+                    $rows = AlcoparModel::query()
+                        ->selectRaw('MAX(id) AS id ')
+                        ->from('alcopar_partes')->get();
+                    $row = $rows[0];
+                    $resulta = $row['id'] + 1;
+
+
+                    DB::table('alcopar_partes')->insert(
+                        [
+                            'id' => $resulta,
+                            'fecha' => $fecha,
+                            'parte' => $sustituto,
+                            'sust' => '',
+                            'depto' => $depto,
+                            'descripcion' => $descripcion,
+                            'modelo' => $modelo,
+                            'username' => $username_alcopar,
+                            'motivo' => $motivo,
+                            'dispatch' => $dispatch,
+                            'taller' => $taller,
+                            'status' => 'EN REVISION DE LA INFORMACION DEL NUM DE PARTE',
+                            'reving' => '1',
+                            'otros' => 'Otros',
+                            'tipo_material' => $tipo_material,
+                            'categoria' => $categoria,
+                            'familia' => $familia,
+                            'marca' => $marca,
+                            'tipo_extra' => $tipo_extra,
+                            'nomenclatura_service' => $nomenclatura
+                        ]
+                    );
                 }
-            } else {
-                DB::table('alcopar_partes')
-                    ->where('id', $alcopar_id)
-                    ->update([
-                        'sust' => $sustituto,
-                        'fechareving' => date('Ymd'),
-                        'reving' => 0,
-                        'status' => 'RECHAZADA',
-                        'comentario' => 'EL MATERIAL CUENTA CON SUSTITUTO',
-                        'ing' => $username,
-                        'comentario_reving' => $comentario,
-                        'tipo' => $tipo
-                    ]);
-
-
-
-                $rows = AlcoparModel::query()
-                    ->selectRaw('descripcion,dispatch, motivo,taller, username, parte, comentario,comentario_reving,descripcion,taller')
-                    ->from('alcopar_partes')->whereRaw("id = " . $alcopar_id)->get();
-                $row = $rows[0];
-
-                $fecha = $row['fecha'];
-                $descripcion = $row['descripcion'];
-                $modelo = $row['modelo'];
-                $username_alcopar = $row['username'];
-                $motivo = $row['motivo'];
-                $dispatch = $row['dispatch'];
-                $taller = $row['taller'];
-
-
-
-                $rows = AlcoparModel::query()
-                    ->selectRaw('MAX(id) AS id ')
-                    ->from('alcopar_partes')->get();
-                $row = $rows[0];
-                $resulta = $row['id'] + 1;
-
-
-                DB::table('alcopar_partes')->insert(
-                    [
-                        'id' => $resulta,
-                        'fecha' => $fecha,
-                        'parte' => $sustituto,
-                        'sust' => '',
-                        'depto' => $depto,
-                        'descripcion' => $descripcion,
-                        'modelo' => $modelo,
-                        'username' => $username_alcopar,
-                        'motivo' => $motivo,
-                        'dispatch' => $dispatch,
-                        'taller' => $taller,
-                        'status' => 'EN REVISION DE LA INFORMACION DEL NUM DE PARTE',
-                        'reving' => '1',
-                        'otros' => 'Otros',
-                        'tipo_material' => $tipo_material,
-                        'categoria' => $categoria,
-                        'familia' => $familia,
-                        'marca' => $marca,
-                        'tipo_extra' => $tipo_extra,
-                        'nomenclatura_service' => $nomenclatura
-                    ]
-                );
             }
         }
-
+        catch (Exception $e) {
+            return "error";
+        }
 
         //if($pedido_flag==''){
         //RUTINA MAIL

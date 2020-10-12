@@ -19,11 +19,11 @@
 					<thead>
 						<tr>
 						<th>NUM PARTE</th>
-						<th>DESCRIPCION</th>
+						<th>DESCRIPCIÓN</th>
 						<th>MODELO</th>
-						<th>FECHA CREACION</th>
-						<th>DIAS CREACION</th>
-						<th>DIAS CON DEPARTAMENTO</th>						
+						<th>FECHA CREACIÓN</th>
+						<th>DÍAS CREACIÓN</th>
+						<th>DÍAS CON DEPARTAMENTO</th>						
 						</tr>
 					</thead>
 					<tbody>

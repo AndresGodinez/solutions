@@ -28,7 +28,7 @@ $marca1   = $get_records['marca'];
 							<label for="basicInput">
 								N&uacute;mero Parte:</label>
 
-							<input type="text" maxlength="20" id="parte" name="parte" class="validate[required,minSize[3]] form-control" style="text-transform:uppercase" />
+							<input type="text" maxlength="20" id="parte" name="parte" class="form-control" style="text-transform:uppercase"  pattern=".{3,}"   required title="Mínimo de 3 caracteres autorizados" />
 						</fieldset>
 					</div>
 
@@ -37,7 +37,7 @@ $marca1   = $get_records['marca'];
 						<fieldset class="form-group">
 							<label for="basicInput">
 								Descripci&oacute;n:</label>
-							<input type="text" id="descripcion" name="descripcion" class="validate[required,minSize[5]] form-control" style="text-transform:uppercase" style="text-transform:uppercase">
+							<input type="text" id="descripcion" name="descripcion" class="form-control" style="text-transform:uppercase" pattern=".{5,}"   required title="Mínimo de 5 caracteres autorizados">
 						</fieldset>
 					</div>
 
@@ -70,7 +70,7 @@ $marca1   = $get_records['marca'];
 						<fieldset class="form-group">
 							<label for="basicInput">
 								Motivo:</label>
-							<input type="text" id="motivo" name="motivo" size="40" style="text-transform:uppercase" class="validate[required,minSize[5]] form-control" style="text-transform:uppercase">
+							<input type="text" id="motivo" name="motivo" size="40" style="text-transform:uppercase" class="form-control" style="text-transform:uppercase" pattern=".{5,}" required title="mMínimo de 5 caracteres autorizados">
 						</fieldset>
 					</div>
 
@@ -80,7 +80,7 @@ $marca1   = $get_records['marca'];
 					<div class="col-md-4 col-12">
 						<fieldset class="form-group">
 							<label for="basicInput">&iquest;De d&oacute;nde obtuviste ese n&uacute;mero?</label>
-							<select name='donde' id='donde' onChange='return validateR(this.value);' class='validate[required] form-control'>
+							<select name='donde' id='donde' onChange='return validateR(this.value);' class='form-control' required>
 								<option value=''>Seleccionar Linea</option>
 								<option value='0'>Del Explosionado</option>
 								<option value='1'>Solicitud de Ingenier&iacute;a (Ing me lo di&oacute;)</option>
@@ -108,7 +108,7 @@ $marca1   = $get_records['marca'];
 					<div class="col-md-4 col-12">
 						<fieldset class="form-group">
 							<label for="basicInput">Tipo de Material:</label>
-							<select name='tipo_material' id='tipo_material' onChange='return validateR(this.value);' class='validate[required] form-control'>
+							<select name='tipo_material' id='tipo_material' onChange='return validateR(this.value);' class='form-control' required>
 								<?php
 								echo "<option   value=''>Seleccionar Tipo de Material</option>";
 								foreach ($tipomaterial as $rowp) {
@@ -124,7 +124,7 @@ $marca1   = $get_records['marca'];
 					<div class="col-md-4 col-12">
 						<fieldset class="form-group">
 							<label for="basicInput">Categor&iacute;a:</label>
-							<select name='categoria' id='categoria' class='validate[required] form-control'>
+							<select name='categoria' id='categoria' class='validate[required] form-control' required>
 								<?php
 								echo "<option   value=''>Seleccionar Categoria</option>";
 								foreach ($categoria as $rowp) {

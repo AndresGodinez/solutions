@@ -391,8 +391,9 @@
                                 text: '',
                                 confirmButtonClass: 'btn btn-success',
                                 });
-                    $('.formadd').reset();
-                    $('#add').modal('hidden');
+                    $('.formadd')[0].reset();;
+                    
+                    $('#add').modal('hide');
 
                 }
             });

@@ -38,11 +38,13 @@ class AlcoparController extends Controller
 
     public function revingedit(Request $request)
     {
+        
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
         $get_records = AlcoparModel::get_rev_ing_alta_edit($request->id);  
         $id = $request->id;      
         $request->session()->put(['alcopar_id'=>$id]);
+        $request->session()->put(['pieza_alcopar'=>trim(strtoupper($get_records['row'][0]['partes']))]);
         #$request->session()->put(['x'=>'b']);
         ##echo session('x');                
         return view("Alcopar.revingedit", compact('get_records','id'));
@@ -150,15 +152,14 @@ class AlcoparController extends Controller
         $request->session()->put(['tipo'=>trim(strtoupper($_POST["tipo"]))]);
         $request->session()->put(['sustituto'=>trim(strtoupper($_POST["sustituto"]))]);
         
-
-
-
         $v = AlcoparModel::rechazar2(); 
         if($v){
             echo "<script>window.location = './?success=1'</script>";       
         }else{
             echo "<script>window.location = './'</script>";
         }
+        
+        
     }
 
 
