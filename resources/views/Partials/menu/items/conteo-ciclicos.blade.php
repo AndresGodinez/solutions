@@ -11,7 +11,7 @@
                 <a href="{{route('conteo-ciclos.index')}}">
                     <i class="bx bx-right-arrow-alt"></i>
                     <span class="menu-item" data-i18n="eCommerce">
-                        Carga Ciclos
+                        Carga Cicliclos
                     </span>
                 </a>
             </li>
