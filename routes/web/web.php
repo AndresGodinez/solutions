@@ -20,7 +20,7 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function (){
-    SurtimientoConcentrado::binesParaPicking('RS01');
+    SurtimientoConcentrado::insercionConcentrado('RS01');
 });
 
 
