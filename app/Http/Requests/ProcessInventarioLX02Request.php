@@ -24,7 +24,7 @@ class ProcessInventarioLX02Request extends FormRequest
     public function rules()
     {
         return [
-            'inventario_lx02' => 'required|mimes:csv,txt'
+            'inventario_lx02' => 'required|mimes:txt'
         ];
     }
 
@@ -32,7 +32,7 @@ class ProcessInventarioLX02Request extends FormRequest
     {
         return [
             'inventario_lx02.required' => 'El archivo de LX02 es requerido.',
-            'inventario_lx02.mimes' => 'El archivo a procesar tiene que ser csv o txt.'
+            'inventario_lx02.mimes' => 'El archivo a procesar tiene que ser txt.'
         ];
     }
 }

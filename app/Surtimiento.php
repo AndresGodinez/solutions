@@ -75,7 +75,6 @@ class Surtimiento extends Model
 
         DB::statement($query2);
 
-
     }
 
 }

@@ -46,13 +46,13 @@ class UpdateLX02Job implements ShouldQueue
 
         SurtimientoReserva::deletePlanta($this->planta);
 
-        SurtimientoReserva::updatePlanta($this->planta);
+        SurtimientoReserva::updatePlantaStock($this->planta);
 
         SurtimientoReserva::markAsBorrar($this->planta);
 
         SurtimientoReserva::markAsBorrarReserva($this->planta);
 
-        SurtimientoReserva::consolidarReserva($this->planta);
+        SurtimientoReserva::consolidarReserva();
 
         Surtimiento::insertConsolidado($this->planta);
 

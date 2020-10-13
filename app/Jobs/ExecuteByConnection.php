@@ -38,7 +38,13 @@ class ExecuteByConnection implements ShouldQueue
      */
     public function handle()
     {
-        DB::connection($this->selectedDB)->getPdo()
-            ->exec($this->query);
+        try {
+            DB::connection($this->selectedDB)->getPdo()
+                ->exec($this->query);
+        } catch(\Illuminate\Database\QueryException $ex){
+            dd($ex->getMessage());
+            // Note any method of class PDOException can be called on $ex.
+        }
+
     }
 }

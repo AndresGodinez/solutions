@@ -10,7 +10,7 @@
                     </div>
                     <div class="card-content">
                         <div class="card-body">
-                            <form action="#" enctype="multipart/form-data" method="post">
+                            <form action="{{ route('process-inventario-lx02') }}" enctype="multipart/form-data" method="post">
                                 @csrf
                                 <div class="form-row">
                                     <div class="form-group">
@@ -19,7 +19,7 @@
                                             type="file"
                                             name="inventario_lx02"
                                             class="form-control-file"
-                                            accept="text/csv"
+                                            accept="text/plain"
                                             required>
                                     </div>
                                 </div>

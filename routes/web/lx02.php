@@ -11,11 +11,11 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/process-inventario-lx02', 'Lx02Controller@processInventarioLx02')
             ->name('process-inventario-lx02')
-            ->middleware('carga inventario a nivel bin');
+            ->middleware('permission:carga inventario a nivel bin');
 
         Route::post('/process-recibo-bins', 'Lx02Controller@processReciboBins')
             ->name('process-recibo-bins')
-            ->middleware('carga inventario recibo bins');
+            ->middleware('permission:carga inventario recibo bins');
 
     });
 });

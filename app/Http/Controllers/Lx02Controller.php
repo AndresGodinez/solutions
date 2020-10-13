@@ -20,7 +20,6 @@ class Lx02Controller extends Controller
 
     public function processInventarioLx02(ProcessInventarioLX02Request $request)
     {
-        dd('en construcción');
 
         $user = $request->user();
 
@@ -33,31 +32,30 @@ class Lx02Controller extends Controller
         $connection = 'logistica';
 
         $query = 'LOAD DATA LOCAL INFILE "'.$nameFile.'"
-                  INTO TABLE reforig_logistica.inventario_lx02
-                  FIELDS TERMINATED BY ","
-                  LINES TERMINATED BY "\r\n"
-                  IGNORE 7 LINES
-                  (@ignora1,
-                  @material,
-                  @descripcion,
-                  @planta,
-                  @sloc,
-                  @nivel,
-                  @bin,
-                  @stock,
-                  @fecha
+                    INTO TABLE reforig_logistica.inventario_lx02
+                    FIELDS TERMINATED BY "|"
+                    LINES TERMINATED BY "\r\n"
+                    IGNORE 7 LINES
+                    (
+                        @ignora1,
+                        @material,
+                        @descripcion,
+                        @planta,
+                        @sloc,
+                        @nivel,
+                        @bin,
+                        @stock,
+                        @fecha
                     )
-
                     SET
-                    material=TRIM(@material),
-                    descripcion=UPPER(replace(TRIM(@descripcion),"\"","")),
-                    planta=TRIM(@planta),
-                    sloc=TRIM(@sloc),
-                    nivel=TRIM(@nivel),
-                    bin=TRIM(@bin),
-                    stock=replace(@stock,",",""),
-                    fecha=STR_TO_DATE(@fecha, "%m/%d/%Y")
-                ';
+                        material=TRIM(@material),
+                        descripcion=UPPER(replace(TRIM(@descripcion),"\"","")),
+                        planta=TRIM(@planta),
+                        sloc=TRIM(@sloc),
+                        nivel=TRIM(@nivel),
+                        bin=TRIM(@bin),
+                        stock=replace(@stock,",",""),
+                        fecha=STR_TO_DATE(@fecha, "%m/%d/%Y")';
 
         $this->dispatch(
             new ExecuteByConnection($query, $connection)
@@ -68,7 +66,7 @@ class Lx02Controller extends Controller
         );
 
         return Redirect::route('lx02.index')
-            ->with('message', 'El archivo está siendo procesado');
+            ->with('message', 'El archivo de inventario LX02 está siendo procesado');
 
     }
 

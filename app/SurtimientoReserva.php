@@ -25,7 +25,7 @@ class SurtimientoReserva extends Model
 
     }
 
-    public static function updatePlanta(string $planta)
+    public static function updatePlantaStock(string $planta)
     {
         DB::connection('logistica')->update('UPDATE surtimiento_reserva
             LEFT JOIN inventario_lx02 ON surtimiento_reserva.planta = inventario_lx02.planta AND surtimiento_reserva.material = inventario_lx02.material
@@ -56,12 +56,12 @@ class SurtimientoReserva extends Model
               AND surtimiento_reserva.planta= '.$planta);
     }
 
-    public static function consolidarReserva(string $planta)
+    public static function consolidarReserva()
     {
         // OBTIENE EL NUMERO DE LA RESERVA A BORRAR POR INCOMPLETA Y BORRA TODAS LAS LINEAS
         // HASTA QUE TODA LA RESERVA ESTE COMPLETA
 
-        $surtimientos = SurtimientoReserva::where('status', 'BORRAR')->get()->delete();
+        SurtimientoReserva::where('status', 'BORRAR')->get()->delete();
 
     }
 }

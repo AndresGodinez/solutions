@@ -19,7 +19,6 @@ class StockBasicoTecnico extends Model
             ->table('stockbasico_tecnico')
             ->where('planta', $planta)
             ->update(['stock' => null]);
-
     }
 
     public static function updateStockTecnico(string $planta)
@@ -46,9 +45,9 @@ class StockBasicoTecnico extends Model
         // DETERMINA SI HAY QUE SURTIR
         $query3 = "UPDATE reforig_logistica.stockbasico_tecnico
             SET
-                stockbasico_tecnico.surtir = stockbasico_tecnico.max-stockbasico_tecnico.stock
+                stockbasico_tecnico.surtir = stockbasico_tecnico.max - stockbasico_tecnico.stock
             WHERE
-                stockbasico_tecnico.planta='$planta'";
+                stockbasico_tecnico.planta = '$planta'";
 
         DB::statement($query3);
 
@@ -62,7 +61,6 @@ class StockBasicoTecnico extends Model
             AND stockbasico_tecnico.planta='$planta'";
 
         DB::statement($query4);
-
 
     }
 }

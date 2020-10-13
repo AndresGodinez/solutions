@@ -39,56 +39,48 @@ class InventarioLX02 extends Model
             ->whereNull('material')
             ->delete();
 
-
         DB::connection('logistica')
             ->table('inventario_lx02')
             ->where('bin', 'like', 'SBTEC%')
             ->where('planta', '=', $planta)
-            ->update(['orden' => 1])
-        ;
+            ->update(['orden' => 1]);
 
         DB::connection('logistica')
             ->table('inventario_lx02')
             ->where('nivel', '=', '001')
             ->where('planta', '=', $planta)
-            ->update(['orden' => 2])
-        ;
+            ->update(['orden' => 2]);
 
         DB::connection('logistica')
             ->table('inventario_lx02')
             ->where('nivel', '=', '002')
             ->where('planta', '=', $planta)
-            ->update(['orden' => 3])
-        ;
+            ->update(['orden' => 3]);
 
         DB::connection('logistica')
             ->table('inventario_lx02')
             ->where('nivel', '=', '003')
             ->where('planta', '=', $planta)
-            ->update(['orden' => 4])
-        ;
+            ->update(['orden' => 4]);
 
         DB::connection('logistica')
             ->table('inventario_lx02')
             ->where('nivel', '=', '006')
             ->where('planta', '=', $planta)
-            ->update(['orden' => 5])
-        ;
+            ->update(['orden' => 5]);
 
         DB::connection('logistica')
             ->table('inventario_lx02')
             ->where('nivel', '=', '007')
             ->where('bin', 'like', '%QI%')
             ->where('planta', '=', $planta)
-            ->update(['orden' => 6])
-        ;
+            ->update(['orden' => 6]);
 
         DB::connection('logistica')
             ->table('inventario_lx02')
             ->whereNull('orden')
             ->where('planta', '=', $planta)
-            ->update(['orden' => 0])
-        ;
+            ->update(['orden' => 0]);
 
     }
 }
