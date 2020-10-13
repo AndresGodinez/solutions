@@ -120,7 +120,7 @@ class StocksController extends Controller
             $start = 0;
 
             while (($data = fgetcsv($handle)) !== FALSE) {
-                if ($start > 1) {
+                if ($start > 0) {
                     // most be insert
                     StocksModel::insert_load($data, Auth::user()->username, date("Y-m-d H:i:s"));
                 }
@@ -131,7 +131,7 @@ class StocksController extends Controller
             // Envio de correo alerta por id_region gente ISC.
         }
 
-        #echo '<script>window.location.href = "' . $redirect . '";</script>';
+        echo '<script>window.location.href = "' . $redirect . '";</script>';
     }
 
     // Carga para stocks iniciales (conclusion ISC)
