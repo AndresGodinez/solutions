@@ -4,6 +4,8 @@
 
 $row = $get_records['row'][0];
 $row2 = $get_records['row2'];
+
+
 //$row2 = 3;
 #$row3 = $get_records['row2'][0];
 
@@ -367,7 +369,7 @@ $data = $get_records;
 				</button>
 			</div>
 			<div class="modal-body" id="code">	
-				
+				<p style="font-weight: bold; font-size: 22px;">Aún falta que selecciones más opciones.</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-light-secondary" data-dismiss="modal">

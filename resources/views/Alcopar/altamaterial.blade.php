@@ -6,8 +6,6 @@
 $tipomaterial = $get_records['tipomaterial'];
 $categoria  = $get_records['categoria'];
 $marca1   = $get_records['marca'];
-//$alcopar=session('alcopar');
-//$alcopar_nivel=session('alcopar_nivel');
 
 ?>
 
@@ -145,7 +143,7 @@ $marca1   = $get_records['marca'];
 						</fieldset>
 					</div>
 
-					<div class="col-md-4 col-12" id="otros1" style="display:none">
+					<div class="col-md-4 col-12 otros1" id="" style="display:none">
 						<fieldset class="form-group">
 							<label for="basicInput">Marca:</label>
 							<select name='marca1' id='marca1' class="form-control">
@@ -162,7 +160,7 @@ $marca1   = $get_records['marca'];
 
 
 
-					<div class="col-md-4 col-12">
+					<div class="col-md-4 col-12 otros1" id="" style="display:none">
 						<fieldset class="form-group">
 							<label for="basicInput">Tipo Categor&iacute;a Extra:</label>
 							<select name="categoria_extra" id="categoria_extra" class="form-control">
@@ -175,7 +173,7 @@ $marca1   = $get_records['marca'];
 
 
 
-					<div class="col-md-4 col-12">
+					<div class="col-md-4 col-12" id="otros2" style="display:none">
 						<fieldset class="form-group">
 							<label for="basicInput">Marca:</label>
 							<select name='marca2' id='marca2' class="form-control" onChange='return validateR(this.value);'>
@@ -212,10 +210,9 @@ $marca1   = $get_records['marca'];
 				document.getElementById('otros').style.display = 'none';
 			}
 			if (tipo_material == '1' || tipo_material == '3') {
-				document.getElementById('otros1').style.display = 'block';
+				$('.otros1').show();
 			} else {
-				document.getElementById('otros1').style.display = 'none';
-
+				$('.otros1').hide();
 			}
 			if (tipo_material == '4') {
 				document.getElementById('otros2').style.display = 'block';

@@ -233,6 +233,7 @@ class AlcoparModel extends ModelBase
         $row = AlcoparModel::query()->selectRaw('
         alcopar_partes.id,
             alcopar_partes.parte,
+            alcopar_partes.comentario,
             alcopar_partes.modelo,
             alcopar_partes.dispatch,
             alcopar_partes.descripcion,
@@ -2310,7 +2311,6 @@ class AlcoparModel extends ModelBase
 
     public static function altamaterial($username,$mail,$depto,$descripcion,$modelo,$taller,$dispatch,$donde,$otro,$tipo_material,$categoria,$familia,$marca1,$marca2,$categoria_extra,$motivo)
     {
-
         $parte= session("parte");        
         $rows = AlcoparModel::query()
         ->selectRaw('parte, status')
@@ -2594,13 +2594,13 @@ class AlcoparModel extends ModelBase
     public static function materialexistente(){
         $data = [];
         $rows = AlcoparModel::query()
-            ->selectRaw('descripcion,dispatch, motivo,taller,modelo, username, parte, comentario,comentario_reving,descripcion,clasif_sat,nomenclatura_service')
+            ->selectRaw('descripcion,dispatch, motivo,taller,modelo, username, parte, comentario,comentario_reving,descripcion,clasif_sat,nomenclatura_service,fecha,status')
             ->from('alcopar_partes')->whereRaw("parte = '" . session('parte')."'")->get();
 
         $data['partes'] = $rows[0];
            
         $rows = AlcoparModel::query()
-        ->selectRaw('descripcion,dispatch, motivo,taller,modelo, username, parte, comentario,comentario_reving,descripcion,clasif_sat,nomenclatura_service')
+        ->selectRaw('descripcion,dispatch, motivo,taller,modelo, username, parte, comentario,comentario_reving,descripcion,clasif_sat,nomenclatura_service,fecha,status')
         ->from('alcopar_partes')->whereRaw("parte = '" . $rows[0]['']."'")->get();
 
         $data['row1'] = $rows->count();
@@ -2898,7 +2898,7 @@ class AlcoparModel extends ModelBase
         motivo')
             ->from('alcopar_partes')
             ->whereRaw('oow =1 ORDER BY FIELD (motivo,\'PROYECTOS, STOCK INICIAL\',\'PROYECTOS, STOCK FINAL\') ASC,fecha ASC')
-            ->limit(50)
+            //->limit(50)
             ->get();
 
         foreach ($data as $k => $row) {

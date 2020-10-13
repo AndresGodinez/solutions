@@ -120,6 +120,8 @@ class AlcoparController extends Controller
         $v = AlcoparModel::rechazar(); 
         if(!$v){
             echo "<script>window.location = './procesarechazar3'</script>";       
+        }else{
+            echo "<script>window.location = './alcopar/factible'</script>";       
         }
     }
 
@@ -327,7 +329,7 @@ class AlcoparController extends Controller
 
         
         if($v){
-            AlcoparModel::procesaaceptarfac();      
+            //AlcoparModel::procesaaceptarfac();      
             echo "<script>window.location = '../altamaterial?success=1'</script>";
         }      
         else{

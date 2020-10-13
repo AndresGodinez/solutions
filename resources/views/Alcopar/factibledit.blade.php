@@ -251,6 +251,7 @@ $data = $get_records;
 						?>
 						</select>
 						</div>
+				
 				<div class="col-md-6 col-12">
 					<fieldset class="form-group">
 						<label for="basicInput">Tipo Categor&iacute;a Extra:</label>    
@@ -281,7 +282,9 @@ $data = $get_records;
 							}
 							?>
 						</select>
-						</div>
+					</fieldset>
+				</div>
+
 				<div class="col-md-12 col-12">
 					<fieldset class="form-group">	
 					<label for="basicInput">Comentario Rev Ingenieria:</label>    			

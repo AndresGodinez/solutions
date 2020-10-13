@@ -126,7 +126,7 @@
                             <i class="bx bx-x"></i>
                         </button>
                     </div>
-                    <div class="modal-body contenido-modal">
+                    <div class="modal-body">
                         <form class="formadd">
                             <div class="input-group input-group-lg">
                                 <div class="input-group-prepend">
