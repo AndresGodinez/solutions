@@ -10,7 +10,6 @@
         <div class="card-body">
             <form action="{{ route('usuario.update', ['usuario'=> $usuario->id]) }}" method="post">
                 @csrf
-                <countries-lists :usuario="{{ json_encode($usuario) }}"></countries-lists>
 
                 <div class="form-row">
                     <div class="form-group col-md-4">
@@ -33,19 +32,21 @@
                         >
                     </div>
                 </div>
-
                 <div class="form-group">
                     @foreach($roles as $role)
-                    <div class="custom-control custom-radio">
-                        <input type="radio"
-                               id="role"
-                               name="role"
-                               class="custom-control-input"
-                               value="{{ $role->name }}"
-                               {{ $usuario->hasRole($role->name) ? 'checked' : '' }}
-                        >
-                        <label class="custom-control-label" for="role">{{ ucfirst($role->name) }}</label>
-                    </div>
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="radio"
+                                name="role"
+                                value="{{ $role->name }}"
+                                {{ $usuario->hasRole($role->name) ? 'checked' : '' }}
+                            >
+                            <label class="form-check-label">
+                                {{ ucfirst($role->name) }}
+                            </label>
+                        </div>
+
                     @endforeach
                 </div>
 
