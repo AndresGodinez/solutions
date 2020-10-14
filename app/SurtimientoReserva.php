@@ -30,7 +30,7 @@ class SurtimientoReserva extends Model
         DB::connection('logistica')->update('UPDATE surtimiento_reserva
             LEFT JOIN inventario_lx02 ON surtimiento_reserva.planta = inventario_lx02.planta AND surtimiento_reserva.material = inventario_lx02.material
             SET surtimiento_reserva.stock_planta = inventario_lx02.stock
-        WHERE inventario_lx02.planta= '.$planta.'
+        WHERE inventario_lx02.planta= "'.$planta.'"
             AND inventario_lx02.sloc = "0001"
             AND inventario_lx02.bin NOT LIKE "025%"');
 
@@ -42,7 +42,7 @@ class SurtimientoReserva extends Model
         DB::connection('logistica')->update('UPDATE surtimiento_reserva
             SET surtimiento_reserva.status = "BORRAR"
             WHERE surtimiento_reserva.stock_planta IS NULL
-              AND inventario_lx02.planta= '.$planta);
+              AND surtimiento_reserva.planta= "'.$planta.'"');
 
     }
 
@@ -53,7 +53,7 @@ class SurtimientoReserva extends Model
             ->update('UPDATE surtimiento_reserva
             SET surtimiento_reserva.status = "BORRAR"
             WHERE surtimiento_reserva.stock_planta < surtimiento_reserva.surtir
-              AND surtimiento_reserva.planta= '.$planta);
+              AND surtimiento_reserva.planta = "'.$planta.'"');
     }
 
     public static function consolidarReserva()
@@ -61,7 +61,7 @@ class SurtimientoReserva extends Model
         // OBTIENE EL NUMERO DE LA RESERVA A BORRAR POR INCOMPLETA Y BORRA TODAS LAS LINEAS
         // HASTA QUE TODA LA RESERVA ESTE COMPLETA
 
-        SurtimientoReserva::where('status', 'BORRAR')->get()->delete();
+        SurtimientoReserva::where('status', 'BORRAR')->delete();
 
     }
 }

@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 
 class PermissionLX02Seeder extends Seeder
@@ -16,16 +15,26 @@ class PermissionLX02Seeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        Permission::create(['name' => 'subir archivo LX02']);
-        Permission::create(['name' => 'carga inventario a nivel bin']);
-        Permission::create(['name' => 'carga inventario recibo bins']);
+        $lx02 = Permission::create(
+            ['name' => 'LX02']
+        );
 
-        $roleAdmin = Role::where('name', 'admin')->first();
+        Permission::create([
+            'name' => 'subir archivo LX02',
+            'parent' => $lx02->id,
+            'order' => 0
+        ]);
 
-        $roleAdmin->givePermissionTo([
-            'subir archivo LX02',
-            'carga inventario a nivel bin',
-            'carga inventario recibo bins',
+        Permission::create([
+            'name' => 'carga inventario a nivel bin',
+            'parent' => $lx02->id,
+            'order' => 1
+        ]);
+
+        Permission::create([
+            'name' => 'carga inventario recibo bins',
+            'parent' => $lx02->id,
+            'order' => 2
         ]);
 
     }

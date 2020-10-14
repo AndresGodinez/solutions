@@ -6,13 +6,16 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'fecha-promesa'], function () {
 
         Route::get('/', 'FechaPromesaController@search')
-            ->name('fechas-promesa.search')->middleware('permission:consultar fecha promesa');
+            ->name('fechas-promesa.search')
+            ->middleware('permission:consultar fecha promesa');
 
         Route::post('consulta', 'FechaPromesaController@consulta')
-            ->name('fechas-promesa.consulta')->middleware('permission:consultar fecha promesa');
+            ->name('fechas-promesa.consulta')
+            ->middleware('permission:consultar fecha promesa');
 
         Route::post('update-fechas-promesas', 'FechaPromesaController@actualizarFechasPromesas')
-            ->name('actualizarFechasPromesas')->middleware('permission:actualizar fechas promesa');
+            ->name('actualizarFechasPromesas')
+            ->middleware('permission:actualizar fechas promesa');
 
 //        Reports
 

@@ -4,17 +4,21 @@
         <div class="row">
             <h5>Consulta de Fechas Promesa</h5>
         </div>
-        @if(Auth::user()->hasPerm('fpromesa.dreport'))
+{{--        @if(Auth::user()->hasPerm('fpromesa.dreport'))--}}
         <div class="row d-flex justify-content-between my-3">
+            @can('desgargar fecha promesa general')
             <a href="{{ route('download.report.fecha.promesa.general') }}"
                class="btn btn-info">
                 Reporte Fechas promesa General
             </a>
+            @endcan
+            @can('descargar fecha promesa detalles')
             <a href="{{ route('download.report.fecha.promesa.detalle') }}" class="btn btn-info">
                 Reporte Fechas promesa Detalle
             </a>
+            @endcan
         </div>
-        @endif
+{{--        @endif--}}
         <div class="row mt-2">
             <div class="col-md-6">
                 <form action="{{ route('fechas-promesa.consulta') }}" method="post">
@@ -37,10 +41,10 @@
                     </div>
                 </form>
             </div>
-            @if(Auth::user()->hasPerm('fpromesa.actFechas'))
+{{--            @if(Auth::user()->hasPerm('fpromesa.actFechas'))--}}
+            @can('actualizar fechas promesas')
                 @if( CheckLogs::check('wpx_log_bigprocess', 'fechas promesas'))
                     @if(!Session::has('message'))
-
                         <div class="col-md-4 d-flex">
                             <form action="{{ route('actualizarFechasPromesas') }}" method="post">
                                 @csrf
@@ -51,11 +55,13 @@
                         </div>
                     @endif
                 @endif
-            @endif
+            @endcan
+{{--            @endif--}}
         </div>
 
         <div class="row mt-3">
-            @if(Auth::user()->hasPerm('fpromesa.promesastracker'))
+{{--            @if(Auth::user()->hasPerm('fpromesa.promesastracker'))--}}
+            @can('carga archivo fechas promesas tracker')
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header h5 bg-warning text-white">
@@ -92,8 +98,10 @@
                     </form>
                 </div>
             </div>
-            @endif
-            @if(Auth::user()->hasPerm('fpromesa.leadtime'))
+            @endcan
+{{--            @endif--}}
+{{--            @if(Auth::user()->hasPerm('fpromesa.leadtime'))--}}
+            @can('carga archivo lead time')
 
             <div class="col-md-4">
                 <div class="card">
@@ -131,9 +139,12 @@
                     </form>
                 </div>
             </div>
-            @endif
+            @endcan
+{{--            @endif--}}
 
-            @if(Auth::user()->hasPerm('fpromesa.backorder'))
+{{--            @if(Auth::user()->hasPerm('fpromesa.backorder'))--}}
+            @can('carga archivo fechas promesas backorder')
+
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header h5 bg-warning text-white">
@@ -171,11 +182,9 @@
                     </form>
                 </div>
             </div>
-            @endif
-
-
+            @endcan
+{{--            @endif--}}
         </div>
-
 
     </div>
 

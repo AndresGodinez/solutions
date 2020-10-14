@@ -41,7 +41,7 @@ class SurtimientoConcentrado extends Model
                 WHERE
                     surtimiento.surtir > 0
                 AND inventario_lx02.orden > 0
-                AND inventario_lx02.planta='$planta'
+                AND inventario_lx02.planta = ' $planta '
                 GROUP BY
                     surtimiento.planta,
                     surtimiento.material,
@@ -50,7 +50,7 @@ class SurtimientoConcentrado extends Model
                     inventario_lx02.sloc,
                     inventario_lx02.stock
                 HAVING
-                    Sum(surtimiento.surtir)>0
+                    Sum(surtimiento.surtir) > 0
                 ORDER BY
                     surtimiento.material,
                     inventario_lx02.orden,
@@ -140,7 +140,7 @@ class SurtimientoConcentrado extends Model
 
     // BORRA LAS LINEAS INNECESARIAS DE SURTIMIENTO
         SurtimientoConcentrado::where('surtir2', '=', 0)
-            ->where('planta', $planta)->get()->delete();
+            ->where('planta', $planta)->delete();
     }
 
 }

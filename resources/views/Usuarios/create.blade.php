@@ -41,10 +41,9 @@
                             class="form-check-input"
                             type="radio"
                             name="role"
-                            id="exampleRadios1"
                                value="{{ $role->name }}"
                         >
-                        <label class="form-check-label" for="exampleRadios1">
+                        <label class="form-check-label">
                             {{ ucfirst($role->name) }}
                         </label>
                     </div>
