@@ -112,7 +112,7 @@ class StocksController extends Controller
             $file->storeAS('stock-inicial/c/' . $date . '/', $final_file);
         } else {
             $valid = false;
-            $redirect = url("stocks/cargas/");
+            $redirect = url("stocks/inicial/");
         }
 
         if ($valid) {
@@ -131,7 +131,7 @@ class StocksController extends Controller
             // Envio de correo alerta por id_region gente ISC.
         }
 
-        echo '<script>window.location.href = "' . $redirect . '";</script>';
+        echo '<script>window.location.href = "' . url("stocks/") . '";</script>';
     }
 
     // Carga para stocks iniciales (conclusion ISC)
@@ -210,17 +210,47 @@ class StocksController extends Controller
     public function upload_stock_final(UploadStockFinalRequest $request)
     {
         $user       = Auth::user()->username;
-        $file   = $request->file('file');
 
         $date   = date("Y-m-d");
-
+        $file   = $request->file('file');
         $valid = true;
+        $redirect = url("stocks/");
 
-        $redirect = url("stocks/final/");
+        if (!empty($file)) {
+            $final_file = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $file->storeAS('stock-final/c/' . $date . '/', $final_file);
+        } else {
+            $valid = false;
+            $redirect = url("stocks/cargas/");
+        }
 
-        $nameFile = MyUtils::saveAndReturnCompleteNameFile($file);
+        if ($valid) {
+            $handle = fopen(base_path() . $this->dirupload . "stock-final\\c\\" . $date . "\\" . $final_file, "r+");
+            $start = 0;
 
-        StocksModel::insert_load_stocks_final($nameFile, $user);
+            while (($data = fgetcsv($handle)) !== FALSE) {
+                if ($start > 0) {
+                    // most be insert
+                    StocksModel::insert_load_stocks_final($data, Auth::user()->username, date("Y-m-d H:i:s"));
+                }
+
+                $start++;
+            };
+
+            // Envio de correo alerta por id_region gente ISC.
+        }
+        // $user       = Auth::user()->username;
+        // $file   = $request->file('file');
+
+        // $date   = date("Y-m-d");
+
+        // $valid = true;
+
+        // $redirect = url("stocks/final/");
+
+        // $nameFile = MyUtils::saveAndReturnCompleteNameFile($file);
+
+        // StocksModel::insert_load_stocks_final($nameFile, );
 
 //        if (!empty($file)) {
 //            $final_file = Str::uuid() . '.' . $file->getClientOriginalExtension();
@@ -246,7 +276,7 @@ class StocksController extends Controller
 //            // Envio de correo alerta por id_region gente ISC.
 //        }
 
-        echo '<script>window.location.href = "' . $redirect . '";</script>';
+        echo '<script>window.location.href = "' . url("stocks/final/") . '";</script>';
     }
 
     // Carga para stocks iniciales (conclusion ISC)

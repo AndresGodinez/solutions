@@ -42,7 +42,7 @@ $nombre_usuario=$get_records['nombre'];
             
             <tr>
                 <td>Usuario:</td> 
-                <td><input name='username' type='text' class="form-control"  disabled id='username' size="40" value='<?php echo $nombre_usuario;?>'></td>
+                <td><input name='username' type='text' class="form-control"  disabled id='username' size="40" value='<?php echo $nombre;?>'></td>
             </tr>
             
             <tr>

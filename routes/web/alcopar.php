@@ -44,6 +44,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/oow',                                      'AlcoparController@oow');       
         Route::get('/oow/edit/{id}',                             'AlcoparController@oowedit');  
         Route::post('/oow/oowprocess',                                      'AlcoparController@oowprocess'); 
+
+        Route::get('/reportalcopar',                                      'AlcoparController@reportalcopar'); 
+        
         
     });
 });
