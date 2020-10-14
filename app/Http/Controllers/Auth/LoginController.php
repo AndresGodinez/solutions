@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Session;
 use function redirect;
+use function route;
 
 
 class LoginController extends Controller
@@ -166,8 +167,8 @@ class LoginController extends Controller
             $_SESSION[$k] = $v;
         }
 
-        $url = config('pages.globals.url')."main/admin.php";
-        return redirect()->away($url);
+//        $url = config('pages.globals.url')."main/admin.php";
+        return redirect(route('home'));
     }
 
     public function logout(Request $request)

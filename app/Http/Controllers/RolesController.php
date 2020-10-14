@@ -22,9 +22,8 @@ class RolesController extends Controller
 
     public function create()
     {
-        $permissions = Permission::get();
-
-        return view('Roles.create', compact('permissions'));
+        $groupedPermissions = $this->groupedPermissions();
+        return view('Roles/create',compact('groupedPermissions'));
     }
 
     public function store(RoleStoreRequest $request)
@@ -42,9 +41,18 @@ class RolesController extends Controller
 
     public function edit(Role $role)
     {
-        $permissions = Permission::get();
+        $rolePermissions = $role->getAllPermissions();
 
-        return view('Roles.edit', compact('permissions', 'role'));
+        $allPermissions = Permission::all();
+
+        $groupedPermissions = $this->groupedPermissions();
+
+        return view('Roles.edit', compact(
+            'rolePermissions',
+            'role',
+            'allPermissions',
+            'groupedPermissions'
+        ));
     }
 
     public function update(Role $role, RoleUpdateRequest $request)
@@ -66,5 +74,23 @@ class RolesController extends Controller
 
         return redirect(route('roles.index'))->with(['message' => 'El role ha sido eliminado']);
 
+    }
+
+    protected function groupedPermissions()
+    {
+        $permissions = Permission::get();
+
+        $parents = $permissions->where('parent', 0)->filter(function ($item){
+            return $item->parent == 0;
+        });
+
+        return $parents->map(function ($item) use ($permissions){
+
+            $item->subItems = $permissions->filter(function ($permission) use ($item){
+                return $permission->parent == $item->id;
+            });
+
+            return $item;
+        });
     }
 }

@@ -2,40 +2,46 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <form action="{{ route('role.update', ['role' => $role->id ]) }}" method="post">
-                @csrf
-                <div class="form-row">
-                    <div class="form-group col-md-10">
-                        <label for="name">Nombre</label>
-                        <input type="text"
-                               id="name"
-                               name="name"
-                               class="form-control"
-                               value="{{ $role->name }}"
-                               required
-                        >
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    Permisos Asociados A Role {{ $role->name }}
+                </div>
+                <div class="card-content">
+                    <div class="card-body pt-2">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <tr class="bg-info text-white">
+                                <th>Id</th>
+                                <th>Nombre</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @if(count($rolePermissions))
+                                @foreach($rolePermissions as $permission)
+                                    <tr>
+                                        <td>{{ $permission->id }}</td>
+                                        <td>{{ $permission->name }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                @foreach($permissions as $permission)
-                    <div class="form-check">
-                        <input type="checkbox"
-                               name="permissions[]"
-                               id="permissions"
-                               class="form-check-input"
-                               value="{{ $permission->name }}"
-                               {{  $role->hasPermissionTo($permission->name) ? 'checked' : ''}}
-                        >
-                        <label for="permissions[]">{{ $permission->name }}</label>
-                    </div>
-                @endforeach
-
-                <div class="form-row pt-3">
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-success" value="Actualizar">
-                    </div>
-                </div>
-
-            </form>
+            </div>
         </div>
+        <div class="row mt-3">
+            <div class="card col-md-12 px-0">
+                <div class="card-header bg-info text-white">
+                    Actuzalizar Permisos Asociados A Role {{ $role->name }}
+                </div>
+                <div class="card-content">
+                    @include('Roles.partials.groupedEditPermissions')
+                </div>
+            </div>
+        </div>
+
     </div>
+
 @endsection

@@ -17,26 +17,13 @@ class RolesTableSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // create permissions
-        Permission::create(['name' => 'crear usuarios']);
-        Permission::create(['name' => 'editar usuarios']);
-        Permission::create(['name' => 'ver usuarios']);
-        Permission::create(['name' => 'eliminar usuarios']);
-
         $roleAdmin = Role::create(['name' => 'admin']);
-        $roleAdmin->givePermissionTo([
-            'crear usuarios',
-            'editar usuarios',
-            'ver usuarios',
-            'eliminar usuarios'
-        ]);
+        $roleAdmin->givePermissionTo(
+            Permission::all()
+        );
 
         $usuario = Usuario::where('username', 'prueba')->first();
 
         $usuario->assignRole($roleAdmin);
-
-
-
-
     }
 }

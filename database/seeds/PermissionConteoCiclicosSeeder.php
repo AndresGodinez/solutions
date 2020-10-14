@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\PermissionRegistrar;
 
-class PermissionRolesSeeder extends Seeder
+class PermissionConteoCiclicosSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,32 +15,27 @@ class PermissionRolesSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        $role = Permission::create(
-            ['name' => 'roles']
+        $cCiclicos = Permission::create(
+            ['name' => 'conteo ciclicos']
         );
 
         Permission::create([
-            'name' => 'crear roles',
-            'parent' => $role->id,
+            'name' => 'carga materiales para hojas de conteo cilicos',
+            'parent' => $cCiclicos->id,
             'order' => 0
         ]);
 
         Permission::create([
-            'name' => 'ver roles',
-            'parent' => $role->id,
+            'name' => 'descarga de hojas conteo ciclicos pdf',
+            'parent' => $cCiclicos->id,
             'order' => 1
         ]);
 
         Permission::create([
-            'name' => 'editar roles',
-            'parent' => $role->id,
+            'name' => 'descarga de hojas conteo ciclicos xls',
+            'parent' => $cCiclicos->id,
             'order' => 2
         ]);
 
-        Permission::create([
-            'name' => 'eliminar roles',
-            'parent' => $role->id,
-            'order' => 3
-        ]);
     }
 }
