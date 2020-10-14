@@ -4,7 +4,7 @@ Route::middleware('auth')->prefix('conteo-ciclos')->group(function () {
 //Conteo Ciclicos
     Route::get('/', 'ConteoCiclosController@index')
         ->name('conteo-ciclos.index')
-        ->middleware('permission:ver conteo ciclos');
+        ->middleware('permission:ver conteo ciclicos');
 
     Route::post('/process-hojas-conteo-ciclos', 'ConteoCiclosController@processHojasConteoCiclos')
         ->name('process-hojas-conteo-ciclos')
