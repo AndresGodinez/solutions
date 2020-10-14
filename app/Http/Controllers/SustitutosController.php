@@ -10,6 +10,7 @@ use App\Jobs\CargaMasivaSustitutos;
 use App\Jobs\SqlJob;
 use App\Utils\MyUtils;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use function date;
 use function redirect;
 
@@ -112,7 +113,8 @@ class SustitutosController extends Controller
             new CargaMasivaSustitutos($query)
         );
 
-        return redirect()->back()->with(['message' => 'El archivo esta siendo procesado']);
+        return Redirect::route('materiales-sustitutos.cargaSustitutos')
+            ->with(['message' => 'El archivo esta siendo procesado']);
 
     }
 
@@ -147,6 +149,9 @@ class SustitutosController extends Controller
         $this->dispatch(
             new SqlJob($queryUpdate)
         );
+
+        return Redirect::route('materiales-sustitutos.cargaSustitutos')
+            ->with(['message' => 'El archivo esta siendo procesado']);
 
     }
 

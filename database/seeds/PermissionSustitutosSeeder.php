@@ -69,5 +69,11 @@ class PermissionSustitutosSeeder extends Seeder
             'parent' => $sustitutos->id,
             'order' => 7
         ]);
+
+        Permission::create([
+            'name' => 'carga mm60',
+            'parent' => $sustitutos->id,
+            'order' => 8
+        ]);
     }
 }
