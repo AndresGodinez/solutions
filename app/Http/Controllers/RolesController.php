@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RoleStoreRequest;
 use App\Http\Requests\RoleUpdateRequest;
+use Illuminate\Support\Facades\Redirect;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use function compact;
@@ -76,7 +77,7 @@ class RolesController extends Controller
     {
         $role->delete();
 
-        return redirect(route('roles.index'))->with(['message' => 'El role ha sido eliminado']);
+        return Redirect::route('roles.index')->with(['message' => 'El role ha sido eliminado']);
 
     }
 
