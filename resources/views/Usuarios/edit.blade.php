@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@include('Partials.errors')
 @section('content')
     <div class="container">
         <div class="card">
