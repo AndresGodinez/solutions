@@ -55,5 +55,11 @@ class PermissionFechaPromesasSeeder extends Seeder
             'order' => 5
         ]);
 
+        Permission::create([
+            'name' => 'carga archivo fechas promesas lead time',
+            'parent' => $promise->id,
+            'order' => 6
+        ]);
+
     }
 }
