@@ -37,5 +37,11 @@ class PermissionConteoCiclicosSeeder extends Seeder
             'order' => 2
         ]);
 
+        Permission::create([
+            'name' => 'ver conteo cicliclos',
+            'parent' => $cCiclicos->id,
+            'order' => 3
+        ]);
+
     }
 }
