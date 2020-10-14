@@ -143,7 +143,7 @@
 {{--            @endif--}}
 
 {{--            @if(Auth::user()->hasPerm('fpromesa.backorder'))--}}
-            @can('carga archivo fechas promesas backorder')
+            @can('subir archivo backorder')
 
             <div class="col-md-4">
                 <div class="card">

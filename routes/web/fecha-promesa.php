@@ -45,15 +45,15 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/download-template-fechas-promesas-tracker', 'FechaPromesaController@downloadTemplatePromesasTracker')
             ->name('download-template-fechas-promesas-tracker')
-            ->middleware('permission:descargar template fecha promesa tracker');
+            ->middleware('permission:subir archivo promesa tracker');
 
         Route::get('/download-template-fechas-promesas-lead-time', 'FechaPromesaController@downloadTemplateLeadTime')
             ->name('download-template-fechas-promesas-lead-time')
-            ->middleware('permission:descargar template lead time');
+            ->middleware('permission:subir archivo lead time');
 
         Route::get('/download-template-fechas-promesas-backorder', 'FechaPromesaController@downloadTemplateBackorder')
             ->name('download-template-fechas-promesas-backorder')
-            ->middleware('permission:descargar template backorder');
+            ->middleware('permission:subir archivo backorder');
 
     });
 });
