@@ -59,6 +59,10 @@ class RolesController extends Controller
     {
         $role->syncPermissions();
 
+        $role->name = $request->get('name');
+
+        $role->save();
+
         $permissions = $request->get('permissions');
 
         foreach ($permissions as $permission) {

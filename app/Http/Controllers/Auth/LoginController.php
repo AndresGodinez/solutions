@@ -239,6 +239,6 @@ class LoginController extends Controller
 //            session_destroy();
         }
         Auth::logout();
-        return redirect(env('BASE_PATH').'/');
+        return redirect('/');
     }
 }
