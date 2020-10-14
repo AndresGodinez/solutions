@@ -7,11 +7,11 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/', 'FechaPromesaController@search')
             ->name('fechas-promesa.search')
-            ->middleware('permission:consultar fecha promesa');
+            ->middleware('permission:consultar fechas promesas');
 
         Route::post('consulta', 'FechaPromesaController@consulta')
             ->name('fechas-promesa.consulta')
-            ->middleware('permission:consultar fecha promesa');
+            ->middleware('permission:consultar fechas promesas');
 
         Route::post('update-fechas-promesas', 'FechaPromesaController@actualizarFechasPromesas')
             ->name('actualizarFechasPromesas')

@@ -20,7 +20,7 @@ class PermissionFechaPromesasSeeder extends Seeder
         );
 
         Permission::create([
-            'name' => 'consulta de fechas promesas',
+            'name' => 'consultar fechas promesas',
             'parent' => $promise->id,
             'order' => 0
         ]);
