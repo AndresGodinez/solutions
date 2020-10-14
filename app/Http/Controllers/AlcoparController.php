@@ -58,9 +58,11 @@ class AlcoparController extends Controller
         $request->session()->put(['tipo_material'=>trim(strtoupper($_POST["tipo_material"]))]);
         $request->session()->put(['familia'=>trim(strtoupper($_POST["familia"]))]);
         $request->session()->put(['marca1'=>trim(strtoupper($_POST["marca1"]))]);
-        //$request->session()->put(['marca2'=>trim(strtoupper($_POST["marca2"]))]);
+        
+        $request->session()->put(['categoria'=>trim(strtoupper($_POST["categoria"]))]);
+        
         $request->session()->put(['comentario'=>trim(strtoupper($_POST["comentario"]))]);
-        $request->session()->put(['comentario'=>trim(strtoupper($_POST["comentario"]))]);
+        $request->session()->put(['descripcion'=>trim(strtoupper($_POST["comentario"]))]);
        
         $alcopar_id=session('alcopar_id');
         

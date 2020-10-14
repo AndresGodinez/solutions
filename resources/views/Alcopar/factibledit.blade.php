@@ -11,6 +11,7 @@ $data = $get_records;
 
 ?>
 
+
 <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/app-assets/vendors/css/tables/datatable/datatables.min.css">
 <section id="basic-datatable">
 	<div class="row">
@@ -41,7 +42,7 @@ $data = $get_records;
 				<div class="col-md-4 col-12">
 					<fieldset class="form-group">
 						<label for="basicInput"> Descripción:</label>           			
-					<input name="descripcion" class="form-control" type="text"  id="descripcion" size="40" value="<?php echo($row['descripcion']);?>">
+					<input name="descripcion" class="form-control" type="text" readonly  id="descripcion" size="40" value="<?php echo($row['descripcion']);?>">
 					</fieldset>
 				</div>
 				<div class="col-md-4 col-12">
@@ -150,7 +151,7 @@ $data = $get_records;
 					
 						<select name='categoria' disabled id='categoria'  class='validate[required] code_generator form-control'>
 							<?php 
-							
+							print_r($row);
 							?>
 							<option value=''>Seleccionar Categoria...</option>
 							<?php
