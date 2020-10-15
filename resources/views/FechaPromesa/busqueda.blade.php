@@ -9,7 +9,7 @@
             @can('desgargar fecha promesa general')
             <a href="{{ route('download.report.fecha.promesa.general') }}"
                class="btn btn-info">
-                Reporte Fechas promesa General
+                Reporte Fechas Promesa General
             </a>
             @endcan
             @can('descargar fecha promesa detalles')
