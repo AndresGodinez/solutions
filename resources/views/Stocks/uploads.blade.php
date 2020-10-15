@@ -130,6 +130,20 @@
     </div>
 </section>
 
+<script src="{{ asset('assets') }}/app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
+<script>
+<?php 
+if(@$_GET['success'] == 1){ ?>
+    Swal.fire({
+                            type: "success",
+                            title: '¡Carga realizada con éxito!',
+                            text: '',
+                            confirmButtonClass: 'btn btn-success',
+                        });
+    <?php
+} ?>
+</script>
+
 @endsection
 
 

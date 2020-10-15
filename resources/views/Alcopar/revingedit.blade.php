@@ -403,48 +403,47 @@ $data = $get_records;
             }
         var code_cat_ext    = "<?php echo ($get_tipo_cat_ext    == '' ? '' : $get_tipo_cat_ext);?>";
 
-        $('.code_generator').click(function(){
-            var dir = $(this).attr('id');
-
-            
-            if(dir == "tipo_material")
-            {
-                code_material = $(this).val();
-            }
-            else if(dir == "categoria")
-            {
-                code_categoria = $(this).val();
-            }
-            else if(dir == "familia")
-            {
-                code_familia = $(this).val();
-            }
-            else if(dir == "marca1")
-            {
-                code_marca = $(this).val();
-            }
-            else if(dir == "categoria_extra")
-            {
-                code_cat_ext = $(this).val();
-            }
-            
-            code = code_material + code_categoria + code_familia + code_marca + code_cat_ext;
-            
-            if(code_material == "" || code_categoria == "" || code_familia == "" || code_marca == "" || code_cat_ext == "")
-            {
-                data =  '<p style="font-weight: bold; font-size: 22px;">' +
-                            'Aún falta que selecciones más opciones.' +
-                        '</p>';
-            }
-            else
-            {
-                data =  '<p style="font-weight: bold; font-size: 22px;">' +
-                            + code +
-                        '</p>';
-            }
-            
-            $("#code").html(data);
-        });
+        function code_generator(){
+				var dir = $(this).attr('id');
+				
+				if(dir == "tipo_material")
+				{
+					code_material = $(this).val();
+				}
+				else if(dir == "categoria")
+				{
+					code_categoria = $(this).val();
+				}
+				else if(dir == "familia")
+				{
+					code_familia = $(this).val();
+				}
+				else if(dir == "marca1")
+				{
+					code_marca = $(this).val();
+				}
+				else if(dir == "categoria_extra")
+				{
+					code_cat_ext = $(this).val();
+				}
+				
+				code = code_material + code_categoria + code_familia + code_marca + code_cat_ext;
+				
+				if(code_material == "" || code_categoria == "" || code_familia == "" || code_marca == "" || code_cat_ext == "")
+				{
+					data =  '<p style="font-weight: bold; font-size: 22px;">' +
+								'Aún falta que selecciones más opciones.' +
+							'</p>';
+				}
+				else
+				{
+					data =  '<p style="font-weight: bold; font-size: 22px;">' +
+								+ code +
+							'</p>';
+				}
+				
+				$("#code").html(data);
+		}
 
         $("#tipo_material").change(function () {
             $("#tipo_material option:selected").each(function () {
@@ -475,7 +474,8 @@ $data = $get_records;
         });
 
 
-        $(".see-btn-cde").click(function(){			
+        $(".see-btn-cde").click(function(){		
+			code_generator();	
             $('.mask').show();
             $('#myCeroModal').modal('show');
         });
