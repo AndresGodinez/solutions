@@ -791,8 +791,8 @@ class StocksModel extends ModelBase
     public static function get_records_by_id_isc_stocks_final($id)
     {
 
-        $data = StocksModel::select('stock_gral_serv_final_isc.*')
-            ->from('stock_gral_serv_final_isc')
+        $data = StocksModel::select('stock_gral_serv_isc_final.*')
+            ->from('stock_gral_serv_isc_final')
             ->where('folio', $id)
             ->get();
 
@@ -844,7 +844,7 @@ class StocksModel extends ModelBase
 
     public static function update_stocks_final_isc($folio, $material, $modelo, $po, $comentarios, $username, $date, $region)
     {
-        DB::table('stock_gral_serv_final_isc')->insert(
+        DB::table('stock_gral_serv_isc_final')->insert(
             [
                 'folio'        => $folio,
                 'material'      => $material,

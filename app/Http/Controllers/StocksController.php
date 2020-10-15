@@ -131,7 +131,7 @@ class StocksController extends Controller
             // Envio de correo alerta por id_region gente ISC.
         }
 
-        echo '<script>window.location.href = "' . url("stocks/") . '";</script>';
+        echo '<script>window.location.href = "' . url("stocks/cargas/?success=1") . '";</script>';
     }
 
     // Carga para stocks iniciales (conclusion ISC)
@@ -139,7 +139,7 @@ class StocksController extends Controller
     {
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
-        $redirect = url("stocks/");
+        $redirect = url("stocks/cargas/?success=1");
         $date = date("Y-m-d");
         $file = $request->file('file');
 
@@ -221,7 +221,7 @@ class StocksController extends Controller
             $file->storeAS('stock-final/c/' . $date . '/', $final_file);
         } else {
             $valid = false;
-            $redirect = url("stocks/cargas/");
+            $redirect = url("stocks/cargas/?success=1");
         }
 
         if ($valid) {
@@ -239,50 +239,15 @@ class StocksController extends Controller
 
             // Envio de correo alerta por id_region gente ISC.
         }
-        // $user       = Auth::user()->username;
-        // $file   = $request->file('file');
+       
 
-        // $date   = date("Y-m-d");
-
-        // $valid = true;
-
-        // $redirect = url("stocks/final/");
-
-        // $nameFile = MyUtils::saveAndReturnCompleteNameFile($file);
-
-        // StocksModel::insert_load_stocks_final($nameFile, );
-
-//        if (!empty($file)) {
-//            $final_file = Str::uuid() . '.' . $file->getClientOriginalExtension();
-//            $file->storeAS('stock-final/c/' . $date . '/', $final_file);
-//        } else {
-//            $valid = false;
-//            $redirect = url("stocks/cargas/");
-//        }
-//
-//        if ($valid) {
-//            $handle = fopen(base_path() . $this->dirupload . "stock-final\\c\\" . $date . "\\" . $final_file, "r+");
-//            $start = 0;
-//
-//            while (($data = fgetcsv($handle)) !== FALSE) {
-//                if ($start > 1) {
-//                    // most be insert
-//                    StocksModel::insert_load_stocks_final($data, $user, date("Y-m-d H:i:s"));
-//                }
-//
-//                $start++;
-//            };
-//
-//            // Envio de correo alerta por id_region gente ISC.
-//        }
-
-        echo '<script>window.location.href = "' . url("stocks/final/") . '";</script>';
+        echo '<script>window.location.href = "' . url("stocks/cargas/?success=1") . '";</script>';
     }
 
     // Carga para stocks iniciales (conclusion ISC)
     public function upload_stock_final_isc(Request $request)
     {
-        $redirect = url("stocks/final/");
+        $redirect = url("stocks/cargas/?success=1");
         $date = date("Y-m-d");
         $file = $request->file('file');
 

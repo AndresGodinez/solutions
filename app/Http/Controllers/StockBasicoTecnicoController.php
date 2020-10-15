@@ -21,7 +21,7 @@ class StockBasicoTecnicoController extends Controller
 
 
     public function index(Request $request)
-    {
+    {        
         return view('StockBasicoTecnico.index');
     }
 
