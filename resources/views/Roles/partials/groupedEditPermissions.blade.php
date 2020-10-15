@@ -2,6 +2,17 @@
     <form action="{{ route('role.update', [ 'role' => $role->id ]) }}" method="post">
         @csrf
         <div class="form-row">
+            <div class="form-group">
+                <label for="name">Nombre de role</label>
+                <input type="text"
+                       id="name"
+                       name="name"
+                       class="form-control"
+                       value="{{ $role->name }}"
+                >
+            </div>
+        </div>
+        <div class="form-row">
             <div class="form-group col-md-12">
                 @foreach($groupedPermissions as $permission)
                     <div class="card mt-3 col-md-6 px-0">

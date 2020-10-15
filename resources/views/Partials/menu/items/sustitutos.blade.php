@@ -1,4 +1,13 @@
-@canany(['crear usuarios', 'editar usuarios', 'ver usuarios', 'eliminar usuarios'])
+@canany([
+    'solicitud de sustitutos',
+    'ver sustitutos',
+    'carga fecha creacion piezas',
+    'carga inventarios',
+    'carga masiva sustitutos',
+    'busqueda materiales',
+    'descarga de materiales',
+    'carga sustituto'
+    ])
     <li class="nav-item">
         <a href="">
             <i class="bx bx-home" data-icon="desktop"></i>

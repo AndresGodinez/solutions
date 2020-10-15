@@ -101,7 +101,7 @@
             @endcan
 {{--            @endif--}}
 {{--            @if(Auth::user()->hasPerm('fpromesa.leadtime'))--}}
-            @can('carga archivo lead time')
+            @can('carga archivo fechas promesas lead time')
 
             <div class="col-md-4">
                 <div class="card">

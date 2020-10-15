@@ -1,4 +1,4 @@
-@canany(['consulta de fechas promesas'])
+@canany(['consultar fechas promesas'])
     <li class="nav-item">
         <a href="">
             <i class="bx bx-home" data-icon="desktop"></i>
@@ -7,7 +7,7 @@
             </span>
         </a>
         <ul class="menu-content">
-            @can('consulta de fechas promesas')
+            @can('consultar fechas promesas')
             <li class="">
                 <a href="{{route('fechas-promesa.search')}}">
                     <i class="bx bx-right-arrow-alt"></i>

@@ -29,9 +29,9 @@ class UsuarioUpdateRequest extends FormRequest
             'username' => [
                 Rule::unique('usuarios', 'username')->ignore($this->route('usuario'))
             ],
-            'mail' => [
-                Rule::unique('usuarios', 'mail')->ignore($this->route('usuario'))
-            ]
+//            'mail' => [
+//                Rule::unique('usuarios', 'mail')->ignore($this->route('usuario'))
+//            ]
         ];
     }
 }
