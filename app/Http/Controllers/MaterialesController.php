@@ -157,16 +157,16 @@ class MaterialesController extends Controller
 
         if ($valid) {
             // Primero debemos de validar que la refacción que requiere un sustituto este dada de alta en CS. (master data).
-            $data_master_data = Sustituto::validate_master_data($request->ipt_componente);
+            $data_master_data = Sustituto::validate_master_data($request->get('ipt_componente'));
 
             if ($data_master_data['valid']) {
-                if (Sustituto::validate_if_exist_liga($request->ipt_componente, $request->ipt_componente_sust)) {
+                if (Sustituto::validate_if_exist_liga($request->get('ipt_componente'), $request->get('ipt_componente_sust'))) {
                     // Si si existe, insertamos el regristro ya como una solicitud formal.
                     $depto = $user->depto;
                     $userName = $user->username;
 
-                    $data_create_sol = Sustituto::create_solicitud($request->ipt_componente,
-                        $request->ipt_componente_sust, $request->ipt_componente_sust_descr, $userName, $depto);
+                    $data_create_sol = Sustituto::create_solicitud($request->get('ipt_componente'),
+                        $request->get('ipt_componente_sust'), $request->get('ipt_componente_sust_descr'), $userName, $depto);
 
                     if ($data_create_sol['valid']) {
                         $data_insert_log = Sustituto::insert_log($data_create_sol['id'], 1, $userName, $depto,
@@ -212,7 +212,7 @@ class MaterialesController extends Controller
 
         if(!empty($request->ipt_componente))
         {
-            $data_master_data = Sustituto::validate_master_data($request->ipt_componente);
+            $data_master_data = Sustituto::validate_master_data($request->get('ipt_componente'));
 
             if($data_master_data['valid'])
             {
