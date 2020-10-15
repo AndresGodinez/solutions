@@ -15,17 +15,17 @@ Route::middleware('auth')->group(function () {
 
         Route::post('update-fechas-promesas', 'FechaPromesaController@actualizarFechasPromesas')
             ->name('actualizarFechasPromesas')
-            ->middleware('permission:actualizar fechas promesa');
+            ->middleware('permission:actualizar fechas promesas');
 
 //        Reports
 
         Route::get('/download-report-fecha-promesa-general', 'FechaPromesaController@downloadFechaPromesaGeneral')
             ->name('download.report.fecha.promesa.general')
-            ->middleware('permission:descarga reporte fecha promesa general');
+            ->middleware('permission:desgargar fecha promesa general');
 
         Route::get('/download-report-fecha-promesa-detalle', 'FechaPromesaController@downloadFechaPromesaDetalle')
             ->name('download.report.fecha.promesa.detalle')
-            ->middleware('permission:descarga reporte fecha promesa detallado');
+            ->middleware('permission:descargar fecha promesa detalles');
 
 //        CARGAS DE ARCHIVOS
 
