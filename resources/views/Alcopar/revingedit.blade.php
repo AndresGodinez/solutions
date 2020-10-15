@@ -403,29 +403,19 @@ $data = $get_records;
             }
         var code_cat_ext    = "<?php echo ($get_tipo_cat_ext    == '' ? '' : $get_tipo_cat_ext);?>";
 
-        function code_generator(){
-				var dir = $(this).attr('id');
+        function code_generator(){				
 				
-				if(dir == "tipo_material")
-				{
-					code_material = $(this).val();
-				}
-				else if(dir == "categoria")
-				{
-					code_categoria = $(this).val();
-				}
-				else if(dir == "familia")
-				{
-					code_familia = $(this).val();
-				}
-				else if(dir == "marca1")
-				{
-					code_marca = $(this).val();
-				}
-				else if(dir == "categoria_extra")
-				{
-					code_cat_ext = $(this).val();
-				}
+				code_material = $("#tipo_material").val();
+			
+				code_categoria = $("#categoria").val();
+			
+				code_familia = $("#familia").val();
+			
+			
+				code_marca = $("#marca1").val();
+			
+				code_cat_ext = $("#categoria_extra").val();
+				
 				
 				code = code_material + code_categoria + code_familia + code_marca + code_cat_ext;
 				
