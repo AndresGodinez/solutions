@@ -62,7 +62,8 @@ class AlcoparController extends Controller
         $request->session()->put(['categoria'=>trim(strtoupper($_POST["categoria"]))]);
         
         $request->session()->put(['comentario'=>trim(strtoupper($_POST["comentario"]))]);
-        $request->session()->put(['descripcion'=>trim(strtoupper($_POST["comentario"]))]);
+
+        $request->session()->put(['descripcion'=>trim(strtoupper($_POST["descripcion"]))]);
        
         $alcopar_id=session('alcopar_id');
         
@@ -772,6 +773,37 @@ class AlcoparController extends Controller
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
             header("content-disposition: attachment;filename=alcopar_partes.xls");
             echo $return;  
+    }
+
+    public function historial(Request $request){
+        echo "<table style='width:100%;'>
+            <tr>
+                <td colspan='4' style='color:#999999;font-weight:bold; border-bottom:2px solid;border-bottom-color:#999999;text-align:center;font-size:12px'>
+                    COMENTARIOS
+                </td>
+            </tr>
+
+        <th style='font-weight:bold; background-color:#999999;border-bottom:2px solid;border-bottom-color:#999999;text-align:center;font-size:12px'>COMENTARIOS:</th>
+        <th style='font-weight:bold; background-color:#999999;border-bottom:2px solid;border-bottom-color:#999999;text-align:center;font-size:12px'>FECHA DE ASIGNACION</th>
+        <th style='font-weight:bold; background-color:#999999;border-bottom:2px solid;border-bottom-color:#999999;text-align:center;font-size:12px'>USUARIO:</th>
+        <th style='font-weight:bold; background-color:#999999;border-bottom:2px solid;border-bottom-color:#999999;text-align:center;font-size:12px'>MODULO ANTERIOR:</th>
+        <th style='font-weight:bold; background-color:#999999;border-bottom:2px solid;border-bottom-color:#999999;text-align:center;font-size:12px'>MODULO ACTUAL:</th>";
+
+        $user       = Auth::user()->username;
+        $id_region  = Auth::user()->id_region;
+        $get_records = AlcoparModel::historial($request->id);
+        foreach($get_records as $row){
+                echo "<tr>";
+                echo "
+                        <td style='color:#999999;font-size:12px; text-align:left; border-bottom:1px solid; border-bottom-color:#999999;'>" . $row['comentarios'] . "</td>
+                        <td style='color:#999999;font-size:12px; text-align:left; border-bottom:1px solid; border-bottom-color:#999999;'>" . $row['fecha_asignacion'] . "</td>
+                        <td style='color:#999999;font-size:12px; text-align:left; border-bottom:1px solid; border-bottom-color:#999999;'>" .$row['usuario']. "</td>
+                        <td style='color:#999999;font-size:12px; text-align:left; border-bottom:1px solid; border-bottom-color:#999999;'>" .$row['modulo_ant']. "</td>
+                        <td style='color:#999999;font-size:12px; text-align:left; border-bottom:1px solid; border-bottom-color:#999999;'>" .$row['modulo_act']. "</td>
+                    </tr>";            
+            }
+            echo "</table>";
+        
     }
 
 }

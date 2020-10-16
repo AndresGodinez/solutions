@@ -3195,4 +3195,12 @@ class AlcoparModel extends ModelBase
             );
         }
     }
+
+    public static function historial($id){
+        $rows = AlcoparModel::query()->selectRaw('comentarios, fecha_asignacion, usuario, modulo_ant, modulo_act')
+        ->from('alcopar_partes_historial')->whereRaw("alcopar_id = '$id'  ORDER BY fecha_asignacion DESC")->get();
+        return $rows;
+    }
+
+
 }

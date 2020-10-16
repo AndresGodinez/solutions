@@ -307,7 +307,7 @@ $data = $get_records;
 				<div class="col-md-12 col-12">
 					<fieldset class="form-group">
 						<label for="basicInput">Historial de Asignaci&oacute;n:</label>                            
-						<a href="historial.php?id=<?php echo $id;?>" rel="shadowbox;height=400;width=600">
+						<a href="javascript:void(0)" onclick="historialcargar('<?php echo $id;?>')" rel="shadowbox;height=400;width=600">
 							HISTORIAL
 						</a>
 					</fieldset>
@@ -330,6 +330,47 @@ $data = $get_records;
 	</div>
 </div>
 
+<div class="modal fade text-left" id="historial" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-scrollable  modal-lg" role="document">
+		<div class="modal-content">			
+			<div class="modal-body" id="panel" style="display:none;"></div>
+			<div class="modal-body loaderhist">
+			<center>
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                            <div class="spinner-border text-secondary" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                            <div class="spinner-border text-success" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                            <div class="spinner-border text-danger" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                            <div class="spinner-border text-warning" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                            <div class="spinner-border text-info" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                            <div class="spinner-border text-light" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                            <div class="spinner-border text-dark" role="status">
+                                                <span class="sr-only">Loading...</span>
+											</div>
+			</center>                                    
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+					<i class="bx bx-x d-block d-sm-none"></i>
+					<span class="d-none d-sm-block">Cerrar</span>
+				</button>				
+			</div>
+		</div>
+	</div>
+</div>
 
 <script src="{{ asset('assets') }}/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
 <script src="{{ asset('assets') }}/app-assets/js/scripts/forms/validation/form-validation.js"></script>
@@ -341,6 +382,18 @@ $data = $get_records;
     }                
 </script>
 <script type="text/javascript">
+function historialcargar(id){
+		$('#panel').hide();
+		$('#historial').modal('show');
+		$('.loaderhist').show();
+
+		$.get("{{ url('/alcopar/historial/')}}/"+id, function(data){			
+			$("#panel").html(data);
+			$('.loaderhist').hide();			
+			$('#panel').show();
+			
+		});    
+	}
 
     $(document).ready(function(){
 		
