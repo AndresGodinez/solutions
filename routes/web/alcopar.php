@@ -73,6 +73,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/reportalcopar',                                      'AlcoparController@reportalcopar');
         
+        Route::get('/historial/{id}',                             'AlcoparController@historial');
+        
         
     });
 });
