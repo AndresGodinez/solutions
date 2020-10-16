@@ -270,7 +270,7 @@ $data = $get_records;
 							$get_tipo_cat_ext = "";
 							foreach($data['extra'] as $k => $rowp)
 							{
-							$selected = ($row['id_tipo_material'] == $rowp['id_tipo_material'] ? 'selected' : '');
+							$selected = ($row['alcopar_tipo_extra'] == $rowp['id'] ? 'selected' : '');
 							if($get_tipo_cat_ext == "")
 							{
 								$get_tipo_cat_ext = ($selected == "" ? "" : $rowp['id']);
