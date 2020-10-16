@@ -56,6 +56,10 @@ class AlcoparController extends Controller
         $request->session()->put(['comentario'=>trim(strtoupper($_POST["comentario"]))]);
         $request->session()->put(['asigna'=>trim(strtoupper($_POST["asigna"]))]);
         $request->session()->put(['tipo_material'=>trim(strtoupper($_POST["tipo_material"]))]);
+
+        $request->session()->put(['categoria_extra'=>trim(strtoupper($_POST["categoria_extra"]))]);
+        
+        
         $request->session()->put(['familia'=>trim(strtoupper($_POST["familia"]))]);
         $request->session()->put(['marca1'=>trim(strtoupper($_POST["marca1"]))]);
         
@@ -96,10 +100,7 @@ class AlcoparController extends Controller
         'nomenclatura_service' => $nomenclatura);
         AlcoparModel::updateProcesa('updatePartes',$alcopar_id, $datos);  
         
-        
-        //print_r($_REQUEST);
-        
-        //http://127.0.0.1:8000/alcopar/reving/edit/35193
+       
         if(isset($_REQUEST['grabar'])){
             AlcoparModel::procesaaceptar();      
             echo "<script>window.location = './?success=1'</script>";
@@ -415,15 +416,24 @@ class AlcoparController extends Controller
         $alcopar_id=session('alcopar_id');
         $comentario=$_POST['comentario'];
         $username = Auth::user()->username;
-        $clasificacion = $_POST['clasif'];        
+        $clasificacion = $_POST['clasif'];            
+        
         $datos  = [
+            'clasif_sat'=>0, 
+            
+            // 'precio'=>'1',             
+            // 'costo'=>'0', 
+            // 'factible'=>'0',
+
             'clasif_sat_user' => $username,
             'comentario_clasif_sat'=>$comentario,
             'codigo_clasif_sat' => $clasificacion,
             'clas_sat_status' => 'CLASIFICACION AGREGADA'
         ];        
         AlcoparModel::updateProcesaGeneral('alcopar_partes','id',$alcopar_id,$datos);
-        echo "<script>window.location = './?success=1'</script>";
+        $urldirv = url('/alcopar/classat?success=1');
+        echo "<script>window.location = '".$urldirv."'</script>";
+        
     }
 
 
@@ -464,11 +474,14 @@ class AlcoparController extends Controller
                 'comentario_precio'=>$comentario 
             ];        
             AlcoparModel::updateProcesaGeneral('alcopar_partes','id',$alcopar_id,$datos);
-            echo "<script>window.location = './?success=1'</script>";
+            
+            $urldirv = url('/alcopar/precio?success=1');
+            echo "<script>window.location = '".$urldirv."'</script>";                        
         }        
         else if(isset($_REQUEST['reasignar'])) {
             AlcoparModel::reasignarprecio();            
-            echo "<script>window.location = './?success=1'</script>";
+            $urldirv = url('/alcopar/precio?success=1');
+            echo "<script>window.location = '".$urldirv."'</script>";
         }                
     }
    
@@ -512,11 +525,14 @@ class AlcoparController extends Controller
                 'comentario_oow'=>$comentario
             ];        
             AlcoparModel::updateProcesaGeneral('alcopar_partes','id',$alcopar_id,$datos);
-            echo "<script>window.location = './?success=1'</script>";
+            $urldirv = url('/alcopar/oow?success=1');
+            echo "<script>window.location = '".$urldirv."'</script>";
+        
         }        
         else if(isset($_REQUEST['reasignar'])) {
             AlcoparModel::reasignaroow();            
-            echo "<script>window.location = './?success=1'</script>";
+            $urldirv = url('/alcopar/oow?success=1');
+            echo "<script>window.location = '".$urldirv."'</script>";
         }                
     }
 

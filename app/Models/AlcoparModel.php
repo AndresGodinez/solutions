@@ -209,6 +209,7 @@ class AlcoparModel extends ModelBase
 
         $extra = AlcoparModel::query()->selectRaw('id,tipo_extra,id_tipo_material')
             ->from('alcopar_tipo_extra')
+            ->whereRaw('id_tipo_material = ' . $row[0]['alcopar_tipo_material'])
             ->get();
 
         $data['row'] = $row;
@@ -303,6 +304,7 @@ class AlcoparModel extends ModelBase
 
         $extra = AlcoparModel::query()->selectRaw('id,tipo_extra,id_tipo_material')
             ->from('alcopar_tipo_extra')
+            ->whereRaw('id_tipo_material = ' . $row[0]['alcopar_tipo_material'])
             ->get();
 
         $data['row'] = $row;
