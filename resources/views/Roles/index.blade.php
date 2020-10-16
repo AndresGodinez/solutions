@@ -27,13 +27,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($roles as $role)
+                            @foreach($nRoles as $role)
                                 <tr>
                                     <td>
-                                        {{ $role->name }}
+                                        {{ ucfirst($role->name) }}
                                     </td>
                                     <td>
-                                        {{ implode(", ", $role->permissions->pluck('name')->toArray()) }}
+                                        {{ implode(", ", $role->permissionsText->pluck('text')->toArray()) }}
                                     </td>
                                     <td>
                                         @can('editar roles')

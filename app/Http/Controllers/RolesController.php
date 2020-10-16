@@ -10,6 +10,7 @@ use Spatie\Permission\Models\Role;
 use function compact;
 use function redirect;
 use function route;
+use function ucfirst;
 use function view;
 
 class RolesController extends Controller
@@ -18,7 +19,15 @@ class RolesController extends Controller
     {
         $roles = Role::get();
 
-        return view('Roles.index', compact('roles'));
+        $nRoles = $roles->map(function ($role){
+           $role->permissionsText = $role->permissions->map(function ($permission){
+               $permission->text = ucfirst($permission->name);
+               return $permission;
+           });
+           return $role;
+        });
+
+        return view('Roles.index', compact('nRoles'));
     }
 
     public function create()
