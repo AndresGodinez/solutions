@@ -208,7 +208,9 @@ class MaterialesController extends Controller
         $target = "";
         $message = "¡Los cambios se guardaron exitosamente!";
 
-        $request->ipt_componente            = $this->clean_string(isset($request->ipt_componente) ? $request->ipt_componente : "");
+        $iptComponent = $request->get('ipt_componente');
+
+        $request->ipt_componente = $this->clean_string(isset($iptComponent) ? $iptComponent : "");
 
         if(!empty($request->ipt_componente))
         {
