@@ -390,6 +390,9 @@
                 </form>
             </div>
         </div>
+        <div class="row">
+            <a href="{{ url('/sustitutos') }}" class="btn btn-primary"> regresar</a>
+        </div>
     </div>
     <div style="height: 60px;"></div>
     <script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>

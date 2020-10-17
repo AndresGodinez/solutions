@@ -104,6 +104,9 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <a href="{{ url('/materiales') }}" class="btn btn-primary"> regresar</a>
+        </div>
     </div>
 
 @endsection
