@@ -3,6 +3,10 @@ Route::middleware('auth')->group(function () {
 
 //Carga masiva sustitutos
 
+    Route::get('/carga-sustituto', 'MaterialesController@cargaSustitutos')
+        ->name('materiales-sustitutos.cargaSustitutos')
+        ->middleware('permission:carga mm60|carga fecha creacion piezas|carga inventarios|carga masiva sustitutos');
+
     Route::post('sustitutos-carga-mm60', 'SustitutosController@cargaMM60')
         ->name('sustitutos.carga-mm60')
         ->middleware('permission:carga mm60');

@@ -12,19 +12,9 @@
 */
 
 
-use App\Surtimiento;
-use App\SurtimientoConcentrado;
-
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('/test', function (){
-    SurtimientoConcentrado::insercionConcentrado('RS01');
-});
-
-
-
 
 // sustitutos
 Route::middleware('auth')->group(function () {
@@ -46,8 +36,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/stock/datoinicial', 'StockController@datoinicial')
         ->name('stock.datoinicial');
-
-
 });
 
 Auth::routes();
