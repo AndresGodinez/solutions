@@ -17,39 +17,50 @@
         </a>
 
         <ul class="menu-content">
-            <li class="">
-                <a href="{{route('materiales-sustitutos.solicitud')}}">
-                    <i class="bx bx-right-arrow-alt"></i>
-                    <span class="menu-item" data-i18n="eCommerce">
+            @can('solicitud de sustitutos')
+                <li class="">
+                    <a href="{{route('materiales-sustitutos.solicitud')}}">
+                        <i class="bx bx-right-arrow-alt"></i>
+                        <span class="menu-item" data-i18n="eCommerce">
                       Solicitud
                     </span>
-                </a>
-            </li>
+                    </a>
+                </li>
+            @endcan
 
-            <li class="">
-                <a href="{{url('sustitutos')}}">
-                    <i class="bx bx-right-arrow-alt"></i>
-                    <span class="menu-item" data-i18n="eCommerce">
+            @can('solicitud de sustitutos')
+
+                <li class="">
+                    <a href="{{url('sustitutos')}}">
+                        <i class="bx bx-right-arrow-alt"></i>
+                        <span class="menu-item" data-i18n="eCommerce">
                        Lista solicitudes
                     </span>
-                </a>
-            </li>
+                    </a>
+                </li>
+            @endcan
 
-            <li class="">
-                <a href="{{route('materiales.search')}}">
-                    <i class="bx bx-right-arrow-alt"></i>
-                    <span class="menu-item" data-i18n="eCommerce">Busqueda</span>
-                </a>
-            </li>
+            @can('busqueda materiales')
 
-            <li class="">
-                <a href="{{route('materiales-sustitutos.cargaSustitutos')}}">
-                    <i class="bx bx-right-arrow-alt"></i>
-                    <span class="menu-item" data-i18n="eCommerce">
+                <li class="">
+                    <a href="{{route('materiales.search')}}">
+                        <i class="bx bx-right-arrow-alt"></i>
+                        <span class="menu-item" data-i18n="eCommerce">Busqueda</span>
+                    </a>
+                </li>
+            @endcan
+
+            @canany(['carga mm60', 'carga fecha creacion piezas'])
+
+                <li class="">
+                    <a href="{{route('materiales-sustitutos.cargaSustitutos')}}">
+                        <i class="bx bx-right-arrow-alt"></i>
+                        <span class="menu-item" data-i18n="eCommerce">
                         Carga Masiva
                     </span>
-                </a>
-            </li>
+                    </a>
+                </li>
+            @endcanany
         </ul>
     </li>
 @endcan
