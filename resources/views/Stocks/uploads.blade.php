@@ -142,6 +142,27 @@ if(@$_GET['success'] == 1){ ?>
                         });
     <?php
 } ?>
+<?php 
+if(@$_GET['error'] == 1){ ?>
+    Swal.fire({
+            type: "error",
+            title: '¡Error en la carga!',
+            text: 'Este tipo de archivo no está permitido',
+            confirmButtonClass: 'btn btn-danger',
+        });
+    <?php
+} ?>
+
+<?php 
+if(@$_GET['error'] == 2){ ?>
+    Swal.fire({
+            type: "error",
+            title: '¡Error en la carga!',
+            text: 'Archivo mal formateado.',
+            confirmButtonClass: 'btn btn-danger',
+        });
+    <?php
+} ?>
 </script>
 
 @endsection

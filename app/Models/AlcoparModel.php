@@ -2457,8 +2457,12 @@ class AlcoparModel extends ModelBase
             <p></p>
             <p>
             ";
-
-            $to = $mail . "," . $mail2;
+            if(isset($mail2)){
+                $to = $mail . "," . $mail2;
+            }else{
+                $to = $mail;
+            }
+            
             $subject = 'Proceso de Alta de Parte ha Iniciado.';
             $type = "Content-type: text/html\r\n";
             $headers = "MIME-Version: 1.0 \r\n";
@@ -2577,7 +2581,11 @@ class AlcoparModel extends ModelBase
                 <p>
                 ";
 
-                $to = $mail . "," . $mail2;
+                if(isset($mail2)){
+                    $to = $mail . "," . $mail2;
+                }else{
+                    $to = $mail;
+                }
                 $subject = 'Proceso de Alta de Parte ha Iniciado.';
                 $type = "Content-type: text/html\r\n";
                 $headers = "MIME-Version: 1.0 \r\n";
