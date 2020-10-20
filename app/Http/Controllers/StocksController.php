@@ -6,6 +6,7 @@ use App\Http\Requests\UploadStockFinalRequest;
 use App\Models\Menu;
 use App\Models\StocksModel;
 use App\Utils\MyUtils;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -106,62 +107,92 @@ class StocksController extends Controller
         $file   = $request->file('file');
         $valid = true;
         $redirect = url("stocks/");
-
-        if (!empty($file)) {
-            $final_file = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $file->storeAS('stock-inicial/c/' . $date . '/', $final_file);
-        } else {
-            $valid = false;
-            $redirect = url("stocks/inicial/");
-        }
-
-        if ($valid) {
-            $handle = fopen(base_path() . $this->dirupload . "stock-inicial\\c\\" . $date . "\\" . $final_file, "r+");
-            $start = 0;
-
-            while (($data = fgetcsv($handle)) !== FALSE) {
-                if ($start > 0) {
-                    // most be insert
-                    StocksModel::insert_load($data, Auth::user()->username, date("Y-m-d H:i:s"));
+        if($file->getClientOriginalExtension() == 'csv'){
+                if (!empty($file)) {
+                    $final_file = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                    $file->storeAS('stock-inicial/c/' . $date . '/', $final_file);
+                } else {
+                    $valid = false;
+                    $redirect = url("stocks/inicial/");
+                    echo '<script>window.location.href = "' . url("stocks/cargas/?error=2") . '";</script>';
                 }
 
-                $start++;
-            };
+                if ($valid) {
+                    $handle = fopen(base_path() . $this->dirupload . "stock-inicial\\c\\" . $date . "\\" . $final_file, "r+");
+                    $start = 0;
 
-            // Envio de correo alerta por id_region gente ISC.
+                    try{
+                        while (($data = fgetcsv($handle)) !== FALSE) {
+                            if ($start > 0) {
+                                // most be insert
+                                StocksModel::insert_load($data, Auth::user()->username, date("Y-m-d H:i:s"));
+                            }    
+                            $start++;
+                        }
+                        echo '<script>window.location.href = "' . url("stocks/cargas/?success=1") . '";</script>';
+                    } catch (Exception $e) {
+                        echo '<script>window.location.href = "' . url("stocks/cargas/?error=2") . '";</script>';
+                    }
+
+                    // Envio de correo alerta por id_region gente ISC.
+                }else{
+                    echo '<script>window.location.href = "' . url("stocks/cargas/?error=1") . '";</script>';
+                }                
+        }else{
+            echo '<script>window.location.href = "' . url("stocks/cargas/?error=1") . '";</script>';
         }
-
-        echo '<script>window.location.href = "' . url("stocks/cargas/?success=1") . '";</script>';
+        
     }
 
     // Carga para stocks iniciales (conclusion ISC)
     public function upload_stock_inicial_isc(Request $request)
     {
+
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
         $redirect = url("stocks/cargas/?success=1");
         $date = date("Y-m-d");
         $file = $request->file('file');
+        $valid = true;
 
-        if (!empty($file)) {
-            $final_file = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $file->storeAS('stock-inicial/c/' . $date . '/', $final_file);
-        } else {
-            $final_file = '';
-        }
+        
+        if($file->getClientOriginalExtension() == 'csv'){
+                if (!empty($file)) {             
+                           
+                    $final_file = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                    $file->storeAS('stock-inicial/c/' . $date . '/', $final_file);
+                } else {
+                    $valid = false;
+                    $redirect = url("stocks/inicial/");
+                    echo '<script>window.location.href = "' . url("stocks/cargas/?error=2") . '";</script>';
+                }
 
-        $handle = fopen(base_path() . $this->dirupload . "stock-inicial\\c\\" . $date . "\\" . $final_file, "r+");
-        $start = 0;
-        while (($data = fgetcsv($handle)) !== FALSE) {
-            if ($start != 0) {
-                // folio,  material, modelo,   po,      comentarios,    user,               fecha,          region
-                StocksModel::update_stocks_iniciales_isc($data[0], $data[1], $data[2], $data[3], $data[4], $user, date("Y-m-d"), $id_region);
-            }
+                if ($valid) {
+                    
 
-            $start++;
-        };
+                    try{
+                        $handle = fopen(base_path() . $this->dirupload . "stock-inicial\\c\\" . $date . "\\" . $final_file, "r+");
+                        $start = 0;
+                        while (($data = fgetcsv($handle)) !== FALSE) {
+                            if ($start != 0) {
+                                // folio,  material, modelo,   po,      comentarios,    user,               fecha,          region
+                                StocksModel::update_stocks_iniciales_isc($data[0], $data[1], $data[2], $data[3], $data[4], $user, date("Y-m-d"), $id_region);
+                            }
 
-        echo '<script>window.location.href = "' . $redirect . '";</script>';
+                            $start++;
+                        };
+                        echo '<script>window.location.href = "' . url("stocks/cargas/?success=1") . '";</script>';
+                    } catch (Exception $e) {
+                        echo '<script>window.location.href = "' . url("stocks/cargas/?error=2") . '";</script>';
+                    }
+
+                    // Envio de correo alerta por id_region gente ISC.
+                }else{
+                    echo '<script>window.location.href = "' . url("stocks/cargas/?error=1") . '";</script>';
+                }                
+        }else{
+            echo '<script>window.location.href = "' . url("stocks/cargas/?error=1") . '";</script>';
+        }     
     }
 
     // Stocks inicial
@@ -209,66 +240,96 @@ class StocksController extends Controller
     // Carga para stocks iniciales
     public function upload_stock_final(UploadStockFinalRequest $request)
     {
+        
+       
         $user       = Auth::user()->username;
-
         $date   = date("Y-m-d");
         $file   = $request->file('file');
         $valid = true;
         $redirect = url("stocks/");
 
-        if (!empty($file)) {
-            $final_file = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $file->storeAS('stock-final/c/' . $date . '/', $final_file);
-        } else {
-            $valid = false;
-            $redirect = url("stocks/cargas/?success=1");
-        }
-
-        if ($valid) {
-            $handle = fopen(base_path() . $this->dirupload . "stock-final\\c\\" . $date . "\\" . $final_file, "r+");
-            $start = 0;
-
-            while (($data = fgetcsv($handle)) !== FALSE) {
-                if ($start > 0) {
-                    // most be insert
-                    StocksModel::insert_load_stocks_final($data, Auth::user()->username, date("Y-m-d H:i:s"));
+        
+        if($file->getClientOriginalExtension() == 'csv'){
+                if (!empty($file)) {                    
+                    $final_file = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                    $file->storeAS('stock-final/c/' . $date . '/', $final_file);
+                } else {
+                    $valid = false;
+                    $redirect = url("stocks/inicial/");
+                    echo '<script>window.location.href = "' . url("stocks/cargas/?error=2") . '";</script>';
                 }
 
-                $start++;
-            };
+                if ($valid) {
+                    
 
-            // Envio de correo alerta por id_region gente ISC.
-        }
-       
+                    try{
+                        $handle = fopen(base_path() . $this->dirupload . "stock-final\\c\\" . $date . "\\" . $final_file, "r+");
+                        $start = 0;
 
-        echo '<script>window.location.href = "' . url("stocks/cargas/?success=1") . '";</script>';
+                        while (($data = fgetcsv($handle)) !== FALSE) {
+                            if ($start > 0) {
+                                // most be insert
+                                StocksModel::insert_load_stocks_final($data, Auth::user()->username, date("Y-m-d H:i:s"));
+                            }
+
+                            $start++;
+                        }
+                        echo '<script>window.location.href = "' . url("stocks/cargas/?success=1") . '";</script>';
+                    } catch (Exception $e) {
+                        echo '<script>window.location.href = "' . url("stocks/cargas/?error=2") . '";</script>';
+                    }
+
+                    // Envio de correo alerta por id_region gente ISC.
+                }else{
+                    echo '<script>window.location.href = "' . url("stocks/cargas/?error=1") . '";</script>';
+                }                
+        }else{
+            echo '<script>window.location.href = "' . url("stocks/cargas/?error=1") . '";</script>';
+        }  
     }
 
     // Carga para stocks iniciales (conclusion ISC)
     public function upload_stock_final_isc(Request $request)
-    {
-        $redirect = url("stocks/cargas/?success=1");
-        $date = date("Y-m-d");
-        $file = $request->file('file');
+    {       
+        $user       = Auth::user()->username;
+        $date   = date("Y-m-d");
+        $file   = $request->file('file');
+        $valid = true;
+        $redirect = url("stocks/");
 
-        if (!empty($file)) {
-            $final_file = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $file->storeAS('stock-final/c/' . $date . '/', $final_file);
-        } else {
-            $final_file = '';
-        }
+        
+        if($file->getClientOriginalExtension() == 'csv'){
+                if (!empty($file)) {                    
+                    $final_file = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                    $file->storeAS('stock-final/c/' . $date . '/', $final_file);
+                } else {
+                    $valid = false;
+                    $redirect = url("stocks/inicial/");
+                    echo '<script>window.location.href = "' . url("stocks/cargas/?error=2") . '";</script>';
+                }
 
-        $handle = fopen(base_path() . $this->dirupload . "stock-final\\c\\" . $date . "\\" . $final_file, "r+");
-        $start = 0;
-        while (($data = fgetcsv($handle)) !== FALSE) {
-            if ($start != 0) {
-                // folio,  material, modelo,   po,      comentarios,    user,               fecha,          region
-                StocksModel::update_stocks_final_isc($data[0], $data[1], $data[2], $data[3], $data[4], Auth::user()->username, date("Y-m-d"), Auth::user()->id_region);
-            }
+                if ($valid) {                    
+                    try{
+                        $handle = fopen(base_path() . $this->dirupload . "stock-final\\c\\" . $date . "\\" . $final_file, "r+");
+                        $start = 0;
+                        while (($data = fgetcsv($handle)) !== FALSE) {
+                            if ($start != 0) {
+                                // folio,  material, modelo,   po,      comentarios,    user,               fecha,          region
+                                StocksModel::update_stocks_final_isc($data[0], $data[1], $data[2], $data[3], $data[4], Auth::user()->username, date("Y-m-d"), Auth::user()->id_region);
+                            }
+                            $start++;
+                        }
+                        echo '<script>window.location.href = "' . url("stocks/cargas/?success=1") . '";</script>';
+                    } catch (Exception $e) {
+                        echo '<script>window.location.href = "' . url("stocks/cargas/?error=2") . '";</script>';
+                    }
 
-            $start++;
-        };
-
-        echo '<script>window.location.href = "' . $redirect . '";</script>';
+                    // Envio de correo alerta por id_region gente ISC.
+                }else{
+                    echo '<script>window.location.href = "' . url("stocks/cargas/?error=1") . '";</script>';
+                }                
+        }else{
+            echo '<script>window.location.href = "' . url("stocks/cargas/?error=1") . '";</script>';
+        }  
     }
 }
