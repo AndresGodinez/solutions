@@ -37,27 +37,24 @@ class Sustituto extends Model
     }
 
     // Consulto la validación de la refacción que requiere sustituto.
-    public static function validate_master_data($np)
+    public static function validate_master_data(string $np)
     {
-        $valid = true;
-        $np_description = "";
-        $response = array();
-
+        $response = [];
         $data = DB::table('materiales')->select('part_description')
             ->where('part_number', '=', $np)
             ->get();
 
-        if(!empty($data[0]->part_description))
-        {
-            $np_description = $data[0]->part_description;
-        }
-        else
-        {
-            $valid = false;
-        }
 
-        $response['valid'] = $valid;
-        $response['np_description'] = $np_description;
+        if (!empty($data)){
+            $response['valid'] = true;
+            $response['np_description'] = !!$data[0]->part_description
+                ? $data[0]->part_description
+                : 'encontrado, no tiene descripción';
+        }
+        else{
+            $response['valid'] = false;
+            $response['np_description'] = '';
+        }
 
         return $response;
     }
