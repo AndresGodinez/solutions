@@ -75,6 +75,7 @@ Route::middleware('auth')->group(function () {
         
         Route::get('/historial/{id}',                             'AlcoparController@historial');
         
+        Route::get('/testmail/{mail}',                             'AlcoparController@testmail');        
         
     });
 });
