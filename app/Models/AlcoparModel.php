@@ -207,10 +207,19 @@ class AlcoparModel extends ModelBase
             ->from('alcopar_marca')
             ->get();
 
-        $extra = AlcoparModel::query()->selectRaw('id,tipo_extra,id_tipo_material')
-            ->from('alcopar_tipo_extra')
-            ->whereRaw('id_tipo_material = ' . $row[0]['alcopar_tipo_material'])
-            ->get();
+        if(isset($row[0])){
+            if($row[0]['alcopar_tipo_material']!= ''){        
+                $extra = AlcoparModel::query()->selectRaw('id,tipo_extra,id_tipo_material')
+                ->from('alcopar_tipo_extra')
+                ->whereRaw('id_tipo_material = ' . $row[0]['alcopar_tipo_material'])
+                ->get();
+            }
+            else{
+                $extra = array();    
+            }
+        }else{
+            $extra = array();
+        }        
 
         $data['row'] = $row;
         $data['row1'] = $row1;
@@ -301,11 +310,21 @@ class AlcoparModel extends ModelBase
         $marca = AlcoparModel::query()->selectRaw('id,id_marca,marca,id_tipo_material')
             ->from('alcopar_marca')
             ->get();
+        
 
-        $extra = AlcoparModel::query()->selectRaw('id,tipo_extra,id_tipo_material')
-            ->from('alcopar_tipo_extra')
-            ->whereRaw('id_tipo_material = ' . $row[0]['alcopar_tipo_material'])
-            ->get();
+        if(isset($row[0])){
+            if($row[0]['alcopar_tipo_material']!= ''){        
+                $extra = AlcoparModel::query()->selectRaw('id,tipo_extra,id_tipo_material')
+                ->from('alcopar_tipo_extra')
+                ->whereRaw('id_tipo_material = ' . $row[0]['alcopar_tipo_material'])
+                ->get();
+            }
+            else{
+                $extra = array();    
+            }
+        }else{
+            $extra = array();
+        }              
 
         $data['row'] = $row;
         $data['row1'] = $row1;
@@ -794,6 +813,7 @@ class AlcoparModel extends ModelBase
 
     public static function reasignarfac()
     {
+        
 
         $nombre = session('nombre');
         $username = session('username');
@@ -804,7 +824,7 @@ class AlcoparModel extends ModelBase
         $asigna = session('asigna');
 
         //REVING
-        if ($asigna == 'REVING') {
+        if ($asigna == 'FACTIBLE') {            
             DB::table('alcopar_partes')
                 ->where('id', $alcopar_id)
                 ->update(
@@ -812,7 +832,7 @@ class AlcoparModel extends ModelBase
                         'reving' => 1, 'factible' => 0, 'status' => 'EN REVISION DE LA INFORMACION DEL NUM DE PARTE'
                     )
                 );
-
+                
             DB::table('alcopar_partes_historial')->insert(
                 [
                     'alcopar_id' => $alcopar_id,
@@ -1560,11 +1580,14 @@ class AlcoparModel extends ModelBase
             if ($tipo == 'ALTERNO') {
 
                 $rows = AlcoparModel::query()
-                    ->selectRaw('MAX(id) AS id ')
-                    ->from('altapartes')->get();
+                    ->selectRaw('id ')
+                    ->from('altapartes')
+                    ->limit(1)
+                    ->orderBy('id', 'desc')
+                    ->get();
                 $row = $rows[0];
                 $resulta = $row['id'] + 1;
-
+               
 
                 DB::table('altapartes')->insert(
                     [
@@ -1594,7 +1617,7 @@ class AlcoparModel extends ModelBase
                 // <script language='JavaScript'> 
                 // window.open( 'https://soluciones.refaccionoriginal.com/altapartes/revsust/procesarechazar.php')
                 // </script>";
-
+                
                 if ($existe == "SI") {
 
                     $rows = AlcoparModel::query()
@@ -1687,9 +1710,10 @@ class AlcoparModel extends ModelBase
                                 ]);
                         }
                     } else {
+                        
                         $rows = AlcoparModel::query()
                             ->selectRaw('MAX(id) AS id ')
-                            ->from('altapartes')->get();
+                            ->from('alcopar_partes')->get();
                         $row = $rows[0];
                         $resulta = $row['id'] + 1;
 
@@ -2955,14 +2979,14 @@ class AlcoparModel extends ModelBase
         $alcopar_nivel = session('alcopar_nivel');
         $comentarios = session('comentario');
         $asigna = session('asigna');
-
+      
         //REVING
         if ($asigna == 'REVMAT') {
             DB::table('alcopar_partes')
                 ->where('id', $alcopar_id)
                 ->update(
                     array(
-                        'reving' => 1, 'oow' => 0, 'status' => 'EN REVISION DE FACTIBILIDAD DE SURTIMIENTO'
+                        'factible' => 1, 'oow' => 0, 'reving' => 0, 'status' => 'EN REVISION DE FACTIBILIDAD DE SURTIMIENTO'
                     )
                 );
 
@@ -2983,7 +3007,7 @@ class AlcoparModel extends ModelBase
                 ->update(
                     array(
                         'status' => 'EN REVISION DE LA INFORMACION DEL NUM DE PARTE', 
-                        'oow' => 0, 'reving' => 1
+                        'oow' => 0, 'reving' => 1,  'factible' => 0
                     )
                 );
             DB::table('alcopar_partes_historial')->insert(
@@ -2993,7 +3017,7 @@ class AlcoparModel extends ModelBase
                     'fecha_asignacion' => date('Ymd'),
                     'usuario' => $username,
                     'modulo_ant' => 'ALTA OOW',
-                    'modulo_act' => 'ALTA SAP'
+                    'modulo_act' => 'REV INGENIERIA'
                 ]
             );
         }
@@ -3093,7 +3117,7 @@ class AlcoparModel extends ModelBase
                 ->where('id', $alcopar_id)
                 ->update(
                     array(
-                        'reving' => 1, 'precio' => 0, 'status' => 'EN REVISION DE FACTIBILIDAD DE SURTIMIENTO'
+                        'reving' => 1, 'factible' => 0 , 'precio' => 0, 'status' => 'EN REVISION DE FACTIBILIDAD DE SURTIMIENTO'
                     )
                 );
 
@@ -3114,7 +3138,7 @@ class AlcoparModel extends ModelBase
                 ->update(
                     array(
                         'status' => 'EN REVISION DE LA INFORMACION DEL NUM DE PARTE', 
-                        'precio' => 0, 'reving' => 1
+                        'precio' => 0, 'factible' => 1, 'reving' => 0
                     )
                 );
             DB::table('alcopar_partes_historial')->insert(
@@ -3124,7 +3148,7 @@ class AlcoparModel extends ModelBase
                     'fecha_asignacion' => date('Ymd'),
                     'usuario' => $username,
                     'modulo_ant' => 'ALTA PRECIO',
-                    'modulo_act' => 'ALTA SAP'
+                    'modulo_act' => 'REV INGENIERIA'
                 ]
             );
         }
@@ -3134,7 +3158,7 @@ class AlcoparModel extends ModelBase
                 ->update(
                     array(
                         'status' => 'PARTE AUTORIZADA POR DARSE DE ALTA EN SAP', 
-                        'precio' => 0, 'alta' => 1
+                        'precio' => 0, 'alta' => 1, 'factible' => 0, 'reving' => 0
                     )
                 );
             DB::table('alcopar_partes_historial')->insert(
@@ -3153,7 +3177,7 @@ class AlcoparModel extends ModelBase
                 ->where('id', $alcopar_id)
                 ->update(
                     array(
-                        'status' => 'COSTO ESTANDAR POR ASIGNAR', 'precio' => 0, 'costo' => 1
+                        'status' => 'COSTO ESTANDAR POR ASIGNAR', 'precio' => 0, 'costo' => 1, 'factible' => 0, 'reving' => 0
                     )
                 );
             DB::table('alcopar_partes_historial')->insert(
@@ -3171,7 +3195,7 @@ class AlcoparModel extends ModelBase
                 ->where('id', $alcopar_id)
                 ->update(
                     array(
-                        'status' => 'PRECIO DE LISTA POR ASIGNAR', 'precio' => 0, 'precio' => 1
+                        'status' => 'PRECIO DE LISTA POR ASIGNAR', 'precio' => 1, 'factible' => 0, 'reving' => 0
                     )
                 );
             DB::table('alcopar_partes_historial')->insert(
@@ -3190,7 +3214,7 @@ class AlcoparModel extends ModelBase
                 ->where('id', $alcopar_id)
                 ->update(
                     array(
-                        'status' => 'PENDIENTE PRECIO OOW', 'precio' => 0, 'oow' => 1
+                        'status' => 'PENDIENTE PRECIO OOW', 'precio' => 0, 'oow' => 1, 'factible' => 0, 'reving' => 0
                     )
                 );
             DB::table('alcopar_partes_historial')->insert(

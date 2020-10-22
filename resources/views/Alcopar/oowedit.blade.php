@@ -297,10 +297,10 @@ $data = $get_records;
 					
 						
 						<select name="asigna" class="form-control">
-							<option value="">Escoge un m&oacute;dulo </option>
+							<option value="">Escoge un m&oacute;duloo </option>
+							<option value="reving">Rev Ingenieria</option>
 							<option value="revmat">Rev Materiales</option>
-							<option value="precio">Alta Precio</option>
-							<option value="oow">Alta OOW</option>
+							<option value="precio">Alta Precio</option>							
 						</select>
 						</fieldset>
 				</div>

@@ -30,6 +30,7 @@ class AlcoparController extends Controller
     
     public function reving()
     {
+
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
         $get_records = AlcoparModel::get_rev_ing_alta();
@@ -90,32 +91,40 @@ class AlcoparController extends Controller
             $familia = 0;
         }
 
-        $nomenclatura = $tipo_material.$categoria.$familia.$marca.$categoria_extra;
-
-        $datos = array('tipo_material' => $tipo_material,
-        'categoria' => $categoria,
-        'familia' => $familia,
-        'marca' => $marca, 
-        'tipo_extra' => $categoria_extra, 
-        'nomenclatura_service' => $nomenclatura);
-        AlcoparModel::updateProcesa('updatePartes',$alcopar_id, $datos);  
+        
         
        
         if(isset($_REQUEST['grabar'])){
+            $nomenclatura = $tipo_material.$categoria.$familia.$marca.$categoria_extra;
+
+            $datos = array('tipo_material' => $tipo_material,
+            'categoria' => $categoria,
+            'familia' => $familia,
+            'marca' => $marca, 
+            'tipo_extra' => $categoria_extra, 
+            'nomenclatura_service' => $nomenclatura);
+            AlcoparModel::updateProcesa('updatePartes',$alcopar_id, $datos);  
+            
             AlcoparModel::procesaaceptar();      
-            echo "<script>window.location = './?success=1'</script>";
+            $urldirv = url('/alcopar/reving?success=1');
+            echo "<script>window.location = '".$urldirv."'</script>";
+            
         }
         else if(isset($_REQUEST['cancelar'])) {
             AlcoparModel::cancelar2();                      
-            echo "<script>window.location = './?success=1'</script>";
+            $urldirv = url('/alcopar/reving?success=1');
+            echo "<script>window.location = '".$urldirv."'</script>";
         }
         else if(isset($_REQUEST['rechazar'])) {            
-             echo "<script>window.location = './procesarechazar'</script>";            
+            
+            $urldirv = url('/alcopar/reving/procesarechazar');
+            echo "<script>window.location = '".$urldirv."'</script>";      
         }
         
         else if(isset($_REQUEST['reasignar'])) {
             AlcoparModel::reasignar();          
-            echo "<script>window.location = './?success=1'</script>";              
+            $urldirv = url('/alcopar/reving?success=1');
+            echo "<script>window.location = '".$urldirv."'</script>";         
         }
     }
 
@@ -123,9 +132,13 @@ class AlcoparController extends Controller
         $request->session()->put(['razon'=>trim(strtoupper($_POST["rechazo"]))]);
         $v = AlcoparModel::rechazar(); 
         if(!$v){
-            echo "<script>window.location = './procesarechazar3'</script>";       
+            
+            $urldirv = url('/alcopar/reving/procesarechazar3');
+            echo "<script>window.location = '".$urldirv."'</script>";       
         }else{
-            echo "<script>window.location = './alcopar/factible'</script>";       
+            
+            $urldirv = url('/alcopar/factible?success=1');
+            echo "<script>window.location = '".$urldirv."'</script>";   
         }
     }
 
@@ -158,14 +171,20 @@ class AlcoparController extends Controller
         $request->session()->put(['tipo'=>trim(strtoupper($_POST["tipo"]))]);
         $request->session()->put(['sustituto'=>trim(strtoupper($_POST["sustituto"]))]);
         
-        $v = AlcoparModel::rechazar2(); 
-        if($v){
-            echo "<script>window.location = './?success=1'</script>";       
-        }else{
-            echo "<script>window.location = './'</script>";
+        try{
+            $v = AlcoparModel::rechazar2(); 
+            if($v){
+                 
+                $urldirv = url('/alcopar/reving/?success=1');
+                echo "<script>window.location = '".$urldirv."'</script>";            
+            }else{
+                echo "<script>window.location = './'</script>";                
+            }
+        }catch(Exception $e){
+            $urldirv = url('/alcopar/reving/?error=1');
+            echo "<script>window.location = '".$urldirv."'</script>";            
         }
-        
-        
+       
     }
 
 
@@ -201,6 +220,7 @@ class AlcoparController extends Controller
         $get_records = AlcoparModel::get_factible_edit($request->id);  
         $id = $request->id;      
         
+        $request->session()->put(['alcopar_id'=>$id]);        
         $request->session()->put(['pieza_alcopar'=>trim(strtoupper($get_records['row'][0]['partes']))]);
         #$request->session()->put(['x'=>'b']);
         ##echo session('x');                
@@ -231,14 +251,20 @@ class AlcoparController extends Controller
         
         if(isset($_REQUEST['grabar'])){
             AlcoparModel::procesaaceptarfac();      
-            echo "<script>window.location = './?success=1'</script>";
+            
+            $urldirv = url('/alcopar/factible/procesafactible/?success=1');
+            echo "<script>window.location = '".$urldirv."'</script>";            
         }      
         else if(isset($_REQUEST['rechazar'])) {            
-             echo "<script>window.location = './procesarechazar'</script>";            
+            
+            $urldirv = url('/alcopar/factible/procesarechazar');
+            echo "<script>window.location = '".$urldirv."'</script>";
         }        
         else if(isset($_REQUEST['reasignar'])) {
             AlcoparModel::reasignarfac();          
-            echo "<script>window.location = './?success=1'</script>";              
+            
+            $urldirv = url('/alcopar/factible/?success=1');
+            echo "<script>window.location = '".$urldirv."'</script>";             
         }
     }
 
@@ -335,10 +361,13 @@ class AlcoparController extends Controller
         
         if($v){
             //AlcoparModel::procesaaceptarfac();      
-            echo "<script>window.location = '../altamaterial?success=1'</script>";
+            
+            $urldirv = url('/alcopar/altamaterial?success=1');
+            echo "<script>window.location = '".$urldirv."'</script>";             
         }      
-        else{
-            echo "<script>window.location = '../altamaterial/existente'</script>";              
+        else{            
+            $urldirv = url('/alcopar/altamaterial/existente');
+            echo "<script>window.location = '".$urldirv."'</script>";
         }
 
     }
@@ -364,7 +393,10 @@ class AlcoparController extends Controller
         else if(isset($_REQUEST['agrega'])) {
             AlcoparModel::altamaterialexistenteagregar();            
         }
-        echo "<script>window.location = './altamaterial'</script>";    
+        
+        
+        $urldirv = url('/alcopar/altamaterial');
+        echo "<script>window.location = '".$urldirv."'</script>"; 
         
     }
 
@@ -460,7 +492,10 @@ class AlcoparController extends Controller
     }
 
     public function precioprocess(Request $request)
-    {                       
+    {                      
+        //$request->session()->put(['comentario'=>trim(strtoupper($_POST["comentario"]))]);
+        $request->session()->put(['asigna'=>trim(strtoupper($_POST["asigna"]))]);
+        //$request->session()->put(['costo'=>trim(strtoupper($_POST["costo"]))]); 
         if(isset($_REQUEST['grabar'])){                             
             $alcopar_id=session('alcopar_id');
             $comentario=$_POST['comentario'];
@@ -479,7 +514,7 @@ class AlcoparController extends Controller
             echo "<script>window.location = '".$urldirv."'</script>";                        
         }        
         else if(isset($_REQUEST['reasignar'])) {
-            AlcoparModel::reasignarprecio();            
+            AlcoparModel::reasignarprecio();                    
             $urldirv = url('/alcopar/precio?success=1');
             echo "<script>window.location = '".$urldirv."'</script>";
         }                
@@ -512,7 +547,11 @@ class AlcoparController extends Controller
     }
 
     public function oowprocess(Request $request)
-    {                       
+    {                 
+        //$request->session()->put(['comentario'=>trim(strtoupper($_POST["comentario"]))]);
+        $request->session()->put(['asigna'=>trim(strtoupper($_POST["asigna"]))]);
+        //$request->session()->put(['costo'=>trim(strtoupper($_POST["costo"]))]);
+
         if(isset($_REQUEST['grabar'])){                             
             $alcopar_id=session('alcopar_id');
             $comentario=$_POST['comentario'];
@@ -820,6 +859,121 @@ class AlcoparController extends Controller
             }
             echo "</table>";
         
+    }
+
+
+    public function testmail(Request $request){
+
+
+        $email_message = "	
+        <html>
+        <head>
+        <title>E-Mail HTML</title>
+        </head>
+        <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
+
+        <style>
+
+            body, P.msoNormal, LI.msoNormal
+            {
+            background-position: top;
+            margin-left:  1em;
+            margin-top: 1em;
+            font-family: 'Arial';
+            font-size:   9pt;
+            color:    '000000';
+            }
+
+            table
+            {
+            font-family: 'Arial';
+            font-size:   9pt;
+
+            }
+            </style>
+                
+                <body>
+                <p></p>
+                <p>Por este medio te informamos que la solictud de alta de parte ha sido CANCELADA y se agregó a tu bandeja de pedidos la solicitud por motivo de cancelación de alta de parte.<br> </p>
+                <p></p>
+                <p></p>
+                <br>
+                INFORMACION DE LA SOLICITUD
+                <p></p>
+                N&uacute;mero de Parte : <br>
+                Descripci&oacute;n : <br>	
+                Comentarios : <br>
+                Dispatch : <br>
+                <p></p>
+                Motivo de la cancelacion : <br>
+                Comentario Ingenieria : <br>
+                <p>
+            ";
+
+
+        $to = $request->mail;
+        $subject = 'Alta de Parte Cancelada por Ingenieria.';
+        $type = "Content-type: text/html\r\n";
+        $headers = "MIME-Version: 1.0 \r\n";
+        $headers = $headers . "Content-type: text/html;charset=iso-8859-1\r\n";
+        $headers = $headers . "From: Whirlpool Service<no-responder@whirlpool.com>\r\n";
+
+
+        $email_message = "  
+                <html>
+                <head>
+                <title>E-Mail HTML</title>
+                </head>
+                <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
+
+                <style>
+
+            body, P.msoNormal, LI.msoNormal
+            {
+            background-position: top;
+            margin-left:  1em;
+            margin-top: 1em;
+            font-family: 'Arial';
+            font-size:   9pt;
+            color:    '000000';
+            }
+
+            table
+            {
+            font-family: 'Arial';
+            font-size:   9pt;
+
+            }
+            </style>
+                
+                <body>
+                <p></p>
+                <p>Por este medio te informamos que la solictud de Alta de Parte ha sido cancelada.<br> </p>
+                <p></p>
+                <p></p>
+                <br>
+                INFORMACION DE LA SOLICITUD
+                <p></p>
+                N&uacute;mero de Parte : <br>
+                Descripci&oacute;n :<br>   
+                Comentarios :<br>
+                Dispatch :<br>
+                <p></p>
+                Motivo de la cancelacion : <br>
+                Comentario Ingenieria : <br>
+                <p>
+            ";
+
+
+        $to = $request->mail;
+        $subject = 'Alta de Parte Cancelada por Ingenieria.';
+        $type = "Content-type: text/html\r\n";
+        $headers = "MIME-Version: 1.0 \r\n";
+        $headers = $headers . "Content-type: text/html;charset=iso-8859-1\r\n";
+        $headers = $headers . "From: Whirlpool Service<no-responder@whirlpool.com>\r\n";
+
+        mail($to, $subject, $email_message, $headers);
+
     }
 
 }
