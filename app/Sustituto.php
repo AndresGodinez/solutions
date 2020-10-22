@@ -37,13 +37,12 @@ class Sustituto extends Model
     }
 
     // Consulto la validación de la refacción que requiere sustituto.
-    public static function validate_master_data(string $np)
+    public static function validate_master_data(string $np):array
     {
         $response = [];
         $data = DB::table('materiales')->select('part_description')
             ->where('part_number', '=', $np)
             ->get();
-
 
         if (!empty($data)){
             $response['valid'] = true;
@@ -60,7 +59,7 @@ class Sustituto extends Model
     }
 
     // Validamos ya existe una liga smilar
-    public static function validate_if_exist_liga($np, $np_sust)
+    public static function validate_if_exist_liga(string $np, string $np_sust)
     {
         $data = DB::table('wpx_ligas_sustitutos')
             ->select('np')

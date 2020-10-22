@@ -138,7 +138,7 @@ class MaterialesController extends Controller
         $redirect = "";
 
         $request->ipt_componente = $this->clean_string(isset($request->ipt_componente) ? $request->ipt_componente : "");
-        $request->ipt_componente_sust = $this->clean_string(isset($request->ipt_componente_sust) ? $request->ipt_componente_sust : "");
+        $request->ipt_componente_sust = $this->clean_string(isset($request->ipt_componente_sust) ? $request->get('ipt_componente_sust') : "");
         $request->ipt_componente_sust_descr = $this->clean_string(isset($request->ipt_componente_sust_descr) ? $request->ipt_componente_sust_descr : "");
 
         if (empty($request->ipt_componente)) {
@@ -160,7 +160,7 @@ class MaterialesController extends Controller
             $data_master_data = Sustituto::validate_master_data($request->get('ipt_componente'));
 
             if ($data_master_data['valid']) {
-                if (Sustituto::validate_if_exist_liga($request->get('ipt_componente'), $request->get('ipt_componente_sust'))) {
+                if (Sustituto::validate_if_exist_liga($request->ipt_componente, $request->ipt_componente_sust)) {
                     // Si si existe, insertamos el regristro ya como una solicitud formal.
                     $depto = $user->depto;
                     $userName = $user->username;
