@@ -252,7 +252,7 @@ class AlcoparController extends Controller
         if(isset($_REQUEST['grabar'])){
             AlcoparModel::procesaaceptarfac();      
             
-            $urldirv = url('/alcopar/factible/procesafactible/?success=1');
+            $urldirv = url('/alcopar/altamaterial/?success=1');
             echo "<script>window.location = '".$urldirv."'</script>";            
         }      
         else if(isset($_REQUEST['rechazar'])) {            
