@@ -113,7 +113,7 @@ class UsuariosController extends Controller
             'depto' => $depto->departamento ?? '',
             'planta' => $request->get('planta'),
             'id_contry' => $request->get('country_id'),
-            'id_region' => $request->get('country_id'),
+            'id_region' => $request->get('region_id'),
             'cliente' => $request->get('cliente')
         ]);
 
