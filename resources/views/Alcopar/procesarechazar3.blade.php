@@ -58,7 +58,7 @@ $nombre_usuario=$get_records['nombre'];
                 
                 <tr>
                     <td>N&uacute;mero Sustituto</td>            
-                <td><input name='sustituto' type='text' id='sustituto' size='40' class="validate[required,minSize[5]] text-input form-control" style="text-transform:uppercase"></td>            
+                <td><input name='sustituto' type='text' id='sustituto' size='40' pattern=".{5,}"   required title="Mínimo de 5 caracteres autorizados" class="validate[required,minSize[5]] text-input form-control" style="text-transform:uppercase"></td>            
                 </tr>
                 <tr>            
                     <td>&iquest;Qu&eacute; tipo de sustituto es?</td>
@@ -88,7 +88,7 @@ $nombre_usuario=$get_records['nombre'];
                 <td></td>
                 <td height='150'> 
                     <input type="submit" id="rechazar" class="btn btn-danger"  name="rechazar" value="Rechazar" onclick="return confirm('Estas seguro de que deseas rechazar la solicitud?')">
-                    <input type="submit" id="regresar"  class="btn btn-primary" name="regresar" value="Regresar al Listado">
+                    <a class="btn btn-primary"  value="" href="{{ url('/alcopar/reving')}}">Regresar al Listado</a>
                 </td>
             </tr>
 
