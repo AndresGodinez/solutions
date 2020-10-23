@@ -155,13 +155,13 @@
             if (!! $('#country_id').val()){
                 let region = $('#region_id');
                 let country = $('#country_id');
+
                 ff();
+
                 async function ff (){
                     try {
-                        let response = await axios.get('/get-regiones', {
-                            params:{
-                                country :country.val()
-                            }
+                        let response = await axios.post('/get-regiones', {
+                            country :country.val()
                         });
                         response.data.forEach((item) => {
                             region.append(`<option value="${item.id_region}">
@@ -181,17 +181,15 @@
                 let region = $('#region_id');
                 let country = $('#country_id');
                 try {
-                    let response = await axios.get('/get-regiones', {
-                        params:{
-                            country :country.val()
-                        }
+                    let response = await axios.post('/get-regiones', {
+                        country :country.val()
                     });
                     region.empty();
                     region.append(`<option value="">
                                        Seleccione una opción
                                   </option>`);
                     response.data.forEach((item) => {
-                        region.append(`<option value="${item.id}">
+                        region.append(`<option value="${item.id_region}">
                                        ${item.short_name}
                                   </option>`);
                     });

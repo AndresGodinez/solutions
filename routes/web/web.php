@@ -44,5 +44,5 @@ Route::get('/home', 'HomeController@index')
 Route::get('/get-countries', 'CountriesController@list')
     ->name('getCountries');
 
-Route::get('/get-regiones', 'CountriesController@regiones')
+Route::post('/get-regiones', 'CountriesController@regiones')
     ->name('getRegiones');
