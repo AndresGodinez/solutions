@@ -2147,7 +2147,12 @@ class AlcoparModel extends ModelBase
             Motivo del Rechazo : EL MATERIAL CUENTA CON SUSTITUTO<br>
             <p>
             ";
-        $to = $mail . "," . $mail2 . "," . $mail3;
+        if(isset($mail3)){
+            $to = $mail . "," . $mail2 . "," . $mail3;
+        }else{
+            $to = $mail . "," . $mail2;
+        }
+        
         $subject = 'Alta de Parte Cancelada por Ingenieria.';
         $type = "Content-type: text/html\r\n";
         $headers = "MIME-Version: 1.0 \r\n";
