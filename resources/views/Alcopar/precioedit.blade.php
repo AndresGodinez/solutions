@@ -337,7 +337,7 @@ $data = $get_records;
 							<center>
 							<input class="btn btn-primary" type="submit" id="grabar"  name="grabar" value="Autorizar" onclick="return confirm('Estas seguro de que deseas autorizar la solicitud?')" />							
 							<input class="btn btn-primary"  type="submit" id="reasignar"  name="reasignar" value="Reasignar" onclick="return confirm('Estas seguro de que deseas reasignar la solicitud?')" />
-							<a class="btn btn-primary"  value="" href="{{ url('/alcopar/factible')}}">Regresar al Listado</a>
+							<a class="btn btn-primary"  value="" href="{{ url('/alcopar/precio')}}">Regresar al Listado</a>
 							</center>
 						</fieldset>
 				</div>		
