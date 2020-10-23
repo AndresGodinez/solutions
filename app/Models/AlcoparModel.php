@@ -3117,7 +3117,7 @@ class AlcoparModel extends ModelBase
                 ->where('id', $alcopar_id)
                 ->update(
                     array(
-                        'reving' => 1, 'factible' => 0 , 'precio' => 0, 'status' => 'EN REVISION DE FACTIBILIDAD DE SURTIMIENTO'
+                        'reving' => 0, 'factible' => 1 , 'precio' => 0, 'status' => 'EN REVISION DE FACTIBILIDAD DE SURTIMIENTO'
                     )
                 );
 
@@ -3138,7 +3138,7 @@ class AlcoparModel extends ModelBase
                 ->update(
                     array(
                         'status' => 'EN REVISION DE LA INFORMACION DEL NUM DE PARTE', 
-                        'precio' => 0, 'factible' => 1, 'reving' => 0
+                        'precio' => 0, 'factible' => 0, 'reving' => 1
                     )
                 );
             DB::table('alcopar_partes_historial')->insert(
