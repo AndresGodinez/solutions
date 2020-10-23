@@ -3,8 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function is_null;
 
 class Sustituto extends Model
 {
@@ -37,20 +38,17 @@ class Sustituto extends Model
     }
 
     // Consulto la validación de la refacción que requiere sustituto.
-    public static function validate_master_data(string $np):array
+    public static function validate_master_data(Request $request):array
     {
         $response = [];
-        $data = DB::table('materiales')->select('part_description')
-            ->where('part_number', '=', $np)
-            ->get();
+        $material = Material::where('part_description', $request->get('ipt_componente'))->first();
 
-        if (!empty($data)){
+        if (!is_null($material)){
             $response['valid'] = true;
-            $response['np_description'] = !!$data[0]->part_description
-                ? $data[0]->part_description
+            $response['np_description'] = !!$material[0]->part_description
+                ? $material[0]->part_description
                 : 'encontrado, no tiene descripción';
-        }
-        else{
+        }else{
             $response['valid'] = false;
             $response['np_description'] = '';
         }
@@ -115,35 +113,6 @@ class Sustituto extends Model
         return $response;
     }
 
-    public static function insert_log($id, $id_status, $modify_by, $depto, $comments)
-    {
-        $valid 		= true;
-        $message 	= "";
-        $response = array();
-
-        if(!empty($id))
-        {
-            $modify_date = date("Y-m-d H:i:s");
-            DB::table('wpx_ligas_sustitutos_log')->insert(
-                ['id_sol' 		=> $id,
-                    'modify_by' 	=> $modify_by,
-                    'id_status'     => $id_status,
-                    'depto'         => $depto,
-                    'comments'      => $comments,
-                    'modify_date' 	=> $modify_date]
-            );
-        }
-        else
-        {
-            $valid 		= false;
-            $message 	= "Hubo un error con la id insertada, favor de levantar de nuevo la solicitud, si se perciste este problema favor de contactar a sistemas.";
-        }
-
-        $response['valid'] = $valid;
-        $response['message'] = $message;
-
-        return $response;
-    }
 
     // Get all records.
     public static function get_sol_by_id($id)

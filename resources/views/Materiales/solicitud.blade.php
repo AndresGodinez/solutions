@@ -83,6 +83,7 @@
                                        id="ipt_componente"
                                        name="ipt_componente"
                                        class="form-control"
+                                       value="{{old('ipt_componente')}}"
                                        required
                                 >
                             </div>
@@ -95,6 +96,7 @@
                                        id="ipt_componente_sust"
                                        name="ipt_componente_sust"
                                        class="form-control"
+                                       value="{{ old('ipt_componente_sust') }}"
                                 >
                             </div>
                             <div class="form-group col-md-3">
@@ -103,6 +105,7 @@
                                        id="ipt_componente_sust_descr"
                                        name="ipt_componente_sust_descr"
                                        class="form-control"
+                                       value="{{old('ipt_componente_sust_descr')}}"
                                 >
                             </div>
                         </div>
@@ -128,10 +131,10 @@
             let np = $(this).val();
 
             $.ajax({
-                type: 'post',
-                url: '/process/' + np,
+                method: 'post',
+                url: '/get_description_by_np',
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                data: $(this).serialize(),
+                data: { ipt_componente : np},
                 dataType: 'json',
                 beforeSend: function() {
                     //$('input,textarea,select').attr('disabled','disabled');

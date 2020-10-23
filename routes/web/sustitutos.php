@@ -22,5 +22,5 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/sustitutos/process', 'MaterialesController@process');
 
-    Route::post('/process/{np}', 'MaterialesController@get_description_by_np');
+    Route::post('/get_description_by_np', 'MaterialesController@get_description_by_np');
 });

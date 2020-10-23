@@ -3,14 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ConsultaMaterialesRequest;
+use App\Http\Requests\GetDescriptionMaterialRequest;
+use App\Http\Requests\SolicitudSustitutoRequest;
 use App\Material;
 use App\Stock;
 use App\Sustituto;
+use App\WpxLigasSustitutos;
+use App\WpxLigasSustitutosLog;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use function compact;
 use function datatables;
+use function is_null;
 use function redirect;
 use function response;
 use function url;
@@ -30,10 +36,10 @@ class MaterialesController extends Controller
     {
         $user = Auth::user()->username;
 
-        $data       = Sustituto::get_sol_by_id($id);
-        $data_log   = Sustituto::get_log_sol_by_id($id);
+        $data = Sustituto::get_sol_by_id($id);
+        $data_log = Sustituto::get_log_sol_by_id($id);
 
-        $access     = Sustituto::get_access(Auth::user()->username, Auth::user()->depto);
+        $access = Sustituto::get_access(Auth::user()->username, Auth::user()->depto);
 
         return view("Sustitutos.detail", compact('data', 'data_log', 'access', 'user'));
     }
@@ -127,115 +133,62 @@ class MaterialesController extends Controller
         return trim(strip_tags($string));
     }
 
-    public function process(Request $request)
+    public function process(SolicitudSustitutoRequest $request)
     {
         // Obtenemos el usuario de la sesion para validar el acceso al sistema.
         $user = Auth::user();
 
-        $valid = true;
-        $target = "";
         $message = "¡Los cambios se guardaron exitosamente!";
-        $redirect = "";
 
-        $request->ipt_componente = $this->clean_string(isset($request->ipt_componente) ? $request->ipt_componente : "");
-        $request->ipt_componente_sust = $this->clean_string(isset($request->ipt_componente_sust) ? $request->get('ipt_componente_sust') : "");
-        $request->ipt_componente_sust_descr = $this->clean_string(isset($request->ipt_componente_sust_descr) ? $request->ipt_componente_sust_descr : "");
-
-        if (empty($request->ipt_componente)) {
-            $message = "Por favor ingrese un Componente que requiere sustituto.";
-            $valid = false;
-            $target = "#ipt_componente";
-        } elseif (empty($request->ipt_componente)) {
-            $message = "Por favor ingrese un Componente sustituto.";
-            $valid = false;
-            $target = "#ipt_componente";
-        } elseif (empty($request->ipt_componente_sust_descr)) {
-            $message = "Por favor ingrese una Descripción del sustituto.";
-            $valid = false;
-            $target = "#ipt_componente_sust_descr";
+        if (WpxLigasSustitutos::where('np', $request->get('ipt_componente'))->where('np_sust',
+            $request->get('ipt_componente_sust'))->exists()) {
+            return redirect(url('sustitutos'))->with(['message' => 'No se creo la solicitud, ya existe un material con ese sustituto']);
         }
 
-        if ($valid) {
-            // Primero debemos de validar que la refacción que requiere un sustituto este dada de alta en CS. (master data).
-            $data_master_data = Sustituto::validate_master_data($request->get('ipt_componente'));
+        $nSolicitud = WpxLigasSustitutos::create([
+            'np' => $request->get('ipt_componente'),
+            'id_status' => 1,
+            'np_sust' => $request->get('ipt_componente_sust'),
+            'np_sust_descr' => $request->get('ipt_componente_sust_descr'),
+            'depto_ing' => 0,
+            'depto_mat' => 0,
+            'depto_ven' => 0,
+            'usr_request' => $user->username,
+            'usr_depto' => $user->depto,
+            'created_at' => Carbon::now()
+        ]);
 
-            if ($data_master_data['valid']) {
-                if (Sustituto::validate_if_exist_liga($request->ipt_componente, $request->ipt_componente_sust)) {
-                    // Si si existe, insertamos el regristro ya como una solicitud formal.
-                    $depto = $user->depto;
-                    $userName = $user->username;
-
-                    $data_create_sol = Sustituto::create_solicitud($request->get('ipt_componente'),
-                        $request->get('ipt_componente_sust'), $request->get('ipt_componente_sust_descr'), $userName, $depto);
-
-                    if ($data_create_sol['valid']) {
-                        $data_insert_log = Sustituto::insert_log($data_create_sol['id'], 1, $userName, $depto,
-                            "Se crea la solicitud");
-
-                        if (!$data_insert_log['valid']) {
-                            $message = $data_insert_log['message'];
-                            $valid = $data_insert_log['valid'];
-                        } else {
-                            $redirect = "detalle/".$data_create_sol['id'];
-                        }
-                    } else {
-                        $message = $data_create_sol['message'];
-                        $valid = $data_create_sol['valid'];
-                    }
-                } else {
-                    $message = "No se puede generar una solicitud ya que existe una solicitud entre estos dos materiales previamente.";
-                    $valid = false;
-                    $target = "#ipt_componente";
-                }
-            } else {
-                $message = "No se puede generar una solicitud ya que el Componente que requiere sustituto no existe o no esta dado de alta en SAP.";
-                $valid = false;
-                $target = "#ipt_componente";
-            }
-        }
-
-        $response['message'] = $message;
-        $response['valid'] = $valid;
-        $response['target'] = $target;
-        $response['redirect'] = $redirect;
+        WpxLigasSustitutosLog::create([
+            'id_sol' => $nSolicitud->id,
+            'modify_by' => $user->username,
+            'id_status' => 1,
+            'depto' => $user->depto,
+            'comments' => 'Se crea la solicitud',
+            'modify_date' => Carbon::now()
+        ]);
 
         return redirect(url('sustitutos'))->with(['message' => $message]);
+
     }
 
-    public function get_description_by_np(Request $request)
+    public function get_description_by_np(GetDescriptionMaterialRequest $request)
     {
-        $valid = true;
-        $target = "";
-        $message = "¡Los cambios se guardaron exitosamente!";
+        $material = Material::where('part_description', $request->get('ipt_componente'))->first();
 
-        $iptComponent = $request->get('ipt_componente');
+        if (!is_null($material)) {
+            $response['valid'] = true;
+            $response['np_description'] = !!$material->part_description
+                ? $material->part_description
+                : 'encontrado, no tiene descripción';
+        } else {
+            $message = "No se puede generar una solicitud ya que el Componente que requiere sustituto no existe o no esta dado de alta en SAP.";
 
-        $request->ipt_componente = $this->clean_string(isset($iptComponent) ? $iptComponent : "");
-
-        if(!empty($request->ipt_componente))
-        {
-            $data_master_data = Sustituto::validate_master_data($request->get('ipt_componente'));
-
-            if($data_master_data['valid'])
-            {
-                $response['np_description'] = $data_master_data['np_description'];
-                $response['valid'] = $valid;
-            }
-            else
-            {
-                $message = "No se puede generar una solicitud ya que el Componente que requiere sustituto no existe o no esta dado de alta en SAP.";
-                $valid = false;
-                $target = "#ipt_componente";
-
-                $response['message'] = $message;
-                $response['valid'] = $valid;
-                $response['target'] = $target;
-            }
-
-            return response()->json($response);
+            $response['message'] = $message;
+            $response['valid'] = false;
+            $response['target'] = '#ipt_componente';
         }
-        return response()->json(['message' => 'error obteniendo datos']);
 
+        return response()->json($response);
     }
 
     public function set_track(Request $request)
@@ -249,80 +202,62 @@ class MaterialesController extends Controller
         $message = "¡Los cambios se guardaron exitosamente!";
         $redirect = "";
 
-        $request->ipt_id        = $this->clean_string(isset($request->ipt_id) ? $request->ipt_id : "");
-        $request->ipt_comments  = $this->clean_string(isset($request->ipt_comments) ? $request->ipt_comments : "");
-        $request->ipt_rel       = $this->clean_string(isset($request->ipt_rel) ? $request->ipt_rel : "");
-        $request->ipt_action    = $this->clean_string(isset($request->ipt_action) ? $request->ipt_action : "");
+        $request->ipt_id = $this->clean_string(isset($request->ipt_id) ? $request->ipt_id : "");
+        $request->ipt_comments = $this->clean_string(isset($request->ipt_comments) ? $request->ipt_comments : "");
+        $request->ipt_rel = $this->clean_string(isset($request->ipt_rel) ? $request->ipt_rel : "");
+        $request->ipt_action = $this->clean_string(isset($request->ipt_action) ? $request->ipt_action : "");
 
-        if(isset($gbl_user) && !empty($gbl_user))
-        {
-            if(empty($request->ipt_comments))
-            {
+        if (isset($gbl_user) && !empty($gbl_user)) {
+            if (empty($request->ipt_comments)) {
                 $message = "Por favor ingresa tus comentarios del porque autorizas o rechazas esta solicitud.";
                 $valid = false;
                 $target = "#ipt_comments";
-            }
-            elseif(empty($request->ipt_rel))
-            {
+            } elseif (empty($request->ipt_rel)) {
                 $message = "Por favor ingresa un tipo de relación entre los materiales.";
                 $valid = false;
                 $target = "#ipt_rel";
-            }
-            elseif(empty($request->ipt_action))
-            {
+            } elseif (empty($request->ipt_action)) {
                 $message = "Por favor ingrese una acción valida.";
                 $valid = false;
                 $target = "#ipt_action";
-            }
-            elseif(empty($request->ipt_id))
-            {
+            } elseif (empty($request->ipt_id)) {
                 $message = "Por favor NO modifique la id de la solicitud de liga.";
                 $valid = false;
                 $target = "#ipt_id";
             }
         }
 
-        if($valid)
-        {
+        if ($valid) {
             $depto_ing = "";
             $depto_mat = "";
             $depto_ven = "";
 
-            if($gbl_depto == "INGENIERIA")
-            {
+            if ($gbl_depto == "INGENIERIA") {
                 $id_status = 3;
                 $depto_ing = 1;
-            }
-            elseif($gbl_depto == "MATERIALES")
-            {
+            } elseif ($gbl_depto == "MATERIALES") {
                 $id_status = 3;
                 $depto_mat = 1;
-            }
-            elseif($gbl_depto == "VENTAS")
-            {
+            } elseif ($gbl_depto == "VENTAS") {
                 $id_status = 3;
                 $depto_ven = 1;
             }
 
-            $insert_contribute  = Sustituto::insert_contribute($request->ipt_id, $request->ipt_comments, $request->ipt_rel, $request->ipt_action, $gbl_user, $gbl_depto, $id_status);
+            $insert_contribute = Sustituto::insert_contribute($request->ipt_id, $request->ipt_comments,
+                $request->ipt_rel, $request->ipt_action, $gbl_user, $gbl_depto, $id_status);
 
-            if($insert_contribute['valid'])
-            {
-                $update_sol_gen = Sustituto::update_sol_gen($depto_ing, $depto_mat, $depto_ven, $request->ipt_id, $request->ipt_action);
+            if ($insert_contribute['valid']) {
+                $update_sol_gen = Sustituto::update_sol_gen($depto_ing, $depto_mat, $depto_ven, $request->ipt_id,
+                    $request->ipt_action);
 
-                if($update_sol_gen['valid'])
-                {
+                if ($update_sol_gen['valid']) {
                     $redirect = $request->ipt_id;
-                }
-                else
-                {
+                } else {
                     $message = "No se puede contribuir a la solicitud :: update_sol_gen, por favor contacte al departemento de sistemas. => ".$update_sol_gen['message'];
                     $valid = false;
                     $target = "#ipt_id";
                 }
-            }
-            else
-            {
+            } else {
                 $message = "No se puede contribuir a la solicitud :: insert_contribute, por favor contacte al departemento de sistemas.";
                 $valid = false;
                 $target = "#ipt_id";
@@ -347,24 +282,20 @@ class MaterialesController extends Controller
         $message = "¡Los cambios se guardaron exitosamente!";
         $redirect = "";
 
-        $request->ipt_id        = $this->clean_string(isset($request->ipt_id) ? $request->ipt_id : "");
-        $request->ipt_comments  = $this->clean_string(isset($request->ipt_comments) ? $request->ipt_comments : "");
+        $request->ipt_id = $this->clean_string(isset($request->ipt_id) ? $request->ipt_id : "");
+        $request->ipt_comments = $this->clean_string(isset($request->ipt_comments) ? $request->ipt_comments : "");
 
-        if(empty($request->ipt_id))
-        {
+        if (empty($request->ipt_id)) {
             $message = "Por favor no modifiques la id de la solicitud.";
             $valid = false;
             $target = "#ipt_id";
-        }
-        elseif(empty($request->ipt_comments))
-        {
+        } elseif (empty($request->ipt_comments)) {
             $message = "Por favor ingresea el porque estas cancelando la solicitud.";
             $valid = false;
             $target = "#ipt_comments";
         }
 
-        if($valid)
-        {
+        if ($valid) {
             Sustituto::cancel_sol($request->ipt_id, $user, $depto, $request->ipt_comments);
             $redirect = $request->ipt_id;
         }
