@@ -137,7 +137,7 @@ class AlcoparController extends Controller
             echo "<script>window.location = '".$urldirv."'</script>";       
         }else{
             
-            $urldirv = url('/alcopar/factible?success=1');
+            $urldirv = url('/alcopar/reving?success=1');
             echo "<script>window.location = '".$urldirv."'</script>";   
         }
     }
@@ -493,7 +493,7 @@ class AlcoparController extends Controller
 
     public function precioprocess(Request $request)
     {                      
-        //$request->session()->put(['comentario'=>trim(strtoupper($_POST["comentario"]))]);
+        $request->session()->put(['comentario'=>trim(strtoupper($_POST["comentario"]))]);
         $request->session()->put(['asigna'=>trim(strtoupper($_POST["asigna"]))]);
         //$request->session()->put(['costo'=>trim(strtoupper($_POST["costo"]))]); 
         if(isset($_REQUEST['grabar'])){                             
@@ -548,7 +548,7 @@ class AlcoparController extends Controller
 
     public function oowprocess(Request $request)
     {                 
-        //$request->session()->put(['comentario'=>trim(strtoupper($_POST["comentario"]))]);
+        $request->session()->put(['comentario'=>trim(strtoupper($_POST["comentario"]))]);
         $request->session()->put(['asigna'=>trim(strtoupper($_POST["asigna"]))]);
         //$request->session()->put(['costo'=>trim(strtoupper($_POST["costo"]))]);
 
