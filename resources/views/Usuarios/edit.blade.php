@@ -164,7 +164,7 @@
                             }
                         });
                         response.data.forEach((item) => {
-                            region.append(`<option value="${item.id}">
+                            region.append(`<option value="${item.id_region}">
                                        ${item.short_name}
                                   </option>`);
                         });
