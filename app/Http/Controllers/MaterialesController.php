@@ -173,7 +173,7 @@ class MaterialesController extends Controller
 
     public function get_description_by_np(GetDescriptionMaterialRequest $request)
     {
-        $material = Material::where('part_description', $request->get('ipt_componente'))->first();
+        $material = Material::where('part_number', $request->get('ipt_componente'))->first();
 
         if (!is_null($material)) {
             $response['valid'] = true;

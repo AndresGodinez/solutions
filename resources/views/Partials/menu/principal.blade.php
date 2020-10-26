@@ -10,9 +10,9 @@
 
         @include('Partials.menu.items.usuarios')
         @include('Partials.menu.items.roles')
-        
+
         @include('Partials.menu.items.stocks')
-        
+
         @include('Partials.menu.items.stock-basico')
 
         @include('Partials.menu.items.alcopar')
@@ -21,6 +21,7 @@
         @include('Partials.menu.items.fechas-promesas')
         @include('Partials.menu.items.conteo-ciclicos')
         @include('Partials.menu.items.lx02')
+        @include('Partials.menu.items.impresion-etiquetas')
 
     </ul>
 </div>
