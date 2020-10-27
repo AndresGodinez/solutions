@@ -17,6 +17,8 @@
 
         @include('Partials.menu.items.alcopar')
 
+        @include('Partials.menu.items.ingexp')        
+
         @include('Partials.menu.items.sustitutos')
         @include('Partials.menu.items.fechas-promesas')
         @include('Partials.menu.items.conteo-ciclicos')
