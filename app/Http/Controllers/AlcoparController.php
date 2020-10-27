@@ -107,6 +107,8 @@ class AlcoparController extends Controller
             
             AlcoparModel::procesaaceptar();      
             $urldirv = url('/alcopar/reving?success=1');
+
+
             echo "<script>window.location = '".$urldirv."'</script>";
             
         }
@@ -246,13 +248,15 @@ class AlcoparController extends Controller
                'costo_pieza' => $_POST["costo"]
         ]);
 
-        AlcoparModel::updateProcesaa($pieza);  
-        
-        
+        AlcoparModel::updateProcesaa($pieza);                  
+        // if(isset($_REQUEST['grabar'])){
+        //     AlcoparModel::procesaaceptarfac();
+        //     $urldirv = url('/alcopar/factible/?success=1');
+        //     echo "<script>window.location = '".$urldirv."'</script>";            
+        // }      
         if(isset($_REQUEST['grabar'])){
-            AlcoparModel::procesaaceptarfac();      
-            
-            $urldirv = url('/alcopar/altamaterial/?success=1');
+            AlcoparModel::procesaaceptarfac();
+            $urldirv = url('/alcopar/factible/?success=1');
             echo "<script>window.location = '".$urldirv."'</script>";            
         }      
         else if(isset($_REQUEST['rechazar'])) {            
