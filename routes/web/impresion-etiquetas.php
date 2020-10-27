@@ -10,5 +10,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/constulta', 'ImpresionEtiquetasController@consulta')
             ->name('impresion.etiquetas.consulta');
 
+        Route::post('/print', 'ImpresionEtiquetasController@print')
+            ->name('impresion.etiquetas.print');
+
     });
 });

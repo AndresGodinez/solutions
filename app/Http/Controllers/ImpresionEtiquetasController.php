@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ImpreseionEtiquetasConsultaRequest;
+use App\Http\Requests\ImpresionEtiquetasPrintRequest;
 use App\MaterialABC;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use function compact;
+use function view;
 
 class ImpresionEtiquetasController extends Controller
 {
@@ -17,8 +20,35 @@ class ImpresionEtiquetasController extends Controller
     {
         $material = MaterialABC::where('material', $request->get('material'))->first();
 
-        dd([
-            'mate' => $material
-        ]);
+        return view('ImpresionEtiquetas.consulta', compact('material'));
+    }
+
+    public function print(ImpresionEtiquetasPrintRequest $request)
+    {
+        $planta = Auth::user()->planta;
+        $cantidad = $request->get('quantity');
+        $materialAbc = MaterialABC::where('material', $request->get('material-to-print'))->first();
+        $material = $materialAbc->material;
+        $piezas = $request->get('pieces');
+
+        if ($materialAbc->descripcion == ''){
+            $materialAbc->descripcion = 'No contiene descripcion';
+        }
+
+        $descripcion = substr(strtoupper($materialAbc->descripcion), 0, 20).' '.$piezas.'PIEZAS';
+
+        $etiqueta = '';
+
+        $fecha = date('d-m-Y H:i:s');
+
+        return view('ImpresionEtiquetas.print', compact(
+            'material',
+            'cantidad',
+            'piezas',
+            'planta',
+            'descripcion',
+            'etiqueta',
+            'fecha'
+        ));
     }
 }
