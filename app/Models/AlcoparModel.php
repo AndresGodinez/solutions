@@ -468,15 +468,21 @@ class AlcoparModel extends ModelBase
 
     public static function updateProcesaa($pieza)
     {
+
+        
         $rows = AlcoparModel::query()
             ->selectRaw('material,costo')
             ->from('reforig_logistica.materiales_costo')->whereRaw("material = '" . $pieza . "'")->get();
         $num_rows = $rows->count();
-
+        
         if ($num_rows >= 1) {
+            
             DB::table('reforig_logistica.materiales_costo')
                 ->where('material', $pieza)
-                ->update(['costostd' => session('costo'), 'costo' => session('costo')]);
+                ->update([
+                        'costostd' => session('costo'), 
+                        'costo' => session('costo')
+                    ]);
         } else {
             DB::table('reforig_logistica.materiales_costo')->insert(
                 [
@@ -724,7 +730,7 @@ class AlcoparModel extends ModelBase
 
             $mail_sent = @mail($to, $subject, $email_message, $headers);
         } else {
-                echo $alcopar_id;
+                
                 $rows = AlcoparModel::query()
                     ->selectRaw("GROUP_CONCAT( mail SEPARATOR ', ') as mail3")
                     ->from('alcopar_partes_mail')->whereRaw("idalcopar = " . $alcopar_id)->get();

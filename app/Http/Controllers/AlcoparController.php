@@ -45,7 +45,7 @@ class AlcoparController extends Controller
         $get_records = AlcoparModel::get_rev_ing_alta_edit($request->id);  
         $id = $request->id;      
         $request->session()->put(['alcopar_id'=>$id]);
-        $request->session()->put(['pieza_alcopar'=>trim(strtoupper($get_records['row'][0]['partes']))]);
+        $request->session()->put(['pieza_alcopar'=>trim(strtoupper($get_records['row'][0]['parte']))]);
         #$request->session()->put(['x'=>'b']);
         ##echo session('x');                
         return view("Alcopar.revingedit", compact('get_records','id'));
@@ -223,7 +223,7 @@ class AlcoparController extends Controller
         $id = $request->id;      
         
         $request->session()->put(['alcopar_id'=>$id]);        
-        $request->session()->put(['pieza_alcopar'=>trim(strtoupper($get_records['row'][0]['partes']))]);
+        $request->session()->put(['pieza_alcopar'=>trim(strtoupper($get_records['row'][0]['parte']))]);
         #$request->session()->put(['x'=>'b']);
         ##echo session('x');                
         return view("Alcopar.factibledit", compact('get_records','id'));
@@ -247,13 +247,8 @@ class AlcoparController extends Controller
             ->update([
                'costo_pieza' => $_POST["costo"]
         ]);
-
-        AlcoparModel::updateProcesaa($pieza);                  
-        // if(isset($_REQUEST['grabar'])){
-        //     AlcoparModel::procesaaceptarfac();
-        //     $urldirv = url('/alcopar/factible/?success=1');
-        //     echo "<script>window.location = '".$urldirv."'</script>";            
-        // }      
+        
+        AlcoparModel::updateProcesaa($pieza);  
         if(isset($_REQUEST['grabar'])){
             AlcoparModel::procesaaceptarfac();
             $urldirv = url('/alcopar/factible/?success=1');
