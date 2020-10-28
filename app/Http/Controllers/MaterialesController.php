@@ -10,6 +10,7 @@ use App\Stock;
 use App\Sustituto;
 use App\WpxLigasSustitutos;
 use App\WpxLigasSustitutosLog;
+use App\WpxSustitutos;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,6 +50,8 @@ class MaterialesController extends Controller
         return view('Materiales/search');
     }
 
+
+//    TODO  Revisar
     public function consulta(ConsultaMaterialesRequest $request)
     {
         $material = Material::where('part_number', $request->get('ipt_material'))->first();
@@ -71,7 +74,7 @@ class MaterialesController extends Controller
             ->join('materiales as mm', 'mm.id', '=', 'materiales_sustitutos.id_material_logico')
             ->join('materiales as mmm', 'mmm.id', '=', 'materiales_sustitutos.id_material_sustituto')
             ->join('wpx_sustitutos', 'wpx_sustitutos.id', '=', 'materiales_sustitutos.id_material_sustituto')
-            ->where('m.part_number', '=', 'WP326020544')
+            ->where('m.part_number', '=', $material->part_number)
             ->get();
         return view('Materiales/show', compact('material', 'sustitutos'));
     }
@@ -135,14 +138,12 @@ class MaterialesController extends Controller
 
     public function process(SolicitudSustitutoRequest $request)
     {
-        // Obtenemos el usuario de la sesion para validar el acceso al sistema.
         $user = Auth::user();
-
-        $message = "¡Los cambios se guardaron exitosamente!";
 
         if (WpxLigasSustitutos::where('np', $request->get('ipt_componente'))->where('np_sust',
             $request->get('ipt_componente_sust'))->exists()) {
-            return redirect(url('sustitutos'))->with(['message' => 'No se creo la solicitud, ya existe un material con ese sustituto']);
+            $message = 'No se creo la solicitud, ya existe un material con ese sustituto';
+            return redirect(url('sustitutos'))->with(['message' => $message]);
         }
 
         $nSolicitud = WpxLigasSustitutos::create([
@@ -167,6 +168,8 @@ class MaterialesController extends Controller
             'modify_date' => Carbon::now()
         ]);
 
+        $message = "¡Los cambios se guardaron exitosamente!";
+
         return redirect(url('sustitutos'))->with(['message' => $message]);
 
     }
@@ -175,18 +178,37 @@ class MaterialesController extends Controller
     {
         $material = Material::where('part_number', $request->get('ipt_componente'))->first();
 
-        if (!is_null($material)) {
-            $response['valid'] = true;
-            $response['np_description'] = !!$material->part_description
-                ? $material->part_description
-                : 'encontrado, no tiene descripción';
-        } else {
-            $message = "No se puede generar una solicitud ya que el Componente que requiere sustituto no existe o no esta dado de alta en SAP.";
+        if (is_null($material)) {
+            $message = "No se puede generar una solicitud ya que el Componente que
+            requiere sustituto no existe o no esta dado de alta en SAP.";
 
             $response['message'] = $message;
             $response['valid'] = false;
             $response['target'] = '#ipt_componente';
+
+            return response()->json($response);
+
         }
+
+        if (WpxLigasSustitutos::where('np', $material->part_number)->exists()) {
+            $response['valid'] = false;
+            $response['target'] = '#ipt_componente';
+            $response['message'] = 'El componente ya cuenta con una solicitud';
+            return response()->json($response);
+        }
+
+        if (WpxSustitutos::where('material', $material->part_number)->exists()) {
+            $sustituto = WpxSustitutos::where('material', $material->part_number)->latest()->first();
+            $response['valid'] = false;
+            $response['target'] = '#ipt_componente';
+            $response['message'] = 'El componente ya cuenta con un sustituto es '.$sustituto->sustituto;
+            return response()->json($response);
+        }
+
+        $response['valid'] = true;
+        $response['np_description'] = !!$material->part_description
+            ? $material->part_description
+            : 'encontrado, no tiene descripción';
 
         return response()->json($response);
     }
