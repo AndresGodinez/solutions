@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use function exec;
 
 class ExecuteFileJob implements ShouldQueue
 {
@@ -39,7 +40,9 @@ class ExecuteFileJob implements ShouldQueue
         if (substr(php_uname(), 0, 7) == "Windows")
         {
             pclose(popen("start /B ".$this->pathToFile, "r"));
-            Log::debug('intenta ejecutar');
+            Log::debug('ejecutando '. $this->pathToFile);
+            exec($this->pathToFile );
+
         }
         else
         {
