@@ -9,6 +9,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use function exec;
+use function php_uname;
+use function substr;
 
 class ExecuteFileJob implements ShouldQueue
 {
@@ -41,14 +43,16 @@ class ExecuteFileJob implements ShouldQueue
         {
             pclose(popen("start /B ".$this->pathToFile, "r"));
             Log::debug('ejecutando '. $this->pathToFile);
-            exec($this->pathToFile );
+            shell_exec($this->pathToFile );
+            Log::debug(substr(php_uname(), 0, 7));
+
 
         }
         else
         {
             Log::debug('asigna el exec');
 
-            exec($this->pathToFile . " > /dev/null &");
+            shell_exec($this->pathToFile . " > /dev/null &");
         }
     }
 }
