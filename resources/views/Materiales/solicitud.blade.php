@@ -74,7 +74,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ url('/sustitutos/process/') }}" method="POST">
+                    <form action="{{ url('/sustitutos/process') }}" method="POST">
                         @csrf
                         <div class="form-row">
                             <div class="form-group col-md-3">
@@ -90,7 +90,7 @@
                             <div class="form-group col-md-3" id="informacion_componente">
 
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group toEvaluate col-md-3">
                                 <label for="ipt_componente_sust">Componente sustituto:</label>
                                 <input type="text"
                                        id="ipt_componente_sust"
@@ -99,7 +99,7 @@
                                        value="{{ old('ipt_componente_sust') }}"
                                 >
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group toEvaluate col-md-3">
                                 <label for="ipt_componente_sust_descr">Descripción del sustituto:</label>
                                 <input type="text"
                                        id="ipt_componente_sust_descr"
@@ -110,7 +110,45 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group">
+                            <div class="form-group toEvaluate col-md-3">
+                                <label for="modelo">Modelo</label>
+                                <input type="text"
+                                       id="modelo"
+                                       name="modelo"
+                                       class="form-control"
+                                       value="{{old('modelo')}}"
+                                >
+                            </div>
+                            <div class="form-group toEvaluate col-md-3">
+                                <label for="taller">Taller </label>
+                                <input type="text"
+                                       id="taller"
+                                       name="taller"
+                                       class="form-control"
+                                       value="{{old('taller')}}"
+                                >
+                            </div>
+                            <div class="form-group toEvaluate col-md-3">
+                                <label for="no_dispatch">No. Dispatch</label>
+                                <input type="text"
+                                       id="no_dispatch"
+                                       name="no_dispatch"
+                                       class="form-control"
+                                       value="{{old('no_dispatch')}}"
+                                >
+                            </div>
+                            <div class="form-group toEvaluate col-md-3">
+                                <label for="proveedor">Proveedor</label>
+                                <input type="text"
+                                       id="proveedor"
+                                       name="proveedor"
+                                       class="form-control"
+                                       value="{{old('proveedor')}}"
+                                >
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group toEvaluate">
                                 <button type="submit" class="btn btn-success">
                                     Crear solicitud
                                 </button>
@@ -125,8 +163,12 @@
     </div>
 
     <script>
+
+        $(document).ready(function(){
+            $(".toEvaluate").hide();
+        });
+
         $('#ipt_componente').blur(function(){
-            console.log('se activa');
 
             let np = $(this).val();
 
@@ -136,16 +178,15 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 data: { ipt_componente : np},
                 dataType: 'json',
-                beforeSend: function() {
-                    //$('input,textarea,select').attr('disabled','disabled');
-                },
+
                 error: function(response) {
                 },
                 success: function(response) {
 
                     if(response.valid)
                     {
-                        $('#informacion_componente').html('<p><strong>Descripción:</strong> ' + response.np_description + '</p>');
+                        $('#informacion_componente').html('<p><strong>Descripción:</strong> </br>' + response.np_description + '</p>');
+                        $(".toEvaluate").show();
                     }
                     else
                     {

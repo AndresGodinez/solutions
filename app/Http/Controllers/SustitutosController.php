@@ -7,6 +7,7 @@ use App\Http\Requests\CargaMasivaInventariosRequest;
 use App\Http\Requests\CargaMasivaMM60;
 use App\Http\Requests\CargaMasivaSustitutosRequest;
 use App\Jobs\CargaMasivaSustitutos;
+use App\Jobs\ExecuteFileJob;
 use App\Jobs\SqlJob;
 use App\Utils\MyUtils;
 use Illuminate\Support\Facades\DB;
@@ -111,6 +112,12 @@ class SustitutosController extends Controller
 
         $this->dispatch(
             new CargaMasivaSustitutos($query)
+        );
+
+        $routeFile = 'php D:/inetpub/wwwroot/Soluciones/wpx_includes/controllers/backend/materiales/exec_sustitutos.php';
+
+        $this->dispatch(
+            new ExecuteFileJob($routeFile)
         );
 
         return Redirect::route('materiales-sustitutos.cargaSustitutos')
