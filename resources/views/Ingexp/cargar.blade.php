@@ -25,7 +25,7 @@ $data = $get_records;
 				<div class="col-md-12 col-12">
 					<fieldset class="form-group">
 						<label for="basicInput">Titulo:</label>
-						<input name="titulo" class="form-control " require="true" type="text" id="titulo" value="" style="height: 60px; font-size:30px;">
+						<input name="titulo" class="form-control " type="text" id="titulo" value="" style="height: 60px; font-size:30px;" required="true" maxlength="400">
 					</fieldset>
 				</div>
 
@@ -39,7 +39,7 @@ $data = $get_records;
 				<div class="col-md-6 col-5">
 					<fieldset class="form-group">
 						<label for="basicInput">LINEA DE PRODUCTO:</label>
-						<select class="form-control" name="linea" id="linea" require="true">
+						<select class="form-control" name="linea" id="linea" required="true">
 							<option value="">Seleccionar Linea</option>
 							<?php 
 								foreach($data['linea'] as $v){
@@ -54,25 +54,25 @@ $data = $get_records;
 				<div class="col-md-6 col-5">
 					<fieldset class="form-group">
 						<label for="basicInput">CATEGORIA:</label>
-						<input name="categoria" class="form-control" type="text" id="categoria" value=""  require="true">
+						<input name="categoria" class="form-control" type="text" id="categoria" value=""  required="true" maxlength="30">
 					</fieldset>
 				</div>
 				<div class="col-md-6 col-5">
 					<fieldset class="form-group">
 						<label for="basicInput">PALARA CLAVE:</label>
-						<input name="palabra" class="form-control" type="text" id="titulo" value=""  require="true">
+						<input name="palabra" class="form-control" type="text" id="titulo" value=""  required="true" maxlength="30">
 					</fieldset>
 				</div>
 				<div class="col-md-6 col-5">
 					<fieldset class="form-group">
 						<label for="basicInput">MODELO:</label>
-						<input name="modelo" class="form-control" type="text" id="titulo" value=""  require="true">
+						<input name="modelo" class="form-control" type="text" id="titulo" value=""  required="true">
 					</fieldset>
 				</div>
 				<div class="col-md-6 col-5">
 					<fieldset class="form-group">
 						<label for="basicInput">TIPO ARCHIVO:</label>
-						<select class="form-control" name="tipo" id="tipo"  require="true">
+						<select class="form-control" name="tipo" id="tipo"  required="true">
 							<option value="">Seleccionar Tipo</option>
 							<?php 
 								foreach($data['tipo'] as $v){
@@ -89,7 +89,7 @@ $data = $get_records;
 				<div class="col-md-12 col-12">
 					<fieldset class="form-group">
 						<label for="basicInput">COMENTARIOS:</label>
-						<textarea name="comentarios" class="form-control" rows="5"  require="true"></textarea>
+						<textarea name="comentarios" class="form-control" rows="5"  required="true"></textarea>
 					</fieldset>
 				</div>
 

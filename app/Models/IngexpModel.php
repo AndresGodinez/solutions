@@ -141,7 +141,7 @@ class IngexpModel extends ModelBase
         $mensaje = array();
         $error = "";
 
-
+        $datecur = date('Y-m-d');
 
 
         DB::table('ing_registro')->insert(
@@ -153,7 +153,7 @@ class IngexpModel extends ModelBase
                 'palabra' => $palabra, 
                 'modelo' => $modelo, 
                 'tipo' => $tipo, 
-                'fecha' => 'CURDATE()', 
+                'fecha' => $datecur, 
                 'usuario' => $id, 
                 'ver' => 1
             ]
@@ -250,6 +250,7 @@ class IngexpModel extends ModelBase
         $mensaje = array();
         $error = "";
 
+        $datecur = date('Y-m-d');
 
 
         DB::table('ing_registro')->
@@ -263,7 +264,7 @@ class IngexpModel extends ModelBase
                 'palabra' => $palabra, 
                 'modelo' => $modelo, 
                 'tipo' => $tipo, 
-                'fecha' => 'CURDATE()', 
+                'fecha' => $datecur, 
                 'usuario' => $id, 
                 'ver' => 1
             ]
