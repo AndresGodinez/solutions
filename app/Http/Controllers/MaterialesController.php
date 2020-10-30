@@ -56,26 +56,8 @@ class MaterialesController extends Controller
     {
         $material = Material::where('part_number', $request->get('ipt_material'))->first();
 
-        $sustitutos = DB::table('materiales_sustitutos')
-            ->select(
-                'mm.part_number as x',
-                'm.create_date as fechaLiga',
-                'materiales_sustitutos.rel',
-                'mmm.part_number as y',
-                'mmm.part_description',
-                'mmm.rs01',
-                'mmm.rs02',
-                'mmm.rs03',
-                'mmm.rs05',
-                'mmm.rs06',
-                'wpx_sustitutos.sustituto_sug'
-            )
-            ->join('materiales as m', 'm.id', '=', 'materiales_sustitutos.id_material')
-            ->join('materiales as mm', 'mm.id', '=', 'materiales_sustitutos.id_material_logico')
-            ->join('materiales as mmm', 'mmm.id', '=', 'materiales_sustitutos.id_material_sustituto')
-            ->join('wpx_sustitutos', 'wpx_sustitutos.id', '=', 'materiales_sustitutos.id_material_sustituto')
-            ->where('m.part_number', '=', $material->part_number)
-            ->get();
+        $sustitutos = WpxSustitutos::where('material', $material->part_number)->get();
+
         return view('Materiales/show', compact('material', 'sustitutos'));
     }
 

@@ -113,6 +113,7 @@ class SustitutosController extends Controller
 							fecha_liga 	= STR_TO_DATE(@fecha_liga, '%m/%d/%Y'),
 							user_carga = '".$user->username."',
 							fecha_carga = CURRENT_TIME(),
+							searched = 0,
                             rel         = TRIM(@rel)";
 
         $this->dispatch(
