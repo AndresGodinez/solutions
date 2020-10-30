@@ -91,11 +91,12 @@ class SustitutosController extends Controller
 
     public function cargaMasivaSustitutos(CargaMasivaSustitutosRequest $request)
     {
+        $user = $request->user();
         $file = $request->file('carga_masiva');
 
         $nameFile = MyUtils::saveAndReturnCompleteNameFile($file);
 
-        $table = "tmp_sustitutos";
+        $table = "wpx_sustitutos_tmp";
 
         DB::table($table)->truncate();
 
@@ -104,11 +105,15 @@ class SustitutosController extends Controller
 						    FIELDS TERMINATED BY ','
 						    LINES TERMINATED BY '\r\n'
 						    IGNORE 1 LINES
-							(@material, @sustituto, @tipo)
+							(@material, @sustituto, @md, @fecha_liga, @rel)
 							SET
 							material 	= TRIM(@material),
 							sustituto 	= TRIM(@sustituto),
-							tipo 		= TRIM(@tipo)";
+                            md          = TRIM(@md),
+							fecha_liga 	= STR_TO_DATE(@fecha_liga, '%m/%d/%Y'),
+							user_carga = '".$user->username."',
+							fecha_carga = CURRENT_TIME(),
+                            rel         = TRIM(@rel)";
 
         $this->dispatch(
             new CargaMasivaSustitutos($query)
