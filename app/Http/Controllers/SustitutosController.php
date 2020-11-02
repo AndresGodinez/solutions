@@ -120,7 +120,7 @@ class SustitutosController extends Controller
             new CargaMasivaSustitutos($query)
         );
 
-        $routeFile = 'php D:/inetpub/wwwroot/Soluciones/wpx_includes/controllers/backend/materiales/exec_sustitutos.php';
+        $routeFile = 'php D:/inetpub/wwwroot/SolucionesGIT/wpx_includes/controllers/backend/materiales/exec_sustitutos.php';
 
         $this->dispatch(
             new ExecuteFileJob($routeFile)
