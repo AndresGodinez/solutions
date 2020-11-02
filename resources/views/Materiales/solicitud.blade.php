@@ -87,7 +87,7 @@
                                        required
                                 >
                             </div>
-                            <div class="form-group col-md-3" id="informacion_componente">
+                            <div class="form-group col-md-3 toEvaluate" id="informacion_componente">
 
                             </div>
                             <div class="form-group toEvaluate col-md-3">
@@ -168,7 +168,13 @@
             $(".toEvaluate").hide();
         });
 
+        $('#ipt_componente').focus(function(){
+            $(".toEvaluate").hide();
+        });
+
         $('#ipt_componente').blur(function(){
+
+
 
             let np = $(this).val();
 
@@ -193,6 +199,7 @@
                         $('#ipt_componente').val('');
                         $('#myModal .modal-body').html('<div class="alert alert-warning" role="alert">' + response.message + '</div>');
                         $('#myModal').modal('show');
+                        $(".toEvaluate").hide();
                         $(response.target).focus();
                     }
                 }

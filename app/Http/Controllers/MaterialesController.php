@@ -87,7 +87,7 @@ class MaterialesController extends Controller
 
     public function solicitud()
     {
-        return view('Materiales.solicitud');
+        return view('Materiales/solicitud');
     }
 
     public function datoinicial()

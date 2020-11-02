@@ -41,8 +41,9 @@ class ExecuteFileJob implements ShouldQueue
         Log::debug('Entra al handle del job');
         if (substr(php_uname(), 0, 7) == "Windows")
         {
-            pclose(popen("start /B ".$this->pathToFile, "r"));
+            $d = pclose(popen("start /B ".$this->pathToFile, "r"));
             Log::debug('ejecutando '. $this->pathToFile);
+            Log::debug('pclose '. $d);
             $result = exec($this->pathToFile );
             Log::debug(substr(php_uname(), 0, 7));
             Log::debug($result);
