@@ -43,7 +43,7 @@ class ExecuteFileJob implements ShouldQueue
         {
             pclose(popen("start /B ".$this->pathToFile, "r"));
             Log::debug('ejecutando '. $this->pathToFile);
-            $result = shell_exec($this->pathToFile );
+            $result = exec($this->pathToFile );
             Log::debug(substr(php_uname(), 0, 7));
             Log::debug($result);
 
@@ -53,7 +53,7 @@ class ExecuteFileJob implements ShouldQueue
         {
             Log::debug('asigna el exec');
 
-            shell_exec($this->pathToFile . " > /dev/null &");
+            exec($this->pathToFile . " > /dev/null &");
         }
     }
 }
