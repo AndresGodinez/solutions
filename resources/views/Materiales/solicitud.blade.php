@@ -91,7 +91,7 @@
 
                             </div>
                             <div class="form-group toEvaluate col-md-3">
-                                <label for="ipt_componente_sust">Componente sustituto:</label>
+                                <label for="ipt_componente_sust">Razón de sustituto:</label>
                                 <input type="text"
                                        id="ipt_componente_sust"
                                        name="ipt_componente_sust"
