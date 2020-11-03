@@ -10,6 +10,7 @@ class WpxLigasSustitutos extends Model
     protected $table = 'wpx_ligas_sustitutos';
     protected $fillable = [
         'id_status', 'np', 'np_sust', 'np_sust_descr', 'depto_ing',
-        'depto_mat', 'depto_ven', 'usr_request', 'usr_depto', 'created_at'
+        'depto_mat', 'depto_ven', 'usr_request', 'usr_depto', 'created_at',
+        'modelo', 'taller', 'no_dispatch', 'proveedor'
     ];
 }

@@ -20,7 +20,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('sustitutos/process/set-track/contribute', 'MaterialesController@set_track');
 
-    Route::post('/sustitutos/process', 'MaterialesController@process');
+    Route::post('/sustitutos/store', 'MaterialesController@store')
+        ->name('solicitud-sustituto.store');
 
     Route::post('/get_description_by_np', 'MaterialesController@get_description_by_np');
 });

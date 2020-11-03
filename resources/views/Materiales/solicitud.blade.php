@@ -74,7 +74,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ url('/sustitutos/process') }}" method="POST">
+                    <form action="{{ route('solicitud-sustituto.store') }}" method="POST">
                         @csrf
                         <div class="form-row">
                             <div class="form-group col-md-3">
@@ -201,6 +201,8 @@
                         $('#myModal').modal('show');
                         $(".toEvaluate").hide();
                         $(response.target).focus();
+                        $(".toEvaluate").hide();
+
                     }
                 }
             });

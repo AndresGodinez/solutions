@@ -20,6 +20,7 @@ use function datatables;
 use function is_null;
 use function redirect;
 use function response;
+use function route;
 use function url;
 use function view;
 
@@ -38,6 +39,9 @@ class MaterialesController extends Controller
         $user = Auth::user()->username;
 
         $data = Sustituto::get_sol_by_id($id);
+//        dd([
+//            'data' => $data
+//        ]);
         $data_log = Sustituto::get_log_sol_by_id($id);
 
         $access = Sustituto::get_access(Auth::user()->username, Auth::user()->depto);
@@ -118,14 +122,21 @@ class MaterialesController extends Controller
         return trim(strip_tags($string));
     }
 
-    public function process(SolicitudSustitutoRequest $request)
+    public function store(SolicitudSustitutoRequest $request)
     {
         $user = Auth::user();
 
-        if (WpxLigasSustitutos::where('np', $request->get('ipt_componente'))->where('np_sust',
-            $request->get('ipt_componente_sust'))->exists()) {
-            $message = 'No se creo la solicitud, ya existe un material con ese sustituto';
-            return redirect(url('sustitutos'))->with(['message' => $message]);
+        $material = Material::where('part_number', $request->get('ipt_componente'))->first();
+
+        if (WpxLigasSustitutos::where('np', $material->part_number)->exists()) {
+            $message = 'Ya existe una slicitud para este material '. $material->part_number;
+            return redirect(route('materiales-sustitutos.index'))->with(['message' => $message]);
+        }
+
+        if (WpxSustitutos::where('material', $material->part_number)->exists()) {
+            $sustituto = WpxSustitutos::where('material', $material->part_number)->latest()->first();
+            $message = 'El componente ya cuenta con un sustituto es '.$sustituto->sustituto;
+            return redirect(route('materiales-sustitutos.index'))->with(['message' => $message]);
         }
 
         $nSolicitud = WpxLigasSustitutos::create([
@@ -138,6 +149,10 @@ class MaterialesController extends Controller
             'depto_ven' => 0,
             'usr_request' => $user->username,
             'usr_depto' => $user->depto,
+            'modelo' => $request->get('modelo'),
+            'taller' => $request->get('taller'),
+            'no_dispatch' => $request->get('no_dispatch'),
+            'proveedor' => $request->get('proveedor'),
             'created_at' => Carbon::now()
         ]);
 
@@ -152,7 +167,7 @@ class MaterialesController extends Controller
 
         $message = "¡Los cambios se guardaron exitosamente!";
 
-        return redirect(url('sustitutos'))->with(['message' => $message]);
+        return redirect(route('materiales-sustitutos.index'))->with(['message' => $message]);
 
     }
 
