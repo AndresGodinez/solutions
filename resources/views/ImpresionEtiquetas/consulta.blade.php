@@ -5,7 +5,12 @@
             <div class="card">
                 <div class="card-header bg-info text-white">
                     <div class="card-title">
-                        Impresión de Etiquetas 2
+                        Impresión de Etiquetas
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="card-body">
+                        {{ $material->descripcion . $material->material }}
                     </div>
                 </div>
                 <div class="card-content">
@@ -62,7 +67,7 @@
                                            name="quantity"
                                            class="form-control"
                                            required
-                                           value={{ 1 }}
+                                           value=''
                                     >
                                 </div>
                             </div>

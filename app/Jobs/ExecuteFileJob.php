@@ -8,11 +8,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use function e;
 use function exec;
-use function pclose;
 use function php_uname;
-use function popen;
 use function substr;
 
 class ExecuteFileJob implements ShouldQueue
@@ -29,7 +26,7 @@ class ExecuteFileJob implements ShouldQueue
      *
      * @param  string  $pathToFile
      */
-    public function __construct(string $pathToFile )
+    public function __construct(string $pathToFile)
     {
         $this->pathToFile = $pathToFile;
     }
@@ -42,29 +39,15 @@ class ExecuteFileJob implements ShouldQueue
     public function handle()
     {
         Log::debug('Entra al handle del job');
-        if (substr(php_uname(), 0, 7) == "Windows")
-        {
-            try {
-                $pOp = popen("start /B ".$this->pathToFile, "r");
-                Log::debug('pOpen '. $pOp);
-                $d = pclose($pOp);
-                Log::debug('ejecutando '. $this->pathToFile);
-                Log::debug('pclose '. $d);
-                $result = exec($this->pathToFile );
-                Log::debug($result);
-            }catch (\Exception $e){
-                Log::debug('errores');
-                Log::debug($e->getMessage());
-            }
-
-
-
-        }
-        else
-        {
+        if (substr(php_uname(), 0, 7) == "Windows") {
+            Log::debug('ejecutando '.$this->pathToFile);
+            Log::debug('pclose '.$d);
+            $result = exec($this->pathToFile);
+            Log::debug($result);
+        } else {
             Log::debug('asigna el exec');
 
-            exec($this->pathToFile . " > /dev/null &");
+            exec($this->pathToFile." > /dev/null &");
         }
     }
 }

@@ -1,7 +1,7 @@
 <html>
 <head>
     <title>Impresion de Etiquetas</title>
-    <script type="text/javascript" src="js/deployJava.js"></script>
+    <script type="text/javascript" src="{{asset('js/wp/deployJava.js')}}"></script>
     <script type="text/javascript">
         /**
          * Optionally used to deploy multiple versions of the applet for mixed
@@ -210,9 +210,9 @@
 
 
     </script>
-    <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
-    <script type="text/javascript" src="js/html2canvas.js"></script>
-    <script type="text/javascript" src="js/jquery.plugin.html2canvas.js"></script>
+    <script type="text/javascript" src="{{ asset('js/wp/jquery-1.10.2.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/wp/html2canvas.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/wp/jquery.plugin.html2canvas.js') }}"></script>
 </head>
 
 
