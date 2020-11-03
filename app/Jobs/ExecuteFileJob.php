@@ -8,8 +8,11 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use function e;
 use function exec;
+use function pclose;
 use function php_uname;
+use function popen;
 use function substr;
 
 class ExecuteFileJob implements ShouldQueue
@@ -41,12 +44,17 @@ class ExecuteFileJob implements ShouldQueue
         Log::debug('Entra al handle del job');
         if (substr(php_uname(), 0, 7) == "Windows")
         {
-            $d = pclose(popen("start /B ".$this->pathToFile, "r"));
-            Log::debug('ejecutando '. $this->pathToFile);
-            Log::debug('pclose '. $d);
-            $result = exec($this->pathToFile );
-            Log::debug(substr(php_uname(), 0, 7));
-            Log::debug($result);
+            try {
+                $d = pclose(popen("start /B ".$this->pathToFile, "r"));
+                Log::debug('ejecutando '. $this->pathToFile);
+                Log::debug('pclose '. $d);
+                $result = exec($this->pathToFile );
+                Log::debug($result);
+            }catch (\Exception $e){
+                Log::debug('errores');
+                Log::debug($e->getMessage());
+            }
+
 
 
         }
