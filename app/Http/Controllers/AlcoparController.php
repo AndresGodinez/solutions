@@ -594,6 +594,12 @@ class AlcoparController extends Controller
         }                
     }
 
+    public function reportalcopardescarga(){
+        $user       = Auth::user()->username;
+        $id_region  = Auth::user()->id_region;        
+        return view("Alcopar.reportalcopardescarga");
+    }
+
     public function reportalcopar(){
         ini_set('memory_limit', '-1');
 
