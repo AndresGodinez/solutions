@@ -74,6 +74,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/reportalcopar',                                      'AlcoparController@reportalcopar');
         
+        Route::get('/reportalcopardescarga',                                      'AlcoparController@reportalcopardescarga');
+        
         Route::get('/historial/{id}',                             'AlcoparController@historial');
         
         Route::get('/testmail/{mail}',                             'AlcoparController@testmail');        
