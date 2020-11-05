@@ -93,7 +93,7 @@ $marca1   = $get_records['marca'];
 
 					<div class="col-md-4 col-12" id="otros" style="display:none">
 						<fieldset class="form-group">
-							<label for="basicInput">Familia:</label>
+							
 							<textarea name="otro" id="otro" rows="5" style="text-transform:uppercase" class="form-control"></textarea>
 						</fieldset>
 					</div>

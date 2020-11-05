@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
         ->middleware('permission:solicitud de alta');       
 
         Route::post('/factible/altamaterialupdate',                   'AlcoparController@altamaterialupdate');
+        Route::post('/factible/altamaterialupdate_addcorreo',                   'AlcoparController@altamaterialupdate_addcorreo');
         Route::get('/altamaterial/existente',                         'AlcoparController@altamaterialexistente'); 
 
         Route::post('/altamaterial/save',                              'AlcoparController@altamaterialexistentesave'); 
