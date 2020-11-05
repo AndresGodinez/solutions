@@ -2639,7 +2639,7 @@ class AlcoparModel extends ModelBase
     public static function materialexistente(){
         $data = [];
         $rows = AlcoparModel::query()
-            ->selectRaw('descripcion,dispatch, motivo,taller,modelo, username, parte, comentario,comentario_reving,descripcion,clasif_sat,nomenclatura_service,fecha,status')
+            ->selectRaw('id,descripcion,dispatch, motivo,taller,modelo, username, parte, comentario,comentario_reving,descripcion,clasif_sat,nomenclatura_service,fecha,status')
             ->from('alcopar_partes')->whereRaw("parte = '" . session('parte')."'")->get();
 
         $data['partes'] = $rows[0];
