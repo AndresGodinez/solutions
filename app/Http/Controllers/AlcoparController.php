@@ -310,7 +310,27 @@ class AlcoparController extends Controller
         //$get_records = '';
         return view("Alcopar.altamaterial", compact('get_records','nombre','user'));
     }
+    public function  altamaterialupdate_addcorreo (Request $request){
+        $username       = Auth::user()->username;
+        $mail  =          Auth::user()->mail;
+        $depto  =          Auth::user()->depto;        
+        $id_alcopar=session('id');
 
+        DB::table('alcopar_partes_mail')->insert(
+            [
+                'idalcopar'=>$id_alcopar,
+                'mail'=>$mail                
+            ]
+        );
+
+        $urldirv = url('/alcopar/altamaterial?success=1');
+        
+        echo "<script language='JavaScript'> 
+                alert('Fuiste agregado a la lista para recibir correo cuando se termine el proceso de alta de parte');
+                window.location = '".$urldirv."';  
+            </script>";
+
+    }
     public function altamaterialupdate(Request $request){
         $username       = Auth::user()->username;
         $mail  =          Auth::user()->mail;
@@ -572,6 +592,12 @@ class AlcoparController extends Controller
             $urldirv = url('/alcopar/oow?success=1');
             echo "<script>window.location = '".$urldirv."'</script>";
         }                
+    }
+
+    public function reportalcopardescarga(){
+        $user       = Auth::user()->username;
+        $id_region  = Auth::user()->id_region;        
+        return view("Alcopar.reportalcopardescarga");
     }
 
     public function reportalcopar(){

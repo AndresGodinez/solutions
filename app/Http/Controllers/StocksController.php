@@ -125,10 +125,11 @@ class StocksController extends Controller
                         while (($data = fgetcsv($handle)) !== FALSE) {
                             if ($start > 0) {
                                 // most be insert
-                                StocksModel::insert_load($data, Auth::user()->username, date("Y-m-d H:i:s"));
+                                StocksModel::insert_load($data, Auth::user()->username, date("Y-m-d H:i:s"));                                
                             }    
                             $start++;
                         }
+                        
                         echo '<script>window.location.href = "' . url("stocks/cargas/?success=1") . '";</script>';
                     } catch (Exception $e) {
                         echo '<script>window.location.href = "' . url("stocks/cargas/?error=2") . '";</script>';

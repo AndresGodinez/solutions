@@ -21,7 +21,7 @@
         @can('alta oow')
         <li><a href="{{url('alcopar/oow')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Alta OOW</span></a></li>
         @endcan  
-        <li><a href="{{url('alcopar/reportalcopar')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Reporte</span></a></li>        
+        <li><a href="{{url('alcopar/reportalcopardescarga')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Reporte</span></a></li>        
     </ul>
 </li>
 @endcan
