@@ -17,13 +17,14 @@
 
         @include('Partials.menu.items.alcopar')
 
-        @include('Partials.menu.items.ingexp')        
+        @include('Partials.menu.items.ingexp')
 
         @include('Partials.menu.items.sustitutos')
         @include('Partials.menu.items.fechas-promesas')
         @include('Partials.menu.items.conteo-ciclicos')
         @include('Partials.menu.items.lx02')
         @include('Partials.menu.items.impresion-etiquetas')
+        @include('Partials.menu.items.recibo-materiales')
 
     </ul>
 </div>
