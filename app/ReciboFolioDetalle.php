@@ -4,10 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MaterialBin extends Model
+class ReciboFolioDetalle extends Model
 {
     public $timestamps = false;
     protected $connection = 'logistica';
-    protected $table = 'materiales_bin';
+    protected $table = 'recibo_folios_detalle';
     protected $guarded = [];
+
 }

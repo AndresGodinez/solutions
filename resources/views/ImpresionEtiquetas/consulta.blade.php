@@ -40,7 +40,7 @@
                                            name="mat_descript"
                                            class="form-control"
                                            required
-                                           disabled
+                                           {{ $material->descripcion == '' ? '' : 'disabled' }}
                                            value="{{ $material->descripcion }}"
                                     >
                                 </div>

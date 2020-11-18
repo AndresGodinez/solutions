@@ -9,6 +9,7 @@ class MaterialABC extends Model
     public $timestamps = false;
     protected $connection = 'logistica';
     protected $table = 'materiales_abc';
+    protected $guarded = [];
 
     public function lx02()
     {

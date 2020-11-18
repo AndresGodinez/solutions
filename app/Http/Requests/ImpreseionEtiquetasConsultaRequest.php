@@ -24,14 +24,14 @@ class ImpreseionEtiquetasConsultaRequest extends FormRequest
     public function rules()
     {
         return [
-            'material' => 'required|exists:logistica.materiales_abc,material'
+//            'material' => 'required|exists:logistica.materiales_abc,material'
         ];
     }
 
     public function messages()
     {
         return [
-            'material.exists' => 'El material No existe'
+//            'material.exists' => 'El material No existe'
         ];
     }
 }

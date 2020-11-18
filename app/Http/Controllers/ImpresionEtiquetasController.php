@@ -7,6 +7,7 @@ use App\Http\Requests\ImpresionEtiquetasPrintRequest;
 use App\MaterialABC;
 use Illuminate\Support\Facades\Auth;
 use function compact;
+use function is_null;
 use function view;
 
 class ImpresionEtiquetasController extends Controller
@@ -20,6 +21,14 @@ class ImpresionEtiquetasController extends Controller
     {
         $material = MaterialABC::where('material', $request->get('material'))->first();
 
+        if(is_null($material)){
+            $material = MaterialABC::make([
+                'material' => $request->get('material'),
+                'sustituto' => '',
+                'descripcion' => ''
+            ]);
+        }
+
         return view('ImpresionEtiquetas.consulta', compact('material'));
     }
 
@@ -28,6 +37,13 @@ class ImpresionEtiquetasController extends Controller
         $planta = Auth::user()->planta;
         $cantidad = $request->get('quantity');
         $materialAbc = MaterialABC::where('material', $request->get('material-to-print'))->first();
+        if (is_null($materialAbc)){
+            $materialAbc = MaterialABC::make([
+                'material' => $request->get('material'),
+                'sustituto' => '',
+                'descripcion' => ''
+            ]);
+        }
         $material = $materialAbc->material;
         $piezas = $request->get('pieces');
 
