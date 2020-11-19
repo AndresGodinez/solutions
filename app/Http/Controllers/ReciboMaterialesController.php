@@ -59,15 +59,6 @@ class ReciboMaterialesController extends Controller
         return view('ReciboMateriales/show', compact('reciboFolio'));
     }
 
-    public function cargaFactura()
-    {
-        $reciboFolios = ReciboFolio::orderBy('id')
-            ->where('status', 'Abierto')
-            ->where('fecha', '>=', '2017-01-01')
-            ->paginate();
-
-        return view('ReciboMateriales/carga-factura', compact('reciboFolios'));
-    }
 
     public function prePrint(Request $request)
     {
@@ -96,8 +87,5 @@ class ReciboMaterialesController extends Controller
 //") or die(mysql_error());
 
     }
-    public function cargaFacturaPorFolio(ReciboFolio $reciboFolio )
-    {
-        return view('ReciboMateriales/factura/form', compact('reciboFolio'));
-    }
+
 }

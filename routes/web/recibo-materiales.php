@@ -19,11 +19,5 @@ Route::middleware('auth')->group(function () {
         Route::post('/pre-print', 'ReciboMaterialesController@prePrint')
             ->name('recibo-materiales.pre-print');
 
-        Route::get('/factura', 'ReciboMaterialesController@cargaFactura')
-            ->name('recibo-materiales.carga-factura');
-
-        Route::get('/factura/{reciboFolio}/form', 'ReciboMaterialesController@cargaFacturaPorFolio')
-            ->name('recibo-materiales.carga-factura-por-folio');
-
     });
 });
