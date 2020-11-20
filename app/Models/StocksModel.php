@@ -55,12 +55,453 @@ class StocksModel extends ModelBase
         return $data;
     }
 
+
+
+    public static function get_all_records_nueva($user, $id_region)
+    {
+        $columnasactivas = [
+            'material',
+            'descripcion',
+            'tipo_status',
+            'precio_usd',
+            'sir',
+            'fcr',
+            'proyecto',
+            'proveedor',
+            'ots',
+            'obs',
+            'modelo',
+            'cant_pza_sku',
+            'garantia_years',
+            'tipo_uso',
+            'tipo_mat',
+            'cat',
+            'fam',
+            'marca',
+            'commodity',
+            'mex1',
+            'mex_fecha_embarque',
+            'mex_vva',
+            'guat2',
+            'guat_fecha_embarque',
+            'guat_vva',
+            'hond3',
+            'hond_fecha_embarque',
+            'hond_vva',
+            'repd4',
+            'repd_fecha_embarque',
+            'repd_vva',
+            'hait5',
+            'hait_fecha_embarque',
+            'hait_vva',
+            'arub6',
+            'arub_fecha_embarque',
+            'arub_vva',
+            'salv7',
+            'salv_fecha_embarque',
+            'salv_vva',
+            'nica8',
+            'nica_fecha_embarque',
+            'nica_vva',
+            'cr9',
+            'cr_fecha_embarque',
+            'cr_vva',
+            'pana10',
+            'pana_fecha_embarque',
+            'pana',
+            'angu11',
+            'angu_fecha_embarque',
+            'angu_vva',
+            'baha12',
+            'baha_fecha_embarque',
+            'baha_vva',
+            'beli13',
+            'beli_fecha_embarque',
+            'beli_vva',
+            'berm14',
+            'berm_fecha_embarque',
+            'berm_vva',
+            'caym15',
+            'caym_fecha_embarque',
+            'caym_vva',
+            'guya16',
+            'guya_fecha_embarque',
+            'guya_vva',
+            'suri17',
+            'suri_fecha_embarque',
+            'suri_vva',
+            'turk18',
+            'turk_fecha_embarque',
+            'turk_vva',
+            'brit19',
+            'brit_fecha_embarque',
+            'brit_vva',
+            'maar20',
+            'maar_fecha_embarque',
+            'maar_vva',
+            'saba21',
+            'saba_fecha_embarque',
+            'saba_vva',
+            'anti22',
+            'anti_fecha_embarque',
+            'anti_vva',
+            'mons23',
+            'mons_fecha_embarque',
+            'mons_vva',
+            'kitt24',
+            'kitt_fecha_embarque',
+            'kitt_vva',
+            'bart25',
+            'bart_fecha_embarque',
+            'bart_vva',
+            'marti26',
+            'marti_fecha_embarque',
+            'marti_vva',
+            'trin27',
+            'trin_fecha_embarque',
+            'trin_vva',
+            'jama28',
+            'jama_fecha_embarque',
+            'jama_vva',
+            'barb29',
+            'barb_fecha_embarque',
+            'barb_vva',
+            'bona30',
+            'bona_fecha_embarque',
+            'bona_vva',
+            'cura31',
+            'cura_fecha_embarque',
+            'cura_vva',
+            'col32',
+            'col_fecha_embarque',
+            'col_vva',
+            'ven33',
+            'ven_fecha_embarque',
+            'ven_vva',
+            'ecu34',
+            'ecu_fecha_embarque',
+            'ecu_vva',
+            'ptor35',
+            'ptor_fecha_embarque',
+            'ptor_vva',
+            'croi36',
+            'croi_fecha_embarque',
+            'croi_vva',
+            'thom37',
+            'thom_fecha_embarque',
+            'thom_vva',
+            'jhon38',
+            'jhon_fecha_embarque',
+            'jhon_vva',
+            'virg39',
+            'virg_fecha_embarque',
+            'virg_vva',
+            'domi40',
+            'domi_fecha_embarque',
+            'domi_vva',
+            'gren41',
+            'gren_fecha_embarque',
+            'gren_vva',
+            'luci42',
+            'luci_fecha_embarque',
+            'luci_vva',
+            'vinc43',
+            'vinc_fecha_embarque',
+            'vinc_vva',
+            'fren44',
+            'fren_fecha_embarque',
+            'fren_vva',
+            'mart45',
+            'mart_fecha_embarque',
+            'mart_vva',
+            'guad46',
+            'guad_fecha_embarque',
+            'guad_vva',
+            'reun47',
+            'reun_fecha_embarque',
+            'reun_vva',
+            'newc48',
+            'newc_fecha_embarque',
+            'new_vva',
+            'peru49',
+            'peru_fecha_embarque',
+            'peru_vva',
+            'comentarios_ing'];
+        $data = [];
+        // Records for Managers.
+        if ($user == "munoznd") {
+            $data = StocksModel::select(
+                $columnasactivas
+            )
+                ->from('stock_gral_serv')
+                ->get();
+        } else {
+            // Users for MX
+            if ($id_region == 1) {
+                $data = StocksModel::select( $columnasactivas
+                )
+                    ->from('stock_gral_serv')
+                    ->where('stock_gral_serv.reg_mex', 1)
+                    ->get();
+            }
+
+            // Users for CAM
+            if ($id_region == 2) {
+                $data = StocksModel::select($columnasactivas
+                )
+                    ->from('stock_gral_serv')
+                    
+                    ->where('stock_gral_serv.reg_cam', 1)
+                    ->get();
+            }
+
+            // Users for AND
+            if ($id_region == 3) {
+                $data = StocksModel::select($columnasactivas
+                )
+                    ->from('stock_gral_serv')
+                    
+                    ->where('stock_gral_serv.reg_and', 1)
+                    ->get();
+            }
+
+            // Users for CAR
+            if ($id_region == 4) {
+                $data = StocksModel::select($columnasactivas
+                )
+                    ->from('stock_gral_serv')
+                   
+                    ->where('stock_gral_serv.reg_car', 1)
+                    ->get();
+            }
+        }
+
+        return $data;
+    }
+
+
+
+    public static function get_all_records_desc($user, $id_region)
+    {
+        $data = [];
+        // Records for Managers.
+        if ($user == "munoznd") {
+            $data = StocksModel::select('stock_gral_serv.id', 'stock_gral_serv.material', 'stock_gral_serv.descripcion', 'stock_gral_serv.modelo', 'stock_gral_serv.proyecto', 'stock_gral_serv.proveedor', 'stock_gral_serv.user_carga', 'stock_gral_serv.created_at', 'stock_gral_serv.ok')
+                ->from('stock_gral_serv')
+                ->get();
+        } else {
+            // Users for MX
+            if ($id_region == 1) {
+                $data = StocksModel::select('stock_gral_serv.id', 'stock_gral_serv.material', 'stock_gral_serv.descripcion', 'stock_gral_serv.modelo', 'stock_gral_serv.proyecto', 'stock_gral_serv.proveedor', 'stock_gral_serv.user_carga', 'stock_gral_serv.created_at', 'stock_gral_serv.ok')
+                    ->from('stock_gral_serv')
+                    ->where('stock_gral_serv.reg_mex', 1)
+                    ->get();
+            }
+
+            // Users for CAM
+            if ($id_region == 2) {
+                $data = StocksModel::select('stock_gral_serv.id', 'stock_gral_serv.material', 'stock_gral_serv.descripcion', 'stock_gral_serv.modelo', 'stock_gral_serv.proyecto', 'stock_gral_serv.proveedor', 'stock_gral_serv.user_carga', 'stock_gral_serv.created_at', 'stock_gral_serv.ok')
+                    ->from('stock_gral_serv')
+                    ->where('stock_gral_serv.reg_cam', 1)
+                    ->get();
+            }
+
+            // Users for AND
+            if ($id_region == 3) {
+                $data = StocksModel::select('stock_gral_serv.id', 'stock_gral_serv.material', 'stock_gral_serv.descripcion', 'stock_gral_serv.modelo', 'stock_gral_serv.proyecto', 'stock_gral_serv.proveedor', 'stock_gral_serv.user_carga', 'stock_gral_serv.created_at', 'stock_gral_serv.ok')
+                    ->from('stock_gral_serv')
+                    ->where('stock_gral_serv.reg_and', 1)
+                    ->get();
+            }
+
+            // Users for CAR
+            if ($id_region == 4) {
+                $data = StocksModel::select('stock_gral_serv.id', 'stock_gral_serv.material', 'stock_gral_serv.descripcion', 'stock_gral_serv.modelo', 'stock_gral_serv.proyecto', 'stock_gral_serv.proveedor', 'stock_gral_serv.user_carga', 'stock_gral_serv.created_at', 'stock_gral_serv.ok')
+                    ->from('stock_gral_serv')
+                    ->where('stock_gral_serv.reg_car', 1)
+                    ->get();
+            }
+        }
+
+        return $data;
+    }
+
     public static function get_all_records_pending_list($id_region)
     {
+        $columnasactivas = [
+            'material',
+            'descripcion',
+            'tipo_status',
+            'precio_usd',
+            'sir',
+            'fcr',
+            'proyecto',
+            'proveedor',
+            'ots',
+            'obs',
+            'modelo',
+            'cant_pza_sku',
+            'garantia_years',
+            'tipo_uso',
+            'tipo_mat',
+            'cat',
+            'fam',
+            'marca',
+            'commodity',
+            'mex1',
+            'mex_fecha_embarque',
+            'mex_vva',
+            'guat2',
+            'guat_fecha_embarque',
+            'guat_vva',
+            'hond3',
+            'hond_fecha_embarque',
+            'hond_vva',
+            'repd4',
+            'repd_fecha_embarque',
+            'repd_vva',
+            'hait5',
+            'hait_fecha_embarque',
+            'hait_vva',
+            'arub6',
+            'arub_fecha_embarque',
+            'arub_vva',
+            'salv7',
+            'salv_fecha_embarque',
+            'salv_vva',
+            'nica8',
+            'nica_fecha_embarque',
+            'nica_vva',
+            'cr9',
+            'cr_fecha_embarque',
+            'cr_vva',
+            'pana10',
+            'pana_fecha_embarque',
+            'pana',
+            'angu11',
+            'angu_fecha_embarque',
+            'angu_vva',
+            'baha12',
+            'baha_fecha_embarque',
+            'baha_vva',
+            'beli13',
+            'beli_fecha_embarque',
+            'beli_vva',
+            'berm14',
+            'berm_fecha_embarque',
+            'berm_vva',
+            'caym15',
+            'caym_fecha_embarque',
+            'caym_vva',
+            'guya16',
+            'guya_fecha_embarque',
+            'guya_vva',
+            'suri17',
+            'suri_fecha_embarque',
+            'suri_vva',
+            'turk18',
+            'turk_fecha_embarque',
+            'turk_vva',
+            'brit19',
+            'brit_fecha_embarque',
+            'brit_vva',
+            'maar20',
+            'maar_fecha_embarque',
+            'maar_vva',
+            'saba21',
+            'saba_fecha_embarque',
+            'saba_vva',
+            'anti22',
+            'anti_fecha_embarque',
+            'anti_vva',
+            'mons23',
+            'mons_fecha_embarque',
+            'mons_vva',
+            'kitt24',
+            'kitt_fecha_embarque',
+            'kitt_vva',
+            'bart25',
+            'bart_fecha_embarque',
+            'bart_vva',
+            'marti26',
+            'marti_fecha_embarque',
+            'marti_vva',
+            'trin27',
+            'trin_fecha_embarque',
+            'trin_vva',
+            'jama28',
+            'jama_fecha_embarque',
+            'jama_vva',
+            'barb29',
+            'barb_fecha_embarque',
+            'barb_vva',
+            'bona30',
+            'bona_fecha_embarque',
+            'bona_vva',
+            'cura31',
+            'cura_fecha_embarque',
+            'cura_vva',
+            'col32',
+            'col_fecha_embarque',
+            'col_vva',
+            'ven33',
+            'ven_fecha_embarque',
+            'ven_vva',
+            'ecu34',
+            'ecu_fecha_embarque',
+            'ecu_vva',
+            'ptor35',
+            'ptor_fecha_embarque',
+            'ptor_vva',
+            'croi36',
+            'croi_fecha_embarque',
+            'croi_vva',
+            'thom37',
+            'thom_fecha_embarque',
+            'thom_vva',
+            'jhon38',
+            'jhon_fecha_embarque',
+            'jhon_vva',
+            'virg39',
+            'virg_fecha_embarque',
+            'virg_vva',
+            'domi40',
+            'domi_fecha_embarque',
+            'domi_vva',
+            'gren41',
+            'gren_fecha_embarque',
+            'gren_vva',
+            'luci42',
+            'luci_fecha_embarque',
+            'luci_vva',
+            'vinc43',
+            'vinc_fecha_embarque',
+            'vinc_vva',
+            'fren44',
+            'fren_fecha_embarque',
+            'fren_vva',
+            'mart45',
+            'mart_fecha_embarque',
+            'mart_vva',
+            'guad46',
+            'guad_fecha_embarque',
+            'guad_vva',
+            'reun47',
+            'reun_fecha_embarque',
+            'reun_vva',
+            'newc48',
+            'newc_fecha_embarque',
+            'new_vva',
+            'peru49',
+            'peru_fecha_embarque',
+            'peru_vva',
+            'comentarios_ing'];
+        $data = [];
+        
 
         // Users for MX
         if ($id_region == 1) {
-            $data = StocksModel::select('stock_gral_serv.id', 'stock_gral_serv.material', 'stock_gral_serv.descripcion', 'stock_gral_serv.modelo', 'stock_gral_serv.proyecto', 'stock_gral_serv.proveedor', 'stock_gral_serv.user_carga', 'stock_gral_serv.created_at', 'stock_gral_serv.ok')
+            $data = StocksModel::select($columnasactivas)
                 ->from('stock_gral_serv')
                 ->where('stock_gral_serv.reg_mex', 1)
                 ->where('stock_gral_serv.ok', 0)
@@ -69,7 +510,7 @@ class StocksModel extends ModelBase
 
         // Users for CAM
         if ($id_region == 2) {
-            $data = StocksModel::select('stock_gral_serv.id', 'stock_gral_serv.material', 'stock_gral_serv.descripcion', 'stock_gral_serv.modelo', 'stock_gral_serv.proyecto', 'stock_gral_serv.proveedor', 'stock_gral_serv.user_carga', 'stock_gral_serv.created_at', 'stock_gral_serv.ok')
+            $data = StocksModel::select($columnasactivas)
                 ->from('stock_gral_serv')
                 ->where('stock_gral_serv.reg_cam', 1)
                 ->where('stock_gral_serv.ok', 0)
@@ -78,7 +519,7 @@ class StocksModel extends ModelBase
 
         // Users for AND
         if ($id_region == 3) {
-            $data = StocksModel::select('stock_gral_serv.id', 'stock_gral_serv.material', 'stock_gral_serv.descripcion', 'stock_gral_serv.modelo', 'stock_gral_serv.proyecto', 'stock_gral_serv.proveedor', 'stock_gral_serv.user_carga', 'stock_gral_serv.created_at', 'stock_gral_serv.ok')
+            $data = StocksModel::select($columnasactivas)
                 ->from('stock_gral_serv')
                 ->where('stock_gral_serv.reg_and', 1)
                 ->where('stock_gral_serv.ok', 0)
@@ -87,7 +528,7 @@ class StocksModel extends ModelBase
 
         // Users for CAR
         if ($id_region == 4) {
-            $data = StocksModel::select('stock_gral_serv.id', 'stock_gral_serv.material', 'stock_gral_serv.descripcion', 'stock_gral_serv.modelo', 'stock_gral_serv.proyecto', 'stock_gral_serv.proveedor', 'stock_gral_serv.user_carga', 'stock_gral_serv.created_at', 'stock_gral_serv.ok')
+            $data = StocksModel::select($columnasactivas)
                 ->from('stock_gral_serv')
                 ->where('stock_gral_serv.reg_car', 1)
                 ->where('stock_gral_serv.ok', 0)
@@ -457,7 +898,7 @@ class StocksModel extends ModelBase
             // peru49
             $id_region_three = 1;
         }
-        
+
         DB::table('stock_gral_serv')->insert(
             [
                 'material' => $data[0],
@@ -638,36 +1079,36 @@ class StocksModel extends ModelBase
         // echo "<pre>";
         // print_r($data);
         // return;
-            
-            // if(empty($data[8]) || $data[8] == ''){
-            //     $data[8] = Null;
-            // }else{
-            //     //echo date('Ymd',$data[8]);
-            //     $data[8] = trim($data[8]);
-            //     $ddate = explode('/',$data[8]);
 
-            //     $data[8] = $ddate[2].'-'.$ddate[1].'-'.$ddate[0];
-            // }
-            
-            // DB::table('stock_gral_serv')->insert(
-            // [
-            //     'material' => $data[0],
-            //     'descripcion' => $data[1],
-            //     'tipo_status' => $data[2],
-            //     'precio_usd' => $data[3],
-            //     'sir' => $data[4],
-            //     'proyecto' => $data[5],
-            //     'cat' => $data[6],
-            //     'proveedor' => $data[7],
-            //     'ots' => (empty($data[8]) ? NULL : $data[8]),                
-            //     'modelo' => (empty($data[9]) ? NULL : $data[9]),
-            //     'cant_pza_sku' => (empty($data[10]) ? NULL : $data[10]),
-            //     'garantia_years' => (empty($data[11]) ? NULL : $data[11]),
-            //     'tipo_uso' => (empty($data[13]) ? NULL : $data[13]),
-            //     'user_carga' => $username,
-            //     'created_at' => $date,
-            //     'reg_mex' => 1
-            // ]);
+        // if(empty($data[8]) || $data[8] == ''){
+        //     $data[8] = Null;
+        // }else{
+        //     //echo date('Ymd',$data[8]);
+        //     $data[8] = trim($data[8]);
+        //     $ddate = explode('/',$data[8]);
+
+        //     $data[8] = $ddate[2].'-'.$ddate[1].'-'.$ddate[0];
+        // }
+
+        // DB::table('stock_gral_serv')->insert(
+        // [
+        //     'material' => $data[0],
+        //     'descripcion' => $data[1],
+        //     'tipo_status' => $data[2],
+        //     'precio_usd' => $data[3],
+        //     'sir' => $data[4],
+        //     'proyecto' => $data[5],
+        //     'cat' => $data[6],
+        //     'proveedor' => $data[7],
+        //     'ots' => (empty($data[8]) ? NULL : $data[8]),                
+        //     'modelo' => (empty($data[9]) ? NULL : $data[9]),
+        //     'cant_pza_sku' => (empty($data[10]) ? NULL : $data[10]),
+        //     'garantia_years' => (empty($data[11]) ? NULL : $data[11]),
+        //     'tipo_uso' => (empty($data[13]) ? NULL : $data[13]),
+        //     'user_carga' => $username,
+        //     'created_at' => $date,
+        //     'reg_mex' => 1
+        // ]);
 
         // Damos de alta la refacción en alta de partes.
         DB::table('alcopar_partes')->insert(
@@ -692,16 +1133,184 @@ class StocksModel extends ModelBase
     // Stock Final
     public static function get_all_records_stocks_final($user, $id_region)
     {
+        $columnasactivas = [
+            'material',
+            'descripcion',
+            'tipo_status',
+            'precio_usd',
+            'sir',
+            'fcr',
+            'proyecto',
+            'proveedor',
+            'ots',
+            'obs',
+            'modelo',
+            'cant_pza_sku',
+            'garantia_years',
+            'tipo_uso',
+            'tipo_mat',
+            'cat',
+            'fam',
+            'marca',
+            'commodity',
+            'mex1',
+            'mex_fecha_embarque',
+            'mex_vva',
+            'guat2',
+            'guat_fecha_embarque',
+            'guat_vva',
+            'hond3',
+            'hond_fecha_embarque',
+            'hond_vva',
+            'repd4',
+            'repd_fecha_embarque',
+            'repd_vva',
+            'hait5',
+            'hait_fecha_embarque',
+            'hait_vva',
+            'arub6',
+            'arub_fecha_embarque',
+            'arub_vva',
+            'salv7',
+            'salv_fecha_embarque',
+            'salv_vva',
+            'nica8',
+            'nica_fecha_embarque',
+            'nica_vva',
+            'cr9',
+            'cr_fecha_embarque',
+            'cr_vva',
+            'pana10',
+            'pana_fecha_embarque',
+            'pana',
+            'angu11',
+            'angu_fecha_embarque',
+            'angu_vva',
+            'baha12',
+            'baha_fecha_embarque',
+            'baha_vva',
+            'beli13',
+            'beli_fecha_embarque',
+            'beli_vva',
+            'berm14',
+            'berm_fecha_embarque',
+            'berm_vva',
+            'caym15',
+            'caym_fecha_embarque',
+            'caym_vva',
+            'guya16',
+            'guya_fecha_embarque',
+            'guya_vva',
+            'suri17',
+            'suri_fecha_embarque',
+            'suri_vva',
+            'turk18',
+            'turk_fecha_embarque',
+            'turk_vva',
+            'brit19',
+            'brit_fecha_embarque',
+            'brit_vva',
+            'maar20',
+            'maar_fecha_embarque',
+            'maar_vva',
+            'saba21',
+            'saba_fecha_embarque',
+            'saba_vva',
+            'anti22',
+            'anti_fecha_embarque',
+            'anti_vva',
+            'mons23',
+            'mons_fecha_embarque',
+            'mons_vva',
+            'kitt24',
+            'kitt_fecha_embarque',
+            'kitt_vva',
+            'bart25',
+            'bart_fecha_embarque',
+            'bart_vva',
+            'marti26',
+            'marti_fecha_embarque',
+            'marti_vva',
+            'trin27',
+            'trin_fecha_embarque',
+            'trin_vva',
+            'jama28',
+            'jama_fecha_embarque',
+            'jama_vva',
+            'barb29',
+            'barb_fecha_embarque',
+            'barb_vva',
+            'bona30',
+            'bona_fecha_embarque',
+            'bona_vva',
+            'cura31',
+            'cura_fecha_embarque',
+            'cura_vva',
+            'col32',
+            'col_fecha_embarque',
+            'col_vva',
+            'ven33',
+            'ven_fecha_embarque',
+            'ven_vva',
+            'ecu34',
+            'ecu_fecha_embarque',
+            'ecu_vva',
+            'ptor35',
+            'ptor_fecha_embarque',
+            'ptor_vva',
+            'croi36',
+            'croi_fecha_embarque',
+            'croi_vva',
+            'thom37',
+            'thom_fecha_embarque',
+            'thom_vva',
+            'jhon38',
+            'jhon_fecha_embarque',
+            'jhon_vva',
+            'virg39',
+            'virg_fecha_embarque',
+            'virg_vva',
+            'domi40',
+            'domi_fecha_embarque',
+            'domi_vva',
+            'gren41',
+            'gren_fecha_embarque',
+            'gren_vva',
+            'luci42',
+            'luci_fecha_embarque',
+            'luci_vva',
+            'vinc43',
+            'vinc_fecha_embarque',
+            'vinc_vva',
+            'fren44',
+            'fren_fecha_embarque',
+            'fren_vva',
+            'mart45',
+            'mart_fecha_embarque',
+            'mart_vva',
+            'guad46',
+            'guad_fecha_embarque',
+            'guad_vva',
+            'reun47',
+            'reun_fecha_embarque',
+            'reun_vva',
+            'newc48',
+            'newc_fecha_embarque',
+            'new_vva',
+            'peru49',
+            'peru_fecha_embarque',
+            'peru_vva',
+            'comentarios_ing'];
         $data = [];
         // Records for Managers.
         if ($user == "munoznd") {
-            $data = StocksModel::select('stock_gral_serv_final.id', 'stock_gral_serv_final.material', 'stock_gral_serv_final.descripcion', 'stock_gral_serv_final.modelo', 'stock_gral_serv_final.proyecto', 'stock_gral_serv_final.proveedor', 'stock_gral_serv_final.user_carga', 'stock_gral_serv_final.created_at', 'stock_gral_serv_final.ok')
+            $data = StocksModel::select($columnasactivas)
                 ->from('stock_gral_serv_final')
                 ->get();
         } else {
             // Users for MX
             if ($id_region == 1) {
-                $data = StocksModel::select('stock_gral_serv_final.id', 'stock_gral_serv_final.material', 'stock_gral_serv_final.descripcion', 'stock_gral_serv_final.modelo', 'stock_gral_serv_final.proyecto', 'stock_gral_serv_final.proveedor', 'stock_gral_serv_final.user_carga', 'stock_gral_serv_final.created_at', 'stock_gral_serv_final.ok')
+                $data = StocksModel::select($columnasactivas)
                     ->from('stock_gral_serv_final')
                     ->where('stock_gral_serv_final.reg_mex', 1)
                     ->get();
@@ -709,7 +1318,7 @@ class StocksModel extends ModelBase
 
             // Users for CAM
             if ($id_region == 2) {
-                $data = StocksModel::select('stock_gral_serv_final.id', 'stock_gral_serv_final.material', 'stock_gral_serv_final.descripcion', 'stock_gral_serv_final.modelo', 'stock_gral_serv_final.proyecto', 'stock_gral_serv_final.proveedor', 'stock_gral_serv_final.user_carga', 'stock_gral_serv_final.created_at', 'stock_gral_serv_final.ok')
+                $data = StocksModel::select($columnasactivas)
                     ->from('stock_gral_serv_final')
                     ->where('stock_gral_serv_final.reg_cam', 1)
                     ->get();
@@ -717,7 +1326,7 @@ class StocksModel extends ModelBase
 
             // Users for AND
             if ($id_region == 3) {
-                $data = StocksModel::select('stock_gral_serv_final.id', 'stock_gral_serv_final.material', 'stock_gral_serv_final.descripcion', 'stock_gral_serv_final.modelo', 'stock_gral_serv_final.proyecto', 'stock_gral_serv_final.proveedor', 'stock_gral_serv_final.user_carga', 'stock_gral_serv_final.created_at', 'stock_gral_serv_final.ok')
+                $data = StocksModel::select($columnasactivas)
                     ->from('stock_gral_serv_final')
                     ->where('stock_gral_serv_final.reg_and', 1)
                     ->get();
@@ -725,7 +1334,7 @@ class StocksModel extends ModelBase
 
             // Users for CAR
             if ($id_region == 4) {
-                $data = StocksModel::select('stock_gral_serv_final.id', 'stock_gral_serv_final.material', 'stock_gral_serv_final.descripcion', 'stock_gral_serv_final.modelo', 'stock_gral_serv_final.proyecto', 'stock_gral_serv_final.proveedor', 'stock_gral_serv_final.user_carga', 'stock_gral_serv_final.created_at', 'stock_gral_serv_final.ok')
+                $data = StocksModel::select($columnasactivas)
                     ->from('stock_gral_serv_final')
                     ->where('stock_gral_serv_final.reg_car', 1)
                     ->get();
@@ -738,9 +1347,180 @@ class StocksModel extends ModelBase
     public static function get_all_records_pending_list_stocks_final($id_region)
     {
 
-        // Users for MX
+
+        $columnasactivas = [
+            'material',
+            'descripcion',
+            'tipo_status',
+            'precio_usd',
+            'sir',
+            'fcr',
+            'proyecto',
+            'proveedor',
+            'ots',
+            'obs',
+            'modelo',
+            'cant_pza_sku',
+            'garantia_years',
+            'tipo_uso',
+            'tipo_mat',
+            'cat',
+            'fam',
+            'marca',
+            'commodity',
+            'mex1',
+            'mex_fecha_embarque',
+            'mex_vva',
+            'guat2',
+            'guat_fecha_embarque',
+            'guat_vva',
+            'hond3',
+            'hond_fecha_embarque',
+            'hond_vva',
+            'repd4',
+            'repd_fecha_embarque',
+            'repd_vva',
+            'hait5',
+            'hait_fecha_embarque',
+            'hait_vva',
+            'arub6',
+            'arub_fecha_embarque',
+            'arub_vva',
+            'salv7',
+            'salv_fecha_embarque',
+            'salv_vva',
+            'nica8',
+            'nica_fecha_embarque',
+            'nica_vva',
+            'cr9',
+            'cr_fecha_embarque',
+            'cr_vva',
+            'pana10',
+            'pana_fecha_embarque',
+            'pana',
+            'angu11',
+            'angu_fecha_embarque',
+            'angu_vva',
+            'baha12',
+            'baha_fecha_embarque',
+            'baha_vva',
+            'beli13',
+            'beli_fecha_embarque',
+            'beli_vva',
+            'berm14',
+            'berm_fecha_embarque',
+            'berm_vva',
+            'caym15',
+            'caym_fecha_embarque',
+            'caym_vva',
+            'guya16',
+            'guya_fecha_embarque',
+            'guya_vva',
+            'suri17',
+            'suri_fecha_embarque',
+            'suri_vva',
+            'turk18',
+            'turk_fecha_embarque',
+            'turk_vva',
+            'brit19',
+            'brit_fecha_embarque',
+            'brit_vva',
+            'maar20',
+            'maar_fecha_embarque',
+            'maar_vva',
+            'saba21',
+            'saba_fecha_embarque',
+            'saba_vva',
+            'anti22',
+            'anti_fecha_embarque',
+            'anti_vva',
+            'mons23',
+            'mons_fecha_embarque',
+            'mons_vva',
+            'kitt24',
+            'kitt_fecha_embarque',
+            'kitt_vva',
+            'bart25',
+            'bart_fecha_embarque',
+            'bart_vva',
+            'marti26',
+            'marti_fecha_embarque',
+            'marti_vva',
+            'trin27',
+            'trin_fecha_embarque',
+            'trin_vva',
+            'jama28',
+            'jama_fecha_embarque',
+            'jama_vva',
+            'barb29',
+            'barb_fecha_embarque',
+            'barb_vva',
+            'bona30',
+            'bona_fecha_embarque',
+            'bona_vva',
+            'cura31',
+            'cura_fecha_embarque',
+            'cura_vva',
+            'col32',
+            'col_fecha_embarque',
+            'col_vva',
+            'ven33',
+            'ven_fecha_embarque',
+            'ven_vva',
+            'ecu34',
+            'ecu_fecha_embarque',
+            'ecu_vva',
+            'ptor35',
+            'ptor_fecha_embarque',
+            'ptor_vva',
+            'croi36',
+            'croi_fecha_embarque',
+            'croi_vva',
+            'thom37',
+            'thom_fecha_embarque',
+            'thom_vva',
+            'jhon38',
+            'jhon_fecha_embarque',
+            'jhon_vva',
+            'virg39',
+            'virg_fecha_embarque',
+            'virg_vva',
+            'domi40',
+            'domi_fecha_embarque',
+            'domi_vva',
+            'gren41',
+            'gren_fecha_embarque',
+            'gren_vva',
+            'luci42',
+            'luci_fecha_embarque',
+            'luci_vva',
+            'vinc43',
+            'vinc_fecha_embarque',
+            'vinc_vva',
+            'fren44',
+            'fren_fecha_embarque',
+            'fren_vva',
+            'mart45',
+            'mart_fecha_embarque',
+            'mart_vva',
+            'guad46',
+            'guad_fecha_embarque',
+            'guad_vva',
+            'reun47',
+            'reun_fecha_embarque',
+            'reun_vva',
+            'newc48',
+            'newc_fecha_embarque',
+            'new_vva',
+            'peru49',
+            'peru_fecha_embarque',
+            'peru_vva',
+            'comentarios_ing'];
+        $data = [];
+        
+            // Users for MX
         if ($id_region == 1) {
-            $data = StocksModel::select('stock_gral_serv_final.id', 'stock_gral_serv_final.material', 'stock_gral_serv_final.descripcion', 'stock_gral_serv_final.modelo', 'stock_gral_serv_final.proyecto', 'stock_gral_serv_final.proveedor', 'stock_gral_serv_final.user_carga', 'stock_gral_serv_final.created_at', 'stock_gral_serv_final.ok')
+            $data = StocksModel::select($columnasactivas)
                 ->from('stock_gral_serv_final')
                 ->where('stock_gral_serv_final.reg_mex', 1)
                 ->where('stock_gral_serv_final.ok', 0)
@@ -749,7 +1529,7 @@ class StocksModel extends ModelBase
 
         // Users for CAM
         if ($id_region == 2) {
-            $data = StocksModel::select('stock_gral_serv_final.id', 'stock_gral_serv_final.material', 'stock_gral_serv_final.descripcion', 'stock_gral_serv_final.modelo', 'stock_gral_serv_final.proyecto', 'stock_gral_serv_final.proveedor', 'stock_gral_serv_final.user_carga', 'stock_gral_serv_final.created_at', 'stock_gral_serv_final.ok')
+            $data = StocksModel::select($columnasactivas)
                 ->from('stock_gral_serv_final')
                 ->where('stock_gral_serv_final.reg_cam', 1)
                 ->where('stock_gral_serv_final.ok', 0)
@@ -758,7 +1538,7 @@ class StocksModel extends ModelBase
 
         // Users for AND
         if ($id_region == 3) {
-            $data = StocksModel::select('stock_gral_serv_final.id', 'stock_gral_serv_final.material', 'stock_gral_serv_final.descripcion', 'stock_gral_serv_final.modelo', 'stock_gral_serv_final.proyecto', 'stock_gral_serv_final.proveedor', 'stock_gral_serv_final.user_carga', 'stock_gral_serv_final.created_at', 'stock_gral_serv_final.ok')
+            $data = StocksModel::select($columnasactivas)
                 ->from('stock_gral_serv_final')
                 ->where('stock_gral_serv_final.reg_and', 1)
                 ->where('stock_gral_serv_final.ok', 0)
@@ -767,7 +1547,7 @@ class StocksModel extends ModelBase
 
         // Users for CAR
         if ($id_region == 4) {
-            $data = StocksModel::select('stock_gral_serv_final.id', 'stock_gral_serv_final.material', 'stock_gral_serv_final.descripcion', 'stock_gral_serv_final.modelo', 'stock_gral_serv_final.proyecto', 'stock_gral_serv_final.proveedor', 'stock_gral_serv_final.user_carga', 'stock_gral_serv_final.created_at', 'stock_gral_serv_final.ok')
+            $data = StocksModel::select($columnasactivas)
                 ->from('stock_gral_serv_final')
                 ->where('stock_gral_serv_final.reg_car', 1)
                 ->where('stock_gral_serv_final.ok', 0)
@@ -931,7 +1711,7 @@ class StocksModel extends ModelBase
         }
     }
 
-    public static function insert_load_stocks_final($data, $username,$date)
+    public static function insert_load_stocks_final($data, $username, $date)
     {
 
         $id_region_one = 0;
@@ -1343,8 +2123,8 @@ class StocksModel extends ModelBase
         //         'reg_mex' => 1
         //     ]);
 
-      
-        
+
+
         // Damos de alta la refacción en alta de partes.
         DB::table('alcopar_partes')->insert(
             [
