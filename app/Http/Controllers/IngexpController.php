@@ -212,5 +212,62 @@ class IngexpController extends Controller
         }
     }
 
+
+
+    public function solicitaracceso(Request $request){    
+        $modo = 'registro';
+        return view("Ingexp.solicitaracceso", compact('modo'));
+    }
+    public function solicitaracceso_login(Request $request){        
+        $modo = 'login';
+        return view("Ingexp.solicitaracceso", compact('modo'));
+    }
+
+    public function cargardetallessolicitud(Request $request){
+
+        $data = IngexpModel::get_solictud($request->id);
+        return view("Ingexp.cargardetallesuser", compact('data'));
+    }
+
+    public function changeestatussolicitud(){
+        if($_POST['statuschange']){
+            DB::table('ing_solicitaracceso')
+            ->where('id', $_POST['id'])
+            ->update(['status' => $_POST['statuschange']]);
+        }
+    }
+
+    public function acceso()
+    {
+
+                
+        $tipo = false;
+        $linea = false;
+
+        if(isset($_GET['tipo'])){
+            $tipo = $_GET['tipo'];
+        }
+        if(isset($_GET['linea'])){
+            $linea = $_GET['linea'];
+        }
+        $get_records = IngexpModel::get_list($tipo, $linea); 
+
+        $datos = IngexpModel::get_records();               
+        return view("Ingexp.acceso", compact('get_records','datos'));
+    }
+
+
+    public function solicitaracceso_procesar(Request $request){             
+        $get_records = IngexpModel::solicitaracceso($_POST); 
+        echo $get_records;
+    }
+
+
+    public function listadeacceso(){
+        $user       = Auth::user()->username;
+        $id_region  = Auth::user()->id_region;
+        $get_records = IngexpModel::get_listadesolicitud();
+        return view("Ingexp.listadeacceso", compact('get_records'));
+    }
 }
 

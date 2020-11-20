@@ -28,6 +28,17 @@ class IngexpModel extends ModelBase
         return $data;
     }
 
+    public static function get_solictud($id)
+    {
+        $data = [];
+        $d = StocksModel::select('ing_solicitaracceso.*')
+            ->from('ing_solicitaracceso')
+            ->whereRaw('id = ' . $id)
+            ->get();
+
+        return $d;
+    }
+
     public static function visor($id){
         $d = StocksModel::select('archivo_carga')
         ->from('ing_registro')
@@ -36,6 +47,37 @@ class IngexpModel extends ModelBase
 
         return $d;
 
+    }
+
+    public static function solicitaracceso($data)
+    {
+        $datos = [];
+        $emailexistente = AlcoparModel::query()->selectRaw('email')
+            ->from('ing_solicitaracceso')            
+            ->whereRaw("email ='".$_POST['email']."'")
+            ->get();
+
+        if(count($emailexistente) > 0){
+            $datos['status'] = 0;
+            $datos['error'] = 'El correo '.$_POST['email'].' ya existe en nuestro sistema.';
+        }else{
+            $datos['status'] = 1;
+            $datos['error'] = '';
+            #status inicial
+            $data['status'] = 0;
+            DB::table('ing_solicitaracceso')->insert($data);
+        }
+
+        return json_encode($datos,true);        
+    }
+
+    public static function get_listadesolicitud()
+    {
+        $d = StocksModel::select('ing_solicitaracceso.*')
+            ->from('ing_solicitaracceso')
+            ->get();
+
+        return $d;
     }
 
     public static function get_list($tipo, $linea)
