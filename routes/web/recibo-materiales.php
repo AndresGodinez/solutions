@@ -19,5 +19,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/pre-print', 'ReciboMaterialesController@prePrint')
             ->name('recibo-materiales.pre-print');
 
+        Route::post('/print/{reciboFolio}', 'ReciboMaterialesController@print')
+            ->name('recibo-materiales.print');
+
     });
 });
