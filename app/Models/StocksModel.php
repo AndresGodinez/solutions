@@ -60,7 +60,7 @@ class StocksModel extends ModelBase
     public static function get_all_records_nueva($user, $id_region)
     {
         $columnasactivas = [
-            'material',
+'id',            'material',
             'descripcion',
             'tipo_status',
             'precio_usd',
@@ -329,7 +329,7 @@ class StocksModel extends ModelBase
     public static function get_all_records_pending_list($id_region)
     {
         $columnasactivas = [
-            'material',
+'id',            'material',
             'descripcion',
             'tipo_status',
             'precio_usd',
@@ -1134,7 +1134,7 @@ class StocksModel extends ModelBase
     public static function get_all_records_stocks_final($user, $id_region)
     {
         $columnasactivas = [
-            'material',
+'id',            'material',
             'descripcion',
             'tipo_status',
             'precio_usd',
@@ -1349,7 +1349,7 @@ class StocksModel extends ModelBase
 
 
         $columnasactivas = [
-            'material',
+'id',            'material',
             'descripcion',
             'tipo_status',
             'precio_usd',
