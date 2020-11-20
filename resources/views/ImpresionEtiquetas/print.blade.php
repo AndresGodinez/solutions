@@ -18,23 +18,14 @@
          */
 
         function deployQZ() {
-            console.log('deployQZ');
+            let attributes = {id: "qz", code:'qz.PrintApplet.class',
+                archive:'qz-print.jar', width:1, height:1};
+            let parameters = {jnlp_href: 'qz-print_jnlp.jnlp',
+                cache_option:'plugin', disable_logging:'false',
+                initial_focus:'false'};
 
-            let attributes = {
-                id: 'qz', code: 'qz.PrintApplet.class',
-                archive: 'qz-print.jar', width: 1, height: 1,
-            };
-
-            let parameters = {
-                jnlp_href: 'qz-print_jnlp.jnlp',
-                cache_option: 'plugin',
-                disable_logging: 'false',
-                initial_focus: 'false',
-            };
-
-            if (deployJava.versionCheck('1.7+') == true) {
-            }
-            else if (deployJava.versionCheck('1.6+') == true) {
+            if (deployJava.versionCheck("1.7+") == true) {}
+            else if (deployJava.versionCheck("1.6+") == true) {
                 delete parameters['jnlp_href'];
             }
             deployJava.runApplet(attributes, parameters, '1.5');
@@ -44,39 +35,43 @@
          * Automatically gets called when applet has loaded.
          */
         function qzReady() {
-            console.log('Entra segunda funcion');
-            // Setup our global qz object
-            let qz = document.getElementById('qz');
-            const title = document.getElementById('title');
 
+            alert("Entra segunda funcion");
+            // Setup our global qz object
+            window["qz"] = document.getElementById('qz');
+            let title = document.getElementById("title");
             if (qz) {
                 try {
-                    title.innerHTML = title.innerHTML + '';
-                    document.getElementById('content').style.background = '#FFFFFF';
-                } catch (err) { // LiveConnect error, display a detailed meesage
-                    document.getElementById('content').style.background = '#F5A9A9';
-                    alert('ERROR:  \nThe applet did not load correctly.  Communication to the ' +
-                        'applet has failed, likely caused by Java Security Settings.  \n\n' +
-                        'CAUSE:  \nJava 7 update 25 and higher block LiveConnect calls ' +
-                        'once Oracle has marked that version as outdated, which ' +
-                        'is likely the cause.  \n\nSOLUTION:  \n  1. Update Java to the latest ' +
-                        'Java version \n          (or)\n  2. Lower the security ' +
-                        'settings from the Java Control Panel.');
+                    title.innerHTML = title.innerHTML + "";
+                    document.getElementById("content").style.background = "#FFFFFF";
+                } catch(err) { // LiveConnect error, display a detailed meesage
+                    document.getElementById("content").style.background = "#F5A9A9";
+                    alert("ERROR:  \nThe applet did not load correctly.  Communication to the " +
+                        "applet has failed, likely caused by Java Security Settings.  \n\n" +
+                        "CAUSE:  \nJava 7 update 25 and higher block LiveConnect calls " +
+                        "once Oracle has marked that version as outdated, which " +
+                        "is likely the cause.  \n\nSOLUTION:  \n  1. Update Java to the latest " +
+                        "Java version \n          (or)\n  2. Lower the security " +
+                        "settings from the Java Control Panel.");
                 }
             }
 
 // AQUI AGREGUE DEFAULT IMPRESORA
 
-            qz.findPrinter('zebra');
+            qz.findPrinter("zebra");
             // Searches for locally installed printer with "zebra" in the name
             if (qz != null) {
-                qz.appendFile('https://soluciones.refaccionoriginal.com/labels/etiqueta.txt');
+                qz.appendFile("https://soluciones.refaccionoriginal.com/labels/etiqueta.txt");
                 qz.print();
             }
 // TERMINA
 
         }
 
+        /**
+         * Returns whether or not the applet is not ready to print.
+         * Displays an alert if not ready.
+         */
         /**
          * Returns whether or not the applet is not ready to print.
          * Displays an alert if not ready.
@@ -93,7 +88,6 @@
             }
             return false;
         }
-
         /**
          * Returns is the applet is not loaded properly
          */
@@ -127,7 +121,7 @@
             }
             // Alert success message
             //alert('Successfully sent print data to "' + qz.getPrinter() + '" queue.');
-            window.location.href = "{{ route('impresion.etiquetas.index') }}";
+            window.location.href = "https://soluciones.refaccionoriginal.com/labels/etiqueta.php";
         }
 
         /***************************************************************************
