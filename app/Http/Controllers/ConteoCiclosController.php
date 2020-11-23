@@ -58,7 +58,7 @@ class ConteoCiclosController extends Controller
                 type=TRIM(@type),
                 bin=TRIM(@bin),
                 planta="'.$planta.'",
-                stock=replace(@stock,",",""),
+                stock=@TRIM(stock),
                 ia=@ia,
                 invrec=TRIM(@invrec)
             ';

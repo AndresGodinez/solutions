@@ -44,7 +44,8 @@
                 </div>
                 <div class="card-content">
                     <div class="card-body">
-                        <form action="{{ route('recibo-materiales.description') }}" method="post">
+                        <form action="{{ route('recibo-materiales.description', ['reciboFolio' => $reciboFolio->id]) }}"
+                              method="post">
                             @csrf
                             <div class="form-row">
                                 <div class="form-group">

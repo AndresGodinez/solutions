@@ -24,7 +24,7 @@ class UploadHojasConteoRequest extends FormRequest
     public function rules()
     {
         return [
-//            'hoja_conteo_ciclos_file' => 'required|mimes:csv,txt'
+            'hoja_conteo_ciclos_file' => 'required|mimes:csv,txt'
         ];
     }
 

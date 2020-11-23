@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-content">
-                    <form action="{{ route('recibo-materiales.pre-print') }}" method="post">
+                    <form action="{{ route('recibo-materiales.pre-print', ['reciboFolio' => $reciboFolio->id]) }}" method="post">
                         @csrf
                         <div class="card-body">
                             <table class="table table-striped table-responsive-lg">

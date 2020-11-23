@@ -31,7 +31,7 @@ class ReciboMaterialesController extends Controller
         dd('create');
     }
 
-    public function description(ReciboMaterialesDescriptionRequest $request)
+    public function description(ReciboMaterialesDescriptionRequest $request, ReciboFolio $reciboFolio)
     {
         $materialAbc = MaterialABC::where('material', $request->get('material'))->first();
         if (!is_null($materialAbc)) {
@@ -50,7 +50,8 @@ class ReciboMaterialesController extends Controller
 
         return view('ReciboMateriales.revision-conteo', compact(
             'materialAbc',
-            'materialBin'
+            'materialBin',
+            'reciboFolio'
         ));
     }
 
@@ -59,13 +60,13 @@ class ReciboMaterialesController extends Controller
         return view('ReciboMateriales/show', compact('reciboFolio'));
     }
 
-    public function prePrint(Request $request)
+    public function prePrint(Request $request, ReciboFolio $reciboFolio)
     {
-        dd($request->all());
-//        TODO save information
         $quantity = $request->get('quantity_to_print');
+        $materialBD = Material::where('part_number', $request->get('material'))->first();
 
         ReciboFolioDetalle::create([
+            'id' => $reciboFolio->id,
             'planta' => $request->user()->planta,
             'material' => $request->get('material'),
             'bin' => $request->get('bin'),
@@ -74,12 +75,42 @@ class ReciboMaterialesController extends Controller
             'label' => $request->get('label'),
             'hora' => Carbon::now()
         ]);
-//        TODO print information
 
-        // TODO Return view
-        return view('ReciboMateriales.pre-print', compact('quantity'));
+        $cantidad = $quantity;
+        $material = $materialBD->part_number;
+        $descripcion = $materialBD->part_description;
+        $fecha = Carbon::now()->format('d-m-Y');
+        $etiqueta = '';
+
+        return view('ReciboMateriales.decision', compact(
+            'cantidad',
+            'material',
+            'descripcion',
+            'fecha',
+            'etiqueta',
+            'reciboFolio'
+        ));
 
 
+    }
+
+    public function print2(Request $request)
+    {
+        $cantidad = $request->get('cantidad');
+        $material = $request->get('material');
+        $descripcion = $request->get('descripcion');
+        $fecha = $request->get('fecha');
+        $etiqueta = '';
+        $id = $request->get('recibo_folio_id');
+
+        return view('print3', compact(
+            'cantidad',
+            'material',
+            'descripcion',
+            'fecha',
+            'etiqueta',
+            'id'
+        ));
     }
 
     public function print(ReciboFolio $reciboFolio)
@@ -93,6 +124,21 @@ class ReciboMaterialesController extends Controller
         $etiqueta = '';
 
         $fecha = Carbon::now()->format('d-m-y');
+
+    }
+
+    public function decision(Request $request)
+    {
+        dd($request->all());
+        $folio = $request->get('recibo_folio_id');
+        $reciboFolio = ReciboFolio::find($folio);
+        $cantidad = $request->get('cantidad');
+        $material = $request->get('material');
+        $descripcion = $request->get('descripcion');
+        $fecha = $request->get('fecha');
+        $etiqueta = $request->get('etiqueta');
+
+        return view('ReciboMateriales.desicion', compact(''));
 
     }
 
