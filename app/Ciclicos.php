@@ -33,7 +33,9 @@ class Ciclicos extends Model
                 'descripcion' => $temp->descripcion,
                 'type' => $temp->type,
                 'bin' => $temp->bin,
-                'invrec' => null,
+                'stock' => $temp->stock,
+                'ia' => $temp->ia,
+                'invrec' => $temp->invrec,
                 'costo' => null
             ];
         }
