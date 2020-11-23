@@ -15,14 +15,6 @@
                 </span>
                 </a>
             </li>
-            <li class="is-shown">
-                <a href="{{route('recibo-materiales.carga-factura')}}">
-                    <i class="bx bx-right-arrow-alt"></i>
-                    <span class="menu-item" data-i18n="eCommerce">
-                    Carga Facturas
-                </span>
-                </a>
-            </li>
         </ul>
     </li>
 {{--@endcanany--}}
