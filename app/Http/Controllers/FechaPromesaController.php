@@ -82,7 +82,7 @@ class FechaPromesaController extends Controller
     {
         $fechaPromesa = FechaPromesa::where('pedido', $request->get('no_pedido'))->first();
 
-        return view('FechaPromesa.detalle', compact('fechaPromesa'));
+        return view('FechaPromesa/detalle', compact('fechaPromesa'));
     }
 
     public function downloadTemplatePromesasTracker()

@@ -21,7 +21,7 @@ class ConteoCiclosController extends Controller
 {
     public function index(Request $request)
     {
-        return view('ConteoCiclos.index');
+        return view('ConteoCiclos/index');
     }
 
     public function processHojasConteoCiclos(UploadHojasConteoRequest $request)
