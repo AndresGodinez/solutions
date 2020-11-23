@@ -51,6 +51,9 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="card-footer">
+                    <a href="javascript:history.back()" class="btn btn-info"> Regresar</a>
+                </div>
 
             </div>
         </div>
