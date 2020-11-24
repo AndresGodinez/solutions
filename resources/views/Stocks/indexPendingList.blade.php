@@ -14,7 +14,7 @@
 <section id="basic-datatable">
 	<div class="card p-1">
 	<div class="row">
-		<div class="col-sm-12">
+		<div class="col-sm-12"  style="overflow-y: auto;">
 			<table class="table table-striped table-bordered complex-headers">
 				<thead>
 					<tr>

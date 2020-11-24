@@ -113,7 +113,8 @@ class StocksController extends Controller
     }
 
     public function uploads()
-    {
+    {        
+
         $user       = Auth::user()->username;
         $items      = Menu::getMenu2($user);
 
@@ -154,7 +155,8 @@ class StocksController extends Controller
                         
                         echo '<script>window.location.href = "' . url("stocks/cargas/?success=1") . '";</script>';
                     } catch (Exception $e) {
-                        echo '<script>window.location.href = "' . url("stocks/cargas/?error=2") . '";</script>';
+                        dd($e);
+                        // echo '<script>window.location.href = "' . url("stocks/cargas/?error=2") . '";</script>';
                     }
 
                     // Envio de correo alerta por id_region gente ISC.
