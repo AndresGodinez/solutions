@@ -60,9 +60,7 @@ if (isset($_GET['linea'])) {
             <div class="navbar-container content">
                 <div class="navbar-collapse" id="navbar-mobile">
                     <div class="mr-auto float-left bookmark-wrapper d-flex align-items-center">
-                        <ul class="nav navbar-nav nav-back">
-                            <li class="nav-item mobile-menu d-xl-none mr-auto"><a class="nav-link nav-menu-main hidden-xs font-small-3 d-flex align-items-center" href="sk-layout-2-columns.html"><i class="bx bx-left-arrow-alt"></i>Back</a></li>
-                        </ul>
+                        
                         <ul class="nav navbar-nav bookmark-icons">
                             <li class="nav-item d-none d-lg-block">
                             <img class="img-fluid" src="{{ asset('assets') }}/app-assets/images/logo/logo2.png" style="width:100px; margin-top:10px; margin-left:5px;">
@@ -72,11 +70,11 @@ if (isset($_GET['linea'])) {
                     </div>
                     <ul class="nav navbar-nav float-right">                       
                         <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
-                                <div class="user-nav d-sm-flex d-none"><span class="user-name">John Doe</span><span class="user-status">Activo</span></div><span>
+                                <div class="user-nav d-sm-flex d-none"><span class="user-name"><?=session('sol_acceso_nombre')?></span><span class="user-status">Activo</span></div><span>
                                     </span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#"><i class="bx bx-power-off mr-50"></i> Salir</a>
+                                <a class="dropdown-item" href="{{url('ingexp/solicitaracceso')}}?logout=ok"><i class="bx bx-power-off mr-50"></i> Salir</a>
                             </div>
                         </li>
                     </ul>

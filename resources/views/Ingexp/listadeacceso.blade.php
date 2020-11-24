@@ -44,33 +44,29 @@
                                 <?php
                                 if ($get_records['status'] == 0) {
                                 ?>
-                                    <span class="badge badge-light-info">Solicitado</span>
+                                    <span class="badge badge-light-info">Nueva Solicitud</span>
                                 <?php
                                 } else if ($get_records['status'] == 1) {
                                 ?>
-                                    <span class="badge badge-light-success">Solicitud</span>
+                                    <span class="badge badge-light-warning">Aguardando pago</span>
                                 <?php
                                 } else if ($get_records['status'] == 2) {
                                 ?>
-                                    <span class="badge badge-light-success">Solicitud</span>
+                                    <span class="badge badge-light-primary">Confirmar Pago</span>
                                 <?php
                                 } else if ($get_records['status'] == 3) {
                                 ?>
-                                    <span class="badge badge-light-success">Solicitud</span>
+                                    <span class="badge badge-light-success">Activo</span>
                                 <?php
                                 } else if ($get_records['status'] == 4) {
                                 ?>
-                                    <span class="badge badge-light-success">Solicitud</span>
+                                    <span class="badge badge-light-danger">Rechazado</span>
                                 <?php
                                 } else if ($get_records['status'] == 5) {
                                 ?>
-                                    <span class="badge badge-light-success">Solicitud</span>
+                                    <span class="badge badge-light-secondary">Expirado</span>
                                 <?php
-                                } else if ($get_records['status'] == 6) {
-                                ?>
-                                    <span class="badge badge-light-success">Solicitud</span>
-                                <?php
-                                }
+                                } 
                                 ?>
                             </td>
                             <td>
