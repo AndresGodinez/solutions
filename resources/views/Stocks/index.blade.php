@@ -19,8 +19,8 @@
 
 	<div class="row">
 		<div class="col-sm-12">
-			<div class="card p-1">
-				<table class="table table-striped table-bordered complex-headers table-responsive">
+			<div class="card p-1" style="overflow-y: auto;">
+				<table class="table table-striped table-bordered complex-headers ">
 					<thead>
 						<tr>
 							<th>Folio</th>
@@ -89,6 +89,7 @@
 <script>
 
         $('.table').DataTable({
+			responsive:false,
             "language": {
                 "url": "{{ asset('assets') }}/dt-lang/Spanish.json"
             }

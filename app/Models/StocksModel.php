@@ -495,7 +495,10 @@ class StocksModel extends ModelBase
             'peru49',
             'peru_fecha_embarque',
             'peru_vva',
-            'comentarios_ing'];
+            'comentarios_ing',
+            'user_carga', 
+            'created_at'
+        ];
         $data = [];
         
 
@@ -1300,7 +1303,9 @@ class StocksModel extends ModelBase
             'peru49',
             'peru_fecha_embarque',
             'peru_vva',
-            'comentarios_ing'];
+            'comentarios_ing',
+            'user_carga', 
+            'created_at'];
         $data = [];
         // Records for Managers.
         if ($user == "munoznd") {
@@ -1515,7 +1520,9 @@ class StocksModel extends ModelBase
             'peru49',
             'peru_fecha_embarque',
             'peru_vva',
-            'comentarios_ing'];
+            'comentarios_ing',
+            'user_carga', 
+            'created_at'];
         $data = [];
         
             // Users for MX
