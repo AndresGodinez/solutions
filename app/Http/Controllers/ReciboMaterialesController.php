@@ -78,7 +78,7 @@ class ReciboMaterialesController extends Controller
     public function prePrint(Request $request, ReciboFolio $reciboFolio)
     {
         $quantity = $request->get('quantity_to_print');
-        $materialBD = Material::where('part_number', $request->get('material'))->first();
+        $materialBD = MaterialABC::where('material', $request->get('material'))->first();
 
         ReciboFolioDetalle::create([
             'id' => $reciboFolio->id,
@@ -92,8 +92,8 @@ class ReciboMaterialesController extends Controller
         ]);
 
         $cantidad = $quantity;
-        $material = $materialBD->part_number;
-        $descripcion = $materialBD->part_description;
+        $material = $materialBD->material;
+        $descripcion = $materialBD->descripcion;
         $fecha = Carbon::now()->format('d-m-Y');
         $etiqueta = '';
 
