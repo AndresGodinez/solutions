@@ -157,58 +157,126 @@
                 <h4>Status</h4>
                 <hr>
             </div>
-            <div class="col-6">
+            <div class="col-4">
                 <form id="changestatus">
                 @csrf
                 <input value="<?=$data[0]['id']?>" hidden name="id" />
+                <input value="status" hidden name="accion" />
+                <label>Estatus</label>
                 <select class="form-control changeselect" name="statuschange">
                     <option <?php if($data[0]['status'] == 0) { echo "selected"; } ?> value="0">Solicitado</option>
-                    <option <?php if($data[0]['status'] == 1) { echo "selected"; } ?> value="1">Correo de Pago</option>
-                    <option <?php if($data[0]['status'] == 2) { echo "selected"; } ?> value="2">Confirmación de Pago</option>
-                    <option <?php if($data[0]['status'] == 3) { echo "selected"; } ?> value="3">Aguardando Pago</option>
-                    <option <?php if($data[0]['status'] == 4) { echo "selected"; } ?> value="4">Aceptado</option>
-                    <option <?php if($data[0]['status'] == 5) { echo "selected"; } ?> value="5">Rechazado</option>
-                    <option <?php if($data[0]['status'] == 6) { echo "selected"; } ?> value="6">Expirado</option>
+                    <option <?php if($data[0]['status'] == 2) { echo "selected"; } ?> value="1">Aguardando Pago</option>
+                    <option <?php if($data[0]['status'] == 3) { echo "selected"; } ?> value="2">Confirmación de Pago</option>
+                    <option <?php if($data[0]['status'] == 4) { echo "selected"; } ?> value="3">Aceptado</option>
+                    <option <?php if($data[0]['status'] == 5) { echo "selected"; } ?> value="4">Rechazado</option>
+                    <option <?php if($data[0]['status'] == 6) { echo "selected"; } ?> value="5">Expirado</option>
                 </select>
                 </form>
             </div>
-            <div class="col-6">
-
-                <input class="form-control datepicker" placeholder="Fecha de Expiración" />
+            <div class="col-4">
+                <form id="changefechaexpira">
+                    <?php 
+                    $fechaexpire = @explode('-',$data[0]['fecha_expire']);
+                    $fechaexpire = @$fechaexpire[2].'/'.@$fechaexpire[1].'/'.@$fechaexpire[0]; 
+                    if($fechaexpire == '//'){
+                        $fechaexpire = '';
+                    }
+                    ?>
+                    @csrf
+                    <input value="<?=$data[0]['id']?>" hidden name="id" />
+                    <input value="expire" hidden name="accion" />
+                    <label>Fecha de expiración</label>
+                    <input class="form-control datepicker" onchange="expliraccion()" name="fechaexpira" value="<?=$fechaexpire?>" placeholder="Fecha de Expiración" />
+                </form>
             </div>
+
+            <div class="col-4">
+                <form id="changepassword">                    
+                    @csrf
+                    <input value="<?=$data[0]['id']?>" hidden name="id" />
+                    <label>Password</label>
+                    <input value="<?=$data[0]['password']?>" onchange="changepass()"  placeholder="Password"   class="form-control passwordcliente" name="password" />
+                </form>
+            </div>
+
+            
             <div class="col-12">
                 <br>
                 <h4>Confirmación de pago</h4>
                 <hr>
-                <p>Aguardando pago...</p>
-
-                <hr>
-                <h4>Acciónes</h4>
-                <button type="button" class="btn mb-1 btn-primary btn-lg btn-block">Enviar solicitud de Pago</button>
-
-                <div class="row">
-
-                    <div class="col-6">
-                        <button type="button" class="btn mb-1 btn-danger btn-lg btn-block">Rechazo Inmediato</button>
-                    </div>
-                    <div class="col-6">
-                        <button type="button" class="btn mb-1 btn-success btn-lg btn-block">Aprobación Inmediata</button>
-                    </div>
-                </div>
-
+                <?php if($data[0]['status'] >= 2 ){
+                    echo $data[0]['recibodepago'];
+                }else{ ?>
+                <p>Aguardando pago...</p>                
+                <?php } ?>
+                
+                <p class="linkdepagoref" <?php if($data[0]['status'] == 1) {?> style="display: block;" <?php }else{ echo 'style="display: none;"'; } ?> >
+                Link para Pago: <a target="_blank" href="{{url('ingexp/confirmarpago')}}/<?=$data[0]['id']?>/<?=$data[0]['_token']?>">{{url('ingexp/confirmarpago')}}/<?=$data[0]['id']?>/<?=$data[0]['_token']?></a> </p>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-      $('.datepicker').pickadate();
+      $('.datepicker').pickadate({
+        format: 'dd/mm/yyyy'
+      });
+
+      function expliraccion(){
+          
+          var form = $('#changefechaexpira').serialize();
+          $.post("{{ url('/ingexp/changeestatussolicitud') }}",form,function(data){
+              console.log(data);
+          });
+          Swal.fire({
+                    type: "success",
+                    title: '¡Muy bien!',
+                    text: 'Fecha cambiada con éxito',
+                    confirmButtonClass: 'btn btn-success',
+                });
+      }
+
+      function changepass(){
+
+          
+          var form = $('#changepassword').serialize();
+          $.post("{{ url('/ingexp/changeestatussolicitud') }}",form,function(data){
+              console.log(data);
+              
+          });
+          Swal.fire({
+                    type: "success",
+                    title: '¡Muy bien!',
+                    text: 'Contraseña cambiada con éxito',
+                    confirmButtonClass: 'btn btn-success',
+                });
+      }
 
       $('.changeselect').on('change',function(data){
           var v = $(this).val();
           var form = $('#changestatus').serialize();
+          var value = $(this).val();
+          
           $.post("{{ url('/ingexp/changeestatussolicitud') }}",form,function(data){
-              console.log(data);
+            if(value == 3){
+                $('.passwordcliente').val(data);
+                Swal.fire({
+                    type: "success",
+                    title: '¡Muy bien!',
+                    text: 'Correo enviado y contraseña actualizada.',
+                    confirmButtonClass: 'btn btn-success',
+                });
+            } 
+            if(value == 1){
+                Swal.fire({
+                    type: "success",
+                    title: '¡Muy bien!',
+                    text: "Correo enviado con link para confirmación de pago.",
+                    confirmButtonClass: 'btn btn-success',
+                });
+
+                $('.linkdepagoref').show();
+            }   
           });
       });
 </script>

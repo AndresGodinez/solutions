@@ -48,7 +48,43 @@ class IngexpModel extends ModelBase
         return $d;
 
     }
+    public static function solicitaracceso_login($data)
+    {
+        $datos = [];
+        $existuser= AlcoparModel::query()->selectRaw('email,fecha_expire,status,nombre_del_dueno')
+            ->from('ing_solicitaracceso')            
+            ->whereRaw("email ='".$_POST['login']."' and password='".$_POST['pass']."'")
+            ->get();
+        $datos['f'] = 2; #fecha expirada
+        $datos['cuenta'] = 9; #respuesta de status
+        if(count($existuser) > 0){
 
+            $fecha_actual = strtotime(date("d-m-Y 00:00:00",time()));
+            $fecha_entrada = strtotime($existuser[0]['fecha_expire']);
+                
+            if($fecha_actual > $fecha_entrada)
+                {
+                    $datos['f'] = 0;
+                }
+                else
+                {
+                    $datos['f'] = 1;
+                }
+            
+            if($datos['f'] == 0){                
+                $datos['status'] = 'no';
+            }else{
+                $datos['status'] = 'si';
+                $datos['cuenta'] = $existuser[0]['status'];
+                $datos['nombre'] = $existuser[0]['nombre_del_dueno'];
+                
+            }
+            
+        }else{
+            $datos['status'] = 'no';
+        }
+        return $datos;            
+    }
     public static function solicitaracceso($data)
     {
         $datos = [];

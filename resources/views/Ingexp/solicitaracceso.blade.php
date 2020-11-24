@@ -245,18 +245,28 @@
                                                         <div class="divider-text text-uppercase text-muted"><small>Entrar al Sistema</small>
                                                         </div>
                                                     </div>
-                                                    <form action="index.html" style=" height:60vh; overflow-y:auto; padding:5px;">
+                                                    <form action="" class="formlogin" style=" height:60vh; overflow-y:auto; padding:5px;">
+                                                        @csrf
                                                         <div class="form-group mb-50">
                                                             <label class="text-bold-600" for="exampleInputEmail1">Correo</label>
-                                                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email address"></div>
+                                                            <input type="email" class="form-control login_user" id="exampleInputEmail1" name="login" placeholder="Email address"></div>
                                                         <div class="form-group">
                                                             <label class="text-bold-600" for="exampleInputPassword1">Contraseña</label>
-                                                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                                            <input type="password" class="form-control login_pass" id="exampleInputPassword1" name="pass" placeholder="Password">
                                                         </div>
                                                         <div class="form-group d-flex flex-md-row flex-column justify-content-between align-items-center">
 
                                                         </div>
-                                                        <button type="submit" class="btn btn-primary glow w-100 position-relative">Entrar<i id="icon-arrow" class="bx bx-right-arrow-alt"></i></button>
+                                                        
+                                                        <a  class="btn btn-primary glow w-100 position-relative hacerlogin white">
+                                                            <div class="spinner-border spinner-border-sm solicitaracceso_load" role="status" style="display:none;">
+                                                                        <span class="sr-only">Loading...</span>
+                                                            </div>
+                                                            <font class="solicitaracceso_inter">
+                                                                Entrar <i id="icon-arrow" class="bx bx-right-arrow-alt"></i>
+                                                            </font>    
+                                                        </a>
+                                                        
                                                     </form>
                                                     <hr>
                                                     <div class="text-center"><small class="mr-25">¿No tienes una cuenta?</small><a href="javascrip:void(0)" onclick="changecard('registro')"><small>Solicitar Acceso</small></a></div>
@@ -303,6 +313,76 @@
     <script src="{{ asset('assets') }}/app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
 
     <script>
+        $('.hacerlogin').click(function(){
+                $('.solicitaracceso_inter').hide();
+                $('.solicitaracceso_load').show();
+                $(this).addClass('w-100');
+                $(this).attr('rel','1');
+
+                var login = $('.login_user').val();
+                var pass = $('.login_pass').val();
+
+                if(login != '' && pass != ''){
+                    var form = $('.formlogin').serialize();
+                    $.post("{{url('ingexp/solicitaraccesologin')}}",form,function(data){
+                        if(data.status =='si'){
+                            if(data.cuenta == 3){
+                                location.href = "{{url('ingexp/acceso')}}"
+                            }else{
+                                if(data.cuenta == 0){
+                                    var msgacceso = "Solicitud nueva, aún no aprobada.";
+                                }
+                                else if(data.cuenta == 1){
+                                    var msgacceso = "Aguardando pago para liberación de cuenta.";
+                                }else if(data.cuenta == 2){
+                                    var msgacceso = "Aguardando liberación.";
+                                }else if(data.cuenta == 4){
+                                    var msgacceso = "Cuenta inactiva o rechazada.";
+                                }else if(data.cuenta == 5){
+                                    var msgacceso = "Cuenta expirada.";
+                                }else{
+                                    var msgacceso = "Cuenta inactiva";
+                                }
+
+
+                                Swal.fire({
+                                    type: "error",
+                                    title: '¡Atención!',
+                                    text: msgacceso,
+                                    confirmButtonClass: 'btn btn-error',
+                                });
+                                $('.solicitaracceso_inter').show();
+                                $('.solicitaracceso_load').hide();
+                                $(this).addClass('w-100');
+                                $(this).attr('rel','0');
+                            }
+                            
+                        }else{                            
+                            if(data.f == "0"){
+                                Swal.fire({
+                                    type: "error",
+                                    title: '¡Atención!',
+                                    text: 'Cuenta expirada',
+                                    confirmButtonClass: 'btn btn-error',
+                                });
+                            }else{
+                                Swal.fire({
+                                    type: "error",
+                                    title: '¡Atención!',
+                                    text: 'Usuário o contraseña inválido.',
+                                    confirmButtonClass: 'btn btn-error',
+                                });
+                            }
+                            $('.solicitaracceso_inter').show();
+                            $('.solicitaracceso_load').hide();
+                            $(this).addClass('w-100');
+                            $(this).attr('rel','0');
+                            
+                        }
+                    },'json');
+                }
+        });
+
         $('.solicitaracceso').click(function() {
             required = true;
             $('.formdeaccesosolicitud .form-control').each(function(index) {
@@ -319,6 +399,21 @@
                     }
                 }
             });
+
+            if($(".emailregistro").val().indexOf('@', 0) == -1 || $(".emailregistro").val().indexOf('.', 0) == -1) {
+                $(".emailregistro").removeClass('is-valid');
+                $(".emailregistro").addClass('is-invalid');
+                required = false;
+                Swal.fire({
+                                    type: "error",
+                                    title: '¡Atención!',
+                                    text: 'Insira un correo válido',
+                                    confirmButtonClass: 'btn btn-error',
+                                });
+                                return;
+                
+            }
+
             if (!required) {
                 Swal.fire({
                                     type: "error",
@@ -352,9 +447,14 @@
                                     text: data.error,
                                     confirmButtonClass: 'btn btn-error',
                                 });
+
+                                $(this).addClass('w-100');
+                                $(this).attr('rel','0');
+                                $('.solicitaracceso_inter').show();
+                                $('.solicitaracceso_load').hide();    
                         }else{
                             <?php $urldirv = url('/ingexp/solicitaracceso'); ?>
-                            window.location = '<?=$urldirv?>';  
+                            window.location = '<?=$urldirv?>?success=1';  
                         }
                     },'json');
                 }

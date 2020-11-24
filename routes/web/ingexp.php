@@ -16,13 +16,17 @@
         Route::get('/buscar',                                       'IngexpController@buscar');
         Route::get('/visor/{id}',                             'IngexpController@visor');
 
-
-
+        
+        Route::get('/confirmarpago/{id}/{token}',                             'IngexpController@confirmarpago');
 
 
         Route::get('/solicitaracceso/login',                                       'IngexpController@solicitaracceso_login');
         Route::get('/solicitaracceso',                                       'IngexpController@solicitaracceso');
         Route::post('/solicitaracceso_procesar',                                       'IngexpController@solicitaracceso_procesar');
+
+        Route::post('/confirmarpagopost',                                       'IngexpController@confirmarpagopost');
+        
+        Route::post('/solicitaraccesologin',                                       'IngexpController@solicitaraccesologin');
         
 
         Route::get('/comprobarpago',                                       'IngexpController@comprobarpago');
@@ -41,7 +45,7 @@
         
         Route::get('/acceso',                                       'IngexpController@acceso');
 
-        Route::get('/listadeacceso',                                       'IngexpController@listadeacceso');
+        Route::get('/listadeacceso',                                       'IngexpController@listadeacceso'); 
         
         
         
