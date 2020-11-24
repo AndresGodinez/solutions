@@ -21,10 +21,10 @@
                                     <td>TIPO - {{ $materialAbc->abc ?? ''}}</td>
                                     {{--                                TODO--}}
                                     <td>
-                                        @if($materialAbc->lx02->bin)
+                                        @if($materialAbc->lx02)
                                             {{ 'BIN - '. $materialAbc->lx02->bin }}
                                         @else
-                                            {{ 'BIN - '. $materialAbc->lx02->bin .' SIN INV'}}
+                                            {{ 'BIN - '. $bin .' SIN INV'}}
                                         @endif
                                     </td>
                                 </tr>
@@ -47,7 +47,7 @@
                                                 <input name="quantity_to_print" type="number" class="form-control">
                                                 <input name="caja" value="{{ $materialBin->caja ?? ''}}" type="hidden" >
                                                 <input name="tipo" value="{{ $materialAbc->abc ?? ''}}" type="hidden" >
-                                                @if($materialAbc->lx02->bin)
+                                                @if($materialAbc->lx02)
                                                     <input name="bin"
                                                            type="hidden"
                                                            value="{{ 'BIN - '. $materialAbc->lx02->bin }}"  >
@@ -55,7 +55,7 @@
 
                                                     <input name="bin"
                                                            type="hidden"
-                                                           value="{{ 'BIN - '. $materialAbc->lx02->bin .' SIN INV'}}"  >
+                                                           value="{{ 'BIN - '. $bin .' SIN INV'}}"  >
 
                                                 @endif
                                             </label>

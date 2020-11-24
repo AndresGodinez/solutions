@@ -35,11 +35,25 @@ class ReciboMaterialesController extends Controller
     {
         $materialAbc = MaterialABC::where('material', $request->get('material'))->first();
         if (!is_null($materialAbc)) {
-            $bin = $materialAbc->lx02->bin ?? $materialAbc->reciboBin->bin;
-            $materialBin = MaterialBin::where('bin', $bin)
-                ->where('planta', $request->user()->planta)
-                ->first();
-        } else {
+
+            if (!!$bin = $materialAbc->lx02 || $materialAbc->reciboBin) {
+                $bin = $materialAbc->lx02->bin ?? $materialAbc->reciboBin->bin;
+                $materialBin = MaterialBin::where('bin', $bin)
+                    ->where('planta', $request->user()->planta)
+                    ->first();
+            }
+
+            else {
+                $bin = '';
+                $materialBin = MaterialBin::make([
+                    'planta' => $request->user()->planta,
+                    'bin' => '',
+                    'caja' => 1
+                ]);
+            }
+
+        }
+        else {
             $bin = '';
             $materialBin = MaterialBin::make([
                 'planta' => $request->user()->planta,
@@ -51,7 +65,8 @@ class ReciboMaterialesController extends Controller
         return view('ReciboMateriales.revision-conteo', compact(
             'materialAbc',
             'materialBin',
-            'reciboFolio'
+            'reciboFolio',
+            'bin'
         ));
     }
 
