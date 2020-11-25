@@ -121,7 +121,6 @@
 
             <?php
             session_start(); //Start the session
-            $id = $_SESSION['id'];
 
             echo "window.location.href = 'https://soluciones.refaccionoriginal.com/ingreso_mat/conteo.php?id=".$id."'";
             ?>

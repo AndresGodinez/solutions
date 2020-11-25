@@ -147,7 +147,7 @@ class ReciboMaterialesController extends Controller
         $etiqueta = '';
         $id = $request->get('recibo_folio_id');
 
-        return view('print3', compact(
+        return view('ReciboMateriales.print3', compact(
             'cantidad',
             'material',
             'descripcion',
