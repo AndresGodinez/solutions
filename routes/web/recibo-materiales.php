@@ -22,11 +22,16 @@ Route::middleware('auth')->group(function () {
         Route::get('/create', 'ReciboMaterialesController@create')
             ->name('recibo-materiales.create');
 
+        Route::post('/store', 'ReciboMaterialesController@store')
+            ->name('recibo-materiales.store');
+
         Route::post('/{reciboFolio}', 'ReciboMaterialesController@description')
             ->name('recibo-materiales.description');
 
         Route::get('/{reciboFolio}/show', 'ReciboMaterialesController@show')
             ->name('recibo-materiales.show');
+
+
 
 
 

@@ -9,6 +9,7 @@ class ReciboFolio extends Model
     public $timestamps = false;
     protected $connection = 'logistica';
     protected $table = 'recibo_folios';
+    protected $guarded = [];
 
     public function materilaesVendorLedTime()
     {

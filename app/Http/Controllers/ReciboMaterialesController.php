@@ -6,12 +6,17 @@ use App\Http\Requests\ReciboMaterialesDescriptionRequest;
 use App\Material;
 use App\MaterialABC;
 use App\MaterialBin;
+use App\MaterialesVendorLeadTime;
 use App\ReciboFolio;
 use App\ReciboFolioDetalle;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use function compact;
+use function dd;
 use function is_null;
+use function redirect;
+use function route;
 use function view;
 
 class ReciboMaterialesController extends Controller
@@ -28,7 +33,31 @@ class ReciboMaterialesController extends Controller
 
     public function create()
     {
-        dd('create');
+        $date = Carbon::now()->format('d/m/Y');
+        $proveedores = MaterialesVendorLeadTime::orderBy('nombre', 'ASC')->where('activo', 'SI')->get();
+        return view('ReciboMateriales.create', compact('date', 'proveedores'));
+    }
+
+    public function store(Request $request)
+    {
+        $user = $request->user();
+        $planta = $user->planta;
+        $query = "SELECT IFNULL(MAX(recibo_folios.id)+1,1) AS id
+                    FROM reforig_logistica.recibo_folios
+                    WHERE planta='$planta'";
+        $data = DB::select($query);
+
+        $id = $data[0]->id;
+
+        ReciboFolio::create([
+            'id' => $id,
+            'fecha' => Carbon::now(),
+            'folio_caseta' => $request->get('caseta'),
+            'vendor' => $request->get('proveedor'),
+            'planta' => $planta,
+            'status' => 'ABIERTO'
+        ]);
+        return redirect(route('recibo-materiales.index'));
     }
 
     public function description(ReciboMaterialesDescriptionRequest $request, ReciboFolio $reciboFolio)
