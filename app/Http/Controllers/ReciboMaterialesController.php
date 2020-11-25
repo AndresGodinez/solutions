@@ -9,6 +9,7 @@ use App\MaterialBin;
 use App\MaterialesVendorLeadTime;
 use App\ReciboFolio;
 use App\ReciboFolioDetalle;
+use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -184,6 +185,13 @@ class ReciboMaterialesController extends Controller
 
         return view('ReciboMateriales.desicion', compact(''));
 
+    }
+
+    public function test(Request $request, ReciboFolio $reciboFolio)
+    {
+//        dd($reciboFolio);
+        $pdf = PDF::loadView('ReciboMateriales.test', compact('reciboFolio'));
+        return $pdf->download('test.pdf');
     }
 
 }

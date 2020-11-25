@@ -74,6 +74,8 @@
                                                value="Regresar"
                                                onclick="history.back()"
                                         />
+
+                                        <a href="{{ route('recibo-materiales.test', ['reciboFolio' => $reciboFolio->id]) }}">Test</a>
                                     </td>
                                 </tr>
                                 </tbody>

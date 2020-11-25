@@ -36,6 +36,9 @@ Route::middleware('auth')->group(function () {
             ->name('recibo-materiales.description')
             ->middleware('permission:recepcion material');
 
+        Route::get('/{reciboFolio}/test', 'ReciboMaterialesController@test')
+            ->name('recibo-materiales.test');
+
         Route::get('/{reciboFolio}/show', 'ReciboMaterialesController@show')
             ->name('recibo-materiales.show')
             ->middleware('permission:recepcion material');
