@@ -13,7 +13,6 @@
 
 
 Route::get('/', 'HomeController@index');
-Route::get('/test', 'TestController@test');
 
 // sustitutos
 Route::middleware('auth')->group(function () {
