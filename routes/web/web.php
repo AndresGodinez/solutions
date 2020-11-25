@@ -13,9 +13,7 @@
 
 
 Route::get('/', 'HomeController@index');
-Route::get('/test', function (){
-    return view('test');
-});
+Route::get('/test', 'TestController@test');
 
 // sustitutos
 Route::middleware('auth')->group(function () {
