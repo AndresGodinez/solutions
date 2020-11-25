@@ -57,9 +57,107 @@ class StocksModel extends ModelBase
 
 
 
-    public static function get_all_records_nueva($user, $id_region)
+    public static function get_all_records_nueva($user, $id_region, $id_contry)
     {
-        $columnasactivas = [
+
+            $paisrefe = array(
+                    1 => 'mex1',            
+                    9 => 'guat2',
+                    7 => 'hond3',            
+                    13 => 'repd4',            
+                    14 => 'hait5',                    
+                    15 =>'arub6',                    
+                    8  => 'salv7',                    
+                    6  =>'nica8',
+                    
+                    5  =>'cr9',
+                    
+                    4  =>'pana10',
+                    
+                    16 => 'angu11',
+                    
+                    17=> 'baha12',
+                    
+                    10=> 'beli13',
+                    
+                    18 => 'berm14',
+                    
+                    19 => 'caym15',
+                    
+                    20 => 'guya16',
+                    
+                    21 => 'suri17',
+                    
+                    22 => 'turk18',
+                    
+                    23 => 'brit19',
+                    
+                    24 => 'maar20',
+                    
+                    25 => 'saba21',
+                    
+                    26 => 'anti22',
+                    
+                    27 => 'mons23',
+                    
+                    28 =>'kitt24',
+                    
+                    29 => 'bart25',
+                    
+                    30 => 'marti26',
+                    
+                    31 => 'trin27',
+                    
+                    32 => 'jama28',
+                    
+                    33 => 'barb29',
+                    
+                    34 => 'bona30',
+                    
+                    35 => 'cura31',
+                    
+                    2 => 'col32',
+                    
+                    12 => 'ven33',
+                    
+                    3 => 'ecu34',
+                    
+                    36 => 'ptor35',
+                    
+                    37 => 'croi36',
+                    
+                    38 => 'thom37',
+                    
+                    39  => 'jhon38',
+                    
+                    40 => 'virg39',
+                    
+                    41 => 'domi40',
+                    
+                    42 => 'gren41',
+                    
+                    43 => 'luci42',
+                    
+                    44 => 'vinc43',
+                    
+                    45 => 'fren44',
+                    
+                    46 => 'mart45',
+                    
+                    47 => 'guad46',
+                    
+                    48 => 'reun47',
+                    
+                    49 => 'newc48',
+                    
+                    11 => 'peru49');
+            
+
+
+
+        
+        
+                    $columnasactivas = [
 'id',            'material',
             'descripcion',
             'tipo_status',
@@ -228,6 +326,9 @@ class StocksModel extends ModelBase
             'peru_vva',
             'comentarios_ing'];
         $data = [];
+
+
+
         // Records for Managers.
         if ($user == "munoznd") {
             $data = StocksModel::select(
@@ -236,44 +337,52 @@ class StocksModel extends ModelBase
                 ->from('stock_gral_serv')
                 ->get();
         } else {
+            $data = StocksModel::select( $columnasactivas)
+            ->from('stock_gral_serv')
+            ->whereRaw("stock_gral_serv.".$paisrefe[$id_contry]." = 1")
+            ->get();
+
             // Users for MX
-            if ($id_region == 1) {
-                $data = StocksModel::select( $columnasactivas
-                )
-                    ->from('stock_gral_serv')
-                    ->where('stock_gral_serv.reg_mex', 1)
-                    ->get();
-            }
-
-            // Users for CAM
-            if ($id_region == 2) {
-                $data = StocksModel::select($columnasactivas
-                )
-                    ->from('stock_gral_serv')
+            // if ($id_region == 1) {
+                
+            //     $data = StocksModel::select( $columnasactivas)
+            //         ->from('stock_gral_serv')
+            //         // ->where('stock_gral_serv.reg_mex', 1)
+            //         ->whereRaw("stock_gral_serv.reg_mex = 1 and stock_gral_serv.".$paisrefe[$id_contry]." = 1")
                     
-                    ->where('stock_gral_serv.reg_cam', 1)
-                    ->get();
-            }
+            //         ->get();
+            // }
 
-            // Users for AND
-            if ($id_region == 3) {
-                $data = StocksModel::select($columnasactivas
-                )
-                    ->from('stock_gral_serv')
+            // // Users for CAM
+            // if ($id_region == 2) {
+            //     $data = StocksModel::select($columnasactivas
+            //     )
+            //         ->from('stock_gral_serv')
                     
-                    ->where('stock_gral_serv.reg_and', 1)
-                    ->get();
-            }
+            //         ->where('stock_gral_serv.reg_cam', 1)
+            //         ->whereRaw("stock_gral_serv.reg_mex = 1 and stock_gral_serv.".$paisrefe[$id_contry]." = 1")
+            //         ->get();
+            // }
 
-            // Users for CAR
-            if ($id_region == 4) {
-                $data = StocksModel::select($columnasactivas
-                )
-                    ->from('stock_gral_serv')
+            // // Users for AND
+            // if ($id_region == 3) {
+            //     $data = StocksModel::select($columnasactivas
+            //     )
+            //         ->from('stock_gral_serv')
+                    
+            //         ->where('stock_gral_serv.reg_and', 1)
+            //         ->get();
+            // }
+
+            // // Users for CAR
+            // if ($id_region == 4) {
+            //     $data = StocksModel::select($columnasactivas
+            //     )
+            //         ->from('stock_gral_serv')
                    
-                    ->where('stock_gral_serv.reg_car', 1)
-                    ->get();
-            }
+            //         ->where('stock_gral_serv.reg_car', 1)
+            //         ->get();
+            // }
         }
 
         return $data;
@@ -326,7 +435,7 @@ class StocksModel extends ModelBase
         return $data;
     }
 
-    public static function get_all_records_pending_list($id_region)
+    public static function get_all_records_pending_list($id_region,$id_contry)
     {
         $columnasactivas = [
 'id',            'material',
@@ -502,41 +611,97 @@ class StocksModel extends ModelBase
         $data = [];
         
 
+        $paisrefe = array(
+            1 => 'mex1',            
+            9 => 'guat2',
+            7 => 'hond3',            
+            13 => 'repd4',            
+            14 => 'hait5',                    
+            15 =>'arub6',                    
+            8  => 'salv7',                    
+            6  =>'nica8',            
+            5  =>'cr9',            
+            4  =>'pana10',            
+            16 => 'angu11',            
+            17=> 'baha12',            
+            10=> 'beli13',            
+            18 => 'berm14',            
+            19 => 'caym15',            
+            20 => 'guya16',            
+            21 => 'suri17',            
+            22 => 'turk18',            
+            23 => 'brit19',            
+            24 => 'maar20',            
+            25 => 'saba21',            
+            26 => 'anti22',            
+            27 => 'mons23',            
+            28 =>'kitt24',            
+            29 => 'bart25',            
+            30 => 'marti26',            
+            31 => 'trin27',            
+            32 => 'jama28',            
+            33 => 'barb29',            
+            34 => 'bona30',            
+            35 => 'cura31',            
+            2 => 'col32',            
+            12 => 'ven33',            
+            3 => 'ecu34',            
+            36 => 'ptor35',            
+            37 => 'croi36',            
+            38 => 'thom37',            
+            39  => 'jhon38',            
+            40 => 'virg39',            
+            41 => 'domi40',            
+            42 => 'gren41',            
+            43 => 'luci42',            
+            44 => 'vinc43',            
+            45 => 'fren44',            
+            46 => 'mart45',            
+            47 => 'guad46',            
+            48 => 'reun47',            
+            49 => 'newc48',            
+            11 => 'peru49');
+        $data = StocksModel::select( $columnasactivas)
+        ->from('stock_gral_serv')
+        ->whereRaw("stock_gral_serv.ok = 0 and stock_gral_serv.".$paisrefe[$id_contry]." = 1")
+        ->get();
+
+
         // Users for MX
-        if ($id_region == 1) {
-            $data = StocksModel::select($columnasactivas)
-                ->from('stock_gral_serv')
-                ->where('stock_gral_serv.reg_mex', 1)
-                ->where('stock_gral_serv.ok', 0)
-                ->get();
-        }
+        // if ($id_region == 1) {
+        //     $data = StocksModel::select($columnasactivas)
+        //         ->from('stock_gral_serv')
+        //         ->where('stock_gral_serv.reg_mex', 1)
+        //         ->where('stock_gral_serv.ok', 0)
+        //         ->get();
+        // }
 
-        // Users for CAM
-        if ($id_region == 2) {
-            $data = StocksModel::select($columnasactivas)
-                ->from('stock_gral_serv')
-                ->where('stock_gral_serv.reg_cam', 1)
-                ->where('stock_gral_serv.ok', 0)
-                ->get();
-        }
+        // // Users for CAM
+        // if ($id_region == 2) {
+        //     $data = StocksModel::select($columnasactivas)
+        //         ->from('stock_gral_serv')
+        //         ->where('stock_gral_serv.reg_cam', 1)
+        //         ->where('stock_gral_serv.ok', 0)
+        //         ->get();
+        // }
 
-        // Users for AND
-        if ($id_region == 3) {
-            $data = StocksModel::select($columnasactivas)
-                ->from('stock_gral_serv')
-                ->where('stock_gral_serv.reg_and', 1)
-                ->where('stock_gral_serv.ok', 0)
-                ->get();
-        }
+        // // Users for AND
+        // if ($id_region == 3) {
+        //     $data = StocksModel::select($columnasactivas)
+        //         ->from('stock_gral_serv')
+        //         ->where('stock_gral_serv.reg_and', 1)
+        //         ->where('stock_gral_serv.ok', 0)
+        //         ->get();
+        // }
 
-        // Users for CAR
-        if ($id_region == 4) {
-            $data = StocksModel::select($columnasactivas)
-                ->from('stock_gral_serv')
-                ->where('stock_gral_serv.reg_car', 1)
-                ->where('stock_gral_serv.ok', 0)
-                ->get();
-        }
+        // // Users for CAR
+        // if ($id_region == 4) {
+        //     $data = StocksModel::select($columnasactivas)
+        //         ->from('stock_gral_serv')
+        //         ->where('stock_gral_serv.reg_car', 1)
+        //         ->where('stock_gral_serv.ok', 0)
+        //         ->get();
+        // }
 
         return $data;
     }
@@ -923,6 +1088,7 @@ class StocksModel extends ModelBase
                 'fam' => (empty($data[16]) ? NULL : $data[16]),
                 'marca' => (empty($data[17]) ? NULL : $data[17]),
                 'commodity' => (empty($data[18]) ? NULL : $data[18]),
+
                 'mex1' => (empty($data[19]) ? NULL : $data[19]),
                 'mex_fecha_embarque' => (empty($data[20]) ? NULL : $data[20]),
                 'mex_vva' => (empty($data[21]) ? NULL : $data[21]),
@@ -1134,7 +1300,7 @@ class StocksModel extends ModelBase
     }
 
     // Stock Final
-    public static function get_all_records_stocks_final($user, $id_region)
+    public static function get_all_records_stocks_final($user, $id_region,$id_contry)
     {
         $columnasactivas = [
 'id',            'material',
@@ -1313,43 +1479,101 @@ class StocksModel extends ModelBase
                 ->from('stock_gral_serv_final')
                 ->get();
         } else {
+            
+
+            $paisrefe = array(
+                1 => 'mex1',            
+                9 => 'guat2',
+                7 => 'hond3',            
+                13 => 'repd4',            
+                14 => 'hait5',                    
+                15 =>'arub6',                    
+                8  => 'salv7',                    
+                6  =>'nica8',            
+                5  =>'cr9',            
+                4  =>'pana10',            
+                16 => 'angu11',            
+                17=> 'baha12',            
+                10=> 'beli13',            
+                18 => 'berm14',            
+                19 => 'caym15',            
+                20 => 'guya16',            
+                21 => 'suri17',            
+                22 => 'turk18',            
+                23 => 'brit19',            
+                24 => 'maar20',            
+                25 => 'saba21',            
+                26 => 'anti22',            
+                27 => 'mons23',            
+                28 =>'kitt24',            
+                29 => 'bart25',            
+                30 => 'marti26',            
+                31 => 'trin27',            
+                32 => 'jama28',            
+                33 => 'barb29',            
+                34 => 'bona30',            
+                35 => 'cura31',            
+                2 => 'col32',            
+                12 => 'ven33',            
+                3 => 'ecu34',            
+                36 => 'ptor35',            
+                37 => 'croi36',            
+                38 => 'thom37',            
+                39  => 'jhon38',            
+                40 => 'virg39',            
+                41 => 'domi40',            
+                42 => 'gren41',            
+                43 => 'luci42',            
+                44 => 'vinc43',            
+                45 => 'fren44',            
+                46 => 'mart45',            
+                47 => 'guad46',            
+                48 => 'reun47',            
+                49 => 'newc48',            
+                11 => 'peru49');
+
+            $data = StocksModel::select( $columnasactivas)
+            ->from('stock_gral_serv_final')
+            ->whereRaw("stock_gral_serv_final.".$paisrefe[$id_contry]." = 1")
+            ->get();
+
             // Users for MX
-            if ($id_region == 1) {
-                $data = StocksModel::select($columnasactivas)
-                    ->from('stock_gral_serv_final')
-                    ->where('stock_gral_serv_final.reg_mex', 1)
-                    ->get();
-            }
+            // if ($id_region == 1) {
+            //     $data = StocksModel::select($columnasactivas)
+            //         ->from('stock_gral_serv_final')
+            //         ->where('stock_gral_serv_final.reg_mex', 1)
+            //         ->get();
+            // }
 
-            // Users for CAM
-            if ($id_region == 2) {
-                $data = StocksModel::select($columnasactivas)
-                    ->from('stock_gral_serv_final')
-                    ->where('stock_gral_serv_final.reg_cam', 1)
-                    ->get();
-            }
+            // // Users for CAM
+            // if ($id_region == 2) {
+            //     $data = StocksModel::select($columnasactivas)
+            //         ->from('stock_gral_serv_final')
+            //         ->where('stock_gral_serv_final.reg_cam', 1)
+            //         ->get();
+            // }
 
-            // Users for AND
-            if ($id_region == 3) {
-                $data = StocksModel::select($columnasactivas)
-                    ->from('stock_gral_serv_final')
-                    ->where('stock_gral_serv_final.reg_and', 1)
-                    ->get();
-            }
+            // // Users for AND
+            // if ($id_region == 3) {
+            //     $data = StocksModel::select($columnasactivas)
+            //         ->from('stock_gral_serv_final')
+            //         ->where('stock_gral_serv_final.reg_and', 1)
+            //         ->get();
+            // }
 
-            // Users for CAR
-            if ($id_region == 4) {
-                $data = StocksModel::select($columnasactivas)
-                    ->from('stock_gral_serv_final')
-                    ->where('stock_gral_serv_final.reg_car', 1)
-                    ->get();
-            }
+            // // Users for CAR
+            // if ($id_region == 4) {
+            //     $data = StocksModel::select($columnasactivas)
+            //         ->from('stock_gral_serv_final')
+            //         ->where('stock_gral_serv_final.reg_car', 1)
+            //         ->get();
+            // }
         }
 
         return $data;
     }
 
-    public static function get_all_records_pending_list_stocks_final($id_region)
+    public static function get_all_records_pending_list_stocks_final($id_region,$id_contry)
     {
 
 
@@ -1525,41 +1749,96 @@ class StocksModel extends ModelBase
             'created_at'];
         $data = [];
         
+
+        $paisrefe = array(
+            1 => 'mex1',            
+            9 => 'guat2',
+            7 => 'hond3',            
+            13 => 'repd4',            
+            14 => 'hait5',                    
+            15 =>'arub6',                    
+            8  => 'salv7',                    
+            6  =>'nica8',            
+            5  =>'cr9',            
+            4  =>'pana10',            
+            16 => 'angu11',            
+            17=> 'baha12',            
+            10=> 'beli13',            
+            18 => 'berm14',            
+            19 => 'caym15',            
+            20 => 'guya16',            
+            21 => 'suri17',            
+            22 => 'turk18',            
+            23 => 'brit19',            
+            24 => 'maar20',            
+            25 => 'saba21',            
+            26 => 'anti22',            
+            27 => 'mons23',            
+            28 =>'kitt24',            
+            29 => 'bart25',            
+            30 => 'marti26',            
+            31 => 'trin27',            
+            32 => 'jama28',            
+            33 => 'barb29',            
+            34 => 'bona30',            
+            35 => 'cura31',            
+            2 => 'col32',            
+            12 => 'ven33',            
+            3 => 'ecu34',            
+            36 => 'ptor35',            
+            37 => 'croi36',            
+            38 => 'thom37',            
+            39  => 'jhon38',            
+            40 => 'virg39',            
+            41 => 'domi40',            
+            42 => 'gren41',            
+            43 => 'luci42',            
+            44 => 'vinc43',            
+            45 => 'fren44',            
+            46 => 'mart45',            
+            47 => 'guad46',            
+            48 => 'reun47',            
+            49 => 'newc48',            
+            11 => 'peru49');
+        $data = StocksModel::select( $columnasactivas)
+        ->from('stock_gral_serv_final')
+        ->whereRaw("stock_gral_serv_final.ok = 0 and stock_gral_serv_final.".$paisrefe[$id_contry]." = 1")
+        ->get();
             // Users for MX
-        if ($id_region == 1) {
-            $data = StocksModel::select($columnasactivas)
-                ->from('stock_gral_serv_final')
-                ->where('stock_gral_serv_final.reg_mex', 1)
-                ->where('stock_gral_serv_final.ok', 0)
-                ->get();
-        }
+        // if ($id_region == 1) {
+        //     $data = StocksModel::select($columnasactivas)
+        //         ->from('stock_gral_serv_final')
+        //         ->where('stock_gral_serv_final.reg_mex', 1)
+        //         ->where('stock_gral_serv_final.ok', 0)
+        //         ->get();
+        // }
 
-        // Users for CAM
-        if ($id_region == 2) {
-            $data = StocksModel::select($columnasactivas)
-                ->from('stock_gral_serv_final')
-                ->where('stock_gral_serv_final.reg_cam', 1)
-                ->where('stock_gral_serv_final.ok', 0)
-                ->get();
-        }
+        // // Users for CAM
+        // if ($id_region == 2) {
+        //     $data = StocksModel::select($columnasactivas)
+        //         ->from('stock_gral_serv_final')
+        //         ->where('stock_gral_serv_final.reg_cam', 1)
+        //         ->where('stock_gral_serv_final.ok', 0)
+        //         ->get();
+        // }
 
-        // Users for AND
-        if ($id_region == 3) {
-            $data = StocksModel::select($columnasactivas)
-                ->from('stock_gral_serv_final')
-                ->where('stock_gral_serv_final.reg_and', 1)
-                ->where('stock_gral_serv_final.ok', 0)
-                ->get();
-        }
+        // // Users for AND
+        // if ($id_region == 3) {
+        //     $data = StocksModel::select($columnasactivas)
+        //         ->from('stock_gral_serv_final')
+        //         ->where('stock_gral_serv_final.reg_and', 1)
+        //         ->where('stock_gral_serv_final.ok', 0)
+        //         ->get();
+        // }
 
-        // Users for CAR
-        if ($id_region == 4) {
-            $data = StocksModel::select($columnasactivas)
-                ->from('stock_gral_serv_final')
-                ->where('stock_gral_serv_final.reg_car', 1)
-                ->where('stock_gral_serv_final.ok', 0)
-                ->get();
-        }
+        // // Users for CAR
+        // if ($id_region == 4) {
+        //     $data = StocksModel::select($columnasactivas)
+        //         ->from('stock_gral_serv_final')
+        //         ->where('stock_gral_serv_final.reg_car', 1)
+        //         ->where('stock_gral_serv_final.ok', 0)
+        //         ->get();
+        // }
 
         return $data;
     }
