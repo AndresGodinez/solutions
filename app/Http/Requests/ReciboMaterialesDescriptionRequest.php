@@ -24,7 +24,7 @@ class ReciboMaterialesDescriptionRequest extends FormRequest
     public function rules()
     {
         return [
-            'material' => 'required'
+            'material' => 'required|exists:logistica.materiales_abc,material'
         ];
     }
 }
