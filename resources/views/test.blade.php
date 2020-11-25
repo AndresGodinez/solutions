@@ -21,7 +21,7 @@
                 archive: 'qz-print.jar', width: 1, height: 1,
             };
             let parameters = {
-                jnlp_href: {{ asset('') }} + 'qz-print_jnlp.jnlp',
+                jnlp_href: 'qz-print_jnlp.jnlp',
                 cache_option: 'plugin', disable_logging: 'false',
                 initial_focus: 'false',
             };
