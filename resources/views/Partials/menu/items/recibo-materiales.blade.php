@@ -1,4 +1,4 @@
-{{--@canany(['subir archivo LX02', 'carga inventario a nivel bin', 'carga inventario recibo bins'])--}}
+@canany(['folios de recibo','recepcion material'])
     <li class="nav-item">
         <a href="">
             <i class="bx bx-home" data-icon="desktop"></i>
@@ -7,14 +7,16 @@
         </span>
         </a>
         <ul class="menu-content">
-            <li class="is-shown">
-                <a href="{{route('recibo-materiales.index')}}">
-                    <i class="bx bx-right-arrow-alt"></i>
-                    <span class="menu-item" data-i18n="eCommerce">
+            @can('folios de recibo')
+                <li class="is-shown">
+                    <a href="{{route('recibo-materiales.index')}}">
+                        <i class="bx bx-right-arrow-alt"></i>
+                        <span class="menu-item" data-i18n="eCommerce">
                     Recibo
                 </span>
-                </a>
-            </li>
+                    </a>
+                </li>
+            @endcan
         </ul>
     </li>
-{{--@endcanany--}}
+@endcanany
