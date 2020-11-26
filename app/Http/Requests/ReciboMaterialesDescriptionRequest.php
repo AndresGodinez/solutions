@@ -27,4 +27,11 @@ class ReciboMaterialesDescriptionRequest extends FormRequest
             'material' => 'required|exists:logistica.materiales_abc,material'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'material.exists' => 'Material seleccionado no existe.'
+        ];
+    }
 }
