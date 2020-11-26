@@ -330,6 +330,7 @@ class StocksModel extends ModelBase
 
 
         // Records for Managers.
+        // Se agrega ingenieria para que sean visibles todos los registros
         if ($user == "munoznd" || $depto == 'INGNENIERIA') {
             $data = StocksModel::select(
                 $columnasactivas
