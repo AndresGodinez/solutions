@@ -31,8 +31,11 @@ class StocksController extends Controller
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
         $id_contry  = Auth::user()->id_contry;
+        // Se agrega departamento para que en la consulta de ser Ingenieria contenga todos los registros de todas las regiones.
+        $depto      = Auth::user()->depto;
+        
         // $get_records = StocksModel::get_all_records_nueva($user, $id_region,$id_contry);
-        $get_records = StocksModel::get_all_records_nueva($user, $id_region,$id_contry);
+        $get_records = StocksModel::get_all_records_nueva($user, $id_region, $id_contry, $depto);
         return view("Stocks.index", compact('get_records'));
     }
 

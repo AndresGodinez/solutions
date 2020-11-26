@@ -57,10 +57,10 @@ class StocksModel extends ModelBase
 
 
 
-    public static function get_all_records_nueva($user, $id_region, $id_contry)
+    public static function get_all_records_nueva($user, $id_region, $id_contry, $depto)
     {
 
-            $paisrefe = array(
+        $paisrefe = array(
                     1 => 'mex1',            
                     9 => 'guat2',
                     7 => 'hond3',            
@@ -157,8 +157,9 @@ class StocksModel extends ModelBase
 
         
         
-                    $columnasactivas = [
-'id',            'material',
+        $columnasactivas = [
+            'id',            
+            'material',
             'descripcion',
             'tipo_status',
             'precio_usd',
@@ -328,9 +329,9 @@ class StocksModel extends ModelBase
         $data = [];
 
 
-
         // Records for Managers.
-        if ($user == "munoznd") {
+        // Se agrega ingenieria para que sean visibles todos los registros
+        if ($user == "munoznd" || $depto == 'INGNENIERIA') {
             $data = StocksModel::select(
                 $columnasactivas
             )
