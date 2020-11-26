@@ -4,7 +4,7 @@ Route::middleware('auth')->group(function () {
     //Recibo Materiales
     Route::group(['prefix' => 'recibo-materiales'], function () {
 
-        Route::get('/test', 'TestController@test');
+        Route::get('/test', 'TestController@test')->name('recibo-materiales-test-print');
 
         Route::post('/pre-print/{reciboFolio}', 'ReciboMaterialesController@prePrint')
             ->name('recibo-materiales.pre-print')

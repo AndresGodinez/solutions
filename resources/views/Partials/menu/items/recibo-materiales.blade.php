@@ -17,6 +17,15 @@
                     </a>
                 </li>
             @endcan
+
+            <li class="is-shown">
+                <a href="{{route('recibo-materiales-test-print')}}">
+                    <i class="bx bx-right-arrow-alt"></i>
+                    <span class="menu-item" data-i18n="eCommerce">
+                    Test de impresion
+                </span>
+                </a>
+            </li>
         </ul>
     </li>
 @endcanany
