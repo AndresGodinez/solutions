@@ -283,21 +283,31 @@ class IngexpController extends Controller
 
                 DB::table('ing_solicitaracceso')
                 ->where('id', $_POST['id'])
-                ->update(['password' => $password]);
+                ->update(['password' => $password,'status' => $_POST['statuschange']]);
+
+                $datau =  DB::query()->selectRaw('email,fecha_expire,status,nombre_del_dueno,_token,id,password')
+                ->from('ing_solicitaracceso')            
+                ->whereRaw("id ='".$_POST['id']."'")
+                ->get();     
             }
-
-            DB::table('ing_solicitaracceso')
-            ->where('id', $_POST['id'])
-            ->update(['status' => $_POST['statuschange']]);
-
-
-            
-            
-            $datau =  DB::query()->selectRaw('email,fecha_expire,status,nombre_del_dueno,_token,id,password')
-            ->from('ing_solicitaracceso')            
-            ->whereRaw("id ='".$_POST['id']."'")
-            ->get();            
-
+            else if($_POST['statuschange'] == 4){
+                DB::table('ing_solicitaracceso')
+                ->where('id', $_POST['id'])
+                ->update(['status' => $_POST['statuschange'],'motivo_rechazo' => $_POST['motivorechazo']]);
+                $datau =  DB::query()->selectRaw('email,fecha_expire,status,nombre_del_dueno,_token,id,password')
+                ->from('ing_solicitaracceso')            
+                ->whereRaw("id ='".$_POST['id']."'")
+                ->get();            
+            }else{
+                DB::table('ing_solicitaracceso')
+                ->where('id', $_POST['id'])
+                ->update(
+                        ['status' => $_POST['statuschange']]);
+                $datau =  DB::query()->selectRaw('email,fecha_expire,status,nombre_del_dueno,_token,id,password')
+                ->from('ing_solicitaracceso')            
+                ->whereRaw("id ='".$_POST['id']."'")
+                ->get();            
+            }
             if($_POST['statuschange'] == 1){
                 $email_message = "	
                         <html>
@@ -380,6 +390,58 @@ class IngexpController extends Controller
                         <br>
                         <p>Login: ".$datau[0]->email."<br> </p>
                         <p>Password: ".$password." <br> </p>
+                        <p></p>
+                        <p></p>
+                        <br>
+                        
+                        <p><a href=\"{{url('ingexp/solicitaracceso')}}\">Entrar</a></p>
+                        
+                    ";
+                    
+                    $to = $datau[0]->email;
+                    $subject = 'Bienvenido, datos de acceso.';
+                    $type = "Content-type: text/html\r\n";
+                    $headers = "MIME-Version: 1.0 \r\n";
+                    $headers = $headers . "Content-type: text/html;charset=iso-8859-1\r\n";
+                    $headers = $headers . "From:Whirlpool Service<no-responder@whirlpool.com>\r\n";
+                    $mail_sent = @mail($to, $subject, $email_message, $headers);
+
+                    echo $password;
+            }
+
+            if($_POST['statuschange'] == 5){
+                $email_message = "	
+                        <html>
+                        <head>
+                        <title>E-Mail HTML</title>
+                        </head>
+                        <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
+
+                        <style>
+
+                    body, P.msoNormal, LI.msoNormal
+                    {
+                    background-position: top;
+                    margin-left:  1em;
+                    margin-top: 1em;
+                    font-family: 'Arial';
+                    font-size:   9pt;
+                    color:    '000000';
+                    }
+
+                    table
+                    {
+                    font-family: 'Arial';
+                    font-size:   9pt;
+
+                    }
+                    </style>
+                        
+                        <body>
+                        <p>Hola ".$datau[0]->nombre_del_dueno."</p>
+                        <br>
+                        <p>Solicitud rechazada.  </p>
+                        <p>Motivo: ".$_POST['motivorechazo']." <br> </p>
                         <p></p>
                         <p></p>
                         <br>
