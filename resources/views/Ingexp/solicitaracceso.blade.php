@@ -380,6 +380,17 @@
                             
                         }
                     },'json');
+                }else{
+                    Swal.fire({
+                        type: "error",
+                        title: '¡Atención!',
+                        text: "Llene todos los campos.",
+                        confirmButtonClass: 'btn btn-error',
+                    });
+                    $('.solicitaracceso_inter').show();
+                    $('.solicitaracceso_load').hide();
+                    $(this).addClass('w-100');
+                    $(this).attr('rel','0');
                 }
         });
 
@@ -407,7 +418,7 @@
                 Swal.fire({
                                     type: "error",
                                     title: '¡Atención!',
-                                    text: 'Insira un correo válido',
+                                    text: 'Ingresa un correo válido',
                                     confirmButtonClass: 'btn btn-error',
                                 });
                                 return;
@@ -454,7 +465,7 @@
                                 $('.solicitaracceso_load').hide();    
                         }else{
                             <?php $urldirv = url('/ingexp/solicitaracceso'); ?>
-                            window.location = '<?=$urldirv?>?success=1';  
+                            window.location = '<?=$urldirv?>?solicitado=1';  
                         }
                     },'json');
                 }
@@ -480,6 +491,21 @@
             changecard('login');
         <?php
         }
+        ?>
+
+        <?php 
+        if(isset($_GET['solicitado'])){
+            ?>
+             Swal.fire({
+                    type: "success",
+                    title: '¡Muy bien!',
+                    text: 'Solicitud enviada con éxito.',
+                    confirmButtonClass: 'btn btn-success',
+                });
+            
+            <?php
+        }
+        
         ?>
     </script>
 

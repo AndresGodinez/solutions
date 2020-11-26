@@ -156,7 +156,16 @@ if (isset($_GET['linea'])) {
                                         <tbody>
                                             @foreach($get_records as $get_records)
                                             <tr>
-                                                <td><a target="_blank" href="{{	url('ingexp/visor/'.$get_records['idregistro']) }}"><?= substr($get_records['titulo'], 0, 40) ?></a></td>
+                                                <?php 
+                                                $tipoarchivo = explode('.', $get_records['archivo_carga']);
+                                                $tipoarch = strtoupper(last($tipoarchivo));
+
+                                                if($tipoarch == 'JPG' || $tipoarch == 'JPEG' || $tipoarch == 'PNG' || $tipoarch == 'GIF' || $tipoarch == 'PDF' || $tipoarch == 'MP4'){
+                                                ?>
+                                                    <td><a target="_blank" href="{{	url('ingexp/visor/'.$get_records['idregistro']) }}"><?= substr($get_records['titulo'], 0, 40) ?></a></td>
+                                                <?php }else{  ?>
+                                                    <td><?= substr($get_records['titulo'], 0, 40) ?></td>
+                                                <?php } ?>
                                                 <td>{{ $get_records['categoria'] }}</td>
                                                 <td><?= substr($get_records['modelo'], 0, 40) ?></td>
                                                 <td>{{ $get_records['linea'] }}</td>
@@ -214,7 +223,7 @@ if (isset($_GET['linea'])) {
         $('.filtro').on('change', function() {
             var tipo = $('#tipo').val();
             var linea = $('#linea').val();
-            window.location = '<?php echo url('/ingexp/buscar/'); ?>?tipo=' + tipo + '&linea=' + linea
+            window.location = '<?php echo url('/ingexp/acceso/'); ?>?tipo=' + tipo + '&linea=' + linea
         });
 
         $('.table').DataTable({

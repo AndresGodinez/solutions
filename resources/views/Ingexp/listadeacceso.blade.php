@@ -29,7 +29,7 @@
                             <th>TELEFONO</th>
                             <th>STATUS</th>
                             <th style="width: 1%;">
-                                <CENTER>#</CENTER>
+                                <CENTER></CENTER>
                             </th>
                         </tr>
                     </thead>
