@@ -11,6 +11,7 @@ use App\Http\Requests\UploadTrackerProcessRequest;
 use App\Jobs\ExecuteByConnection;
 use App\Utils\MyUtils;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use League\Csv\Writer;
 use function compact;
@@ -284,8 +285,8 @@ class FechaPromesaController extends Controller
 
         $table = "fprom_bo";
 
-//        TODO REMOVE COMMENT
-//        DB::connection('logistica')->table($table)->truncate();
+        DB::connection('logistica')
+            ->table($table)->truncate();
 
 
         $connection = 'logistica';
@@ -301,8 +302,8 @@ class FechaPromesaController extends Controller
 							parte				= TRIM(@parte),
 							pedido 				= TRIM(@pedido),
 							cantidad 			= TRIM(@cantidad),
-							fecha_pedido 		= STR_TO_DATE(TRIM(@fecha_pedido), '%m/%d/%Y'),
-							fecha_programada 	= STR_TO_DATE(TRIM(@fecha_programada), '%m/%d/%Y'),
+							fecha_pedido 		= STR_TO_DATE(@fecha_pedido, '%m/%d/%Y'),
+							fecha_programada 	= STR_TO_DATE(@fecha_programada, '%m/%d/%Y'),
 							tipo 				= TRIM(@tipo),
 							proveedor 			= TRIM(@proveedor),
 							invrs01 			= TRIM(@invrs01),
