@@ -56,6 +56,7 @@ class ReciboMaterialesController extends Controller
             'folio_caseta' => $request->get('caseta'),
             'vendor' => $request->get('proveedor'),
             'planta' => $planta,
+            'usuario' => $user->username,
             'status' => 'ABIERTO'
         ]);
         return redirect(route('recibo-materiales.index'));

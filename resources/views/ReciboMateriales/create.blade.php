@@ -22,7 +22,7 @@
                             <td>Folio Caseta</td>
                             <td>
                                 <label>
-                                    <input name="caseta" id="caseta" type="text" class="form-control">
+                                    <input name="caseta" id="caseta" type="text" class="form-control" required>
                                 </label>
                             </td>
                         </tr>
@@ -30,7 +30,7 @@
                             <td>Proveedor</td>
                             <td>
                                 <label>
-                                    <select name="proveedor" id="proveedor" class="form-control">
+                                    <select name="proveedor" id="proveedor" class="form-control" required>
                                         <option value="">Seleccione</option>
                                         @foreach($proveedores as $proveedor)
                                             <option value="{{ $proveedor->vendor }}">{{$proveedor->nombre}}</option>
