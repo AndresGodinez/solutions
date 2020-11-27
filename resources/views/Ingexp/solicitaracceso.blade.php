@@ -149,12 +149,8 @@
 
                                                         </div>
 
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6 mb-50">
-                                                                <label for="inputlastname4">¿A qué marcas atiende?</label>
-                                                                <input type="text" class="form-control" id="inputlastname4" name="marcas_atiende" placeholder="¿A qué marcas atiende?" require="true">
-                                                            </div>
-                                                            <div class="form-group col-md-6 mb-50">
+                                                        <div class="form-row">                                                           
+                                                            <div class="form-group col-md-12 mb-50">
                                                                 <label for="inputfirstname4">¿Zona de cobertura?</label>
                                                                 <input type="text" class="form-control" id="inputfirstname4" name="zona_cobertura" placeholder="¿Qué zona de cobertura atiende?" require="true">
                                                             </div>

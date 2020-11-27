@@ -51,7 +51,7 @@ class IngexpModel extends ModelBase
     public static function solicitaracceso_login($data)
     {
         $datos = [];
-        $existuser= AlcoparModel::query()->selectRaw('email,fecha_expire,status,nombre_del_dueno')
+        $existuser= AlcoparModel::query()->selectRaw('id,email,fecha_expire,status,nombre_del_dueno')
             ->from('ing_solicitaracceso')            
             ->whereRaw("email ='".$_POST['login']."' and password='".$_POST['pass']."'")
             ->get();
@@ -65,6 +65,13 @@ class IngexpModel extends ModelBase
             if($fecha_actual > $fecha_entrada)
                 {
                     $datos['f'] = 0;
+                    DB::table('ing_registro')->
+                    where('id', $existuser[0]['id'])
+                    ->update(
+                        [
+                            'status' => 5,                        
+                        ]
+                    );
                 }
                 else
                 {
