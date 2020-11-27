@@ -9,6 +9,7 @@ use App\Http\Requests\UploadBackorderRequest;
 use App\Http\Requests\UploadLeadTimeRequest;
 use App\Http\Requests\UploadTrackerProcessRequest;
 use App\Jobs\ExecuteByConnection;
+use App\Jobs\ExecuteFileJob;
 use App\Utils\MyUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -328,23 +329,11 @@ class FechaPromesaController extends Controller
 
     public function actualizarFechasPromesas()
     {
-        $cmd = "php D:/inetpub/wwwroot/soluciones/wpx_includes/controllers/backend/fecha_promesa/exec.php";
-        try {
-            if (substr(php_uname(), 0, 7) == "Windows")
-            {
-                pclose(popen("start /B ".$cmd, "r"));
-            }
-            else
-            {
-                exec($cmd . " > /dev/null &");
-            }
-        }catch (\Exception $e){
-            dd([
-                'w' => $e
-            ]);
-        }
+        $routeFile = "php D:/inetpub/wwwroot/soluciones/wpx_includes/controllers/backend/fecha_promesa/exec.php";
 
-
+        $this->dispatch(
+            new ExecuteFileJob($routeFile)
+        );
 
         $message = 'La carga se esta realizando, recarga la página las veces que sea necesario. Si no ves el botón para actualizar las fechas promesas significa que aún NO HA TERMINADO el proceso, de lo contrario YA TERMINO el proceso.';
 
