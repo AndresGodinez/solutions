@@ -160,12 +160,10 @@ if (isset($_GET['linea'])) {
                                                 $tipoarchivo = explode('.', $get_records['archivo_carga']);
                                                 $tipoarch = strtoupper(last($tipoarchivo));
 
-                                                if($tipoarch == 'JPG' || $tipoarch == 'JPEG' || $tipoarch == 'PNG' || $tipoarch == 'GIF' || $tipoarch == 'PDF' || $tipoarch == 'MP4'){
+                                                // if($tipoarch == 'JPG' || $tipoarch == 'JPEG' || $tipoarch == 'PNG' || $tipoarch == 'GIF' || $tipoarch == 'PDF' || $tipoarch == 'MP4'){
                                                 ?>
-                                                    <td><a target="_blank" href="{{	url('ingexp/visor/'.$get_records['idregistro']) }}"><?= substr($get_records['titulo'], 0, 40) ?></a></td>
-                                                <?php }else{  ?>
-                                                    <td><?= substr($get_records['titulo'], 0, 40) ?></td>
-                                                <?php } ?>
+                                                <td><a target="_blank" href="{{	url('ingexp/visor/'.$get_records['idregistro']) }}"><?= substr($get_records['titulo'], 0, 40) ?></a></td>
+
                                                 <td>{{ $get_records['categoria'] }}</td>
                                                 <td><?= substr($get_records['modelo'], 0, 40) ?></td>
                                                 <td>{{ $get_records['linea'] }}</td>
