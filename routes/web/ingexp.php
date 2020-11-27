@@ -5,20 +5,19 @@
     //stocks
     Route::group(['prefix' => 'ingexp'], function () {
         
-        Route::get('/cargar',                                       'IngexpController@cargar');
+        Route::get('/cargar',                                       'IngexpController@cargar')->middleware('permission:cargar al catálogo');
 
         Route::post('/cargarpost',                                       'IngexpController@cargarpost');
         Route::post('/cargarpostedit',                                       'IngexpController@cargarpostedit');
         
-        Route::get('/editar',                                       'IngexpController@editar');        
-        Route::get('/editar/{id}',                             'IngexpController@editardetail');
+        Route::get('/editar',                                       'IngexpController@editar')->middleware('permission:Editar existente');;        
+        Route::get('/editar/{id}',                             'IngexpController@editardetail')->middleware('permission:Editar existente');;
 
-        Route::get('/buscar',                                       'IngexpController@buscar');
+        Route::get('/buscar',                                       'IngexpController@buscar')->middleware('permission:buscar');
         Route::get('/visor/{id}',                             'IngexpController@visor');
 
         
         Route::get('/confirmarpago/{id}/{token}',                             'IngexpController@confirmarpago');
-
 
         Route::get('/solicitaracceso/login',                                       'IngexpController@solicitaracceso_login');
         Route::get('/solicitaracceso',                                       'IngexpController@solicitaracceso');
@@ -45,8 +44,7 @@
         
         Route::get('/acceso',                                       'IngexpController@acceso');
 
-        Route::get('/listadeacceso',                                       'IngexpController@listadeacceso'); 
-        
+        Route::get('/listadeacceso',                                       'IngexpController@listadeacceso')->middleware('permission:solicitudes de acceso');              
         
         
     });
