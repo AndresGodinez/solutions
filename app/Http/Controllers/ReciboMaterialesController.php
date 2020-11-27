@@ -27,7 +27,7 @@ class ReciboMaterialesController extends Controller
         $reciboFolios = ReciboFolio::orderByDesc('id')
             ->where('status', 'ABIERTO')
             ->where('fecha', '>=', '2017-01-01')
-            ->paginate();
+            ->get();
 
         return view('ReciboMateriales/index', compact('reciboFolios'));
     }
