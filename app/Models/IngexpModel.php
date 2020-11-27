@@ -65,7 +65,7 @@ class IngexpModel extends ModelBase
             if($fecha_actual > $fecha_entrada)
                 {
                     $datos['f'] = 0;
-                    DB::table('ing_registro')->
+                    DB::table('ing_solicitaracceso')->
                     where('id', $existuser[0]['id'])
                     ->update(
                         [
