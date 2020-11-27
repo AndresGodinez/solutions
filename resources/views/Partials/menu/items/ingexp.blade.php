@@ -1,4 +1,4 @@
-@canany(['catalogo ing'])
+@canany(['cargar al catálogo','Editar existente','buscar','solicitudes de acceso'])
 
     <li class=" nav-item">
         <a href="">
