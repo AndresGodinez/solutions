@@ -28,7 +28,7 @@
                 </li>
             @endcan
 
-            @can('solicitud de sustitutos')
+            @can('ver sustitutos')
 
                 <li class="">
                     <a href="{{url('sustitutos')}}">

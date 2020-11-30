@@ -3,7 +3,7 @@
 Route::middleware('auth')->group(function () {
     Route::get('/solicitudes-sustituto', 'MaterialesController@index')
         ->name('materiales-sustitutos.index')
-        ->middleware('permission:solicitud de sustitutos');
+        ->middleware('permission:ver sustitutos');
 
     Route::get('/solicitud-sustituto', 'MaterialesController@solicitud')
         ->name('materiales-sustitutos.solicitud')
