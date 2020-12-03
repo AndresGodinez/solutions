@@ -23,6 +23,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/usuario/{usuario}', 'UsuariosController@show')
         ->name('usuario.show')->middleware('permission:ver usuarios');
 
+    Route::get('/usuario-clone/{usuario}', 'UsuariosController@clone')
+        ->name('usuario.clone')->middleware('permission:crear usuarios');
+
     Route::get('/usuario/{usuario}/edit', 'UsuariosController@edit')
         ->name('usuario.edit')->middleware('permission:editar usuarios');
 

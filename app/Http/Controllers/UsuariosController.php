@@ -188,4 +188,13 @@ class UsuariosController extends Controller
         $usuario->delete();
         return response()->json(['message' => 'usuario eliminado']);
     }
+
+    public function clone(Usuario $usuario)
+    {
+        $departamentos = Departamento::all();
+        $countries = Country::get();
+
+        $roles = Role::get();
+        return view('Usuarios.clone', compact('usuario', 'departamentos', 'countries', 'roles'));
+    }
 }

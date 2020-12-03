@@ -30,6 +30,7 @@
                                 <th class="text-center">Correo</th>
                                 <th class="text-center">Editar</th>
                                 <th class="text-center">Eliminar</th>
+                                <th class="text-center">clonar</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -79,6 +80,9 @@
                 }, {
                     "render" : buttonDelete,
                     "data" : null
+                },{
+                    "render" : buttonClone,
+                    "data" : null
                 },
             ],
 
@@ -98,6 +102,10 @@
 
         return '@can("eliminar usuarios")<button id="manageBtn" type="button" onclick="del('+e.id+')" class="btn btn-danger btn-xs">Eliminar</button>@endcan';
     }
+    function buttonClone(e) {
+
+        return '@can("crear usuarios")<button id="manageBtn" type="button" onclick="clone('+e.id+')" class="btn btn-info btn-xs">Clonar</button>@endcan';
+    }
     async function del(e) {
         let value = await Swal.fire({
             title: 'Cuidado',
@@ -112,6 +120,10 @@
                 location.href = "{{url('usuarios')}}";
             }
         }
+    }
+
+    function clone(id) {
+        location.href = "{{url('usuario-clone')}}/" + id;
     }
 </script>
 
