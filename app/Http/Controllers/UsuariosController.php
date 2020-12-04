@@ -65,11 +65,6 @@ class UsuariosController extends Controller
         return view('Usuarios.export', compact('usuarios'));
     }
 
-    public function show(Usuario $usuario)
-    {
-        dd('usuario show', $usuario);
-    }
-
     public function edit(Usuario $usuario)
     {
         $departamentos = Departamento::all();

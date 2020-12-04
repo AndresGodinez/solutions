@@ -94,29 +94,6 @@ class MaterialesController extends Controller
         return view('Materiales/solicitud');
     }
 
-    public function datoinicial()
-    {
-
-        dd([
-            'de' => datatables()->of(Stock::query()->selectRaw('
-        wpx_ligas_sustitutos.*',
-                'wpx_ligas_sustitutos_status.status as status')
-                ->from('wpx_ligas_sustitutos')
-                ->whereRaw('wpx_ligas_sustitutos.id_status in (1,3)')
-                ->join('wpx_ligas_sustitutos_status', 'wpx_ligas_sustitutos_status.id_status', '=',
-                    'wpx_ligas_sustitutos.id_status')
-                ->get())->toJson()
-        ]);
-        return datatables()->of(Stock::query()->selectRaw('
-        wpx_ligas_sustitutos.*',
-            'wpx_ligas_sustitutos_status.status as status')
-            ->from('wpx_ligas_sustitutos')
-            ->whereRaw('wpx_ligas_sustitutos.id_status in (1,3)')
-            ->join('wpx_ligas_sustitutos_status', 'wpx_ligas_sustitutos_status.id_status', '=',
-                'wpx_ligas_sustitutos.id_status')
-            ->get())->toJson();
-    }
-
     public function clean_string($string)
     {
         return trim(strip_tags($string));

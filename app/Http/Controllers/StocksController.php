@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use function compact;
 use function date;
+use function report;
 
 
 date_default_timezone_set("America/Mexico_City");
@@ -33,7 +34,7 @@ class StocksController extends Controller
         $id_contry  = Auth::user()->id_contry;
         // Se agrega departamento para que en la consulta de ser Ingenieria contenga todos los registros de todas las regiones.
         $depto      = Auth::user()->depto;
-        
+
         // $get_records = StocksModel::get_all_records_nueva($user, $id_region,$id_contry);
         $get_records = StocksModel::get_all_records_nueva($user, $id_region, $id_contry, $depto);
         return view("Stocks.index", compact('get_records'));
@@ -47,21 +48,21 @@ class StocksController extends Controller
         $id_region  = Auth::user()->id_region;
         $id_contry  = Auth::user()->id_contry;
 
-        
-        
+
+
 
         set_time_limit(0);
         ini_set('memory_limit', '1000M');
         // header('Content-type: application/vnd.ms-excel;charset=iso-8859-15');
 
-        
-        
+
+
         if ($request->id == "1") {
             header('Content-Disposition: attachment; filename=REPORTE STOCK INICIAL.xls');
             $get_records = StocksModel::get_all_records_nueva($user, $id_region, $id_contry);
             return view("Stocks.descargageneral_inicial_nueva", ['get_records' => $get_records]);
         }
-        
+
         if ($request->id == "2") {
             header('Content-Disposition: attachment; filename=REPORTE STOCK INICIAL PENDIENTE.xls');
             $get_records = StocksModel::get_all_records_pending_list($id_region, $id_contry);
@@ -80,7 +81,7 @@ class StocksController extends Controller
 
 
 
-        
+
     }
 
     public function indexPendingList()
@@ -107,7 +108,7 @@ class StocksController extends Controller
     }
 
     public function uploads()
-    {        
+    {
 
         $user       = Auth::user()->username;
         $items      = Menu::getMenu2($user);
@@ -142,25 +143,24 @@ class StocksController extends Controller
                         while (($data = fgetcsv($handle)) !== FALSE) {
                             if ($start > 0) {
                                 // most be insert
-                                StocksModel::insert_load($data, Auth::user()->username, date("Y-m-d H:i:s"));                                
-                            }    
+                                StocksModel::insert_load($data, Auth::user()->username, date("Y-m-d H:i:s"));
+                            }
                             $start++;
                         }
-                        
+
                         echo '<script>window.location.href = "' . url("stocks/cargas/?success=1") . '";</script>';
                     } catch (Exception $e) {
-                        dd($e);
-                        // echo '<script>window.location.href = "' . url("stocks/cargas/?error=2") . '";</script>';
+                        report($e);
                     }
 
                     // Envio de correo alerta por id_region gente ISC.
                 }else{
                     echo '<script>window.location.href = "' . url("stocks/cargas/?error=1") . '";</script>';
-                }                
+                }
         }else{
             echo '<script>window.location.href = "' . url("stocks/cargas/?error=1") . '";</script>';
         }
-        
+
     }
 
     // Carga para stocks iniciales (conclusion ISC)
@@ -174,10 +174,10 @@ class StocksController extends Controller
         $file = $request->file('file');
         $valid = true;
 
-        
+
         if($file->getClientOriginalExtension() == 'csv'){
-                if (!empty($file)) {             
-                           
+                if (!empty($file)) {
+
                     $final_file = Str::uuid() . '.' . $file->getClientOriginalExtension();
                     $file->storeAS('stock-inicial/c/' . $date . '/', $final_file);
                 } else {
@@ -187,7 +187,7 @@ class StocksController extends Controller
                 }
 
                 if ($valid) {
-                    
+
 
                     try{
                         $handle = fopen(base_path() . $this->dirupload . "stock-inicial\\c\\" . $date . "\\" . $final_file, "r+");
@@ -208,10 +208,10 @@ class StocksController extends Controller
                     // Envio de correo alerta por id_region gente ISC.
                 }else{
                     echo '<script>window.location.href = "' . url("stocks/cargas/?error=1") . '";</script>';
-                }                
+                }
         }else{
             echo '<script>window.location.href = "' . url("stocks/cargas/?error=1") . '";</script>';
-        }     
+        }
     }
 
     // Stocks inicial
@@ -262,17 +262,17 @@ class StocksController extends Controller
     // Carga para stocks iniciales
     public function upload_stock_final(UploadStockFinalRequest $request)
     {
-        
-       
+
+
         $user       = Auth::user()->username;
         $date   = date("Y-m-d");
         $file   = $request->file('file');
         $valid = true;
         $redirect = url("stocks/");
 
-        
+
         if($file->getClientOriginalExtension() == 'csv'){
-                if (!empty($file)) {                    
+                if (!empty($file)) {
                     $final_file = Str::uuid() . '.' . $file->getClientOriginalExtension();
                     $file->storeAS('stock-final/c/' . $date . '/', $final_file);
                 } else {
@@ -282,7 +282,7 @@ class StocksController extends Controller
                 }
 
                 if ($valid) {
-                    
+
 
                     try{
                         $handle = fopen(base_path() . $this->dirupload . "stock-final\\c\\" . $date . "\\" . $final_file, "r+");
@@ -304,24 +304,24 @@ class StocksController extends Controller
                     // Envio de correo alerta por id_region gente ISC.
                 }else{
                     echo '<script>window.location.href = "' . url("stocks/cargas/?error=1") . '";</script>';
-                }                
+                }
         }else{
             echo '<script>window.location.href = "' . url("stocks/cargas/?error=1") . '";</script>';
-        }  
+        }
     }
 
     // Carga para stocks iniciales (conclusion ISC)
     public function upload_stock_final_isc(Request $request)
-    {       
+    {
         $user       = Auth::user()->username;
         $date   = date("Y-m-d");
         $file   = $request->file('file');
         $valid = true;
         $redirect = url("stocks/");
 
-        
+
         if($file->getClientOriginalExtension() == 'csv'){
-                if (!empty($file)) {                    
+                if (!empty($file)) {
                     $final_file = Str::uuid() . '.' . $file->getClientOriginalExtension();
                     $file->storeAS('stock-final/c/' . $date . '/', $final_file);
                 } else {
@@ -330,7 +330,7 @@ class StocksController extends Controller
                     echo '<script>window.location.href = "' . url("stocks/cargas/?error=2") . '";</script>';
                 }
 
-                if ($valid) {                    
+                if ($valid) {
                     try{
                         $handle = fopen(base_path() . $this->dirupload . "stock-final\\c\\" . $date . "\\" . $final_file, "r+");
                         $start = 0;
@@ -349,9 +349,9 @@ class StocksController extends Controller
                     // Envio de correo alerta por id_region gente ISC.
                 }else{
                     echo '<script>window.location.href = "' . url("stocks/cargas/?error=1") . '";</script>';
-                }                
+                }
         }else{
             echo '<script>window.location.href = "' . url("stocks/cargas/?error=1") . '";</script>';
-        }  
+        }
     }
 }

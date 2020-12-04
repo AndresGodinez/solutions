@@ -17,7 +17,6 @@
                                id="username"
                                name="username"
                                class="form-control"
-                               value="{{ $usuario->username }}"
                         >
                     </div>
 
@@ -27,7 +26,6 @@
                                id="nombre"
                                name="nombre"
                                class="form-control"
-                               value="{{ $usuario->nombre }}"
                         >
                     </div>
                 </div>

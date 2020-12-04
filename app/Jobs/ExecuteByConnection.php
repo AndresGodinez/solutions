@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -41,9 +42,8 @@ class ExecuteByConnection implements ShouldQueue
         try {
             DB::connection($this->selectedDB)->getPdo()
                 ->exec($this->query);
-        } catch(\Illuminate\Database\QueryException $ex){
-            dd($ex->getMessage());
-            // Note any method of class PDOException can be called on $ex.
+        } catch( Exception $e){
+            report($e);
         }
 
     }
