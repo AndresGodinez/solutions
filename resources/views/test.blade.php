@@ -14,10 +14,14 @@
     function sendText(){
         let msg = {
             action:"imprimir",
-            date: Date.now(),
-            text: "texto informativo"
+            date: '{{ Carbon\Carbon::now()->format('d-m-Y H:s') }}',
+            description: '{{ 'descripcion de material' }}',
+            pieces: '{{ 2 }}',
+            num_part: '{{ 8001 }}'
 
         };
+        console.log({msg});
+        console.log(JSON.stringify(msg));
         exampleSocket.send(JSON.stringify(msg))
     }
 </script>
