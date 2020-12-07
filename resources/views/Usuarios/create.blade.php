@@ -11,8 +11,6 @@
 
         <form action="{{ route('usuario.store') }}" method="post">
             @csrf
-            <countries-lists></countries-lists>
-
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="username">Nombre del usuario</label>
@@ -40,7 +38,7 @@
                             class="form-check-input"
                             type="radio"
                             name="role"
-                               value="{{ $role->name }}"
+                            value="{{ $role->name }}"
                         >
                         <label class="form-check-label">
                             {{ ucfirst($role->name) }}
@@ -122,7 +120,9 @@
 
     <script src="{{ asset('assets') }}/app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js" integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"
+            integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg=="
+            crossorigin="anonymous"></script>
 
     <script>
         $(document).ready(function() {
@@ -130,10 +130,8 @@
                 let region = $('#region_id');
                 let country = $('#country_id');
                 try {
-                    let response = await axios.get('get-regiones', {
-                        params:{
-                            country :country.val()
-                        }
+                    let response = await axios.post('get-regiones', {
+                        country: country.val(),
                     });
                     region.empty();
                     region.append(`<option value="">
@@ -144,11 +142,11 @@
                                        ${item.short_name}
                                   </option>`);
                     });
-                }catch (e) {
-                    console.error(e)
+                } catch (e) {
+                    console.error(e);
                 }
 
-            })
+            });
         });
 
     </script>
