@@ -18,6 +18,10 @@
 
 </style>
 
+<h2>WHIRLPOOL MEXICO</h2>
+<h4>HOJA DE CONTEO DE INVENTARIO CICLICO {{ $date }}</h4>
+<h4>ALMACEN {{ $planta }}</h4>
+
 <table >
     <tr style="border: 1px solid black;">
         <th>MATERIAL</th>

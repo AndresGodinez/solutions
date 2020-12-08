@@ -9,6 +9,7 @@ use App\Jobs\ExecuteByConnection;
 use App\Jobs\UpdateCiclicosJob;
 use App\Utils\MyUtils;
 use Barryvdh\DomPDF\Facade as PDF;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -38,33 +39,34 @@ class ConteoCiclosController extends Controller
 
         $connection = 'logistica';
 
-        $query = 'LOAD DATA LOCAL INFILE "'.$nameFile.'"
-            INTO TABLE ciclicos_temp
-            FIELDS TERMINATED BY ","
-            LINES TERMINATED BY "\r\n"
-            IGNORE 7 LINES
-            (@ignora1,
-            @material,
-            @descripcion,
-            @type,
-            @bin,
-            @stock,
-            @ia,
-            @invrec
-            )
-            SET
-                material=TRIM(@material),
-                descripcion=UPPER(replace(@descripcion,",","")),
-                type=TRIM(@type),
-                bin=TRIM(@bin),
-                planta="'.$planta.'",
-                stock=@stock,
-                ia=@ia,
-                invrec=TRIM(@invrec)
-            ';
+        $originalQuery = 'LOAD DATA LOCAL INFILE "'.$nameFile.'"
+                    INTO TABLE reforig_logistica.ciclicos_temp
+                    FIELDS TERMINATED BY "|"
+                    LINES TERMINATED BY "\r\n"
+                    IGNORE 7 LINES
+
+                    (@ignora1,
+                    @material,
+                    @descripcion,
+                    @type,
+                    @bin,
+                    @stock,
+                    @ia,
+                    @invrec
+                    )
+
+                    SET
+                    material=TRIM(@material),
+                    descripcion=UPPER(replace(@descripcion,",","")),
+                    type=TRIM(@type),
+                    bin=TRIM(@bin),
+                    stock=replace(@stock,",",""),
+                    ia=@ia,
+                    invrec=TRIM(@invrec)
+                    ';
 
         $this->dispatch(
-            new ExecuteByConnection($query, $connection)
+            new ExecuteByConnection($originalQuery, $connection)
         );
 
         $this->dispatch(
@@ -107,9 +109,19 @@ class ConteoCiclosController extends Controller
 
             $prom = ceil($totalRecords / $numPer);
 
+            $date = Carbon::now()->format('d/m/Y');
+            $planta = $request->user()->planta;
 
-//            $pdf = app('dompdf.wrapper');
-            $pdf = PDF::loadView('ConteoCiclos.pdf', compact('data', 'prom', 'numPer', 'totalRecords'))->setPaper('a4', 'landscape');
+
+            $pdf = PDF::loadView('ConteoCiclos.pdf', compact(
+                'data',
+                'prom',
+                'numPer',
+                'totalRecords',
+                'date',
+                'planta'
+                )
+            )->setPaper('a4', 'landscape');
 
             return $pdf->download('conteo.pdf');
         }

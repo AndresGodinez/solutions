@@ -16,7 +16,7 @@
                         <input type="file"
                                name="hoja_conteo_ciclos_file"
                                class="form-control-file"
-                               accept="text/csv"
+                               accept=".txt"
                                required
                         >
                         <div>
