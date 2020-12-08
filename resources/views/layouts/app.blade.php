@@ -146,6 +146,17 @@
     <script src="{{ asset('assets') }}/app-assets/js/scripts/navs/navs.js"></script>
     <!-- END: Page JS-->
 
+    <?php 
+    if(isset($bootbox) && $bootbox == true)
+    {
+    ?>
+    <!-- Bootbox plug -->
+    <script src="{{ asset('js/bootbox.js') }}"></script>
+    <script src="{{ asset('js/functions.js') }}"></script>
+    <?php
+    }
+    ?>
+
 </body>
 <!-- END: Body-->
 

@@ -1,0 +1,1 @@
+php D:\inetpub\wwwroot\soluciones2\app\Http\Controllers\PagoTalleresBATController.php r
