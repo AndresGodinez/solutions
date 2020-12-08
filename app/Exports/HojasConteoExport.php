@@ -2,9 +2,9 @@
 
 namespace App\Exports;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -30,17 +30,17 @@ class HojasConteoExport implements FromView, WithProperties, WithEvents, WithHea
     public function properties(): array
     {
         return [
-            'title'          => 'CONCILIACION CONTEO CICLICO',
-            'description'    => 'CONCILIACION CONTEO CICLICO',
-            'subject'        => 'CONCILIACION CONTEO CICLICO',
-            'company'        => 'WHIRLPOOL'
+            'title' => 'CONCILIACION CONTEO CICLICO',
+            'description' => 'CONCILIACION CONTEO CICLICO',
+            'subject' => 'CONCILIACION CONTEO CICLICO',
+            'company' => 'WHIRLPOOL'
         ];
     }
 
     public function registerEvents(): array
     {
         return [
-            AfterSheet::class    => function(AfterSheet $event) {
+            AfterSheet::class => function (AfterSheet $event) {
                 $event->sheet
                     ->getPageSetup()
                     ->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
@@ -84,6 +84,10 @@ class HojasConteoExport implements FromView, WithProperties, WithEvents, WithHea
             ->orderBy('material', 'asc')
             ->get();
 
-        return view('ConteoCiclos.xls', compact('data'));
+        $planta = $this->planta;
+        $date = Carbon::now()->format('d/m/Y');
+
+        return view('ConteoCiclos.xls', compact('data', 'planta', 'date'));
     }
+
 }

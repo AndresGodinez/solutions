@@ -1,3 +1,7 @@
+<H2>WHIRLPOOL MEXICO</H2>
+<h3>CONCILIACION INVENTARIO CICLICO DEL DIA {{ $date }}</h3>
+<h3>ALMACEN {{ $planta }}</h3>
+<br>
 <table>
     <tr>
         <th>MATERIAL</th>
