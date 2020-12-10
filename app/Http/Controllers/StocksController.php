@@ -41,39 +41,33 @@ class StocksController extends Controller
     }
 
 
-    public function descarga(Request $request)
+    public function descarga(Request $request, $id)
     {
-
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
         $id_contry  = Auth::user()->id_contry;
 
-
-
-
         set_time_limit(0);
         ini_set('memory_limit', '1000M');
-        // header('Content-type: application/vnd.ms-excel;charset=iso-8859-15');
 
-
-
-        if ($request->id == "1") {
+        if ($id == "1") {
             header('Content-Disposition: attachment; filename=REPORTE STOCK INICIAL.xls');
-            $get_records = StocksModel::get_all_records_nueva($user, $id_region, $id_contry);
+
+            $get_records = StocksModel::get_all_records_nueva($user, $id_contry, Auth::user()->depto);
             return view("Stocks.descargageneral_inicial_nueva", ['get_records' => $get_records]);
         }
 
-        if ($request->id == "2") {
+        if ($id == "2") {
             header('Content-Disposition: attachment; filename=REPORTE STOCK INICIAL PENDIENTE.xls');
             $get_records = StocksModel::get_all_records_pending_list($id_region, $id_contry);
             return view("Stocks.descargageneral_inicial_nueva", ['get_records' => $get_records]);
         }
-        if ($request->id == "3") {
+        if ($id == "3") {
             header('Content-Disposition: attachment; filename=REPORTE STOCK FINAL.xls');
             $get_records = StocksModel::get_all_records_stocks_final($user, $id_region, $id_contry);
             return view("Stocks.descargageneral_inicial_nueva", ['get_records' => $get_records]);
         }
-        if ($request->id == "4") {
+        if ($id == "4") {
             header('Content-Disposition: attachment; filename=REPORTE STOCK FINAL PENDIENTE.xls');
             $get_records = StocksModel::get_all_records_pending_list_stocks_final($id_region, $id_contry);
             return view("Stocks.descargageneral_inicial_nueva", ['get_records' => $get_records]);

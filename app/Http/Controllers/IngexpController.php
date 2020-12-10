@@ -7,6 +7,8 @@ use App\Models\Menu;
 use App\Models\IngexpModel;
 use App\Utils\MyUtils;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use function compact;
@@ -14,6 +16,7 @@ use function date;
 //use Symfony\Component\HttpFoundation\Session\Session;
 use Session;
 use Illuminate\Support\Facades\DB;
+use function response;
 
 
 date_default_timezone_set("America/Mexico_City");
@@ -39,26 +42,26 @@ class IngexpController extends Controller
 
     public function cargarpost(Request $request)
     {
-        $file = $request->file('uploadedfile');        
-        $user       = Auth::user()->username;        
+        $file = $request->file('uploadedfile');
+        $user       = Auth::user()->username;
 
         IngexpModel::cargar($_POST,$user,$_FILES,$file);
 
         $urldirv = url('/ingexp/cargar?success=1');
         echo "<script>window.location = '".$urldirv."'</script>";
-        
+
     }
 
     public function cargarpostedit(Request $request)
     {
-        $file = $request->file('uploadedfile');        
-        $user       = Auth::user()->username;        
+        $file = $request->file('uploadedfile');
+        $user       = Auth::user()->username;
 
         IngexpModel::cargaredit($_POST,$user,$_FILES,$file);
 
         $urldirv = url('/ingexp/editar/');
         echo "<script>window.location = '".$urldirv."/".$_POST['id']."?success=1'</script>";
-        
+
     }
 
 
@@ -66,8 +69,8 @@ class IngexpController extends Controller
     {
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
-        
-        
+
+
         $tipo = false;
         $linea = false;
 
@@ -77,62 +80,63 @@ class IngexpController extends Controller
         if(isset($_GET['linea'])){
             $linea = $_GET['linea'];
         }
-        $get_records = IngexpModel::get_list($tipo, $linea); 
+        $get_records = IngexpModel::get_list($tipo, $linea);
 
-        $datos = IngexpModel::get_records();               
+        $datos = IngexpModel::get_records();
         return view("Ingexp.editar", compact('get_records','datos'));
     }
 
 
 
-    public function buscar()
+    public function buscar(Request $request)
     {
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
-        
-        
+
+
         $tipo = false;
         $linea = false;
 
-        if(isset($_GET['tipo'])){
-            $tipo = $_GET['tipo'];
+        if(!!$request->get('tipo')){
+            $tipo = $request->get('tipo');
         }
-        if(isset($_GET['linea'])){
-            $linea = $_GET['linea'];
+        if($request->get('linea')){
+            $linea = $request->get('linea');
         }
-        $get_records = IngexpModel::get_list($tipo, $linea); 
-        
-        $datos = IngexpModel::get_records();               
+        $get_records = IngexpModel::get_list($tipo, $linea);
+
+        $datos = IngexpModel::get_records();
         return view("Ingexp.buscar", compact('get_records','datos'));
     }
 
-    
+
     public function editardetail(Request $request)
     {
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
-        $get_records = IngexpModel::get_edit($request->id);  
-        $id = $request->id;      
-        $get_records_dt = IngexpModel::get_records();       
+        $get_records = IngexpModel::get_edit($request->id);
+        $id = $request->id;
+        $get_records_dt = IngexpModel::get_records();
         return view("Ingexp.editardetail", compact('get_records','id','get_records_dt'));
     }
 
 
     public function visor(Request $request)
-    {    
-        
-        $id = $request->id;      
-        $archivo_carga = IngexpModel::visor($id);       
+    {
+
+        $id = $request->id;
+        $archivo_carga = IngexpModel::visor($id);
         $archivo_carga = $archivo_carga[0]['archivo_carga'];
 
-        
-        $o_en = file_get_contents(storage_path().'/app/'.$archivo_carga);        
+
+        $o_en = file_get_contents(storage_path().'/app/'.$archivo_carga);
         $d = base64_encode($o_en);
-        
-        $path = storage_path('/app/'.$archivo_carga);
+
+        $path = storage_path('app/'.$archivo_carga);
+
 
         ini_set('display_errors', 1);
-        
+
         if($archivo_carga){
 
             $tipo = explode('.', $archivo_carga);
@@ -140,6 +144,16 @@ class IngexpController extends Controller
             //echo $tipo;
             switch ($tipo) {
                 case 'pdf':
+//                    dd($path);
+//                    $file = File::get($path);
+//                    $type = File::mimeType($path);
+//
+//                    $response = Response::make($file, 200);
+//                    $response->header("Content-Type", $type);
+                    return response()->download($path);
+
+
+
                 case 'pptx':
                 case 'doc':
                 case 'docx':
@@ -147,14 +161,14 @@ class IngexpController extends Controller
                 case 'xlsx':
                 case 'txt':
                 case 'rar':
-                case 'zip':                     
+                case 'zip':
                     return response()->download($path);
                     die();
                     break;
-                case 'png':		
+                case 'png':
                 case 'jpg':
-                case 'jpeg':                                   
-                    echo '<img src="data:image/png;base64, '.$d.'"  />';                    
+                case 'jpeg':
+                    echo '<img src="data:image/png;base64, '.$d.'"  />';
                     die();
                     break;
                 case 'avi':
@@ -173,7 +187,7 @@ class IngexpController extends Controller
                         height:0; overflow: hidden;
                         position: relative;
                         }
-                        
+
                         .frame {
                         position: absolute;
                         height:100%;
@@ -191,17 +205,17 @@ class IngexpController extends Controller
                             <source type="video/webm" src="data:video/webm;base64, <?=$d?>">
 	                        <source type="video/mp4" src="data:video/mp4;base64, <?=$d?>">
                         </video>
-                        
-                        
+
+
                         </div>
                         </div>
 
                         </body>
-                        </html>                    
-                    <?php                    
-                    die();		
+                        </html>
+                    <?php
+                    die();
                     break;
-                
+
                 default:
                     # code...
                     break;
@@ -213,12 +227,12 @@ class IngexpController extends Controller
     }
 
 
-    public function confirmarpago(Request $request){   
+    public function confirmarpago(Request $request){
         $confirmarpago = [];
         if(isset($request->id) && isset($request->token)){
 
             $v =  DB::query()->selectRaw('email,fecha_expire,status,nombre_del_dueno')
-            ->from('ing_solicitaracceso')            
+            ->from('ing_solicitaracceso')
             ->whereRaw("status = 1 and id ='".$request->id."' and _token='".$request->token."'")
             ->get();;
 
@@ -229,12 +243,12 @@ class IngexpController extends Controller
             }else{
                 return redirect('ingexp/solicitaracceso');
             }
-            
-        }  
+
+        }
         else{
             return redirect('ingexp/solicitaracceso');
         }
-        
+
     }
 
     public function confirmarpagopost(Request $request){
@@ -248,17 +262,17 @@ class IngexpController extends Controller
             );
     }
 
-    public function solicitaracceso(Request $request){   
-        
+    public function solicitaracceso(Request $request){
+
         if(isset($_GET['logout'])){
-            $request->session()->forget('sol_acceso_token'); 
-            $request->session()->forget('sol_acceso_nombre'); 
-            $request->session()->forget('sol_acceso_login'); 
+            $request->session()->forget('sol_acceso_token');
+            $request->session()->forget('sol_acceso_nombre');
+            $request->session()->forget('sol_acceso_login');
         }
         $modo = 'registro';
         return view("Ingexp.solicitaracceso", compact('modo'));
     }
-    public function solicitaracceso_login(Request $request){        
+    public function solicitaracceso_login(Request $request){
         $modo = 'login';
         return view("Ingexp.solicitaracceso", compact('modo'));
     }
@@ -286,30 +300,30 @@ class IngexpController extends Controller
                 ->update(['password' => $password,'status' => $_POST['statuschange']]);
 
                 $datau =  DB::query()->selectRaw('email,fecha_expire,status,nombre_del_dueno,_token,id,password')
-                ->from('ing_solicitaracceso')            
+                ->from('ing_solicitaracceso')
                 ->whereRaw("id ='".$_POST['id']."'")
-                ->get();     
+                ->get();
             }
             else if($_POST['statuschange'] == 4){
                 DB::table('ing_solicitaracceso')
                 ->where('id', $_POST['id'])
                 ->update(['status' => $_POST['statuschange'],'motivo_rechazo' => $_POST['motivorechazo']]);
                 $datau =  DB::query()->selectRaw('email,fecha_expire,status,nombre_del_dueno,_token,id,password')
-                ->from('ing_solicitaracceso')            
+                ->from('ing_solicitaracceso')
                 ->whereRaw("id ='".$_POST['id']."'")
-                ->get();            
+                ->get();
             }else{
                 DB::table('ing_solicitaracceso')
                 ->where('id', $_POST['id'])
                 ->update(
                         ['status' => $_POST['statuschange']]);
                 $datau =  DB::query()->selectRaw('email,fecha_expire,status,nombre_del_dueno,_token,id,password')
-                ->from('ing_solicitaracceso')            
+                ->from('ing_solicitaracceso')
                 ->whereRaw("id ='".$_POST['id']."'")
-                ->get();            
+                ->get();
             }
             if($_POST['statuschange'] == 1){
-                $email_message = "	
+                $email_message = "
                         <html>
                         <head>
                         <title>E-Mail HTML</title>
@@ -335,7 +349,7 @@ class IngexpController extends Controller
 
                     }
                     </style>
-                        
+
                         <body>
                         <p>Hola ".$datau[0]->nombre_del_dueno."</p>
                         <br>
@@ -343,11 +357,11 @@ class IngexpController extends Controller
                         <p></p>
                         <p></p>
                         <br>
-                        
+
                         <p><a href=\"{{url('ingexp/confirmarpago')}}/".$datau[0]->id."/".$datau[0]->_token."\">Confirmar Pago</a></p>
-                        
+
                     ";
-                    
+
                     $to = $datau[0]->email;
                     $subject = 'Solicitud de pago, WHIRLPOOL.';
                     $type = "Content-type: text/html\r\n";
@@ -358,7 +372,7 @@ class IngexpController extends Controller
             }
 
             if($_POST['statuschange'] == 3){
-                $email_message = "	
+                $email_message = "
                         <html>
                         <head>
                         <title>E-Mail HTML</title>
@@ -384,7 +398,7 @@ class IngexpController extends Controller
 
                     }
                     </style>
-                        
+
                         <body>
                         <p>Hola ".$datau[0]->nombre_del_dueno."</p>
                         <br>
@@ -393,11 +407,11 @@ class IngexpController extends Controller
                         <p></p>
                         <p></p>
                         <br>
-                        
+
                         <p><a href=\"{{url('ingexp/solicitaracceso')}}\">Entrar</a></p>
-                        
+
                     ";
-                    
+
                     $to = $datau[0]->email;
                     $subject = 'Bienvenido, datos de acceso.';
                     $type = "Content-type: text/html\r\n";
@@ -410,7 +424,7 @@ class IngexpController extends Controller
             }
 
             if($_POST['statuschange'] == 5){
-                $email_message = "	
+                $email_message = "
                         <html>
                         <head>
                         <title>E-Mail HTML</title>
@@ -436,7 +450,7 @@ class IngexpController extends Controller
 
                     }
                     </style>
-                        
+
                         <body>
                         <p>Hola ".$datau[0]->nombre_del_dueno."</p>
                         <br>
@@ -445,11 +459,11 @@ class IngexpController extends Controller
                         <p></p>
                         <p></p>
                         <br>
-                        
+
                         <p><a href=\"{{url('ingexp/solicitaracceso')}}\">Entrar</a></p>
-                        
+
                     ";
-                    
+
                     $to = $datau[0]->email;
                     $subject = 'Bienvenido, datos de acceso.';
                     $type = "Content-type: text/html\r\n";
@@ -460,7 +474,7 @@ class IngexpController extends Controller
 
                     echo $password;
             }
-            
+
 
 
         }
@@ -474,7 +488,7 @@ class IngexpController extends Controller
             ->update(['fecha_expire' => $_POST['fechaexpira']]);
         }
 
-        if(isset($_POST['password'])){            
+        if(isset($_POST['password'])){
             DB::table('ing_solicitaracceso')
             ->where('id', $_POST['id'])
             ->update(['password' => $_POST['password']]);
@@ -483,12 +497,12 @@ class IngexpController extends Controller
 
     public function acceso(Request $request)
     {
-        
+
 
         $valid = @session('sol_acceso_token');
         if( $valid != '' ){
-                
-                
+
+
                 $tipo = false;
                 $linea = false;
 
@@ -498,27 +512,27 @@ class IngexpController extends Controller
                 if(isset($_GET['linea'])){
                     $linea = $_GET['linea'];
                 }
-                $get_records = IngexpModel::get_list($tipo, $linea); 
+                $get_records = IngexpModel::get_list($tipo, $linea);
 
-                $datos = IngexpModel::get_records();               
+                $datos = IngexpModel::get_records();
                 return view("Ingexp.acceso", compact('get_records','datos'));
-            
-        }  
+
+        }
         else{
             return redirect('ingexp/solicitaracceso');
         }
 
-        
+
     }
 
 
-    public function solicitaracceso_procesar(Request $request){             
-        $get_records = IngexpModel::solicitaracceso($_POST); 
+    public function solicitaracceso_procesar(Request $request){
+        $get_records = IngexpModel::solicitaracceso($_POST);
         echo $get_records;
     }
 
-    public function solicitaraccesologin(Request $request){                     
-        $get_records = IngexpModel::solicitaracceso_login($_POST);         
+    public function solicitaraccesologin(Request $request){
+        $get_records = IngexpModel::solicitaracceso_login($_POST);
         if($get_records['status'] == 'si'){
             $request->session()->put(['sol_acceso_login'=>trim(strtoupper($_POST["login"]))]);
             $request->session()->put(['sol_acceso_token'=>trim(strtoupper($_POST["_token"]))]);

@@ -13,6 +13,8 @@ class Ciclicos extends Model
     public static function delPlanta(string $planta)
     {
         Ciclicos::where('planta', $planta)->delete();
+        CiclosTemp::whereNull('material')->delete();
+        CiclosTemp::whereNull('planta')->update(['planta' => $planta]);
     }
 
     public static function copyTempToCiclicos(string $planta)

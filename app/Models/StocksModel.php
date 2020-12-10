@@ -57,108 +57,108 @@ class StocksModel extends ModelBase
 
 
 
-    public static function get_all_records_nueva($user, $id_region, $id_contry, $depto)
+    public static function get_all_records_nueva($user, $id_contry, $depto)
     {
 
         $paisrefe = array(
-                    1 => 'mex1',            
+                    1 => 'mex1',
                     9 => 'guat2',
-                    7 => 'hond3',            
-                    13 => 'repd4',            
-                    14 => 'hait5',                    
-                    15 =>'arub6',                    
-                    8  => 'salv7',                    
+                    7 => 'hond3',
+                    13 => 'repd4',
+                    14 => 'hait5',
+                    15 =>'arub6',
+                    8  => 'salv7',
                     6  =>'nica8',
-                    
+
                     5  =>'cr9',
-                    
+
                     4  =>'pana10',
-                    
+
                     16 => 'angu11',
-                    
+
                     17=> 'baha12',
-                    
+
                     10=> 'beli13',
-                    
+
                     18 => 'berm14',
-                    
+
                     19 => 'caym15',
-                    
+
                     20 => 'guya16',
-                    
+
                     21 => 'suri17',
-                    
+
                     22 => 'turk18',
-                    
+
                     23 => 'brit19',
-                    
+
                     24 => 'maar20',
-                    
+
                     25 => 'saba21',
-                    
+
                     26 => 'anti22',
-                    
+
                     27 => 'mons23',
-                    
+
                     28 =>'kitt24',
-                    
+
                     29 => 'bart25',
-                    
+
                     30 => 'marti26',
-                    
+
                     31 => 'trin27',
-                    
+
                     32 => 'jama28',
-                    
+
                     33 => 'barb29',
-                    
+
                     34 => 'bona30',
-                    
+
                     35 => 'cura31',
-                    
+
                     2 => 'col32',
-                    
+
                     12 => 'ven33',
-                    
+
                     3 => 'ecu34',
-                    
+
                     36 => 'ptor35',
-                    
+
                     37 => 'croi36',
-                    
+
                     38 => 'thom37',
-                    
+
                     39  => 'jhon38',
-                    
+
                     40 => 'virg39',
-                    
+
                     41 => 'domi40',
-                    
+
                     42 => 'gren41',
-                    
+
                     43 => 'luci42',
-                    
+
                     44 => 'vinc43',
-                    
+
                     45 => 'fren44',
-                    
+
                     46 => 'mart45',
-                    
+
                     47 => 'guad46',
-                    
+
                     48 => 'reun47',
-                    
+
                     49 => 'newc48',
-                    
+
                     11 => 'peru49');
-            
 
 
 
-        
-        
+
+
+
         $columnasactivas = [
-            'id',            
+            'id',
             'material',
             'descripcion',
             'tipo_status',
@@ -343,47 +343,6 @@ class StocksModel extends ModelBase
             ->whereRaw("stock_gral_serv.".$paisrefe[$id_contry]." = 1")
             ->get();
 
-            // Users for MX
-            // if ($id_region == 1) {
-                
-            //     $data = StocksModel::select( $columnasactivas)
-            //         ->from('stock_gral_serv')
-            //         // ->where('stock_gral_serv.reg_mex', 1)
-            //         ->whereRaw("stock_gral_serv.reg_mex = 1 and stock_gral_serv.".$paisrefe[$id_contry]." = 1")
-                    
-            //         ->get();
-            // }
-
-            // // Users for CAM
-            // if ($id_region == 2) {
-            //     $data = StocksModel::select($columnasactivas
-            //     )
-            //         ->from('stock_gral_serv')
-                    
-            //         ->where('stock_gral_serv.reg_cam', 1)
-            //         ->whereRaw("stock_gral_serv.reg_mex = 1 and stock_gral_serv.".$paisrefe[$id_contry]." = 1")
-            //         ->get();
-            // }
-
-            // // Users for AND
-            // if ($id_region == 3) {
-            //     $data = StocksModel::select($columnasactivas
-            //     )
-            //         ->from('stock_gral_serv')
-                    
-            //         ->where('stock_gral_serv.reg_and', 1)
-            //         ->get();
-            // }
-
-            // // Users for CAR
-            // if ($id_region == 4) {
-            //     $data = StocksModel::select($columnasactivas
-            //     )
-            //         ->from('stock_gral_serv')
-                   
-            //         ->where('stock_gral_serv.reg_car', 1)
-            //         ->get();
-            // }
         }
 
         return $data;
@@ -606,61 +565,61 @@ class StocksModel extends ModelBase
             'peru_fecha_embarque',
             'peru_vva',
             'comentarios_ing',
-            'user_carga', 
+            'user_carga',
             'created_at'
         ];
         $data = [];
-        
+
 
         $paisrefe = array(
-            1 => 'mex1',            
+            1 => 'mex1',
             9 => 'guat2',
-            7 => 'hond3',            
-            13 => 'repd4',            
-            14 => 'hait5',                    
-            15 =>'arub6',                    
-            8  => 'salv7',                    
-            6  =>'nica8',            
-            5  =>'cr9',            
-            4  =>'pana10',            
-            16 => 'angu11',            
-            17=> 'baha12',            
-            10=> 'beli13',            
-            18 => 'berm14',            
-            19 => 'caym15',            
-            20 => 'guya16',            
-            21 => 'suri17',            
-            22 => 'turk18',            
-            23 => 'brit19',            
-            24 => 'maar20',            
-            25 => 'saba21',            
-            26 => 'anti22',            
-            27 => 'mons23',            
-            28 =>'kitt24',            
-            29 => 'bart25',            
-            30 => 'marti26',            
-            31 => 'trin27',            
-            32 => 'jama28',            
-            33 => 'barb29',            
-            34 => 'bona30',            
-            35 => 'cura31',            
-            2 => 'col32',            
-            12 => 'ven33',            
-            3 => 'ecu34',            
-            36 => 'ptor35',            
-            37 => 'croi36',            
-            38 => 'thom37',            
-            39  => 'jhon38',            
-            40 => 'virg39',            
-            41 => 'domi40',            
-            42 => 'gren41',            
-            43 => 'luci42',            
-            44 => 'vinc43',            
-            45 => 'fren44',            
-            46 => 'mart45',            
-            47 => 'guad46',            
-            48 => 'reun47',            
-            49 => 'newc48',            
+            7 => 'hond3',
+            13 => 'repd4',
+            14 => 'hait5',
+            15 =>'arub6',
+            8  => 'salv7',
+            6  =>'nica8',
+            5  =>'cr9',
+            4  =>'pana10',
+            16 => 'angu11',
+            17=> 'baha12',
+            10=> 'beli13',
+            18 => 'berm14',
+            19 => 'caym15',
+            20 => 'guya16',
+            21 => 'suri17',
+            22 => 'turk18',
+            23 => 'brit19',
+            24 => 'maar20',
+            25 => 'saba21',
+            26 => 'anti22',
+            27 => 'mons23',
+            28 =>'kitt24',
+            29 => 'bart25',
+            30 => 'marti26',
+            31 => 'trin27',
+            32 => 'jama28',
+            33 => 'barb29',
+            34 => 'bona30',
+            35 => 'cura31',
+            2 => 'col32',
+            12 => 'ven33',
+            3 => 'ecu34',
+            36 => 'ptor35',
+            37 => 'croi36',
+            38 => 'thom37',
+            39  => 'jhon38',
+            40 => 'virg39',
+            41 => 'domi40',
+            42 => 'gren41',
+            43 => 'luci42',
+            44 => 'vinc43',
+            45 => 'fren44',
+            46 => 'mart45',
+            47 => 'guad46',
+            48 => 'reun47',
+            49 => 'newc48',
             11 => 'peru49');
         $data = StocksModel::select( $columnasactivas)
         ->from('stock_gral_serv')
@@ -1270,7 +1229,7 @@ class StocksModel extends ModelBase
         //     'proyecto' => $data[5],
         //     'cat' => $data[6],
         //     'proveedor' => $data[7],
-        //     'ots' => (empty($data[8]) ? NULL : $data[8]),                
+        //     'ots' => (empty($data[8]) ? NULL : $data[8]),
         //     'modelo' => (empty($data[9]) ? NULL : $data[9]),
         //     'cant_pza_sku' => (empty($data[10]) ? NULL : $data[10]),
         //     'garantia_years' => (empty($data[11]) ? NULL : $data[11]),
@@ -1471,7 +1430,7 @@ class StocksModel extends ModelBase
             'peru_fecha_embarque',
             'peru_vva',
             'comentarios_ing',
-            'user_carga', 
+            'user_carga',
             'created_at'];
         $data = [];
         // Records for Managers.
@@ -1480,57 +1439,57 @@ class StocksModel extends ModelBase
                 ->from('stock_gral_serv_final')
                 ->get();
         } else {
-            
+
 
             $paisrefe = array(
-                1 => 'mex1',            
+                1 => 'mex1',
                 9 => 'guat2',
-                7 => 'hond3',            
-                13 => 'repd4',            
-                14 => 'hait5',                    
-                15 =>'arub6',                    
-                8  => 'salv7',                    
-                6  =>'nica8',            
-                5  =>'cr9',            
-                4  =>'pana10',            
-                16 => 'angu11',            
-                17=> 'baha12',            
-                10=> 'beli13',            
-                18 => 'berm14',            
-                19 => 'caym15',            
-                20 => 'guya16',            
-                21 => 'suri17',            
-                22 => 'turk18',            
-                23 => 'brit19',            
-                24 => 'maar20',            
-                25 => 'saba21',            
-                26 => 'anti22',            
-                27 => 'mons23',            
-                28 =>'kitt24',            
-                29 => 'bart25',            
-                30 => 'marti26',            
-                31 => 'trin27',            
-                32 => 'jama28',            
-                33 => 'barb29',            
-                34 => 'bona30',            
-                35 => 'cura31',            
-                2 => 'col32',            
-                12 => 'ven33',            
-                3 => 'ecu34',            
-                36 => 'ptor35',            
-                37 => 'croi36',            
-                38 => 'thom37',            
-                39  => 'jhon38',            
-                40 => 'virg39',            
-                41 => 'domi40',            
-                42 => 'gren41',            
-                43 => 'luci42',            
-                44 => 'vinc43',            
-                45 => 'fren44',            
-                46 => 'mart45',            
-                47 => 'guad46',            
-                48 => 'reun47',            
-                49 => 'newc48',            
+                7 => 'hond3',
+                13 => 'repd4',
+                14 => 'hait5',
+                15 =>'arub6',
+                8  => 'salv7',
+                6  =>'nica8',
+                5  =>'cr9',
+                4  =>'pana10',
+                16 => 'angu11',
+                17=> 'baha12',
+                10=> 'beli13',
+                18 => 'berm14',
+                19 => 'caym15',
+                20 => 'guya16',
+                21 => 'suri17',
+                22 => 'turk18',
+                23 => 'brit19',
+                24 => 'maar20',
+                25 => 'saba21',
+                26 => 'anti22',
+                27 => 'mons23',
+                28 =>'kitt24',
+                29 => 'bart25',
+                30 => 'marti26',
+                31 => 'trin27',
+                32 => 'jama28',
+                33 => 'barb29',
+                34 => 'bona30',
+                35 => 'cura31',
+                2 => 'col32',
+                12 => 'ven33',
+                3 => 'ecu34',
+                36 => 'ptor35',
+                37 => 'croi36',
+                38 => 'thom37',
+                39  => 'jhon38',
+                40 => 'virg39',
+                41 => 'domi40',
+                42 => 'gren41',
+                43 => 'luci42',
+                44 => 'vinc43',
+                45 => 'fren44',
+                46 => 'mart45',
+                47 => 'guad46',
+                48 => 'reun47',
+                49 => 'newc48',
                 11 => 'peru49');
 
             $data = StocksModel::select( $columnasactivas)
@@ -1746,60 +1705,60 @@ class StocksModel extends ModelBase
             'peru_fecha_embarque',
             'peru_vva',
             'comentarios_ing',
-            'user_carga', 
+            'user_carga',
             'created_at'];
         $data = [];
-        
+
 
         $paisrefe = array(
-            1 => 'mex1',            
+            1 => 'mex1',
             9 => 'guat2',
-            7 => 'hond3',            
-            13 => 'repd4',            
-            14 => 'hait5',                    
-            15 =>'arub6',                    
-            8  => 'salv7',                    
-            6  =>'nica8',            
-            5  =>'cr9',            
-            4  =>'pana10',            
-            16 => 'angu11',            
-            17=> 'baha12',            
-            10=> 'beli13',            
-            18 => 'berm14',            
-            19 => 'caym15',            
-            20 => 'guya16',            
-            21 => 'suri17',            
-            22 => 'turk18',            
-            23 => 'brit19',            
-            24 => 'maar20',            
-            25 => 'saba21',            
-            26 => 'anti22',            
-            27 => 'mons23',            
-            28 =>'kitt24',            
-            29 => 'bart25',            
-            30 => 'marti26',            
-            31 => 'trin27',            
-            32 => 'jama28',            
-            33 => 'barb29',            
-            34 => 'bona30',            
-            35 => 'cura31',            
-            2 => 'col32',            
-            12 => 'ven33',            
-            3 => 'ecu34',            
-            36 => 'ptor35',            
-            37 => 'croi36',            
-            38 => 'thom37',            
-            39  => 'jhon38',            
-            40 => 'virg39',            
-            41 => 'domi40',            
-            42 => 'gren41',            
-            43 => 'luci42',            
-            44 => 'vinc43',            
-            45 => 'fren44',            
-            46 => 'mart45',            
-            47 => 'guad46',            
-            48 => 'reun47',            
-            49 => 'newc48',            
+            7 => 'hond3',
+            13 => 'repd4',
+            14 => 'hait5',
+            15 =>'arub6',
+            8  => 'salv7',
+            6  =>'nica8',
+            5  =>'cr9',
+            4  =>'pana10',
+            16 => 'angu11',
+            17=> 'baha12',
+            10=> 'beli13',
+            18 => 'berm14',
+            19 => 'caym15',
+            20 => 'guya16',
+            21 => 'suri17',
+            22 => 'turk18',
+            23 => 'brit19',
+            24 => 'maar20',
+            25 => 'saba21',
+            26 => 'anti22',
+            27 => 'mons23',
+            28 =>'kitt24',
+            29 => 'bart25',
+            30 => 'marti26',
+            31 => 'trin27',
+            32 => 'jama28',
+            33 => 'barb29',
+            34 => 'bona30',
+            35 => 'cura31',
+            2 => 'col32',
+            12 => 'ven33',
+            3 => 'ecu34',
+            36 => 'ptor35',
+            37 => 'croi36',
+            38 => 'thom37',
+            39  => 'jhon38',
+            40 => 'virg39',
+            41 => 'domi40',
+            42 => 'gren41',
+            43 => 'luci42',
+            44 => 'vinc43',
+            45 => 'fren44',
+            46 => 'mart45',
+            47 => 'guad46',
+            48 => 'reun47',
+            49 => 'newc48',
             11 => 'peru49');
         $data = StocksModel::select( $columnasactivas)
         ->from('stock_gral_serv_final')
@@ -2391,16 +2350,16 @@ class StocksModel extends ModelBase
         //     $ddate = explode('/',$data[5]);
 
         //     $data[5] = $ddate[2].'-'.$ddate[0].'-'.$ddate[1];
-        // }       
+        // }
 
         // DB::table('stock_gral_serv_final')->insert(
         //     [
         //         'material' => $data[0],
         //         'descripcion' => $data[1],
-        //         'tipo_status' => $data[2],                                
+        //         'tipo_status' => $data[2],
         //         'cat' => $data[3],
         //         'proveedor' => $data[4],
-        //         'ots' => (empty($data[5]) ? NULL : $data[5]),                
+        //         'ots' => (empty($data[5]) ? NULL : $data[5]),
         //         'modelo' => (empty($data[6]) ? NULL : $data[6]),
         //         'garantia_years' => (empty($data[7]) ? NULL : $data[7]),
         //         'tipo_uso' => (empty($data[8]) ? NULL : $data[8]),

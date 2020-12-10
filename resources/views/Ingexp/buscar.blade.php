@@ -1,7 +1,7 @@
 @extends("layouts.app")
 
 @section("content")
-<?php 
+<?php
 $data = $datos;
 
 $tipo = 0;
@@ -18,7 +18,7 @@ if(isset($_GET['linea'])){
 <section id="basic-datatable">
 	<div class="row">
 		<div class="col-sm-12">
-			<h2><strong>Buscar Existente</strong></h2>			
+			<h2><strong>Buscar Existente</strong></h2>
 		</div>
 	</div>
 </section>
@@ -34,10 +34,10 @@ if(isset($_GET['linea'])){
                                 <label for="basicInput">LINEA DE PRODUCTO:</label>
                                 <select class="form-control filtro" name="linea" id="linea" require="true">
                                     <option value="0">Seleccionar Linea</option>
-                                    <?php 
+                                    <?php
                                         foreach($data['linea'] as $v){
                                     ?>
-                                    <option <?php if($linea == $v['idlinea']){ echo 'selected=""'; } ?> value="<?=$v['idlinea']?>"><?=$v['linea']?></option>							
+                                    <option <?php if($linea == $v['idlinea']){ echo 'selected=""'; } ?> value="<?=$v['idlinea']?>"><?=$v['linea']?></option>
                                     <?php
                                         }
                                     ?>
@@ -49,10 +49,10 @@ if(isset($_GET['linea'])){
                                 <label for="basicInput">TIPO ARCHIVO:</label>
                                 <select class="form-control filtro" name="tipo" id="tipo"  require="true">
                                     <option value="0">Seleccionar Tipo</option>
-                                    <?php 
+                                    <?php
                                         foreach($data['tipo'] as $v){
                                     ?>
-                                    <option <?php if($tipo == $v['idtipo']){ echo 'selected=""'; } ?> value="<?=$v['idtipo']?>"><?=$v['tipo']?></option>							
+                                    <option <?php if($tipo == $v['idtipo']){ echo 'selected=""'; } ?> value="<?=$v['idtipo']?>"><?=$v['tipo']?></option>
                                     <?php
                                         }
                                     ?>
@@ -73,20 +73,20 @@ if(isset($_GET['linea'])){
                             <th>MODELO</th>
                             <th>LINEA</th>
                             <th>TIPO</th>
-                            <th>COMENTARIOS</th>						
+                            <th>COMENTARIOS</th>
                             <th>FECHA ACTUALIZACION</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($get_records as $get_records)						
-						<tr>                        
+						@foreach($get_records as $get_records)
+						<tr>
                             <td><a target="_blank" href="{{	url('ingexp/visor/'.$get_records['idregistro']) }}"><?=substr($get_records['titulo'],0,40)?></a></td>
 							<td>{{ $get_records['categoria'] }}</td>
 							<td><?=substr($get_records['modelo'],0,40)?></td>
 							<td>{{ $get_records['linea'] }}</td>
-                            <td>{{ $get_records['tipo'] }}</td>											
+                            <td>{{ $get_records['tipo'] }}</td>
                             <td>{{ $get_records['comentarios'] }}</td>
-                            <td>{{ $get_records['fecha'] }}</td>					                           		
+                            <td>{{ $get_records['fecha'] }}</td>
 						</tr>
 						@endforeach
 					</tbody>
@@ -99,7 +99,7 @@ if(isset($_GET['linea'])){
 <script src="{{ asset('assets') }}/app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js"></script>
 <script src="{{ asset('assets') }}/app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
 
-<script>    
+<script>
 
         $('.filtro').on('change',function(){
             var tipo = $('#tipo').val();
@@ -114,7 +114,7 @@ if(isset($_GET['linea'])){
             }
 		});
 
-		<?php 
+		<?php
 		if(@$_GET['success'] == 1){
 			?>
 			Swal.fire({
@@ -126,6 +126,6 @@ if(isset($_GET['linea'])){
 			<?php
 		}
 		?>
-		
+
 </script>
 @endsection
