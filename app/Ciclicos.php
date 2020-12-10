@@ -57,9 +57,14 @@ class Ciclicos extends Model
 
     public static function updateCiclicosInfo()
     {
-        DB::connection('logistica')->update('UPDATE ciclicos
-            LEFT JOIN materiales_costo ON ciclicos.material = materiales_costo.material
-            SET ciclicos.costo=materiales_costo.costo');
+        $query = "UPDATE reforig_logistica.ciclicos
+            LEFT JOIN reforig_logistica.materiales_costo ON ciclicos.material = materiales_costo.material
+            SET ciclicos.costo=materiales_costo.costo ";
+        DB::statement($query);
+
+//        DB::connection('logistica')->update('UPDATE ciclicos
+//            LEFT JOIN materiales_costo ON ciclicos.material = materiales_costo.material
+//            SET ciclicos.costo=materiales_costo.costo');
     }
 
 
