@@ -1361,11 +1361,17 @@ pre code {
   color: #727E8C;
 }
 
-.table th,
-.table td {
-  padding: 1.15rem 2rem;
+.table th{
+  padding: .8rem .8rem;
   vertical-align: top;
   border-top: 1px solid #DFE3E7;
+  font-size: .7em;
+}
+.table td {
+  padding: .3rem .3rem;
+  vertical-align: top;
+  border-top: 1px solid #DFE3E7;
+  font-size: .8em;
 }
 
 .table thead th {

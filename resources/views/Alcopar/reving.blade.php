@@ -18,17 +18,17 @@
 				<table class="table table-striped table-bordered complex-headers table-responsive">
 					<thead>
 						<tr>
-						<th>NUM PARTE</th>
-						<th>DESCRIPCIÓN</th>
-						<th>MODELO</th>
-						<th>FECHA CREACIÓN</th>
-						<th>DÍAS CREACIÓN</th>
-						<th>DÍAS CON DEPARTAMENTO</th>
-						<th>TALLER</th>
-						<th>DISPATCH</th>
-						<th>SOLICITANTE</th>
-						<th>STATUS</th>
-						<th>MOTIVO</th>
+						<th>Num Parte</th>
+						<th>Descripción</th>
+						<th>Modelo</th>
+						<th>Fecha Creación</th>
+						<th title="Días Creación">Días C.</th>
+						<th>Días c/Depto.</th>
+						<th>Taller</th>
+						<th>Dispatch</th>
+						<th>Solicitante</th>
+						<th>Status</th>
+						<th>Motivo</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -49,7 +49,7 @@
 							<td>{{ $get_records['taller'] }}</td>
 							<td>{{ $get_records['dispatch'] }}</td>
 							<td>{{ $get_records['nombre_usuario'] }}</td>							
-							<td>{{ $get_records['status'] }}</td>
+							<td class="font-weight-bold">{{ $get_records['status'] }}</td>
 							<td>{{ $get_records['motivo'] }}</td>
 							
 						</tr>

@@ -5,7 +5,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\PermissionRegistrar;
 
-class PermissionPagoATalleresSeeder extends Seeder
+class PermissionReporteKPISeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,33 +16,21 @@ class PermissionPagoATalleresSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        $parent = Permission::create(['name' => 'pago a talleres']);
+        $parent = Permission::create(['name' => 'reporte kpi']);
 
         Permission::create([
-            'name' => 'reportes',
+            'name' => 'carga de informacion',
             'parent' => $parent->id,
             'order' => 0
         ]);
 
         Permission::create([
-            'name' => 'recepcion de facturas',
+            'name' => 'descargar',
             'parent' => $parent->id,
             'order' => 1
         ]);
+
         
-        Permission::create([
-            'name' => 'facturas pendientes por aceptar',
-            'parent' => $parent->id,
-            'order' => 2
-        ]);
-
-        Permission::create([
-            'name' => 'carga de datos',
-            'parent' => $parent->id,
-            'order' => 3
-        ]);
-    	
-
         $role = Role::where('name', 'Admin')->first();
 
         $role->givePermissionTo(Permission::all());

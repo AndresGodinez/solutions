@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\PermissionRegistrar;
 
 class PermissionAduanalesSeeder extends Seeder
 {
@@ -15,13 +18,17 @@ class PermissionAduanalesSeeder extends Seeder
 
         $parent = Permission::create(['name' => 'aduanales']);
 
+
         Permission::create([
-        	['name' => 'crear solicitud',
+        	'name' => 'crear solicitud',
             'parent' => $parent->id,
-            'order' => 0],
-            ['name' => 'cargar informacion',
+            'order' => 0
+        ]);
+
+        Permission::create([
+            'name' => 'cargar informacion',
             'parent' => $parent->id,
-            'order' => 1]
+            'order' => 1
     	]);
 
         $role = Role::where('name', 'Admin')->first();

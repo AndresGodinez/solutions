@@ -18,12 +18,12 @@
 				<table class="table table-striped table-bordered complex-headers table-responsive">
 					<thead>
 						<tr>
-						<th>NUM PARTE</th>
-						<th>DESCRIPCIÓN</th>
-						<th>MODELO</th>
-						<th>FECHA CREACIÓN</th>
-						<th>DÍAS CREACIÓN</th>
-						<th>DÍAS CON DEPARTAMENTO</th>						
+						<th>Num Parte</th>
+						<th>Descripción</th>
+						<th>Modelo</th>
+						<th>Fecha Creación</th>
+						<th>Días Creación</th>
+						<th>Días c/Depto.</th>				
 						</tr>
 					</thead>
 					<tbody>
