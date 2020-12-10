@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use function compact;
+use function dd;
 use function response;
+use function view;
 
 date_default_timezone_set("America/Mexico_City");
 
@@ -119,11 +121,16 @@ class IngexpController extends Controller
         $archivo_carga = IngexpModel::visor($id);
         $archivo_carga = $archivo_carga[0]['archivo_carga'];
 
+        if (!Storage::exists($archivo_carga)){
+            return view('Bag.file_not_found');
+        }
 
         $o_en = file_get_contents(storage_path().'/app/'.$archivo_carga);
         $d = base64_encode($o_en);
 
         $path = storage_path('app/'.$archivo_carga);
+
+
 
 
         ini_set('display_errors', 1);
@@ -135,7 +142,6 @@ class IngexpController extends Controller
             //echo $tipo;
             switch ($tipo) {
                 case 'pdf':
-                    return Storage::response($archivo_carga);
                 case 'pptx':
                 case 'doc':
                 case 'docx':
@@ -143,6 +149,8 @@ class IngexpController extends Controller
                 case 'xlsx':
                 case 'txt':
                 case 'rar':
+                    return Storage::response($archivo_carga);
+
                 case 'zip':
                     return response()->download($path);
                 case 'png':
