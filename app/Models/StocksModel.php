@@ -1441,7 +1441,7 @@ class StocksModel extends ModelBase
         } else {
 
 
-            $paisrefe = array(
+            $paisrefe = [
                 1 => 'mex1',
                 9 => 'guat2',
                 7 => 'hond3',
@@ -1490,44 +1490,14 @@ class StocksModel extends ModelBase
                 47 => 'guad46',
                 48 => 'reun47',
                 49 => 'newc48',
-                11 => 'peru49');
+                11 => 'peru49'];
 
             $data = StocksModel::select( $columnasactivas)
             ->from('stock_gral_serv_final')
             ->whereRaw("stock_gral_serv_final.".$paisrefe[$id_contry]." = 1")
             ->get();
 
-            // Users for MX
-            // if ($id_region == 1) {
-            //     $data = StocksModel::select($columnasactivas)
-            //         ->from('stock_gral_serv_final')
-            //         ->where('stock_gral_serv_final.reg_mex', 1)
-            //         ->get();
-            // }
 
-            // // Users for CAM
-            // if ($id_region == 2) {
-            //     $data = StocksModel::select($columnasactivas)
-            //         ->from('stock_gral_serv_final')
-            //         ->where('stock_gral_serv_final.reg_cam', 1)
-            //         ->get();
-            // }
-
-            // // Users for AND
-            // if ($id_region == 3) {
-            //     $data = StocksModel::select($columnasactivas)
-            //         ->from('stock_gral_serv_final')
-            //         ->where('stock_gral_serv_final.reg_and', 1)
-            //         ->get();
-            // }
-
-            // // Users for CAR
-            // if ($id_region == 4) {
-            //     $data = StocksModel::select($columnasactivas)
-            //         ->from('stock_gral_serv_final')
-            //         ->where('stock_gral_serv_final.reg_car', 1)
-            //         ->get();
-            // }
         }
 
         return $data;

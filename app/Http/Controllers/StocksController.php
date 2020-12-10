@@ -36,7 +36,7 @@ class StocksController extends Controller
         $depto      = Auth::user()->depto;
 
         // $get_records = StocksModel::get_all_records_nueva($user, $id_region,$id_contry);
-        $get_records = StocksModel::get_all_records_nueva($user, $id_region, $id_contry, $depto);
+        $get_records = StocksModel::get_all_records_nueva($user, $id_contry, $depto);
         return view("Stocks.index", compact('get_records'));
     }
 
