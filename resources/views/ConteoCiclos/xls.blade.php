@@ -1,26 +1,73 @@
-<H2>WHIRLPOOL MEXICO</H2>
-<h3>CONCILIACION INVENTARIO CICLICO DEL DIA {{ $date }}</h3>
-<h3>ALMACEN {{ $planta }}</h3>
+<table>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td colspan="3">
+            <H2> <strong>WHIRLPOOL MEXICO</strong></H2>
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="6">
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td colspan="3">
+            <h3><strong>CONCILIACION INVENTARIO CICLICO DEL DIA {{ $date }}</strong></h3>
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td colspan="2">
+            <h3><strong>ALMACEN {{ $planta }}</strong></h3>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
 <br>
 <table>
     <tr>
-        <th>MATERIAL</th>
-        <th>DESCRIPCION</th>
-        <th>INV RECORD</th>
-        <th>BIN</th>
-        <th>INVENTARIO SISTEMA</th>
-        <th>C UNIT ($)</th>
-        <th>VALOR INV ($)</th>
-        <th>PRIMER CONTEO</th>
-        <th>VARIACION</th>
-        <th>SEGUNDO CONTEO</th>
-        <th>AJUSTE INV</th>
-        <th>IMPORTE AJUSTE ($)</th>
-        <th>INVENTARIO FINAL</th>
-        <th>VALOR INV ($)</th>
+        <th><strong>ID</strong></th>
+        <th><strong>MATERIAL</strong></th>
+        <th><strong>DESCRIPCION</strong></th>
+        <th><strong>INV RECORD</strong></th>
+        <th><strong>BIN</strong></th>
+        <th><strong>INVENTARIO SISTEMA</strong></th>
+        <th><strong>C UNIT ($)</strong></th>
+        <th><strong>VALOR INV ($)</strong></th>
+        <th><strong>PRIMER CONTEO</strong></th>
+        <th><strong>VARIACION</strong></th>
+        <th><strong>SEGUNDO CONTEO</strong></th>
+        <th><strong>AJUSTE INV</strong></th>
+        <th><strong>IMPORTE AJUSTE ($)</strong></th>
+        <th><strong>INVENTARIO FINAL</strong></th>
+        <th><strong>VALOR INV ($)</strong></th>
     </tr>
     @foreach($data as $key => $value)
         <tr>
+            <td>{{ $key + 1 }}</td>
             <td>{{ $value->material }}</td>
             <td>{{ $value->descripcion }}</td>
             <td>{{ $value->invrec }}</td>

@@ -85,7 +85,7 @@ class HojasConteoExport implements FromView, WithProperties, WithEvents, WithHea
             ->get();
 
         $planta = $this->planta;
-        $date = Carbon::now()->format('d/m/Y');
+        $date = Carbon::now()->format('d-m-Y');
 
         return view('ConteoCiclos.xls', compact('data', 'planta', 'date'));
     }
