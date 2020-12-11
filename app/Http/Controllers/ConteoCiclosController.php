@@ -121,7 +121,7 @@ class ConteoCiclosController extends Controller
                 'date',
                 'planta'
                 )
-            )->setPaper('a4', 'landscape');
+            )->setPaper('a4');
 
             return $pdf->download('conteo.pdf');
         }

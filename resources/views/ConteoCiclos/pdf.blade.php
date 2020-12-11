@@ -1,20 +1,55 @@
 <style>
-   table{
-       font-family: Arial,serif;
-       font-size: 14px;
-       border-left: 0.01em solid black;
-       border-right: 0;
-       border-top: 0.01em solid black;
-       border-bottom: 0;
-       border-collapse: collapse;
-   }
-   table td,
-   table th {
-       border-left: 0;
-       border-right: 0.01em solid #ccc;
-       border-top: 0;
-       border-bottom: 0.01em solid #ccc;
-   }
+    body {font-family: sans-serif;
+        font-size: 10pt;
+    }
+    p {
+        margin: 0pt;
+    }
+    td { vertical-align: top;
+    }
+
+    table
+    {
+        font-family: arial, serif;
+        border-collapse:collapse;
+
+    }
+
+
+
+    h1 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+    }
+
+
+    label {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+
+
+    table {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 10px;
+        margin: 1px;
+        cellspacing: 1px;
+        width:50%;
+        padding: 1px;
+        /*border-collapse:collapse;*/
+
+
+    }
+
+    table, td, th , tr
+    {
+        border:0px solid #666;
+    }
+
+
 
 </style>
 
@@ -23,52 +58,67 @@
 <h4>ALMACEN {{ $planta }}</h4>
 
 <table >
-    <tr style="border: 1px solid black;">
-        <th>MATERIAL</th>
-        <th>DESCRIPCION</th>
-        <th>INV RECORD</th>
-        <th>NIVEL</th>
-        <th>BIN</th>
-        <th>PRIMER CONTEO</th>
-        <th>SEGUNDO CONTEO</th>
+    <tr style="border:0px solid #666;
+        font-color: #FFF;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        font-style: normal;
+        text-align: center;
+        height:12px;">
+        <td style="
+        border: 1px solid black;
+        width: 100px;
+        align-content: center;
+         height:15px;
+        padding:2px;
+">
+            <h4>MATERIAL</h4>
+        </td>
+        <td style="border: 1px solid black; width: 100px; align-content: center">
+            <h4>DESCRIPCION</h4>
+        </td>
+        <td style="border: 1px solid black; width: 100px; align-content: center">
+            <h4>INV RECORD</h4>
+        </td>
+        <td style="border: 1px solid black; width: 100px; align-content: center">
+            <h4>NIVEL</h4>
+        </td>
+        <td style="border: 1px solid black; width: 100px; align-content: center">
+            <h4>BIN</h4>
+        </td>
+        <td style="border: 1px solid black; width: 100px; align-content: center">
+            <h4>PRIMER CONTEO</h4>
+        </td>
+        <td style="border: 1px solid black; width: 100px; align-content: center">
+            <h4>SEGUNDO CONTEO</h4>
+        </td>
     </tr>
     @foreach($data as $key => $value)
         @if(($key % $prom) == 0 && $key != 0 )
+
+            <tr><td colspan='6'>FIRMA CONTADORES</td></tr>
             <tr>
-                <td></td>
-                <td>ELABORO</td>
-                <td></td>
-                <td>
-                    JEFE ALMACEN
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td colspan='3'>PRIMER CONTEO &nbsp;&nbsp;:</td>
+                <td colspan='3'>ELABORO :</td>
             </tr>
             <tr>
-                <td></td>
-                <td>____________</td>
-                <td></td>
-                <td>
-                    _____________
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td colspan='3'>SEGUNDO CONTEO :</td>
+                <td colspan='3'>FECHA DEL CONTEO :".$date."</td>
             </tr>
+
         </table>
 
         <div style="page-break-after:always;"></div>
 
         <table style="border: 1px solid; font-family: Arial,serif; font-size: 14px ">
             <tr>
-                <th>MATERIAL</th>
-                <th>DESCRIPCION</th>
-                <th>INV RECORD</th>
-                <th>NIVEL</th>
-                <th>BIN</th>
-                <th>PRIMER CONTEO</th>
-                <th>SEGUNDO CONTEO</th>
+                <td align='center'>MATERIAL</td>
+                <td align='center'>DESCRIPCION</td>
+                <td align='center'>INV <br> RECORD</td>
+                <td align='center'>NIVEL</td>
+                <td align='center'>BIN</td>
+                <td align='center'>PRIMER <br>CONTEO</td>
+                <td align='center'>SEGUNDO <br> CONTEO</td>
             </tr>
 
         @endif
@@ -82,27 +132,14 @@
             <td></td>
         </tr>
             @if($key == $totalRecords - 1)
+                <tr><td colspan='6'>FIRMA CONTADORES</td></tr>
                 <tr>
-                    <td></td>
-                    <td>ELABORO</td>
-                    <td></td>
-                    <td>
-                        JEFE ALMACEN
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan='3'>PRIMER CONTEO &nbsp;&nbsp;:</td>
+                    <td colspan='3'>ELABORO :</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td>____________</td>
-                    <td></td>
-                    <td>
-                        _____________
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan='3'>SEGUNDO CONTEO :</td>
+                    <td colspan='3'>FECHA DEL CONTEO :".$date."</td>
                 </tr>
             </table>
             @endif
