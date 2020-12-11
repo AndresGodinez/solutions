@@ -88,7 +88,7 @@
                         @foreach($sustitutos as $sustituto)
                             <tr class="{{ $sustituto->sustituto_sug == 1 ? 'alert alert-danger' : '' }}" >
                                 <td>{{ $sustituto->sustituto }}</td>
-                                <td>{{ $material->part_description ?? 'no tiene descripción' }}</td>
+                                <td>{{ $sustituto->material2->part_description ?? 'no tiene descripción' }}</td>
                                 <td>{{ $material->part_dchain }}</td>
                                 <td>{{ $sustituto->rel }}</td>
                                 <td>{{ \Illuminate\Support\Carbon::createFromFormat('Y-m-d H:i:s', $sustituto->fecha_carga)->format('d-m-Y')   }}</td>

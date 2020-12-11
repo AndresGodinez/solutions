@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class WpxSustitutos extends Model
 {
@@ -14,5 +15,10 @@ class WpxSustitutos extends Model
         'group_rel', 'fecha_liga', 'user_carga',
         'fecha_carga'
     ];
+
+    public function material2():BelongsTo
+    {
+        return $this->belongsTo(Material::class, 'sustituto', 'part_number');
+    }
 
 }
