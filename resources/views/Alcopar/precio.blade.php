@@ -1,11 +1,15 @@
 @extends("layouts.app")
 
 @section("content")
+    <div class="row d-flex justify-content-end my-3 ">
+        <a href="{{ route('descargaPrecio') }}" class="btn btn-success">Descargar</a>
+    </div>
+
 <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/app-assets/vendors/css/tables/datatable/datatables.min.css">
 <section id="basic-datatable">
 	<div class="row">
 		<div class="col-sm-12">
-			<h2><strong>Revisión de Números de Parte</strong></h2>			
+			<h2><strong>Revisión de Números de Parte</strong></h2>
 		</div>
 	</div>
 </section>
@@ -34,7 +38,7 @@
 					<tbody>
 						<?php $n = 1; ?>
 						@foreach($get_records as $get_records)
-						
+
 						<tr>
 							<td>
 								<a href="{{	url('alcopar/precio/edit/'.$get_records['id']) }}">
@@ -45,13 +49,13 @@
 							<td>{{ $get_records['modelo'] }}</td>
 							<td>{{ $get_records['fecha'] }}</td>
 							<td>{{ $get_records['dias4'] }}</td>
-							<td>{{ $get_records['diasd'] }}</td>											
+							<td>{{ $get_records['diasd'] }}</td>
 							<td>{{ $get_records['tipo_material'] }}</td>
 							<td>{{ $get_records['categoria'] }}</td>
 							<td>{{ $get_records['familia'] }}</td>
 							<td>{{ $get_records['marca'] }}</td>
 							<td>{{ $get_records['tipo_extra'] }}</td>
-							
+
 						</tr>
 						@endforeach
 					</tbody>
@@ -72,7 +76,7 @@
             }
 		});
 
-		<?php 
+		<?php
 		if(@$_GET['success'] == 1){
 			?>
 			Swal.fire({
@@ -84,6 +88,6 @@
 			<?php
 		}
 		?>
-		
+
 </script>
 @endsection

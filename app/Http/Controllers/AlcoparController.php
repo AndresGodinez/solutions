@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UploadStockFinalRequest;
 use App\Models\Menu;
 use App\Models\AlcoparModel;
+use App\Usuario;
 use App\Utils\MyUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -14,6 +15,10 @@ use function date;
 //use Symfony\Component\HttpFoundation\Session\Session;
 use Session;
 use Illuminate\Support\Facades\DB;
+use function header;
+use function ini_set;
+use function set_time_limit;
+use function view;
 
 
 date_default_timezone_set("America/Mexico_City");
@@ -27,7 +32,7 @@ class AlcoparController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    
+
     public function reving()
     {
 
@@ -39,15 +44,15 @@ class AlcoparController extends Controller
 
     public function revingedit(Request $request)
     {
-        
+
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
-        $get_records = AlcoparModel::get_rev_ing_alta_edit($request->id);  
-        $id = $request->id;      
+        $get_records = AlcoparModel::get_rev_ing_alta_edit($request->id);
+        $id = $request->id;
         $request->session()->put(['alcopar_id'=>$id]);
         $request->session()->put(['pieza_alcopar'=>trim(strtoupper($get_records['row'][0]['parte']))]);
         #$request->session()->put(['x'=>'b']);
-        ##echo session('x');                
+        ##echo session('x');
         return view("Alcopar.revingedit", compact('get_records','id'));
     }
 
@@ -59,21 +64,21 @@ class AlcoparController extends Controller
         $request->session()->put(['tipo_material'=>trim(strtoupper($_POST["tipo_material"]))]);
 
         $request->session()->put(['categoria_extra'=>trim(strtoupper($_POST["categoria_extra"]))]);
-        
-        
+
+
         $request->session()->put(['familia'=>trim(strtoupper($_POST["familia"]))]);
         $request->session()->put(['marca1'=>trim(strtoupper($_POST["marca1"]))]);
-        
+
         $request->session()->put(['categoria'=>trim(strtoupper($_POST["categoria"]))]);
-        
+
         $request->session()->put(['comentario'=>trim(strtoupper($_POST["comentario"]))]);
 
         $request->session()->put(['descripcion'=>trim(strtoupper($_POST["descripcion"]))]);
-       
+
         $alcopar_id=session('alcopar_id');
-        
+
         $descripcion=session('descripcion');
-        
+
         $tipo_material = session('tipo_material');
         $marca = session('marca1');
         $categoria = session('categoria');
@@ -82,73 +87,73 @@ class AlcoparController extends Controller
 
 
         $datos = [];
-        
-        if($descripcion<>''){            
-            $datos['descripcion'] =$descripcion;  
+
+        if($descripcion<>''){
+            $datos['descripcion'] =$descripcion;
         }
-        
+
         if($familia == ''){
             $familia = 0;
         }
 
-        
-        
-       
+
+
+
         if(isset($_REQUEST['grabar'])){
             $nomenclatura = $tipo_material.$categoria.$familia.$marca.$categoria_extra;
 
             $datos = array('tipo_material' => $tipo_material,
             'categoria' => $categoria,
             'familia' => $familia,
-            'marca' => $marca, 
-            'tipo_extra' => $categoria_extra, 
+            'marca' => $marca,
+            'tipo_extra' => $categoria_extra,
             'nomenclatura_service' => $nomenclatura);
-            AlcoparModel::updateProcesa('updatePartes',$alcopar_id, $datos);  
-            
-            AlcoparModel::procesaaceptar();      
+            AlcoparModel::updateProcesa('updatePartes',$alcopar_id, $datos);
+
+            AlcoparModel::procesaaceptar();
             $urldirv = url('/alcopar/reving?success=1');
 
 
             echo "<script>window.location = '".$urldirv."'</script>";
-            
+
         }
         else if(isset($_REQUEST['cancelar'])) {
-            AlcoparModel::cancelar2();                      
+            AlcoparModel::cancelar2();
             $urldirv = url('/alcopar/reving?success=1');
             echo "<script>window.location = '".$urldirv."'</script>";
         }
-        else if(isset($_REQUEST['rechazar'])) {            
-            
+        else if(isset($_REQUEST['rechazar'])) {
+
             $urldirv = url('/alcopar/reving/procesarechazar');
-            echo "<script>window.location = '".$urldirv."'</script>";      
+            echo "<script>window.location = '".$urldirv."'</script>";
         }
-        
+
         else if(isset($_REQUEST['reasignar'])) {
-            AlcoparModel::reasignar();          
+            AlcoparModel::reasignar();
             $urldirv = url('/alcopar/reving?success=1');
-            echo "<script>window.location = '".$urldirv."'</script>";         
+            echo "<script>window.location = '".$urldirv."'</script>";
         }
     }
 
     public function procesarechazar1(Request $request){
         $request->session()->put(['razon'=>trim(strtoupper($_POST["rechazo"]))]);
-        $v = AlcoparModel::rechazar(); 
+        $v = AlcoparModel::rechazar();
         if(!$v){
-            
+
             $urldirv = url('/alcopar/reving/procesarechazar3');
-            echo "<script>window.location = '".$urldirv."'</script>";       
+            echo "<script>window.location = '".$urldirv."'</script>";
         }else{
-            
+
             $urldirv = url('/alcopar/reving?success=1');
-            echo "<script>window.location = '".$urldirv."'</script>";   
+            echo "<script>window.location = '".$urldirv."'</script>";
         }
     }
 
     public function procesarechazar(){
-        
+
         $get_records = AlcoparModel::getprocesorechazar();
         $nombre  = Auth::user()->nombre;
-        $alcopar_id=session('alcopar_id');        
+        $alcopar_id=session('alcopar_id');
         $alcopar=session('alcopar');
         $alcopar_nivel=session('alcopar_nivel');
         $comentario=session('comentario');
@@ -157,10 +162,10 @@ class AlcoparController extends Controller
     }
 
     public function procesarechazar3(){
-        
+
         $get_records = AlcoparModel::getprocesorechazar();
         $nombre  = Auth::user()->nombre;
-        $alcopar_id=session('alcopar_id');        
+        $alcopar_id=session('alcopar_id');
         $alcopar=session('alcopar');
         $alcopar_nivel=session('alcopar_nivel');
         $comentario=session('comentario');
@@ -172,37 +177,37 @@ class AlcoparController extends Controller
         $request->session()->put(['existe'=>trim(strtoupper($_POST["existe"]))]);
         $request->session()->put(['tipo'=>trim(strtoupper($_POST["tipo"]))]);
         $request->session()->put(['sustituto'=>trim(strtoupper($_POST["sustituto"]))]);
-        
+
         try{
-            $v = AlcoparModel::rechazar2(); 
+            $v = AlcoparModel::rechazar2();
             if($v){
-                 
+
                 $urldirv = url('/alcopar/reving/?success=1');
-                echo "<script>window.location = '".$urldirv."'</script>";            
+                echo "<script>window.location = '".$urldirv."'</script>";
             }else{
-                echo "<script>window.location = './'</script>";                
+                echo "<script>window.location = './'</script>";
             }
         }catch(Exception $e){
             $urldirv = url('/alcopar/reving/?error=1');
-            echo "<script>window.location = '".$urldirv."'</script>";            
+            echo "<script>window.location = '".$urldirv."'</script>";
         }
-       
+
     }
 
 
     //get jquery
     public function getCategoriaJquery(Request $request)
-    {       
-        $get_records = AlcoparModel::getCategoria($request->id);  
+    {
+        $get_records = AlcoparModel::getCategoria($request->id);
         print_r($get_records);
     }
     public function getFamiliaJquery(Request $request)
-    {       
+    {
         $get_records = AlcoparModel::getFamilia($request->id);
         print_r($get_records);
     }
     public function getCategoriaExtraJquery(Request $request)
-    {       
+    {
         $get_records = AlcoparModel::getCategoriaExtra($request->id);
         print_r($get_records);
     }
@@ -219,13 +224,13 @@ class AlcoparController extends Controller
     {
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
-        $get_records = AlcoparModel::get_factible_edit($request->id);  
-        $id = $request->id;      
-        
-        $request->session()->put(['alcopar_id'=>$id]);        
+        $get_records = AlcoparModel::get_factible_edit($request->id);
+        $id = $request->id;
+
+        $request->session()->put(['alcopar_id'=>$id]);
         $request->session()->put(['pieza_alcopar'=>trim(strtoupper($get_records['row'][0]['parte']))]);
         #$request->session()->put(['x'=>'b']);
-        ##echo session('x');                
+        ##echo session('x');
         return view("Alcopar.factibledit", compact('get_records','id'));
     }
 
@@ -236,8 +241,8 @@ class AlcoparController extends Controller
         $request->session()->put(['comentario'=>trim(strtoupper($_POST["comentario"]))]);
         $request->session()->put(['asigna'=>trim(strtoupper($_POST["asigna"]))]);
         $request->session()->put(['costo'=>trim(strtoupper($_POST["costo"]))]);
-        
-        
+
+
         $alcopar_id=session('alcopar_id');
         $pieza=session('pieza_alcopar');
 
@@ -247,33 +252,33 @@ class AlcoparController extends Controller
             ->update([
                'costo_pieza' => $_POST["costo"]
         ]);
-        
-        AlcoparModel::updateProcesaa($pieza);  
+
+        AlcoparModel::updateProcesaa($pieza);
         if(isset($_REQUEST['grabar'])){
             AlcoparModel::procesaaceptarfac();
             $urldirv = url('/alcopar/factible/?success=1');
-            echo "<script>window.location = '".$urldirv."'</script>";            
-        }      
-        else if(isset($_REQUEST['rechazar'])) {            
-            
+            echo "<script>window.location = '".$urldirv."'</script>";
+        }
+        else if(isset($_REQUEST['rechazar'])) {
+
             $urldirv = url('/alcopar/factible/procesarechazar');
             echo "<script>window.location = '".$urldirv."'</script>";
-        }        
+        }
         else if(isset($_REQUEST['reasignar'])) {
-            AlcoparModel::reasignarfac();          
-            
+            AlcoparModel::reasignarfac();
+
             $urldirv = url('/alcopar/factible/?success=1');
-            echo "<script>window.location = '".$urldirv."'</script>";             
+            echo "<script>window.location = '".$urldirv."'</script>";
         }
     }
 
 
     public function procesarechazarfac(){
-        
+
         $get_records = AlcoparModel::getprocesorechazar();
         $nombre  = Auth::user()->nombre;
         print_r($nombre);
-        $alcopar_id=session('alcopar_id');        
+        $alcopar_id=session('alcopar_id');
         $alcopar=session('alcopar');
         $alcopar_nivel=session('alcopar_nivel');
         $comentario=session('comentario');
@@ -283,16 +288,16 @@ class AlcoparController extends Controller
 
     public function procesarechazarfac1(Request $request){
         $request->session()->put(['rechazo'=>trim(strtoupper($_POST["rechazo"]))]);
-        AlcoparModel::rechazarfac();         
-        echo "<script>window.location = './?success=1'</script>";               
+        AlcoparModel::rechazarfac();
+        echo "<script>window.location = './?success=1'</script>";
 
     }
 
     public function procesarechazarfac3(){
-        
+
         $get_records = AlcoparModel::getprocesorechazar();
         $nombre  = Auth::user()->nombre;
-        $alcopar_id=session('alcopar_id');        
+        $alcopar_id=session('alcopar_id');
         $alcopar=session('alcopar');
         $alcopar_nivel=session('alcopar_nivel');
         $comentario=session('comentario');
@@ -313,21 +318,21 @@ class AlcoparController extends Controller
     public function  altamaterialupdate_addcorreo (Request $request){
         $username       = Auth::user()->username;
         $mail  =          Auth::user()->mail;
-        $depto  =          Auth::user()->depto;        
+        $depto  =          Auth::user()->depto;
         $id_alcopar=session('id');
 
         DB::table('alcopar_partes_mail')->insert(
             [
                 'idalcopar'=>$id_alcopar,
-                'mail'=>$mail                
+                'mail'=>$mail
             ]
         );
 
         $urldirv = url('/alcopar/altamaterial?success=1');
-        
-        echo "<script language='JavaScript'> 
+
+        echo "<script language='JavaScript'>
                 alert('Fuiste agregado a la lista para recibir correo cuando se termine el proceso de alta de parte');
-                window.location = '".$urldirv."';  
+                window.location = '".$urldirv."';
             </script>";
 
     }
@@ -335,7 +340,7 @@ class AlcoparController extends Controller
         $username       = Auth::user()->username;
         $mail  =          Auth::user()->mail;
         $depto  =          Auth::user()->depto;
-        
+
         $request->session()->put(['motivo'=>trim(strtoupper($_POST["motivo"]))]);
         $request->session()->put(['parte'=>trim(strtoupper($_POST["parte"]))]);
 
@@ -357,7 +362,7 @@ class AlcoparController extends Controller
         $marca2 = strtoupper($_POST["marca2"]);
         $categoria_extra = strtoupper($_POST["categoria_extra"]);
         $motivo = session('motivo');
-        
+
         $v = AlcoparModel::altamaterial(
             $username,
             $mail,
@@ -374,17 +379,17 @@ class AlcoparController extends Controller
             $marca1,
             $marca2,
             $categoria_extra,
-            $motivo        
+            $motivo
         );
 
-        
+
         if($v){
-            //AlcoparModel::procesaaceptarfac();      
-            
+            //AlcoparModel::procesaaceptarfac();
+
             $urldirv = url('/alcopar/altamaterial?success=1');
-            echo "<script>window.location = '".$urldirv."'</script>";             
-        }      
-        else{            
+            echo "<script>window.location = '".$urldirv."'</script>";
+        }
+        else{
             $urldirv = url('/alcopar/altamaterial/existente');
             echo "<script>window.location = '".$urldirv."'</script>";
         }
@@ -405,18 +410,18 @@ class AlcoparController extends Controller
     }
 
     public function altamaterialexistentesave(Request $request)
-    {                       
-        if(isset($_REQUEST['grabar'])){        
+    {
+        if(isset($_REQUEST['grabar'])){
             AlcoparModel::altamaterialexistentegrabar();
-        }        
-        else if(isset($_REQUEST['agrega'])) {
-            AlcoparModel::altamaterialexistenteagregar();            
         }
-        
-        
+        else if(isset($_REQUEST['agrega'])) {
+            AlcoparModel::altamaterialexistenteagregar();
+        }
+
+
         $urldirv = url('/alcopar/altamaterial');
-        echo "<script>window.location = '".$urldirv."'</script>"; 
-        
+        echo "<script>window.location = '".$urldirv."'</script>";
+
     }
 
 
@@ -427,17 +432,17 @@ class AlcoparController extends Controller
         $get_records = AlcoparModel::get_classat();
         return view("Alcopar.classat", compact('get_records'));
     }
-    
+
     public function classatedit(Request $request)
     {
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
-        $get_records = AlcoparModel::get_factible_edit($request->id);  
-        $id = $request->id;      
+        $get_records = AlcoparModel::get_factible_edit($request->id);
+        $id = $request->id;
         $request->session()->put(['alcopar_id'=>$id]);
         $request->session()->put(['pieza_alcopar'=>trim(strtoupper($get_records['row'][0]['partes']))]);
         #$request->session()->put(['x'=>'b']);
-        ##echo session('x');                
+        ##echo session('x');
         return view("Alcopar.classatedit", compact('get_records','id'));
     }
 
@@ -449,10 +454,10 @@ class AlcoparController extends Controller
             ->whereRaw("id_clasificacion = '" . $clasificacion."'")
             ->get();
 
-        $row = $row2->count();                
+        $row = $row2->count();
         if($row == 0 ){
-            echo "<script languaje='javascript'>alert('CLASIFICACION NO EXISTE EN BD'); 
-            window.close();  
+            echo "<script languaje='javascript'>alert('CLASIFICACION NO EXISTE EN BD');
+            window.close();
             window.opener.document.getElementById('clasif').value = '';
             window.opener.document.getElementById('clasif').focus();
             </script>";
@@ -467,24 +472,24 @@ class AlcoparController extends Controller
         $alcopar_id=session('alcopar_id');
         $comentario=$_POST['comentario'];
         $username = Auth::user()->username;
-        $clasificacion = $_POST['clasif'];            
-        
+        $clasificacion = $_POST['clasif'];
+
         $datos  = [
-            'clasif_sat'=>0, 
-            
-            // 'precio'=>'1',             
-            // 'costo'=>'0', 
+            'clasif_sat'=>0,
+
+            // 'precio'=>'1',
+            // 'costo'=>'0',
             // 'factible'=>'0',
 
             'clasif_sat_user' => $username,
             'comentario_clasif_sat'=>$comentario,
             'codigo_clasif_sat' => $clasificacion,
             'clas_sat_status' => 'CLASIFICACION AGREGADA'
-        ];        
+        ];
         AlcoparModel::updateProcesaGeneral('alcopar_partes','id',$alcopar_id,$datos);
         $urldirv = url('/alcopar/classat?success=1');
         echo "<script>window.location = '".$urldirv."'</script>";
-        
+
     }
 
 
@@ -496,49 +501,62 @@ class AlcoparController extends Controller
         $get_records = AlcoparModel::get_precio();
         return view("Alcopar.precio", compact('get_records'));
     }
-    
+
+    public function descargaPrecio(Request $request)
+    {
+        set_time_limit(0);
+        ini_set('memory_limit', '1000M');
+        header('Content-type: application/vnd.ms-excel;charset=iso-8859-15');
+        header('Content-Disposition: attachment; filename=Reporte de precios.xls');
+
+        $getRecords = AlcoparModel::get_precio();
+
+        return view('Alcopar.download', compact('getRecords'));
+
+    }
+
     public function precioedit(Request $request)
     {
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
-        $get_records = AlcoparModel::get_factible_edit($request->id);  
-        $id = $request->id;      
+        $get_records = AlcoparModel::get_factible_edit($request->id);
+        $id = $request->id;
         $request->session()->put(['alcopar_id'=>$id]);
         $request->session()->put(['pieza_alcopar'=>trim(strtoupper($get_records['row'][0]['partes']))]);
         #$request->session()->put(['x'=>'b']);
-        ##echo session('x');                
+        ##echo session('x');
         return view("Alcopar.precioedit", compact('get_records','id'));
     }
 
     public function precioprocess(Request $request)
-    {                      
+    {
         $request->session()->put(['comentario'=>trim(strtoupper($_POST["comentario"]))]);
         $request->session()->put(['asigna'=>trim(strtoupper($_POST["asigna"]))]);
-        //$request->session()->put(['costo'=>trim(strtoupper($_POST["costo"]))]); 
-        if(isset($_REQUEST['grabar'])){                             
+        //$request->session()->put(['costo'=>trim(strtoupper($_POST["costo"]))]);
+        if(isset($_REQUEST['grabar'])){
             $alcopar_id=session('alcopar_id');
             $comentario=$_POST['comentario'];
-            $username = Auth::user()->username;                  
+            $username = Auth::user()->username;
             $datos  = [
-                'status'=>'PENDIENTE PRECIO OOW', 
-                'fechaprecio'=>date('Ymd'), 
-                'precio'=>'0', 
-                'oow'=>'1', 
-                'ventas'=>$username, 
-                'comentario_precio'=>$comentario 
-            ];        
+                'status'=>'PENDIENTE PRECIO OOW',
+                'fechaprecio'=>date('Ymd'),
+                'precio'=>'0',
+                'oow'=>'1',
+                'ventas'=>$username,
+                'comentario_precio'=>$comentario
+            ];
             AlcoparModel::updateProcesaGeneral('alcopar_partes','id',$alcopar_id,$datos);
-            
-            $urldirv = url('/alcopar/precio?success=1');
-            echo "<script>window.location = '".$urldirv."'</script>";                        
-        }        
-        else if(isset($_REQUEST['reasignar'])) {
-            AlcoparModel::reasignarprecio();                    
+
             $urldirv = url('/alcopar/precio?success=1');
             echo "<script>window.location = '".$urldirv."'</script>";
-        }                
+        }
+        else if(isset($_REQUEST['reasignar'])) {
+            AlcoparModel::reasignarprecio();
+            $urldirv = url('/alcopar/precio?success=1');
+            echo "<script>window.location = '".$urldirv."'</script>";
+        }
     }
-   
+
 
 
 
@@ -551,52 +569,52 @@ class AlcoparController extends Controller
         //print_r($get_records);
         return view("Alcopar.oow", compact('get_records'));
     }
-    
+
     public function oowedit(Request $request)
     {
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
-        $get_records = AlcoparModel::get_factible_edit($request->id);  
-        $id = $request->id;      
+        $get_records = AlcoparModel::get_factible_edit($request->id);
+        $id = $request->id;
         $request->session()->put(['alcopar_id'=>$id]);
         $request->session()->put(['pieza_alcopar'=>trim(strtoupper($get_records['row'][0]['partes']))]);
         #$request->session()->put(['x'=>'b']);
-        ##echo session('x');                
+        ##echo session('x');
         return view("Alcopar.oowedit", compact('get_records','id'));
     }
 
     public function oowprocess(Request $request)
-    {                 
+    {
         $request->session()->put(['comentario'=>trim(strtoupper($_POST["comentario"]))]);
         $request->session()->put(['asigna'=>trim(strtoupper($_POST["asigna"]))]);
         //$request->session()->put(['costo'=>trim(strtoupper($_POST["costo"]))]);
 
-        if(isset($_REQUEST['grabar'])){                             
+        if(isset($_REQUEST['grabar'])){
             $alcopar_id=session('alcopar_id');
             $comentario=$_POST['comentario'];
-            $username = Auth::user()->username;                  
+            $username = Auth::user()->username;
             $datos  = [
-                'status'=>'ALTA COMPLETADA', 
-                'fechaoow'=>date('Ymd'), 
-                'oow'=>'0', 
-                'oow_user'=>$username, 
+                'status'=>'ALTA COMPLETADA',
+                'fechaoow'=>date('Ymd'),
+                'oow'=>'0',
+                'oow_user'=>$username,
                 'comentario_oow'=>$comentario
-            ];        
+            ];
             AlcoparModel::updateProcesaGeneral('alcopar_partes','id',$alcopar_id,$datos);
             $urldirv = url('/alcopar/oow?success=1');
             echo "<script>window.location = '".$urldirv."'</script>";
-        
-        }        
+
+        }
         else if(isset($_REQUEST['reasignar'])) {
-            AlcoparModel::reasignaroow();            
+            AlcoparModel::reasignaroow();
             $urldirv = url('/alcopar/oow?success=1');
             echo "<script>window.location = '".$urldirv."'</script>";
-        }                
+        }
     }
 
     public function reportalcopardescarga(){
         $user       = Auth::user()->username;
-        $id_region  = Auth::user()->id_region;        
+        $id_region  = Auth::user()->id_region;
         return view("Alcopar.reportalcopardescarga");
     }
 
@@ -672,7 +690,7 @@ class AlcoparController extends Controller
                     0,
                     DATEDIFF(alcopar_partes.fecha_clasif_sat,
                             alcopar_partes.fechafactible)) AS tiempo_clasificacion_sat,
-                
+
                 pregunta,
                 otros,
                 tipo,
@@ -688,8 +706,8 @@ class AlcoparController extends Controller
             ->leftJoin('alcopar_familia', 'alcopar_partes.familia', '=', 'alcopar_familia.id_familia')
             ->leftJoin('alcopar_marca', 'alcopar_partes.marca', '=', 'alcopar_marca.id')
             ->leftJoin('alcopar_tipo_extra', 'alcopar_partes.tipo_extra', '=', 'alcopar_tipo_extra.id')
-            ->leftJoin('alcopar_tipo_material', 'alcopar_partes.tipo_material', '=', 'alcopar_tipo_material.id_tipo_material')      
-            // ->limit(10) 
+            ->leftJoin('alcopar_tipo_material', 'alcopar_partes.tipo_material', '=', 'alcopar_tipo_material.id_tipo_material')
+            // ->limit(10)
             ->get();
             echo "<pre>";
             $row2Count = $row->count();
@@ -748,7 +766,7 @@ class AlcoparController extends Controller
                     <th style="color:rgb(255,255,255);background-color:#000066;">codigo_clasif_sat</th>
                     <th style="color:rgb(255,255,255);background-color:#000066;">nomenclatura_service</th>
                 </tr>
-                ';                
+                ';
                 foreach($row as $v){
                     $return .= '<tr>
                     <td>'.$v['id'].'</td>
@@ -775,7 +793,7 @@ class AlcoparController extends Controller
                     <td>'.$v[' ing2'].'</td>
                     <td>'.$v[' comentario_alta'].'</td>
                     <td>'.$v[' tiempo_alta'].'</td>';
-                    
+
                     // if($v['fechaalta'] = '0000-00-00'){
                     //     $return .= '<td>'.$v['fechaalta'].'</td>';
                     // }else if($v['fechaalta'] = '0'){
@@ -785,7 +803,7 @@ class AlcoparController extends Controller
                     // }
                     $return .= '<td>'.$v['fechaalta'].'</td>';
                     //$return .= '<td>'.htmlspecialchars(date('d/m/Y H:i:s',$v['fechaalta']));
-                    
+
                     $return .= '<td>'.$v[' mat2'].'</td>
                     <td>'.$v[' comentario_costo'].'</td>
                     <td>'.$v[' tiempo_costo'].'</td>
@@ -813,8 +831,8 @@ class AlcoparController extends Controller
                     <td>'.$v['nomenclatura_service'].'</td>
                     </tr>
                     ';
-                   
-                }  
+
+                }
                 $return .= '</table>';
 
                 // print($return);
@@ -852,7 +870,7 @@ class AlcoparController extends Controller
             header("Expires: 0");
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
             header("content-disposition: attachment;filename=alcopar_partes.xls");
-            echo $return;  
+            echo $return;
     }
 
     public function historial(Request $request){
@@ -880,17 +898,17 @@ class AlcoparController extends Controller
                         <td style='color:#999999;font-size:12px; text-align:left; border-bottom:1px solid; border-bottom-color:#999999;'>" .$row['usuario']. "</td>
                         <td style='color:#999999;font-size:12px; text-align:left; border-bottom:1px solid; border-bottom-color:#999999;'>" .$row['modulo_ant']. "</td>
                         <td style='color:#999999;font-size:12px; text-align:left; border-bottom:1px solid; border-bottom-color:#999999;'>" .$row['modulo_act']. "</td>
-                    </tr>";            
+                    </tr>";
             }
             echo "</table>";
-        
+
     }
 
 
     public function testmail(Request $request){
 
 
-        $email_message = "	
+        $email_message = "
         <html>
         <head>
         <title>E-Mail HTML</title>
@@ -916,7 +934,7 @@ class AlcoparController extends Controller
 
             }
             </style>
-                
+
                 <body>
                 <p></p>
                 <p>Por este medio te informamos que la solictud de alta de parte ha sido CANCELADA y se agregó a tu bandeja de pedidos la solicitud por motivo de cancelación de alta de parte.<br> </p>
@@ -926,7 +944,7 @@ class AlcoparController extends Controller
                 INFORMACION DE LA SOLICITUD
                 <p></p>
                 N&uacute;mero de Parte : <br>
-                Descripci&oacute;n : <br>	
+                Descripci&oacute;n : <br>
                 Comentarios : <br>
                 Dispatch : <br>
                 <p></p>
@@ -944,7 +962,7 @@ class AlcoparController extends Controller
         $headers = $headers . "From: Whirlpool Service<no-responder@whirlpool.com>\r\n";
 
 
-        $email_message = "  
+        $email_message = "
                 <html>
                 <head>
                 <title>E-Mail HTML</title>
@@ -970,7 +988,7 @@ class AlcoparController extends Controller
 
             }
             </style>
-                
+
                 <body>
                 <p></p>
                 <p>Por este medio te informamos que la solictud de Alta de Parte ha sido cancelada.<br> </p>
@@ -980,7 +998,7 @@ class AlcoparController extends Controller
                 INFORMACION DE LA SOLICITUD
                 <p></p>
                 N&uacute;mero de Parte : <br>
-                Descripci&oacute;n :<br>   
+                Descripci&oacute;n :<br>
                 Comentarios :<br>
                 Dispatch :<br>
                 <p></p>

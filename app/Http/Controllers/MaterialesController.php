@@ -39,9 +39,7 @@ class MaterialesController extends Controller
         $user = Auth::user()->username;
 
         $data = Sustituto::get_sol_by_id($id);
-//        dd([
-//            'data' => $data
-//        ]);
+
         $data_log = Sustituto::get_log_sol_by_id($id);
 
         $access = Sustituto::get_access(Auth::user()->username, Auth::user()->depto);
@@ -55,7 +53,6 @@ class MaterialesController extends Controller
     }
 
 
-//    TODO  Revisar
     public function consulta(ConsultaMaterialesRequest $request)
     {
         $material = Material::where('part_number', $request->get('ipt_material'))->first();
