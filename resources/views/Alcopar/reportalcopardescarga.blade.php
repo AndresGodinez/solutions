@@ -13,7 +13,7 @@
 
     <div class="card">
         <div class="card-body">
-            <form name='forma' action="{{ url('/alcopar/classat/guardar/')}}" id='formID' method='POST'>
+            <form name='forma' action="{{ route('report-acoplar')}}" method='get'>
                 @csrf
                 <div class="row">
                     <div class="col-md-12 col-12 mt-2">
@@ -28,12 +28,17 @@
                                                 </span>
                             </div>
                         </div>
-                        <fieldset class="form-group">
-                            <center>
-                                <a class="btn btn-primary" value="" href="{{ url('/alcopar/reportalcopar')}}">Descargar
-                                    Reporte</a>
-                            </center>
-                        </fieldset>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="modelo">Modelo</label>
+                                <input type="text" id="modelo" name="modelo" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-primary" value="Descargar Reporte">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>

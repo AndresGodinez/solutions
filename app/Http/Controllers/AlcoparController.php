@@ -618,10 +618,12 @@ class AlcoparController extends Controller
         return view("Alcopar.reportalcopardescarga");
     }
 
-    public function reportalcopar(){
+    public function reportalcopar(Request $request){
+//        dd($request->all());
+//        dd('only');
         ini_set('memory_limit', '-1');
-
-        $row = AlcoparModel::query()->selectRaw('
+        if (!!$request->get('modelo')){
+            $row = AlcoparModel::query()->selectRaw('
         alcopar_partes.id,
                 alcopar_partes.fecha,
                 alcopar_partes.parte,
@@ -701,14 +703,109 @@ class AlcoparController extends Controller
                 alcopar_tipo_extra.tipo_extra,
                 alcopar_partes.codigo_clasif_sat,
                 alcopar_partes.nomenclatura_service')
-            ->from('alcopar_partes')
-            ->leftJoin('alcopar_categoria', 'alcopar_partes.categoria', '=', 'alcopar_categoria.id_categoria')
-            ->leftJoin('alcopar_familia', 'alcopar_partes.familia', '=', 'alcopar_familia.id_familia')
-            ->leftJoin('alcopar_marca', 'alcopar_partes.marca', '=', 'alcopar_marca.id')
-            ->leftJoin('alcopar_tipo_extra', 'alcopar_partes.tipo_extra', '=', 'alcopar_tipo_extra.id')
-            ->leftJoin('alcopar_tipo_material', 'alcopar_partes.tipo_material', '=', 'alcopar_tipo_material.id_tipo_material')
-            // ->limit(10)
-            ->get();
+                ->from('alcopar_partes')
+                ->leftJoin('alcopar_categoria', 'alcopar_partes.categoria', '=', 'alcopar_categoria.id_categoria')
+                ->leftJoin('alcopar_familia', 'alcopar_partes.familia', '=', 'alcopar_familia.id_familia')
+                ->leftJoin('alcopar_marca', 'alcopar_partes.marca', '=', 'alcopar_marca.id')
+                ->leftJoin('alcopar_tipo_extra', 'alcopar_partes.tipo_extra', '=', 'alcopar_tipo_extra.id')
+                ->leftJoin('alcopar_tipo_material', 'alcopar_partes.tipo_material', '=', 'alcopar_tipo_material.id_tipo_material')
+                ->where('alcopar_partes.modelo', $request->get('modelo'))
+                // ->limit(10)
+                ->get();
+        }else{
+            $row = AlcoparModel::query()->selectRaw('
+        alcopar_partes.id,
+                alcopar_partes.fecha,
+                alcopar_partes.parte,
+                alcopar_partes.`status`,
+                comentario AS substatus,
+                descripcion,
+                modelo,
+                taller,
+                dispatch,
+                sust,
+                username,
+                motivo,
+                depto,
+                ing,
+                comentario_reving,
+                IF(DATEDIFF(alcopar_partes.fechareving,
+                            alcopar_partes.fecha) < 0,
+                    0,
+                    DATEDIFF(alcopar_partes.fechareving,
+                            alcopar_partes.fecha)) AS tiempo_reving,
+                alcopar_partes.fechareving,
+                materiales,
+                comentario_mat,
+                IF(DATEDIFF(alcopar_partes.fechafactible,
+                            alcopar_partes.fechareving) < 0,
+                    0,
+                    DATEDIFF(alcopar_partes.fechafactible,
+                            alcopar_partes.fechareving)) AS tiempo_factible,
+                alcopar_partes.fechafactible,
+                ing2,
+                comentario_alta,
+                IF(DATEDIFF(alcopar_partes.fechaalta,
+                            alcopar_partes.fechafactible) < 0,
+                    0,
+                    DATEDIFF(alcopar_partes.fechaalta,
+                            alcopar_partes.fechafactible)) AS tiempo_alta,
+                alcopar_partes.fechaalta,
+                mat2,
+                comentario_costo,
+                IF(DATEDIFF(alcopar_partes.fechacosto,
+                            alcopar_partes.fechaalta) < 0,
+                    0,
+                    DATEDIFF(alcopar_partes.fechacosto,
+                            alcopar_partes.fechaalta)) AS tiempo_costo,
+                alcopar_partes.fechacosto,
+                ventas,
+                comentario_precio,
+                IF(DATEDIFF(alcopar_partes.fechaprecio,
+                            alcopar_partes.fechacosto) < 0,
+                    0,
+                    DATEDIFF(alcopar_partes.fechaprecio,
+                            alcopar_partes.fechacosto)) AS tiempo_precio,
+                alcopar_partes.fechaprecio,
+                oow_user,
+                comentario_oow,
+                IF(DATEDIFF(alcopar_partes.fechaoow,
+                            alcopar_partes.fechaprecio) < 0,
+                    0,
+                    DATEDIFF(alcopar_partes.fechaoow,
+                            alcopar_partes.fechaprecio)) AS tiempo_oow,
+                alcopar_partes.fechaoow,
+                alcopar_partes.clas_sat_status,
+                alcopar_partes.clasif_sat_user,
+                IF(DATEDIFF(alcopar_partes.fecha_clasif_sat,
+                            alcopar_partes.fechafactible) < 0,
+                    0,
+                    DATEDIFF(alcopar_partes.fecha_clasif_sat,
+                            alcopar_partes.fechafactible)) AS tiempo_clasificacion_sat,
+
+                pregunta,
+                otros,
+                tipo,
+                alcopar_tipo_material.tipo_material,
+                alcopar_categoria.categoria,
+                alcopar_familia.familia,
+                alcopar_marca.marca,
+                alcopar_tipo_extra.tipo_extra,
+                alcopar_partes.codigo_clasif_sat,
+                alcopar_partes.nomenclatura_service')
+                ->from('alcopar_partes')
+                ->leftJoin('alcopar_categoria', 'alcopar_partes.categoria', '=', 'alcopar_categoria.id_categoria')
+                ->leftJoin('alcopar_familia', 'alcopar_partes.familia', '=', 'alcopar_familia.id_familia')
+                ->leftJoin('alcopar_marca', 'alcopar_partes.marca', '=', 'alcopar_marca.id')
+                ->leftJoin('alcopar_tipo_extra', 'alcopar_partes.tipo_extra', '=', 'alcopar_tipo_extra.id')
+                ->leftJoin('alcopar_tipo_material', 'alcopar_partes.tipo_material', '=', 'alcopar_tipo_material.id_tipo_material')
+                // ->limit(10)
+                ->get();
+        }
+
+
+
+//        dd($row);
             echo "<pre>";
             $row2Count = $row->count();
             $return = '';
@@ -835,35 +932,7 @@ class AlcoparController extends Controller
                 }
                 $return .= '</table>';
 
-                // print($return);
 
-                // die();
-                // while($rs = $row){
-                //     $return .= '<tr>';
-                //     if($cols==0){
-                //         $cols = sizeof($rs);
-                //         $cols_names = array();
-                //         for($i=0; $i<$cols; $i++){
-                //             //$col_name = mysql_field_name($rs,$i);
-                //             $return .= '<th style="color:rgb(255,255,255);background-color:#000066;">'.htmlspecialchars($col_name).'</th>';
-                //             $cols_names[$i] = $col_name;
-                //         }
-                //         $return .= '</tr><tr>';
-                //     }
-                //     for($i=0; $i<$cols; $i++){
-                //         #En esta iteraciÃ³n podes manejar de manera personalizada datos, por ejemplo:
-                //         if($cols_names[$i] == 'fechaAlta'){ #Fromateo el registro en formato Timestamp
-                //             $return .= '<td>'.htmlspecialchars(date('d/m/Y H:i:s',$rs[$i])).'</td>';
-                //         }else if($cols_names[$i] == 'activo'){ #Estado lÃ³gico del registro, en vez de 1 o 0 le muestro Si o No.
-                //             $return .= '<td>'.htmlspecialchars( $rs[$i]==1? 'SI':'NO' ).'</td>';
-                //         }else{
-                //             $return .= '<td>'.htmlspecialchars($rs[$i]).'</td>';
-                //         }
-                //     }
-                //     $return .= '</tr>';
-                // }
-                // $return .= '</table>';
-                //mysql_free_result($r);
             }
             #Cambiando el content-type mÃ¡s las <table> se pueden exportar formatos como csv
             header("Content-Type: application/vnd.ms-excel");

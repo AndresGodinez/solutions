@@ -76,7 +76,8 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/oow/oowprocess',                                      'AlcoparController@oowprocess');
 
-        Route::get('/reportalcopar',                                      'AlcoparController@reportalcopar');
+        Route::get('/reportalcopar',                                      'AlcoparController@reportalcopar')
+        ->name('report-acoplar');
 
         Route::get('/reportalcopardescarga',                                      'AlcoparController@reportalcopardescarga');
 
