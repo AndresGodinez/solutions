@@ -68,8 +68,7 @@
 						<div class="modal-dialog" role="document">
 						    <div class="modal-content">
 						      	@if($flag == 2)
-						      	<form action="{{ url('pago-a-talleres/process/recepcion-facturas/admin/') }}" method="POST" enctype="multipart/form-data">
-						      		{{ csrf_field() }}
+						      	<form>
 						      		<div class="modal-header">
 							        	<h5 class="modal-title" id="exampleModalLabel">Recepción de Factura [ {{ $data_facts_pendientes->referencia }} ]</h5>
 							        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -96,8 +95,7 @@
 							      	</div>
 						      	</form>
 						      	@else
-						      	<form action="{{ url('pago-a-talleres/process/recepcion-facturas/taller/') }}" method="POST" enctype="multipart/form-data">
-						      		{{ csrf_field() }}
+						      	<form>
 						      		<div class="modal-header">
 							        	<h5 class="modal-title" id="exampleModalLabel">Recepción de Factura Talleres [ {{ $data_facts_pendientes->referencia }} ]</h5>
 							        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">

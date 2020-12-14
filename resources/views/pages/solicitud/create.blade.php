@@ -1,6 +1,9 @@
 @extends("layouts.app")
 
 @section("content")
+<?php 
+$sol_ing = true;
+?>
 	<div class="text-center">
 		<div class="card-body">
 			<h4 class="card-title">{{ config('Pages.solicitud.title') }}</h4>
@@ -123,7 +126,7 @@ function search(){
 		dispatch:	$("#dispatch").val(),
 	}
 	$.ajax({
-		url: "{{ url('solicitud/search') }}",
+		url: "{{ url('solicitudes-a-ingenieria/solicitud/search') }}",
 		headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
 		type: 'POST',
 		data: data,
@@ -167,7 +170,7 @@ function salvado(){
 		name:		$("#name").val(),
 	}
 	$.ajax({
-		url: "{{ url('solicitud/saved') }}",
+		url: "{{ url('solicitudes-a-ingenieria/solicitud/saved') }}",
 		headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
 		type: 'POST',
 		data: data,
@@ -198,7 +201,7 @@ function info_help(){
 		model:	$("#model").val(),
 	}
 	$.ajax({
-		url: "{{ url('solicitud/info-help-documents') }}",
+		url: "{{ url('solicitudes-a-ingenieria/solicitud/info-help-documents') }}",
 		headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
 		type: 'POST',
 		data: data,
@@ -222,7 +225,7 @@ function info_help(){
 	});
 
     $.ajax({
-		url: "{{ url('solicitud/info-solved-cases') }}",
+		url: "{{ url('solicitudes-a-ingenieria/solicitud/info-solved-cases') }}",
 		headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
 		type: 'POST',
 		data: data,
@@ -320,7 +323,7 @@ function questions(){
 	{
 		var data = { id_fail: $("#fail").val(), id_line: $("#line" ).val(), id_info: $("#information").val(), }
 		$.ajax({
-			url: "{{ url('solicitud/questions') }}",
+			url: "{{ url('solicitudes-a-ingenieria/solicitud/questions') }}",
 			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
 			type: 'POST',
 			data: data,
@@ -367,7 +370,7 @@ function uploadfile(input){
 
      //debugger;
       $.ajax({
-         url: "{{ url('solicitud/subir') }}",
+         url: "{{ url('solicitudes-a-ingenieria/solicitud/subir') }}",
          method: 'POST',
          data: formdt,
          dataType: 'JSON',
@@ -416,7 +419,7 @@ $(document).ready(function()
 		if( ok )
 		{
 			$.ajax({
-				url:"{{ url('solicitud/create') }}",
+				url:"{{ url('solicitudes-a-ingenieria/solicitud/create') }}",
 				method:"POST",
 				data:new FormData(this),
 				dataType:'JSON',

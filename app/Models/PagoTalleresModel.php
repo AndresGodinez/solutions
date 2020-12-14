@@ -12,40 +12,6 @@ date_default_timezone_set("America/Mexico_City");
 
 class PagoTalleresModel extends ModelBase
 {
-    protected $dbh = null;
-
-    public static function Pdoconn()
-    {
-        /*$db_host = "mty-mysqlq01";
-        $db_port = "3306";
-        $db_name = "reforig_sol";
-        $db_user = "root";
-        $db_pass = "Whr.Web.Soluciones@1";*/
-
-        $db_host = "10.40.2.67";
-        $db_port = "3306";
-        $db_name = "reforig_sol";
-        $db_user = "root";
-        $db_pass = "MyD@7@cR052013";
-
-        try
-        {
-            $dbh = new PDO('mysql:host=' . $db_host . ';port=' . $db_port . ';dbname=' . $db_name,
-                         $db_user,
-                         $db_pass,
-                         array(PDO::ATTR_PERSISTENT => false, PDO::MYSQL_ATTR_LOCAL_INFILE => 1, PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8')
-                         );
-            $dbh->exec("SET CHARACTER SET utf8");
-            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        }
-        catch(PDOException $e)
-        {
-            return $e->getMessage();
-        }
-
-        return $dbh;
-    }
-
     public static function insert_load_claims($data, $date)
     {
         $table = date("Y")."_".date("n", strtotime($data[24]))."_claims_aprobados";
@@ -223,33 +189,30 @@ class PagoTalleresModel extends ModelBase
 
     public static function insert_load_prorrateo($data, $date)
     {
-        $dbh = PagoTalleresModel::Pdoconn();
-        
         $costo_prorrateo = 0;
+        // preguntamos que exista el claim
         $exist_claim = DB::table('claims_aprobados_prorrateo')
                         ->where('claims_aprobados_prorrateo.claim', $data[0])
                         ->get();
 
-        $query = "SELECT reforig_logistica.materiales_costo.costo 
-                    FROM reforig_logistica.materiales_costo 
-                    WHERE reforig_logistica.materiales_costo.material = :material";
-        $select = $dbh->prepare($query);
-        $select->bindParam(':material', $data[2]);
-        $select->execute();
+        // Consultamos el costo del material.
+        $mat_costo = DB::connection('reforig_logistica')
+                        ->table('materiales_costo')
+                        ->where('materiales_costo.material', $data[2])
+                        ->get();
 
-        if($select->rowCount() > 0)
+        if(isset($mat_costo[0]->costo) && ($mat_costo[0]->costo) > 0)
         {
-            $costo_x_pza = $select->fetchAll(PDO::FETCH_ASSOC);            
-            $costo_x_pza['success'] = true;
+            $costo_x_pza = $mat_costo[0]->costo;            
         }
         else
         {
-            $costo_x_pza['success'] = false;
+            $costo_x_pza = 0;
         }
         
-        if($costo_x_pza['success'] && $costo_x_pza[0]['costo'] > 0)
+        if($costo_x_pza > 0)
         {   
-            $costo_prorrateo = $costo_x_pza[0]['costo'] * str_replace(" UN", "", $data[4]);
+            $costo_prorrateo = $costo_x_pza * str_replace(" UN", "", $data[4]);
         }
 
         if(count($exist_claim) == 0)
@@ -271,6 +234,28 @@ class PagoTalleresModel extends ModelBase
                         'date' => $date,
                         'costo_prorrateo' => $costo_prorrateo]);     
         }
+    }
+
+    public static function insert_load_pago_a_talleres($data, $date)
+    {
+        
+        // Insertamos en la tabla ligera
+        $status_fact = "RECIBIDA";
+        $factrecibida = 1;
+        DB::table('pagotaller')->insert(
+            ['taller' => (empty($data[0]) ? "" : $data[0]),
+            'vendor' => (empty($data[1]) ? "" : $data[1]),
+            'referencia' => (empty($data[2]) ? "" : $data[2]),
+            'fecha' => (empty($data[3]) ? "" : date("Y-m-d", strtotime($data[3]))),
+            'importe' => (empty($data[4]) ? "" : $data[4]),
+            'iva' => (empty($data[5]) ? "" : $data[5]),
+            'glaccount' => (empty($data[6]) ? "" : $data[6]),
+            'importe2' => (empty($data[7]) ? "" : $data[7]),
+            'cc' => (empty($data[8]) ? "" : $data[8]),
+            'status' => (empty($data[9]) ? "" : $data[9]),
+            'status_fact' => $status_fact,
+            'factrecibida' => $factrecibida]
+        );
     }
 
     public static function insert_load_total_approved_parts($data, $date)
@@ -427,6 +412,86 @@ class PagoTalleresModel extends ModelBase
                         ->get();
 
         return $data;
+    }
+
+    // Recepción facturas.
+    public static function taller_exist($taller)
+    {
+        $valid = false;
+
+        $data = DB::table('talleres')
+                    ->select('talleres.taller')
+                    ->where('taller', $taller)
+                    ->get();
+
+        if(count($data) > 0)
+        {
+            $valid = true;
+        }
+
+        return $valid;
+    }
+
+
+    public static function is_admin($user)
+    {
+        $valid = false;
+
+        $data = DB::table('pagotaller_admin')
+                    ->select('pagotaller_admin.user')
+                    ->where('user', $user)
+                    ->get();
+
+        if(count($data) > 0)
+        {
+            $valid = true;
+        }
+
+        return $valid;
+    }
+
+    public static function get_data_info_taller($taller)
+    {
+        // Obtenemos la información del taller.
+        $data = DB::table('talleres')
+                    ->select('talleres.taller', 'talleres.nombre', 'talleres.ciudad', 'talleres.estado', 'usuarios.mail')
+                    ->where('taller', $taller)
+                    ->leftJoin('usuarios', 'usuarios.username', '=', 'talleres.taller')
+                    ->get();
+
+        return $data;
+    }
+
+    public static function get_data_facts_pendientes($taller)
+    {
+        // Obtenemos las facturas pendientes.
+        $data = DB::table('pagotaller')
+                    ->select('pagotaller.*')
+                    ->where('taller', $taller)
+                    ->where('status_fact', 'RECIBIDA')
+                    ->whereNotNull('factrecibida')
+                    ->orderBy('fecha', 'ASC')
+                    ->get();
+
+        return $data;
+    }
+
+    public static function get_data_recepcion_facturas_descargar_taller_process($taller, $from, $to)
+    {
+        if(empty($taller))
+        {
+            $data = DB::table('pagotaller')
+                    ->select('pagotaller.*')
+                    ->where('taller', $taller)
+                    ->where('status_fact', 'RECIBIDA')
+                    ->whereNotNull('factrecibida')
+                    ->orderBy('fecha', 'ASC')
+                    ->get();
+        }
+       /* else
+        {
+            
+        }*/
     }
 
     public static function clean_string($string)

@@ -34,6 +34,22 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/assets/css/style.css">
     <!-- END: Custom CSS-->
 
+    <?php 
+    if(isset($sol_ing) && $sol_ing == true)
+    {
+    ?>
+    <!-- Toastr -->
+    <link href="{{ asset('plugins/toastr/css/toastr.min.css') }}" rel="stylesheet">
+    <?php
+    }
+    else
+    {
+    ?>
+    <?php    
+    }
+    ?>
+
+
 </head>
 <!-- END: Head-->
 
@@ -124,7 +140,52 @@
             <button class="btn btn-primary btn-icon scroll-top" type="button"><i class="bx bx-up-arrow-alt"></i></button>
         </p>
     </footer>
-    <!-- END: Footer-->
+
+    <?php 
+    if(isset($bootbox) && $bootbox == true)
+    {
+    ?>
+    <!-- Bootbox plug -->
+    <script src="{{ asset('js/bootbox.js') }}"></script>
+    <script src="{{ asset('js/functions.js') }}"></script>
+    <?php
+    }
+    ?>
+
+    <?php 
+    if(isset($sol_ing) && $sol_ing == true)
+    {
+    ?>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="{{ asset('plugins/jquery/jquery-3.3.1.slim.min.js') }}"></script>
+    <script src="{{ asset('plugins/jquery/jquery-3.4.1.min.js') }}"></script>
+    <script src="{{ asset('plugins/popper/popper.min.js') }}"></script>
+    <!-- Toastr -->
+    <script src="{{ asset('plugins/toastr/js/toastr.min.js') }}"></script>
+    <!--Custom JavaScript -->
+    <script src="{{ asset('js/app-two.js') }}" defer></script>
+    <script src="{{ asset('js/main-two.js') }}"></script>
+
+    <script>
+    var ignoreLoading = false;
+            $(document).ready(function(){
+        $(document).ajaxStart(function(){  // Event is triggerd when the Ajax Request is starting
+            if(!ignoreLoading)
+                $("#loading").show();
+            ignoreLoading = false
+           });
+           $(document).ajaxComplete(function(){  // Event is triggerd when the Ajax Request is starting
+               $("#loading").hide()
+           });
+       });
+         </script>   
+        @yield('scripts')
+    <?php
+    }
+    else
+    {
+    ?>
+     <!-- END: Footer-->
 
 
     <!-- BEGIN: Vendor JS-->
@@ -145,15 +206,7 @@
     <!-- BEGIN: Page JS-->
     <script src="{{ asset('assets') }}/app-assets/js/scripts/navs/navs.js"></script>
     <!-- END: Page JS-->
-
-    <?php 
-    if(isset($bootbox) && $bootbox == true)
-    {
-    ?>
-    <!-- Bootbox plug -->
-    <script src="{{ asset('js/bootbox.js') }}"></script>
-    <script src="{{ asset('js/functions.js') }}"></script>
-    <?php
+    <?php    
     }
     ?>
 

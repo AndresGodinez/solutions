@@ -33,7 +33,7 @@ $bootbox = true;
 				  	@csrf
 			  	<div class="form-group">
 			  		<label for="ipt_taller"><strong>No. Taller:</strong></label>
-			    	<input class="form-control" type="text" id="ipt_taller" name="ipt_taller" value="" />	
+			    	<input class="form-control" type="text" id="ipt_taller" name="ipt_taller" value="" required="required" />	
 			  	</div>
 			  	<button class="btn btn-primary">
 			    	Consultar

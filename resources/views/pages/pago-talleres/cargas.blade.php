@@ -54,17 +54,19 @@
             </form>
     	</div>
       <div class="col-sm-4">
-          <div class="alert alert-warning" role="alert">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">×</span> 
-              </button>
-              <strong>¿Deseas descargar el reporte de Volumen TS?</strong>
-              Da click en el botón de abajo... 
-          </div>
-          <div style="height: 15px;"></div>
-          <a class="btn btn-primary" href="{{ url('pago-a-talleres/reporte-ts-crm/descargar/reporte/') }}" target="_blank">
-              Descargar reporte
-          </a>      
+          <form method="POST" enctype="multipart/form-data" action="{{ url('pago-a-talleres/reporte-ts-crm/cargas/process/pago-a-talleres') }}">
+              {{ csrf_field() }}
+              <h4 style="margin-bottom: 15px;">Aquí cargaras el archivo para <strong><mark>PAGO A TALLERES</mark></strong></h4>
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span> 
+                    </button>
+                    <strong><i>**NOTA</i></strong> El archivo TIENE QUE SER en formato <strong>.CSV</strong> 
+                </div>
+                <input type="file" id="file" name="file" class="form-control form-control-input-file" required="required" />
+                <div style="height: 15px;"></div>
+                <button class="btn btn-primary" type="submit">Subir archivo</button>
+            </form>
       </div>
    	</div>
 </div>

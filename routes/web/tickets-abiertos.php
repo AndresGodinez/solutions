@@ -2,8 +2,12 @@
 Route::middleware('auth')->group(function () {
     Route::group( ['prefix' => 'tickets-abiertos'], function()
 	{
-		Route::get('/', 												'TicketsAbiertosController@index');
-		Route::get('/cargas', 											'TicketsAbiertosController@uploads');
+		Route::get('/', 												'TicketsAbiertosController@index')
+		//->middleware('permission: reporte kpi');
+		;
+		Route::get('/cargas', 											'TicketsAbiertosController@uploads')
+		//->middleware('permission: reporte kpi');
+		;
 		Route::post('/process/tickets-abiertos/guias', 					'TicketsAbiertosController@upload_tickets_abiertos_guias');
 		Route::post('/process/tickets-abiertos/pedidos', 				'TicketsAbiertosController@upload_tickets_abiertos_pedidos');
 		Route::post('/process/tickets-abiertos/reservas', 				'TicketsAbiertosController@upload_tickets_abiertos_reservas');
