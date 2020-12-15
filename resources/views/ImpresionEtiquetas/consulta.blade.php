@@ -97,9 +97,11 @@
             if (quantity == '')
                 quantity = 1
 
-            let sendData = [
-                {'action':'imprimir'}
-            ];
+            let sendData = {
+                'action':'imprimir',
+                'data' : []
+            };
+
             let data = {
                 pieces,
                 material,
@@ -108,7 +110,7 @@
             };
 
             for (let i=0; i<parseInt(quantity); i++){
-                sendData.push(data);
+                sendData.data.push(data);
             }
 
             console.log({'text': JSON.stringify(sendData)});
