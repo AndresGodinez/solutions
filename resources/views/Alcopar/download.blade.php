@@ -9,17 +9,17 @@
 
 <table border="1" cellpadding="2" cellspacing="0" width="100%">
     <tr>
-        <th>Id</th>
-        <th class="text-center">Num Parte</th>
-        <th class="text-center">Descripción</th>
-        <th class="text-center">Fecha Creación</th>
-        <th class="text-center">Días Creación</th>
-        <th class="text-center">Días c/Depto.</th>
-        <th class="text-center">Tipo Mat.</th>
-        <th class="text-center">Categoría</th>
-        <th class="text-center">Fam</th>
-        <th class="text-center">Marca</th>
-        <th class="text-center">Cat. Extra</th>
+        <th class="text-center">NUMERO DE PARTE</th>
+        <th class="text-center">DESCRIPCION</th>
+        <th class="text-center">MODELO</th>
+        <th class="text-center">FECHA CREACION</th>
+        <th class="text-center">DIAS CREACION</th>
+        <th class="text-center">DIAS C/DEPTO</th>
+        <th class="text-center">TIPO MAT.</th>
+        <th class="text-center">CATEGORIA</th>
+        <th class="text-center">FAM</th>
+        <th class="text-center">MARCA</th>
+        <th class="text-center">CAT. EXTRA</th>
     </tr>
     @foreach($getRecords as $record)
 

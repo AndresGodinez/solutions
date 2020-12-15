@@ -10,6 +10,7 @@ use App\Utils\MyUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use function compact;
 use function date;
 //use Symfony\Component\HttpFoundation\Session\Session;
@@ -619,8 +620,6 @@ class AlcoparController extends Controller
     }
 
     public function reportalcopar(Request $request){
-//        dd($request->all());
-//        dd('only');
         ini_set('memory_limit', '-1');
         if (!!$request->get('modelo')){
             $row = AlcoparModel::query()->selectRaw('
@@ -799,15 +798,17 @@ class AlcoparController extends Controller
                 ->leftJoin('alcopar_marca', 'alcopar_partes.marca', '=', 'alcopar_marca.id')
                 ->leftJoin('alcopar_tipo_extra', 'alcopar_partes.tipo_extra', '=', 'alcopar_tipo_extra.id')
                 ->leftJoin('alcopar_tipo_material', 'alcopar_partes.tipo_material', '=', 'alcopar_tipo_material.id_tipo_material')
-                // ->limit(10)
                 ->get();
         }
 
+        if (!$row->count()){
+            throw ValidationException::withMessages(['No existen datos para descargar']);
+        }
+
+        $row2Count = $row->count();
 
 
-//        dd($row);
             echo "<pre>";
-            $row2Count = $row->count();
             $return = '';
             if($row2Count>0){
                 $return .= '<table border=1>
