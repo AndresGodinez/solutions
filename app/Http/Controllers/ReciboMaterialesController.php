@@ -175,7 +175,6 @@ class ReciboMaterialesController extends Controller
 
     public function decision(Request $request)
     {
-        dd($request->all());
         $folio = $request->get('recibo_folio_id');
         $reciboFolio = ReciboFolio::find($folio);
         $cantidad = $request->get('cantidad');

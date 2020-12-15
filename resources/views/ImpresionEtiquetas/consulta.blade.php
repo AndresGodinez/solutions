@@ -97,7 +97,9 @@
             if (quantity == '')
                 quantity = 1
 
-            let sendData = [];
+            let sendData = [
+                {'action':'imprimir'}
+            ];
             let data = {
                 pieces,
                 material,
