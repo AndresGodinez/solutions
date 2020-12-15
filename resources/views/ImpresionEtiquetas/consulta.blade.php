@@ -90,9 +90,9 @@
         });
 
         function sendText(){
-            let description = $('#mat_descript').val();
+            let description = $('#mat_descript').val().substring(0,15);
             let pieces = $('#pieces').val();
-            let material = $('#material').val();
+            let material = $('#material').val().substring(0,15);
             let quantity = $('#quantity').val();
             if (quantity == '')
                 quantity = 1
