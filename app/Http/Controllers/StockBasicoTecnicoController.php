@@ -21,7 +21,7 @@ class StockBasicoTecnicoController extends Controller
 
 
     public function index(Request $request)
-    {        
+    {
         return view('StockBasicoTecnico.index');
     }
 
@@ -53,8 +53,9 @@ class StockBasicoTecnicoController extends Controller
     public function indexBin(Request $request)
     {
         $bin = $request->get('bin');
+        $sloc = $request->get('sloc');
 
-        return view('StockBasicoTecnico.indexBin', compact('bin'));
+        return view('StockBasicoTecnico.indexBin', compact('bin', 'sloc'));
     }
 
     public function datoInicial(Request $request)
@@ -75,11 +76,21 @@ class StockBasicoTecnicoController extends Controller
         $user = Auth::user();
         $bin = $request->get('bin');
 
-        return datatables()->of(StockBasicoTecnico::query()->selectRaw('
+        if (!!$bin){
+            return datatables()->of(StockBasicoTecnico::query()->selectRaw('
             *
         ')->where('planta', $user->planta)->where('bin', $bin)
-            ->orderByRaw('material')
-            ->get())->toJson();
+                ->orderByRaw('material')
+                ->get())->toJson();
+        }else{
+            return datatables()->of(StockBasicoTecnico::query()->selectRaw('
+            *
+        ')->where('planta', $user->planta)
+                ->orderByRaw('material')
+                ->get())->toJson();
+        }
+
+
     }
 
     public function uploadStock(UploadStockTecnicoRequest $request)

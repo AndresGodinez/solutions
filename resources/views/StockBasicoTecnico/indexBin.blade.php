@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<input name="bin" hidden class="binvalue" value="<?=$_GET['bin']?>" />
-<input name="sloc" hidden class="slocvalue" value="<?=$_GET['sloc']?>" />
+<input name="bin" hidden class="binvalue" value="{{$bin}}" />
+<input name="sloc" hidden class="slocvalue" value="{{$sloc}}" />
     <link rel="stylesheet" type="text/css"
           href="{{ asset('assets') }}/app-assets/vendors/css/tables/datatable/datatables.min.css">
           <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/app-assets/vendors/css/extensions/sweetalert2.min.css">
@@ -14,7 +14,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Subir Archivo Stock Básico de Técnicos <small>[Cargar Archivo Bin]</small></h4>
-                            <a href="{{url('stock-basico-tecnico/descargabin')}}/<?=$_GET['bin']?>"
+                            <a href="{{url('stock-basico-tecnico/descargabin')}}/{{$bin}}"
                                style="position:absolute; top: 5px; right:25px;"
                                class="btn btn-success">Descargar Reporte</a>
                         </div>
@@ -28,7 +28,7 @@
                                            class="form-control-file"
                                            accept="text/csv"
                                            required>
-                                    <input name="bin" hidden class="bin" value="<?=$_GET['bin']?>" />
+                                    <input name="bin" hidden class="bin" value="{{$bin}}" />
                                 </div>
                                 <div class="form-group">
                                     <input type="submit" class="btn btn-primary" value="Enviar">
@@ -391,8 +391,8 @@
                                 text: '',
                                 confirmButtonClass: 'btn btn-success',
                                 });
-                    $('.formadd')[0].reset();;
-                    
+                    $('.formadd')[0].reset();
+
                     $('#add').modal('hide');
 
                 }
