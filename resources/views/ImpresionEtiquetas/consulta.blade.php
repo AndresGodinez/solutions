@@ -16,7 +16,7 @@
                 <div class="card-content">
                     <div class="card-body">
                         <h5>Datos del material</h5>
-                        <form action="{{ route('impresion.etiquetas.print') }}" method="post">
+                        <form action="{{ route('impresion.etiquetas.print') }}" method="post" id="form">
                             @csrf
                             <input type="hidden" name="material-to-print" value="{{ $material->material }}">
                             <div class="form-row">
@@ -73,7 +73,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <input type="submit" class="btn btn-info" value="Imprimir">
+                                    <button onclick="sendText()" class="btn btn-info">Imprimir</button>
                                 </div>
                             </div>
                         </form>
@@ -82,5 +82,37 @@
             </div>
         </div>
     </div>
+
+    <script>
+        let exampleSocket = new WebSocket("ws://127.0.0.1:8001");
+        $("#form").submit(function(e){
+            e.preventDefault();
+        });
+
+        function sendText(){
+            let description = $('#mat_descript').val();
+            let pieces = $('#pieces').val();
+            let material = $('#material').val();
+            let quantity = $('#quantity').val();
+            if (quantity == '')
+                quantity = 1
+
+            let sendData = [];
+            let data = {
+                pieces,
+                material,
+                description,
+                date: '{{ Carbon\Carbon::now()->format('d-m-Y H:s') }}',
+            };
+
+            for (let i=0; i<parseInt(quantity); i++){
+                sendData.push(data);
+            }
+
+            console.log({'text': JSON.stringify(sendData)});
+
+            exampleSocket.send(JSON.stringify(sendData))
+        }
+    </script>
 
 @endsection
