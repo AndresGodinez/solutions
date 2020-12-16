@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Solicitud extends ModelBase
 {
     protected $table    = "solicitud_ingenieria";
+    protected $primaryKey = 'id_sol';
     protected $fillable = ['id_sol','dispatch', 'os_cca', 'modelo','serie','descripcion_problema','linea_producto','comentario','ruta','informacion','id_sub_tipo','telefono','categoria','nombre_tecnico', 'id_falla'];
     public $timestamps = false;
 

@@ -256,14 +256,11 @@ class SolicitudController extends Controller
      */
     public function show($id)
     {
-        $solicitud = DB::table('solicitud_ingenieria')
-            ->select('solicitud_ingenieria.*')
-            ->where('solicitud_ingenieria.id_sol', '=', $id)
-            ->get();
-        $aux = DispatchAbiertos::where('dispatch', $solicitud[0]->dispatch)->select('brand')->get();
+        $solicitud = Solicitud::find($id);
+        $aux = DispatchAbiertos::where('dispatch', $solicitud->dispatch)->select('brand')->get();
         if (count($aux) > 0) {
-            $solicitud[0]->brand = $aux[0]['brand'];
-        } else { $solicitud[0]->brand = '';}
+            $solicitud->brand = $aux[0]['brand'];
+        } else { $solicitud->brand = '';}
         $information = TipoInformacion::all();
         $mode_fail = ModoFallas::all();
         $line = LineaProducto::all();
@@ -271,7 +268,7 @@ class SolicitudController extends Controller
             ->join('preguntas_solicitud', 'respuestas_solicitud.id_pregunta', '=', 'preguntas_solicitud.id_pregunta')
             ->join('solicitud_ingenieria', 'respuestas_solicitud.id_solicitud', '=', 'solicitud_ingenieria.id_sol')
             ->select('preguntas_solicitud.pregunta', 'respuestas_solicitud.respuesta', 'respuestas_solicitud.ruta',DB::raw("CONCAT(id_solicitud,'/',preguntas_solicitud.id_pregunta) AS path"))
-            ->where('solicitud_ingenieria.id_sol', '=', $id)
+            ->where('solicitud_ingenieria.id_sol', '=', $solicitud->id_sol)
             ->get();
 
         foreach ($questions as $value) {
@@ -295,13 +292,14 @@ class SolicitudController extends Controller
         $closed_cases = DB::table('detalle_solicitud')
                                 ->leftjoin('solicitud_ingenieria', 'solicitud_ingenieria.id_sol', '=', 'detalle_solicitud.id_sol')
                                 ->select('solicitud_ingenieria.id_sol', 'solicitud_ingenieria.serie', 'solicitud_ingenieria.dispatch', 'detalle_solicitud.status')
-                                ->where('solicitud_ingenieria.serie', '=' , $solicitud[0]->serie)
+                                ->where('solicitud_ingenieria.serie', '=' , $solicitud->serie)
                                 ->get();
 
         // Verificamos si Ingenieria contesto esta solicitud.
          $sol_ing_csat = DB::table('sol_ing_csat')
             ->select('sol_ing_csat.ing_q1', 'sol_ing_csat.ing_q2', 'sol_ing_csat.ing_q3', 'sol_ing_csat.ing_usr_agnt')
-            ->whereRaw('sol_ing_csat.id_sol = '.$id.' AND sol_ing_csat.ing_usr_agnt IS NOT NULL')
+            ->where('sol_ing_csat.id_sol', '=', $solicitud->id_sol) 
+            ->whereNotNull('sol_ing_csat.ing_usr_agnt')
             ->get();
 
         return view("pages.solicitud.view", ['items' => $items,
@@ -310,7 +308,7 @@ class SolicitudController extends Controller
             "line" => $line,
             "questions" => $questions,
             "document" => $document,
-            "solicitud" => $solicitud,
+            "solicitud" => [$solicitud],
             "revision" => $revision,
             "closed_cases" => $closed_cases,
             "depto" => $depto,
