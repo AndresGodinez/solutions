@@ -150,14 +150,14 @@ class SolicitudController extends Controller
                             Por este medio te informamos que la solicitud a Ingeniería que realizaste ha sido <strong>Generada Correctamente</strong>, para mas información te invitamos a darle seguimiento a la misma en Centro de Soluciones con el No. de Folio: <strong>'.$id_sol.'</strong>, esto en el apartado de Solicitudes a Ingeniería.
                         </p>
                         <p style="color: #393939; font-size: 14px;">
-                            Recuerda que el medio oficial de comunicacion es a traves del Centro de Soluciones. 
+                            Recuerda que el medio oficial de comunicacion es a traves del Centro de Soluciones.
                         </p>
-                        <p style="color: #393939; font-size: 14px;">    
+                        <p style="color: #393939; font-size: 14px;">
                             Orden de servicio: '.$req->dispatch.'
-                        </p>    
+                        </p>
                         ';
             //this->send_mail_php($to, $subject, $e_message, $title);
-            
+
             $redirect = url('solicitudes-a-ingenieria/');
 
             echo '<script>window.location.href = "'.$redirect.'";</script>';
@@ -170,10 +170,10 @@ class SolicitudController extends Controller
 
     public function descargar($id){
         $solicitud = Solicitud::where('id_sol', $id)->first();
-        
-        
+
+
             return Storage::download('dispatch/'.$id.'/'.$solicitud->ruta, $solicitud->ruta);
-        
+
     }
 
     public function saved(Request $request)
@@ -297,7 +297,7 @@ class SolicitudController extends Controller
                                 ->select('solicitud_ingenieria.id_sol', 'solicitud_ingenieria.serie', 'solicitud_ingenieria.dispatch', 'detalle_solicitud.status')
                                 ->where('solicitud_ingenieria.serie', '=' , $solicitud[0]->serie)
                                 ->get();
-        
+
         // Verificamos si Ingenieria contesto esta solicitud.
          $sol_ing_csat = DB::table('sol_ing_csat')
             ->select('sol_ing_csat.ing_q1', 'sol_ing_csat.ing_q2', 'sol_ing_csat.ing_q3', 'sol_ing_csat.ing_usr_agnt')
@@ -425,9 +425,9 @@ class SolicitudController extends Controller
         $header .= 'Content-type:text/html;charset=UTF-8' . "\r\n";
         $header .= 'From: '.$f_title.' <'.$f_mail.'>' . "\r\n";
         $header .= 'Bcc: '.$Bcc. "\r\n";
-        
+
         $body_message = $e_message;
-        
+
 
         $email_template = file_get_contents("D:/inetpub/wwwroot/soluciones/wpx_includes/mailing/email_template.html");
         $body_message = str_replace(array("{base_url}",
