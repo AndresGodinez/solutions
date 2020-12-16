@@ -145,17 +145,11 @@ Class PagoTalleresBATController
 	//Conn PDO
     public function conn_pdo()
     {
-        /*$db_host = "mty-mysqlq01";
+        $db_host = "mty-mysqlq01";
         $db_port = "3306";
         $db_name = "reforig_sol";
         $db_user = "root";
-        $db_pass = "Whr.Web.Soluciones@1";*/
-
-        $db_host = "10.40.2.67";
-        $db_port = "3306";
-        $db_name = "reforig_sol";
-        $db_user = "root";
-        $db_pass = "MyD@7@cR052013";
+        $db_pass = "Whr.Web.Soluciones@1";
 
         $dbh =  new PDO('mysql:host=' . $db_host . ';port=' . $db_port . ';dbname=' . $db_name,
                          $db_user,
