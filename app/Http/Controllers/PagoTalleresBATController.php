@@ -1,4 +1,4 @@
-<?php 
+<?php
 date_default_timezone_set("America/Mexico_City");
 
 Class PagoTalleresBATController
@@ -6,12 +6,12 @@ Class PagoTalleresBATController
 	private $PDO;
 
 	public function generate_report()
-	{    
+	{
 		$day = date("d");
 		$year = date("Y");
         $month = date("m");
 
-        switch ($month) 
+        switch ($month)
         {
             case '01':
                 $month = 1;
@@ -48,12 +48,12 @@ Class PagoTalleresBATController
             case '09':
                 $month = 9;
                 break;
-            
+
             default:
                 # code...
                 break;
         }
-        
+
         if($day == '01')
         {
         	if($month == '01')
@@ -64,13 +64,13 @@ Class PagoTalleresBATController
         	else
         	{
         		$month = $month - 1;
-        	}	
+        	}
         }
 
         $table = $year."_".$month."_claims_aprobados";
        	$this->PDO = $this->conn_pdo();
-        
-        try 
+
+        try
         {
            $query_txt = "
                     SELECT distinct (".$table.".claim),
@@ -121,24 +121,24 @@ Class PagoTalleresBATController
                     LEFT JOIN zonas ON talleres.zona = zonas.id
                     LEFT JOIN pex_acp ON ".$table.".dispatch = pex_acp.dispatch
                     GROUP BY claim";
-        
+
             $QUERY_SLCT = $this->PDO->prepare($query_txt);
             $QUERY_SLCT->execute();
 
             if($QUERY_SLCT->rowCount() > 0)
             {
                 $result = $QUERY_SLCT->fetchAll(PDO::FETCH_ASSOC);
-                
+
                 if($this->create_file($result, 'Reporte-ts-'.$year."-".$month))
-                {	
+                {
                 	$this->set_log("bat_process", date("Y-m-d H:i:s"), 'Reporte-ts-'.$year."-".$month, $table, $QUERY_SLCT->rowCount(), $month);
                 }
             }
-            
-        } 
-        catch(PDOException $e) 
+
+        }
+        catch(PDOException $e)
         {
-            exit("SLCT Claims ".$e->getMessage()); 
+            exit("SLCT Claims ".$e->getMessage());
         }
 	}
 
@@ -173,7 +173,7 @@ Class PagoTalleresBATController
 
         $final_data = "MES , MESNUM , TIPOSERVICIO , DISPATCH , TOTALPARTS_PRORRATEO , TOTALLABOR_PRORRATEO , REFERENCENUM , NUMTALLER , NOMBRETALLER , CIUDAD , REGION , CABECERA , ESTADO , FECHAOS , FECHACOMPLETADO , CODIGODEFECTO , MODELO , MARCA , LINEA , CODPLANTA , PLANTA , IDWARRANTYTYPE , UTB , DISTRIBUIDOR , PEX , DPURCHASEDATE , SCLAIMNUM , MUEBLERIA , GARSAW , CC , TIPO , ZONA , TIPODEPAGO \n";
 
-        foreach ($result as $result) 
+        foreach ($result as $result)
         {
             //sacamos los codigos de planta
             $id_planta = $result['serie'];
@@ -197,7 +197,7 @@ Class PagoTalleresBATController
 
             $this->PDO = $this->conn_pdo();
 
-            try 
+            try
             {
                 $query_txt = "SELECT * FROM ts_plantas_inf WHERE id_planta = '".$id_planta."'";
                 $QUERY_SLCT = $this->PDO->prepare($query_txt);
@@ -213,14 +213,14 @@ Class PagoTalleresBATController
                     $result_plnt[0]['planta'] = "";
                     $result_plnt[0]['linea_producto'] = "";
                 }
-            } 
-            catch(PDOException $e) 
+            }
+            catch(PDOException $e)
             {
-                exit("SLCT plantas_inf ".$e->getMessage()); 
+                exit("SLCT plantas_inf ".$e->getMessage());
             }
 
 
-            $final_data .= 
+            $final_data .=
             $this->clean_string($result['MES']).",".
             $this->clean_string($result['MESNUM']).",".
             $this->clean_string($result['clasificacion']).",".
@@ -268,8 +268,8 @@ Class PagoTalleresBATController
     public function set_log($username, $date, $label_name, $table, $total_reg, $month)
     {
     	$this->PDO = $this->conn_pdo();
-        
-        try 
+
+        try
         {
            	$query_txt = "SELECT report_table FROM claims_reports WHERE report_table = '".$table."'";
 	        $QUERY_SLCT = $this->PDO->prepare($query_txt);
@@ -286,7 +286,7 @@ Class PagoTalleresBATController
             }
             else
             {
-            	switch ($month) 
+            	switch ($month)
             	{
             		case '01':
             			$month_name = 'Enero';
@@ -335,13 +335,13 @@ Class PagoTalleresBATController
             		case '12':
             			$month_name = 'Diciembre';
             			break;
-            		
+
             		default:
             			# code...
             			break;
             	}
 
-	    		$query = "INSERT INTO claims_reports 
+	    		$query = "INSERT INTO claims_reports
 									(report_table,
 									report_label_name,
 									report_n_reg,
@@ -365,13 +365,13 @@ Class PagoTalleresBATController
 				$insert->bindParam(':user', $username);
 				$insert->bindParam(':created_at', $date);
 				$insert->bindParam(':updated_at', $date);
-				$insert->execute();	
+				$insert->execute();
             }
-            
-        } 
-        catch(PDOException $e) 
+
+        }
+        catch(PDOException $e)
         {
-            exit("SLCT Claims ".$e->getMessage()); 
+            report($e);
         }
     }
 

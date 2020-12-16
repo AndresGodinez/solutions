@@ -190,7 +190,6 @@ class IngexpController extends Controller
                     <body>
                     <div class="video-container">
                         <video class="frame" autoplay controls controlsList="nodownload">
-                            <!-- <source src="<?= $path ?>" type="video/mp4">                              -->
                             <source type="video/webm" src="data:video/webm;base64, <?= $d ?>">
                             <source type="video/mp4" src="data:video/mp4;base64, <?= $d ?>">
                         </video>

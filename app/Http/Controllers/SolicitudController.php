@@ -21,6 +21,7 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Session;
+use function report;
 
 class SolicitudController extends Controller
 {
@@ -162,9 +163,7 @@ class SolicitudController extends Controller
 
             echo '<script>window.location.href = "'.$redirect.'";</script>';
         } catch (\Exception $e) {
-            echo $e->getMessage();
-            die();
-            return response()->json(['ok' => 'error', 'message' =>  $e->getMessage()]);
+            report($e);
         }
     }
 
@@ -298,7 +297,7 @@ class SolicitudController extends Controller
         // Verificamos si Ingenieria contesto esta solicitud.
          $sol_ing_csat = DB::table('sol_ing_csat')
             ->select('sol_ing_csat.ing_q1', 'sol_ing_csat.ing_q2', 'sol_ing_csat.ing_q3', 'sol_ing_csat.ing_usr_agnt')
-            ->where('sol_ing_csat.id_sol', '=', $solicitud->id_sol) 
+            ->where('sol_ing_csat.id_sol', '=', $solicitud->id_sol)
             ->whereNotNull('sol_ing_csat.ing_usr_agnt')
             ->get();
 

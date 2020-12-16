@@ -304,7 +304,6 @@ $(document).ready(function () {
         return fetch("//api.github.com/users/" + login + "")
           .then(function (response) {
             if (!response.ok) {
-              console.log(response)
               throw new Error(response.statusText)
             }
             return response.json()
