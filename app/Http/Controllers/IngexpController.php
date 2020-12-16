@@ -54,7 +54,7 @@ class IngexpController extends Controller
         IngexpModel::cargaredit($_POST, $user, $_FILES, $file);
 
         $urldirv = url('/ingexp/editar/');
-        echo "<script>window.location = '".$urldirv."/".$_POST['id']."?success=1'</script>";
+        echo "<script>window.location = '".$urldirv."/".$request->get('id')."?success=1'</script>";
 
     }
 

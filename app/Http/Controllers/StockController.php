@@ -65,7 +65,35 @@ class StockController extends Controller
     public function conclusioninicial_detalle(Request $request)
     {
         $token = $request->ajax() ? $request->header('X-CSRF-Token') : $request->input('_token');
-        return view('Stock.conclusioninicial_detalle', compact(null));
+        $id = $request->get('id');
+        $row = Stock::query()
+            ->selectRaw('
+            stock_inicial.id,
+            stock_inicial.no_parte,
+            stock_inicial.descripcion,
+            stock_inicial.tipo_material,
+            stock_inicial.precio_usd,
+            stock_inicial.sir_anual,
+            stock_inicial.proyecto,
+            stock_inicial.categoria,
+            stock_inicial.proveedor,
+            stock_inicial.ots,
+            stock_inicial.modelo,
+            stock_inicial.produccion_inicial,
+            stock_inicial.fecha_carga,
+            stock_inicial.usuario,
+            usuarios.nombre,
+            stock_inicial.garantia,
+            stock_inicial.comentario,
+            stock_inicial.vol_vta_anual
+            ')
+            ->from('stock_inicial')
+            ->leftJoin('usuarios', 'stock_inicial.usuario', '=', 'usuarios.username')
+            ->whereRaw('stock_inicial.id=' . $request->get('id'))
+            ->get();
+
+        $row = $row[0];
+        return view('Stock.conclusioninicial_detalle', compact('row', 'id'));
     }
 
     public function conclusioninicial_update(Request $request)
