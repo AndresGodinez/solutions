@@ -52,6 +52,45 @@ class MaterialesController extends Controller
         return view('Materiales/search');
     }
 
+    public function cancel(Request $request)
+    {
+        $user = $request->user()->username;
+        $depto = $request->user()->depto;
+        $valid = true;
+        $target = "";
+        $message = "¡Los cambios se guardaron exitosamente!";
+        $redirect = "";
+
+        $request->ipt_id        = $this->clean_string(isset($request->ipt_id) ? $request->ipt_id : "");
+        $request->ipt_comments  = $this->clean_string(isset($request->ipt_comments) ? $request->ipt_comments : "");
+
+        if(empty($request->ipt_id))
+        {
+            $message = "Por favor no modifiques la id de la solicitud.";
+            $valid = false;
+            $target = "#ipt_id";
+        }
+        elseif(empty($request->ipt_comments))
+        {
+            $message = "Por favor ingresea el porque estas cancelando la solicitud.";
+            $valid = false;
+            $target = "#ipt_comments";
+        }
+
+        if($valid)
+        {
+            Sustituto::cancel_sol($request->ipt_id, $user, $depto, $request->ipt_comments);
+            $redirect = $request->ipt_id;
+        }
+
+        $response['message'] = $message;
+        $response['valid'] = $valid;
+        $response['target'] = $target;
+        $response['redirect'] = $redirect;
+
+        echo(json_encode($response));
+    }
+
 
     public function consulta(ConsultaMaterialesRequest $request)
     {

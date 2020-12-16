@@ -383,7 +383,6 @@
                     'sloc':sloc
                 },
                 success: function(data) {
-                    console.log(data);
                     dtb.ajax.reload();
                     Swal.fire({
                                 type: "success",

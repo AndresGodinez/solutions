@@ -18,6 +18,9 @@ Route::middleware('auth')->group(function () {
     Route::get('sustitutos/detalle/{id}', 'MaterialesController@detail')
         ->middleware('permission:ver sustitutos');
 
+    Route::post('sustitutos/process/set-track/contribute/cancel', 'MaterialesController@cancel');
+
+
     Route::post('sustitutos/process/set-track/contribute', 'MaterialesController@set_track');
 
     Route::post('/sustitutos/store', 'MaterialesController@store')
