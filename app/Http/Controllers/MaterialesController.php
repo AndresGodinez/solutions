@@ -96,7 +96,14 @@ class MaterialesController extends Controller
     {
         $material = Material::where('part_number', $request->get('ipt_material'))->first();
 
-        $sustitutos = WpxSustitutos::where('material', $material->part_number)->get();
+        // Agregamos el gpo.
+        $sustitutos_group_rel = DB::table('wpx_sustitutos')
+            ->select('wpx_sustitutos.group_rel')
+            ->where('wpx_sustitutos.material', $material->part_number)
+            ->orWhere('wpx_sustitutos.material', $material->part_number)
+            ->get();
+        
+        $sustitutos = WpxSustitutos::where('group_rel', $sustitutos_group_rel[0]->group_rel)->get();
 
         return view('Materiales/show', compact('material', 'sustitutos'));
     }
