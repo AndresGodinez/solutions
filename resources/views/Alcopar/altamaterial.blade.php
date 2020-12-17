@@ -93,7 +93,7 @@ $marca1   = $get_records['marca'];
 
 					<div class="col-md-4 col-12" id="otros" style="display:none">
 						<fieldset class="form-group">
-							
+
 							<textarea name="otro" id="otro" rows="5" style="text-transform:uppercase" class="form-control"></textarea>
 						</fieldset>
 					</div>
@@ -191,12 +191,12 @@ $marca1   = $get_records['marca'];
 
 					<div class="col-md-12 col-12">
 						<fieldset class="form-group">
-							<input type="submit" id="enviar" name="enviar" value="Solicitar Alta" class="btn btn-primary" style="width: 100%;">							
+							<input type="submit" id="enviar" name="enviar" value="Solicitar Alta" class="btn btn-primary" style="width: 100%;">
 						</fieldset>
 					</div>
 				</div>
 			</form>
-	
+
 		</div>
 	</div>
 	<script src="{{ asset('assets') }}/app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
@@ -244,7 +244,7 @@ $marca1   = $get_records['marca'];
 			})
 		});
 
-		<?php 
+		<?php
 		if(@$_GET['success'] == 1){
 			?>
 			Swal.fire({

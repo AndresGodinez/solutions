@@ -239,7 +239,7 @@
         }
         function edit(id) {
 
-            $('.contenido-modal').html('');
+            $('.contenido-modal').empty();
             $('.contenido-modal').hide();
             $('.loader-modal').show();
             $('#default').modal();
@@ -258,12 +258,11 @@
                 data: {
                     'id': id
                 },
-                success: function(data) {
-
-
-                    $('.loader-modal').hide();
-                $('.contenido-modal').html(data);
-                $('.contenido-modal').show();
+                success: function() {
+                    $(".contenido-modal").load( "{{ url('stock-basico-tecnico/editarBin')}}",  { id: id }, function() {
+                        $('.loader-modal').hide();
+                        $('.contenido-modal').show();
+                    });
 
                 }
             });

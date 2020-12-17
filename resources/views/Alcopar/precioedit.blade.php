@@ -1,6 +1,6 @@
 @extends("layouts.app")
 @section("content")
-<?php 
+<?php
 
 $row = $get_records['row'][0];
 $row2 = $get_records['row2'];
@@ -15,13 +15,13 @@ $data = $get_records;
 <section id="basic-datatable">
 	<div class="row">
 		<div class="col-sm-12">
-			<h2><strong>Revisión de Número de Parte</strong></h2>			
+			<h2><strong>Revisión de Número de Parte</strong></h2>
 		</div>
 	</div>
 </section>
 <div style="height: 30px;"></div>
-	
-<div class="card">		
+
+<div class="card">
 	<div class="card-body">
 		<form name='forma' action="{{ url('/alcopar/precio/precioprocess/')}}" id='formID' method='POST'>
 		@csrf
@@ -34,56 +34,56 @@ $data = $get_records;
 				</div>
 				<div class="col-md-4 col-12">
 					<fieldset class="form-group">
-						<label for="basicInput"> Modelo:</label>           
+						<label for="basicInput"> Modelo:</label>
 						<input name="modelo" class="form-control" type="text" readonly id="modelo" size="40" value="<?php echo($row['modelo']);?>">
 					</fieldset>
 				</div>
 				<div class="col-md-4 col-12">
 					<fieldset class="form-group">
-						<label for="basicInput"> Descripción:</label>           			
+						<label for="basicInput"> Descripción:</label>
 					<input name="descripcion" class="form-control" type="text"  id="descripcion" size="40" value="<?php echo($row['descripcion']);?>">
 					</fieldset>
 				</div>
 				<div class="col-md-4 col-12">
 					<fieldset class="form-group">
-						<label for="basicInput"> Taller:</label>           
-					
+						<label for="basicInput"> Taller:</label>
+
 					<input name="taller" type="text" class="form-control" readonly id="descripcion" size="40" value="<?php echo($row['taller']);?>">
 					</fieldset>
 				</div>
 
 				<div class="col-md-4 col-12">
 					<fieldset class="form-group">
-						<label for="basicInput"> Dispatch:</label>           
-					
+						<label for="basicInput"> Dispatch:</label>
+
 						<input name="Dispatch" type="text" class="form-control" readonly id="Dispatch" size="40" value="<?php echo($row['dispatch']);?>">
 					</fieldset>
 				</div>
 
-				<?php 
+				<?php
 				if($row['status']=='RECHAZADA')
 				{
 				?>
 				<div class="col-md-12 col-12">
 					<fieldset class="form-group">
-						<label for="basicInput"> Motivo Rechazo Materiales:</label>           			
+						<label for="basicInput"> Motivo Rechazo Materiales:</label>
 						<input name="motivo" type="text" readonly id="motivo" size="40" value="<?php echo($row['comentario']);?>" class="form-control">
 					</fieldset>
 				</div>
-						
-				
+
+
 				<?php
 				}
 				?>
 				<div class="col-md-4 col-12">
 					<fieldset class="form-group">
-						<label for="basicInput">&iquest;De d&oacute;nde se obtuvo el n&uacute;mero?:</label>           			
+						<label for="basicInput">&iquest;De d&oacute;nde se obtuvo el n&uacute;mero?:</label>
 						<input name="donde" type="text" readonly id="donde" size="40" value="<?php echo($row['pregunta']);?>" class="form-control">
 					</fieldset>
 				</div>
-				
-				
-				
+
+
+
 				<?php
 				if($row['pregunta']=='Otros')
 				{
@@ -92,35 +92,35 @@ $data = $get_records;
 					<fieldset class="form-group">
 						<input name="otro" class="form-control" type="text" readonly id="otro" size="40" value="<?php echo($row['otros']);?>">
 					</fieldset>
-				</div>                
+				</div>
 				<?php
 				}
 				?>
 				<div class="col-md-6 col-12">
 					<fieldset class="form-group">
-						<label for="basicInput">Usuario:</label>           			
+						<label for="basicInput">Usuario:</label>
 						<input name='username' type='text' readonly id='username' size="40" value='<?php echo $get_records['nombre_usuario'];?>' class="form-control">
 					</fieldset>
 				</div>
 
 				<div class="col-md-6 col-12">
 					<fieldset class="form-group">
-						<label for="basicInput">Motivo:</label>           			
+						<label for="basicInput">Motivo:</label>
 						<input name='motivo' type='text' readonly id='motivo' size='40' value='<?php echo $row['motivo'];?>' class="form-control">
 					</fieldset>
 				</div>
-					
-				
+
+
 				<div class="col-md-4 col-12">
 					<fieldset class="form-group">
-						<label for="basicInput">Tipo de Material:</label>           			
-						
-					
-					
-					
-					
+						<label for="basicInput">Tipo de Material:</label>
+
+
+
+
+
 						<select name='tipo_material' disabled id='tipo_material' onChange='return validateR(this.value);' class='validate[required] code_generator form-control'>
-							
+
 							<option value="">Seleccionar Tipo de Material...</option>
 							<?php
 							$get_tipo_material = "";
@@ -145,12 +145,12 @@ $data = $get_records;
 				</div>
 				<div class="col-md-4 col-12">
 					<fieldset class="form-group">
-						<label for="basicInput">Categor&iacute;a:</label>       
-						
-					
+						<label for="basicInput">Categor&iacute;a:</label>
+
+
 						<select name='categoria' disabled id='categoria'  class='validate[required] code_generator form-control'>
-							<?php 
-							
+							<?php
+
 							?>
 							<option value=''>Seleccionar Categoria...</option>
 							<?php
@@ -166,14 +166,14 @@ $data = $get_records;
 								}
 
 								if($get_selected_tipo_material == '2')
-								{   
+								{
 									if($rowp['id'] >= 6)
 									{
 									?>
 									<option <?php echo $selected;?>  value="<?php  echo $rowp['id_categoria'];?>">
 										<?php  echo $rowp['categoria'];?>
 									</option>
-									<?php    
+									<?php
 									}
 								}
 								else
@@ -184,9 +184,9 @@ $data = $get_records;
 									<option <?php echo $selected;?>  value="<?php  echo $rowp['id_categoria'];?>">
 										<?php  echo $rowp['categoria'];?>
 									</option>
-									<?php    
-									}  
-								} 
+									<?php
+									}
+								}
 							}
 							?>
 						</select>
@@ -194,9 +194,9 @@ $data = $get_records;
 				</div>
 				<div class="col-md-4 col-12">
 					<fieldset class="form-group">
-						<label for="basicInput">Familia:</label>       
-					
-					
+						<label for="basicInput">Familia:</label>
+
+
 						<select name="familia" disabled id="familia" class='validate[required] code_generator form-control'>
 						<option value=''>
 							<?php echo (!isset($row['alcopar_familia']) ? 'categoria de familia no ingresada' : 'Seleccionar Familia...');?>
@@ -205,8 +205,8 @@ $data = $get_records;
 						$get_familia = "";
 						if(isset($row['alcopar_categoria']))
 						{
-							
-							
+
+
 							foreach($data['familia'] as $k => $rowp)
 							{
 							$selected = ($row['alcopar_familia'] == $rowp['id_familia'] ? 'selected' : '');
@@ -227,11 +227,11 @@ $data = $get_records;
 				</div>
 				<div class="col-md-6 col-12">
 					<fieldset class="form-group">
-						<label for="basicInput">Marca:</label>       
-						
-					
+						<label for="basicInput">Marca:</label>
+
+
 						<select name='marca1' id='marca1' disabled  class='validate[required] code_generator form-control'>
-						
+
 						<option value=''>Seleccionar Tipo de Marca...</option>
 						<?php
 						$get_marca = "";
@@ -253,18 +253,18 @@ $data = $get_records;
 						</div>
 				<div class="col-md-6 col-12">
 					<fieldset class="form-group">
-						<label for="basicInput">Tipo Categor&iacute;a Extra:</label>    
-						
-						
-					
+						<label for="basicInput">Tipo Categor&iacute;a Extra:</label>
+
+
+
 						<select name="categoria_extra" disabled id="categoria_extra" class='validate[required] code_generator form-control'>
 							<option value='0'>
 								<?php //echo (!isset($row['id_tipo_material']) ? 'No tiene tipo de Material' : 'Seleccionar Categor&iacute;a Extra...');?>
 								Selecciónar Categoría extra...
 							</option>
-							<?php 
-							
-						
+							<?php
+
+
 							$get_tipo_cat_ext = "";
 							foreach($data['extra'] as $k => $rowp)
 							{
@@ -283,65 +283,65 @@ $data = $get_records;
 						</select>
 						</div>
 				<div class="col-md-12 col-12">
-					<fieldset class="form-group">	
-					<label for="basicInput">Comentario Rev Ingenieria:</label>    			
+					<fieldset class="form-group">
+					<label for="basicInput">Comentario Rev Ingenieria:</label>
 						<textarea rows="4" cols="35" class="form-control" readonly ><?php echo $row['comentario_reving'];?></textarea>
 					</fieldset>
 				</div>
-						
+
 				<div class="col-md-12 col-12">
 					<fieldset class="form-group">
 						<label for="basicInput">Módulo a Reasignar
-					</label> 
-					
-					
-						
+					</label>
+
+
+
 						<select name="asigna" class="form-control">
 							<option value="">Escoge un m&oacute;dulo </option>
 							<option value="reving">Rev Ingenieria</option>
-							<option value="revmat">Rev Materiales</option>							
+							<option value="revmat">Rev Materiales</option>
 							<option value="oow">Alta OOW</option>
 						</select>
 						</fieldset>
 				</div>
-				
-					
-		
-				
+
+
+
+
 				<div class="col-md-12 col-12">
 					<fieldset class="form-group">
-						<label for="basicInput">Comentarios:</label>        			
-						<textarea name="comentario" class="form-control" id="comentario" rows="5" style="text-transform:uppercase"></textarea>  
+						<label for="basicInput">Comentarios:</label>
+						<textarea name="comentario" class="form-control" id="comentario" rows="5" style="text-transform:uppercase"></textarea>
 					</fieldset>
 				</div>
-					
+
 				<?php
 				if($row2 >= 1)
 				{
 				?>
 				<div class="col-md-12 col-12">
 					<fieldset class="form-group">
-						<label for="basicInput">Historial de Asignaci&oacute;n:</label>                            
+						<label for="basicInput">Historial de Asignaci&oacute;n:</label>
 						<a href="javascript:void(0)" onclick="historialcargar('<?php echo $id;?>')" rel="shadowbox;height=400;width=600">
 							HISTORIAL
 						</a>
 					</fieldset>
 				</div>
-					
+
 				<?php
 				}
 				?>
-			
+
 				<div class="col-md-12 col-12 mt-2">
 						<fieldset class="form-group">
 							<center>
-							<input class="btn btn-primary" type="submit" id="grabar"  name="grabar" value="Autorizar" onclick="return confirm('Estas seguro de que deseas autorizar la solicitud?')" />							
+							<input class="btn btn-primary" type="submit" id="grabar"  name="grabar" value="Autorizar" onclick="return confirm('Estas seguro de que deseas autorizar la solicitud?')" />
 							<input class="btn btn-primary"  type="submit" id="reasignar"  name="reasignar" value="Reasignar" onclick="return confirm('Estas seguro de que deseas reasignar la solicitud?')" />
 							<a class="btn btn-primary"  value="" href="{{ url('/alcopar/precio')}}">Regresar al Listado</a>
 							</center>
 						</fieldset>
-				</div>		
-			</div>			
+				</div>
+			</div>
 		</form>
 	</div>
 </div>
@@ -355,7 +355,7 @@ $data = $get_records;
 </div> -->
 <div class="modal fade text-left" id="historial" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" style="display: none;" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable  modal-lg" role="document">
-		<div class="modal-content">			
+		<div class="modal-content">
 			<div class="modal-body" id="panel" style="display:none;"></div>
 			<div class="modal-body loaderhist">
 			<center>
@@ -383,13 +383,13 @@ $data = $get_records;
                                             <div class="spinner-border text-dark" role="status">
                                                 <span class="sr-only">Loading...</span>
 											</div>
-			</center>                                    
+			</center>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-light-secondary" data-dismiss="modal">
 					<i class="bx bx-x d-block d-sm-none"></i>
 					<span class="d-none d-sm-block">Cerrar</span>
-				</button>				
+				</button>
 			</div>
 		</div>
 	</div>
@@ -405,14 +405,14 @@ $data = $get_records;
 					<i class="bx bx-x"></i>
 				</button>
 			</div>
-			<div class="modal-body" id="code">	
-				
+			<div class="modal-body" id="code">
+
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-light-secondary" data-dismiss="modal">
 					<i class="bx bx-x d-block d-sm-none"></i>
 					<span class="d-none d-sm-block">Cerrar</span>
-				</button>				
+				</button>
 			</div>
 		</div>
 	</div>
@@ -425,17 +425,15 @@ function historialcargar(id){
 		$('#historial').modal('show');
 		$('.loaderhist').show();
 
-		$.get("{{ url('/alcopar/historial/')}}/"+id, function(data){			
-			$("#panel").html(data);
-			$('.loaderhist').hide();			
-			$('#panel').show();
-			
-		});    
+        $("#panel").load("{{ url('/alcopar/historial/')}}/"+id,  function() {
+            $('.loaderhist').hide();
+            $('#panel').show();
+        });
 	}
     $(document).ready(function(){
-		
+
 		$("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
-		
+
         var code = "";
         var code_material   = "<?php echo ($get_tipo_material   == '' ? '' : $get_tipo_material);?>";
         var code_categoria  = "<?php echo ($get_categoria       == '' ? '' : $get_categoria);?>";
@@ -443,14 +441,14 @@ function historialcargar(id){
         var code_marca      = "<?php echo ($get_marca           == '' ? '' : $get_marca);?>";
             if(code_marca < 10)
             {
-                code_marca = "0" + code_marca;   
+                code_marca = "0" + code_marca;
             }
         var code_cat_ext    = "<?php echo ($get_tipo_cat_ext    == '' ? '' : $get_tipo_cat_ext);?>";
 
         $('.code_generator').click(function(){
             var dir = $(this).attr('id');
 
-            
+
             if(dir == "tipo_material")
             {
                 code_material = $(this).val();
@@ -471,9 +469,9 @@ function historialcargar(id){
             {
                 code_cat_ext = $(this).val();
             }
-            
+
             code = code_material + code_categoria + code_familia + code_marca + code_cat_ext;
-            
+
             if(code_material == "" || code_categoria == "" || code_familia == "" || code_marca == "" || code_cat_ext == "")
             {
                 data =  '<p style="font-weight: bold; font-size: 22px;">' +
@@ -486,26 +484,25 @@ function historialcargar(id){
                             + code +
                         '</p>';
             }
-            
+
             $("#code").html(data);
         });
 
         $("#tipo_material").change(function () {
             $("#tipo_material option:selected").each(function () {
                 id_tipo_material = $(this).val();
-				
+
                 $.get("{{ url('/alcopar/reving/jquery/getCategoriaJquery/')}}/"+id_tipo_material, function(data){
                     $("#categoria").html(data);
-                });            
+                });
             });
         });
 
         $("#categoria").change(function () {
             $("#categoria option:selected").each(function () {
-                id_categoria = $(this).val();
-                $.get("{{ url('/alcopar/reving/jquery/getFamiliaJquery/')}}/"+id_categoria, function(data){
-                    $("#familia").html(data);
-                });            
+                let id_categoria = $(this).val();
+                    $("#familia").load("{{ url('/alcopar/reving/jquery/getFamiliaJquery/')}}/"+id_categoria,  function() {
+                    });
             });
         });
 
@@ -514,12 +511,12 @@ function historialcargar(id){
                 id_tipo_material = $(this).val();
                 $.get("{{ url('/alcopar/reving/jquery/getCategoriaExtraJquery/')}}/"+id_tipo_material, function(data){
                     $("#categoria_extra").html(data);
-                });            
+                });
             });
         });
 
 
-        $(".see-btn-cde").click(function(){			
+        $(".see-btn-cde").click(function(){
             $('.mask').show();
             $('#myCeroModal').modal('show');
         });

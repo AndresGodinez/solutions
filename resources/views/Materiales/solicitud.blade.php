@@ -4,6 +4,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
+                    <div class="alert alert-warning" role="alert" id="div_mensaje"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -87,8 +88,8 @@
                                        required
                                 >
                             </div>
-                            <div class="form-group col-md-3 toEvaluate" id="informacion_componente">
-
+                            <div class="form-group col-md-3 toEvaluate" >
+                                <p><strong>Descripción:</strong> </br> <span id="informacion_componente"></span> </p>
                             </div>
                             <div class="form-group toEvaluate col-md-3">
                                 <label for="ipt_componente_sust">Razón de sustituto:</label>
@@ -160,6 +161,9 @@
 
             </div>
         </div>
+        <div id="description_by_np" style="display: none">
+
+        </div>
     </div>
 
     <script>
@@ -178,34 +182,29 @@
 
             let np = $(this).val();
 
-            $.ajax({
-                method: 'post',
-                url: '/get_description_by_np',
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                data: { ipt_componente : np},
-                dataType: 'json',
 
-                error: function(response) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 },
-                success: function(response) {
+            });
 
-                    if(response.valid)
-                    {
-                        $('#informacion_componente').html('<p><strong>Descripción:</strong> </br>' + response.np_description + '</p>');
-                        $(".toEvaluate").show();
-                    }
-                    else
-                    {
-                        $('#ipt_componente').val('');
-                        $('#myModal .modal-body').html('<div class="alert alert-warning" role="alert">' + response.message + '</div>');
-                        $('#myModal').modal('show');
-                        $(".toEvaluate").hide();
-                        $(response.target).focus();
-                        $(".toEvaluate").hide();
-
-                    }
+            $("#description_by_np").load( "{{ url('/get_description_by_np')}}",  { ipt_componente: np }, function() {
+                let valid = $('#valid').val();
+                if (valid){
+                    $('.toEvaluate').show();
+                    $('#informacion_componente').text($('#np_description').val());
+                }
+                else{
+                    $('#div_mensaje').text($('#message').val());
+                    $('#myModal').modal('show');
+                    $(".toEvaluate").hide();
+                    $(response.target).focus();
+                    $(".toEvaluate").hide();
                 }
             });
+
+
         });
     </script>
 

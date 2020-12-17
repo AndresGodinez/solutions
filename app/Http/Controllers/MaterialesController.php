@@ -6,7 +6,6 @@ use App\Http\Requests\ConsultaMaterialesRequest;
 use App\Http\Requests\GetDescriptionMaterialRequest;
 use App\Http\Requests\SolicitudSustitutoRequest;
 use App\Material;
-use App\Stock;
 use App\Sustituto;
 use App\WpxLigasSustitutos;
 use App\WpxLigasSustitutosLog;
@@ -16,10 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use function compact;
-use function datatables;
 use function is_null;
 use function redirect;
-use function response;
 use function route;
 use function url;
 use function view;
@@ -61,24 +58,20 @@ class MaterialesController extends Controller
         $message = "¡Los cambios se guardaron exitosamente!";
         $redirect = "";
 
-        $request->ipt_id        = $this->clean_string(isset($request->ipt_id) ? $request->ipt_id : "");
-        $request->ipt_comments  = $this->clean_string(isset($request->ipt_comments) ? $request->ipt_comments : "");
+        $request->ipt_id = $this->clean_string(isset($request->ipt_id) ? $request->ipt_id : "");
+        $request->ipt_comments = $this->clean_string(isset($request->ipt_comments) ? $request->ipt_comments : "");
 
-        if(empty($request->ipt_id))
-        {
+        if (empty($request->ipt_id)) {
             $message = "Por favor no modifiques la id de la solicitud.";
             $valid = false;
             $target = "#ipt_id";
-        }
-        elseif(empty($request->ipt_comments))
-        {
+        } elseif (empty($request->ipt_comments)) {
             $message = "Por favor ingresea el porque estas cancelando la solicitud.";
             $valid = false;
             $target = "#ipt_comments";
         }
 
-        if($valid)
-        {
+        if ($valid) {
             Sustituto::cancel_sol($request->ipt_id, $user, $depto, $request->ipt_comments);
             $redirect = $request->ipt_id;
         }
@@ -102,7 +95,7 @@ class MaterialesController extends Controller
             ->where('wpx_sustitutos.material', $material->part_number)
             ->orWhere('wpx_sustitutos.material', $material->part_number)
             ->get();
-        
+
         $sustitutos = WpxSustitutos::where('group_rel', $sustitutos_group_rel[0]->group_rel)->get();
 
         return view('Materiales/show', compact('material', 'sustitutos'));
@@ -201,33 +194,32 @@ class MaterialesController extends Controller
 
             $response['message'] = $message;
             $response['valid'] = false;
-            $response['target'] = '#ipt_componente';
+//            $response['target'] = '#ipt_componente';
 
-            return response()->json($response);
+        } else {
+            if (WpxSustitutos::where('material', $material->part_number)->exists()) {
+                $sustituto = WpxSustitutos::where('material', $material->part_number)->latest()->first();
+
+                $response['valid'] = false;
+                $response['message'] = 'El componente ya cuenta con un sustituto es '.$sustituto->sustituto;
+
+            } elseif (WpxLigasSustitutos::where('np', $material->part_number)->exists()) {
+                $response['valid'] = false;
+                $response['message'] = 'El componente ya cuenta con una solicitud';
+            }
+
+            else{
+                $response['valid'] = true;
+                $response['message'] = '';
+                $response['np_description'] = !!$material->part_description
+                    ? $material->part_description
+                    : 'encontrado, no tiene descripción';
+            }
 
         }
 
-        if (WpxLigasSustitutos::where('np', $material->part_number)->exists()) {
-            $response['valid'] = false;
-            $response['target'] = '#ipt_componente';
-            $response['message'] = 'El componente ya cuenta con una solicitud';
-            return response()->json($response);
-        }
 
-        if (WpxSustitutos::where('material', $material->part_number)->exists()) {
-            $sustituto = WpxSustitutos::where('material', $material->part_number)->latest()->first();
-            $response['valid'] = false;
-            $response['target'] = '#ipt_componente';
-            $response['message'] = 'El componente ya cuenta con un sustituto es '.$sustituto->sustituto;
-            return response()->json($response);
-        }
-
-        $response['valid'] = true;
-        $response['np_description'] = !!$material->part_description
-            ? $material->part_description
-            : 'encontrado, no tiene descripción';
-
-        return response()->json($response);
+        return view('Sustitutos.Partials.get_description_by_np', compact('response'));
     }
 
     public function set_track(Request $request)
