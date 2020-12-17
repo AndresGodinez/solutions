@@ -74,14 +74,14 @@
             <td>{{ $value->bin }}</td>
             <td>{{ $value->stock }}</td>
             <td>{{ $value->costo }}</td>
-            <td>{{ '=E'. ($key+2) . '*F'. ($key+2) }}</td>
+            <td>{{ '=F'. ($key+10) . '*G'. ($key+10) }}</td>
             <td></td>
-            <td>{{ '=H'. ($key+2) . '-E'. ($key+2) }}</td>
+            <td>{{ '=I'. ($key+10) . '-F'. ($key+10) }}</td>
             <td></td>
-            <td>{{ '=IF(J'.($key+2).'="", 0,J'.($key+2).'-E'.($key+2).')' }}</td>
-            <td>{{ '=K'.($key+2).'*F'.($key+2) }}</td>
-            <td>{{ '=E'.($key+2).'+K'.($key+2) }}</td>
-            <td>{{ '=M'.($key+2).'*F'.($key+2) }}</td>
+            <td>{{ '=IF(K'.($key+10).'="", 0,K'.($key+10).'-F'.($key+10).')' }}</td>
+            <td>{{ '=L'.($key+10).'*G'.($key+10) }}</td>
+            <td>{{ '=F'.($key+10).'+L'.($key+10) }}</td>
+            <td>{{ '=N'.($key+10).'*G'.($key+10) }}</td>
         </tr>
     @endforeach
     <tr></tr>
