@@ -1265,6 +1265,7 @@ class StocksModel extends ModelBase
     {
         $columnasactivas = [
 'id',            'material',
+            'ok',
             'descripcion',
             'tipo_status',
             'precio_usd',
