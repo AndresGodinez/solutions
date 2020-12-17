@@ -329,7 +329,7 @@ class FechaPromesaController extends Controller
 
     public function actualizarFechasPromesas()
     {
-        $routeFile = "php D:/inetpub/wwwroot/soluciones/wpx_includes/controllers/backend/fecha_promesa/exec.php";
+        $routeFile = "php D:/inetpub/wwwroot/solucionesGIT/wpx_includes/controllers/backend/fecha_promesa/exec.php";
 
         $this->dispatch(
             new ExecuteFileJob($routeFile)
