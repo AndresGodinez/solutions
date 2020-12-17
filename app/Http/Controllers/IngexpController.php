@@ -42,7 +42,7 @@ class IngexpController extends Controller
         IngexpModel::cargar($_POST, $user, $_FILES, $file);
 
         $urldirv = url('/ingexp/cargar?success=1');
-        echo "<script>window.location = '".$urldirv."'</script>";
+        return redirect($urldirv);
 
     }
 
@@ -53,8 +53,8 @@ class IngexpController extends Controller
 
         IngexpModel::cargaredit($_POST, $user, $_FILES, $file);
 
-        $urldirv = url('/ingexp/editar/');
-        echo "<script>window.location = '".$urldirv."/".$request->get('id')."?success=1'</script>";
+        $urldirv = url('/ingexp/editar/'.$request->get('id').'?success=1');        
+        return redirect($urldirv);
 
     }
 
@@ -531,8 +531,8 @@ class IngexpController extends Controller
             $request->session()->put(['sol_acceso_login' => trim(strtoupper($_POST["login"]))]);
             $request->session()->put(['sol_acceso_token' => trim(strtoupper($_POST["_token"]))]);
             $request->session()->put(['sol_acceso_nombre' => trim(strtoupper($get_records["nombre"]))]);
-        }
-        echo json_encode($get_records, true);
+        }        
+        return response()->json($get_records);
     }
 
 
