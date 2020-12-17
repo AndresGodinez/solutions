@@ -51,6 +51,13 @@ class PagoTalleresController extends Controller
         $user       = Session::get('username');
                 
         return view("pages.pago-talleres.reportes-recepcion-facturas-taller");
+    }
+
+    public function recepcion_facturas_descargar_taller_aceptadas()
+    {
+        $user       = Session::get('username');
+                
+        return view("pages.pago-talleres.reportes-recepcion-facturas-taller-aceptadas");
     } 
 
     public function recepcion_facturas_descargar_taller_process(Request $request)
@@ -78,9 +85,17 @@ class PagoTalleresController extends Controller
 
         if($valid)
         {
-            $data = PagoTalleresController::get_data_recepcion_facturas_descargar_taller_process($request->taller, $request->from, $request->to);
-            
+            if(empty($request->taller))
+            {
+                $data = PagoTalleresModel::get_data_recepcion_facturas_report($request->from, $request->to);
+            }
+            else
+            {
+                $data = PagoTalleresModel::get_data_recepcion_facturas_report_taller($request->taller, $request->from, $request->to);
+            }
         }
+
+        return view("pages.pago-talleres.recepcion-facturas-detail-ref", ['data' => $data]);
 
        /* $name = 'Facturas recibidas';
         $extension = '.xlsx';
@@ -96,16 +111,61 @@ class PagoTalleresController extends Controller
         $sustitutos = Sustituto::all()->take(10);
 
         $data = $this->getDataSustitutos($sustitutos);
-        return Excel::download(new SimpleExport($head, $data), $fileName);*/
+        return Excel::download(new SimpleExport($head, $data), $fileName); */
 
-        $response['message'] = $message;
+        /*$response['message'] = $message;
         $response['valid'] = $valid;
         $response['target'] = $target;
         $response['redirect'] = $redirect;
 
-        echo(json_encode($response));
+        echo(json_encode($response));*/
+    }
 
-    } 
+    public function recepcion_facturas_taller()
+    {
+        $user  = Session::get('username');    
+        $data = PagoTalleresModel::get_data_facturas_report_taller($user);
+
+        return view("pages.pago-talleres.facturas-detail-ref", ['data' => $data]);
+    }
+
+    public function recepcion_facturas_descargar_taller_process_aceptadas(Request $request)
+    {
+        $user  = Session::get('username');
+        $valid = true;
+        $target = "";
+        $message = "Procesando información espere un momento...";
+        $redirect = url("pago-a-talleres/facturas-recibidas-aceptadas/x-tallr/descargar/");
+
+        $request->taller     = $this->clean_string(isset($request->taller) ? $request->taller : "");
+
+        if(empty($request->from))
+        {
+            $message = "Por favor ingrese una fecha de inicio valida.";
+            $valid = false;
+            $target = "#from";
+        }
+        elseif(empty($request->to))
+        {
+            $message = "Por favor ingrese una fecha fin valida.";
+            $valid = false;
+            $target = "#to";
+        }
+
+        if($valid)
+        {
+            if(empty($request->taller))
+            {
+                $data = PagoTalleresModel::get_data_recepcion_facturas_report_aceptadas($request->from, $request->to);
+            }
+            else
+            {
+                $data = PagoTalleresModel::get_data_recepcion_facturas_report_taller_aceptadas($request->taller, $request->from, $request->to);
+            }
+        }
+
+        return view("pages.pago-talleres.recepcion-facturas-detail-ref-aceptadas", ['data' => $data]);
+    }
 
     public function recepcion_facturas_detail(Request $request)
     {
@@ -164,14 +224,21 @@ class PagoTalleresController extends Controller
     {
         $user       = Session::get('username');
         $flag       = $request->flag;
+        $data_facts_pendientes_claims = array();
         //Obtenemos la info general del taller.
         $data_info_taller       = PagoTalleresModel::get_data_info_taller($request->taller);
         //Obtenemos las facturas pendientes.
         $data_facts_pendientes  = PagoTalleresModel::get_data_facts_pendientes($request->taller);
 
+        if($flag == 1)
+        {
+            $data_facts_pendientes_claims = PagoTalleresModel::get_data_facts_pendientes_claims($data_facts_pendientes);            
+        }
+
         return view("pages.pago-talleres.recepcion-facturas-detail", 
                     ['data_info_taller' => $data_info_taller, 
                     'data_facts_pendientes' => $data_facts_pendientes,
+                    'data_facts_pendientes_claims' => $data_facts_pendientes_claims,
                     'flag' => $flag]);
     }
 
@@ -344,5 +411,54 @@ class PagoTalleresController extends Controller
     public function download_file($date)
     {
     	return Storage::download('/pago-a-talleres/'.$date);
+    }
+
+    public function recepcion_facturas_process_admin(Request $request)
+    {
+        $message = "¡Información actualizada correctamente!";
+        $valid =  true;
+        $target = "";
+        $redirect = url('pago-a-talleres/recepcion-de-facturas/detalle/2/'.$request->ipt_taller);
+        
+        if(PagoTalleresModel::update_pagoataller_admin($request))
+        {
+            $message = "¡Hubo un error al actualizar la información!";
+            $valid =  false;
+        }
+        
+        $response['message'] = $message;
+        $response['valid'] = $valid;
+        $response['target'] = $target;
+        $response['redirect'] = $redirect;
+
+        echo(json_encode($response));
+    }
+
+    public function recepcion_facturas_process_taller(Request $request)
+    {
+        $redirect = url('pago-a-talleres/recepcion-de-facturas/detalle/1/'.$request->ipt_taller);
+        $ipt_file_xml   = $request->file('ipt_file_xml');
+        $ipt_file_pdf   = $request->file('ipt_file_pdf');
+         
+        $valid = true;
+
+        if (!empty($ipt_file_xml) && !empty($ipt_file_pdf)) 
+        {
+            $final_file_xml = Str::uuid().'.' . $ipt_file_xml->getClientOriginalExtension();
+            $ipt_file_xml->storeAS('pago-a-talleres/facturas/' . $request->ipt_taller . '/' . $request->ipt_referencia . '/' , $final_file_xml);
+            $final_file_pdf = Str::uuid().'.' . $ipt_file_pdf->getClientOriginalExtension();
+            $ipt_file_pdf->storeAS('pago-a-talleres/facturas/' . $request->ipt_taller . '/' . $request->ipt_referencia . '/' , $final_file_pdf);
+        } 
+        else
+        { 
+            $valid = false;
+        }
+
+        if($valid)
+        {
+            PagoTalleresModel::update_pagoataller_taller($request, $final_file_xml, $final_file_pdf);
+        }
+
+        echo '<script>window.location.href = "'.$redirect.'";</script>';
     }
 }

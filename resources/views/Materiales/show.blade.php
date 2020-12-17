@@ -91,7 +91,7 @@
                                 <td>{{ $sustituto->material2->part_description ?? 'no tiene descripción' }}</td>
                                 <td>{{ $material->part_dchain }}</td>
                                 <td>{{ $sustituto->rel }}</td>
-                                <td>{{ \Illuminate\Support\Carbon::createFromFormat('Y-m-d H:i:s', $sustituto->fecha_carga)->format('d-m-Y')   }}</td>
+                                <td>{{ $sustituto->fecha_liga }}</td>
                                 <td>{{ $material->rs01 }}</td>
                                 <td>{{ $material->rs02 }}</td>
                                 <td>{{ $material->rs03 }}</td>

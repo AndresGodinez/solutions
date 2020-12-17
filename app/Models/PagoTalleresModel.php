@@ -464,7 +464,6 @@ class PagoTalleresModel extends ModelBase
 
     public static function get_data_facts_pendientes($taller)
     {
-        // Obtenemos las facturas pendientes.
         $data = DB::table('pagotaller')
                     ->select('pagotaller.*')
                     ->where('taller', $taller)
@@ -476,26 +475,179 @@ class PagoTalleresModel extends ModelBase
         return $data;
     }
 
-    public static function get_data_recepcion_facturas_descargar_taller_process($taller, $from, $to)
+    public static function get_data_facts_pendientes_aceptadas($taller)
     {
-        if(empty($taller))
-        {
-            $data = DB::table('pagotaller')
+        $data = DB::table('pagotaller')
                     ->select('pagotaller.*')
                     ->where('taller', $taller)
-                    ->where('status_fact', 'RECIBIDA')
+                    ->where('status_fact', 'ACEPTADO')
                     ->whereNotNull('factrecibida')
                     ->orderBy('fecha', 'ASC')
                     ->get();
-        }
-       /* else
-        {
-            
-        }*/
+
+        return $data;
+    }
+
+    public static function get_data_recepcion_facturas_report($from, $to)
+    {
+        $status_fact = 'CAPTURADA';
+        $data = DB::table('pagotaller')
+                ->select('pagotaller.*', 'talleres.*')
+                ->leftJoin('talleres', 'talleres.taller', '=', 'pagotaller.taller')
+                ->whereNotNull('factrecibida')
+                ->where('pagotaller.fecharecepcion', '>=', $from)
+                ->where('pagotaller.fecharecepcion', '<=', $to)
+                ->where('status_fact', $status_fact)
+                ->orderBy('pagotaller.taller', 'ASC')
+                ->orderBy('pagotaller.referencia', 'ASC')
+                ->get();
+
+        return $data;
+    }
+
+    public static function get_data_recepcion_facturas_report_aceptadas($from, $to)
+    {
+        $status_fact = 'ACEPTADO';
+        $data = DB::table('pagotaller')
+                ->select('pagotaller.*', 'talleres.*')
+                ->leftJoin('talleres', 'talleres.taller', '=', 'pagotaller.taller')
+                ->whereNotNull('factrecibida')
+                ->where('pagotaller.fecharecepcion', '>=', $from)
+                ->where('pagotaller.fecharecepcion', '<=', $to)
+                ->where('status_fact', $status_fact)
+                ->orderBy('pagotaller.taller', 'ASC')
+                ->orderBy('pagotaller.referencia', 'ASC')
+                ->get();
+
+        return $data;
+    }
+
+    public static function get_data_recepcion_facturas_report_taller($taller, $from, $to)
+    {
+        
+        $status_fact = 'CAPTURADA';
+        $data = DB::table('pagotaller')
+                ->select('pagotaller.*', 'talleres.*')
+                ->leftJoin('talleres', 'talleres.taller', '=', 'pagotaller.taller')
+                ->where('pagotaller.taller', $taller)
+                ->whereNotNull('factrecibida')
+                ->where('pagotaller.fecharecepcion', '>=', $from)
+                ->where('pagotaller.fecharecepcion', '<=', $to)
+                ->where('status_fact', $status_fact)
+                ->orderBy('pagotaller.taller', 'ASC')
+                ->orderBy('pagotaller.referencia', 'ASC')
+                ->get();
+
+
+        return $data;
+    }
+
+    public static function get_data_recepcion_facturas_report_taller_aceptadas($taller, $from, $to)
+    {
+        
+        $status_fact = 'ACEPTADO';
+        $data = DB::table('pagotaller')
+                ->select('pagotaller.*', 'talleres.*')
+                ->leftJoin('talleres', 'talleres.taller', '=', 'pagotaller.taller')
+                ->where('pagotaller.taller', $taller)
+                ->whereNotNull('factrecibida')
+                ->where('pagotaller.fecharecepcion', '>=', $from)
+                ->where('pagotaller.fecharecepcion', '<=', $to)
+                ->where('status_fact', $status_fact)
+                ->orderBy('pagotaller.taller', 'ASC')
+                ->orderBy('pagotaller.referencia', 'ASC')
+                ->get();
+
+
+        return $data;
+    }
+
+    public static function get_data_facturas_report_taller($user)
+    {
+        $data = DB::table('pagotaller')
+                ->select('pagotaller.*', 'talleres.*')
+                ->leftJoin('talleres', 'talleres.taller', '=', 'pagotaller.taller')
+                ->where('pagotaller.taller', $user)
+                ->whereNotNull('factrecibida')
+                ->orderBy('pagotaller.taller', 'ASC')
+                ->orderBy('pagotaller.referencia', 'ASC')
+                ->get();
+
+        return $data;
     }
 
     public static function clean_string($string)
     {
         return trim(strip_tags($string));
+    }
+
+    public static function update_pagoataller_admin($request)
+    {
+        $factrecibida = 1;
+        $fecharecepcion = date('Y-m-d');
+        $status_fact = 'CAPTURADA';
+        $valid = false;
+        
+        DB::table('pagotaller')
+                ->where('pagotaller.taller', $request->ipt_taller)
+                ->where('pagotaller.referencia', $request->ipt_referencia)
+                ->update(['factrecibida' => (empty($factrecibida) ? "" : PagoTalleresModel::clean_string(utf8_encode($factrecibida))),
+                        'fecharecepcion' => (empty($fecharecepcion) ? "" : PagoTalleresModel::clean_string(utf8_encode($fecharecepcion))),
+                        'numfact' => (empty($request->ipt_no_factura) ? "" : PagoTalleresModel::clean_string(utf8_encode($request->ipt_no_factura))),
+                        'status_fact' => (empty($request->ipt_no_factura) ? "" : PagoTalleresModel::clean_string(utf8_encode($request->ipt_no_factura))),]);
+        $valid = true;
+    }
+
+    public static function update_pagoataller_taller($request, $xml, $pdf)
+    {
+        $factrecibida = 1;
+        $electronica = 1;
+        $fecharecepcion = date('Y-m-d');
+        $status_fact = 'CAPTURADA';
+        $valid = false;
+        
+        DB::table('pagotaller')
+                ->where('pagotaller.taller', $request->ipt_taller)
+                ->where('pagotaller.referencia', $request->ipt_referencia)
+                ->update(['factrecibida' => (empty($factrecibida) ? "" : PagoTalleresModel::clean_string(utf8_encode($factrecibida))),
+                        'fecharecepcion' => (empty($fecharecepcion) ? "" : PagoTalleresModel::clean_string(utf8_encode($fecharecepcion))),
+                        'numfact' => (empty($request->ipt_no_factura) ? "" : PagoTalleresModel::clean_string(utf8_encode($request->ipt_no_factura))),
+                        'electronica' => (empty($electronica) ? "" : PagoTalleresModel::clean_string(utf8_encode($electronica))),
+                        'status_fact' => (empty($request->ipt_no_factura) ? "" : PagoTalleresModel::clean_string(utf8_encode($request->ipt_no_factura))),
+                        'xml' => $xml,
+                        'pdf' => $pdf]);
+
+        $valid = true;
+    }
+
+    public static function get_data_facts_pendientes_claims($data_facts_pendientes)
+    {
+        $send_data = array();
+
+        foreach ($data_facts_pendientes as $data_facts_pendientes) 
+        {
+            $i = 0;
+            $data = DB::table('claims_aprobados')
+                    ->select('claims_aprobados.dispatch', 
+                                'claims_aprobados.claim_app_date', 
+                                'claims_aprobados.total_approved_claim_amount', 
+                                'claims_aprobados.claim',
+                                'claims_aprobados.reference')
+                    ->where('claims_aprobados.taller', $data_facts_pendientes->taller)
+                    ->where('claims_aprobados.reference', $data_facts_pendientes->referencia)
+                    ->get();
+
+            foreach ($data as $data) 
+            {
+                $send_data[$data_facts_pendientes->referencia][$i]['dispatch']                      = $data->dispatch;
+                $send_data[$data_facts_pendientes->referencia][$i]['claim_app_date']                = $data->claim_app_date;
+                $send_data[$data_facts_pendientes->referencia][$i]['total_approved_claim_amount']   = $data->total_approved_claim_amount;
+                $send_data[$data_facts_pendientes->referencia][$i]['claim']                         = $data->claim;
+                $send_data[$data_facts_pendientes->referencia][$i]['reference']                     = $data->reference;
+                $i++;
+            }
+        }
+
+        return $send_data;
     }
 }

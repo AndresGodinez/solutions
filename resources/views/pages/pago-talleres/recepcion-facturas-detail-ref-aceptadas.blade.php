@@ -18,7 +18,7 @@
 	<div class="row">
 		<div class="col-sm-12">
 			<h2>
-			  <strong>Facturas Recibidas</strong>  <small>(<strong>Detalle</strong>)</small>
+			  <strong>Facturas Recibidas Aceptadas</strong>  <small>(<strong>Detalle</strong>)</small>
 			</h2>
 		</div>
 	</div>
@@ -36,13 +36,12 @@
 				      <th scope="col">Factura</th>
 				      <th scope="col">Referencia</th>
 				      <th scope="col">Importe</th>
-				      <th scope="col">Imprimir PDF</th>
-				      <th scope="col">Imprimir XML</th>
-				      <th scope="col">Aceptar</th>
-				      <th scope="col">Rechazar</th>
 				    </tr>
 				</thead>
 				<tbody>
+					<?php 
+					$total = 0;
+					?>
 					@foreach($data as $data)
 					<tr>
 						<td>{{ $data->vendor }}</td>
@@ -50,32 +49,22 @@
 						<td>{{ $data->nombre }}</td>
 						<td>{{ date('d-m-Y',strtotime($data->fecharecepcion)) }}</td>
 						<td>{{ $data->numfact }}</td>
-						<td>
-							<a href="#">
-								{{ $data->referencia }}
-							</a>
-						</td>
+						<td>{{ $data->referencia }}</td>
 						<td>{{ $data->importe }}</td>
-						<td>{{ $data->pdf }}</td>
-						<td>{{ $data->xml }}</td>
-						<td>
-							<form action="" method="POST">
-								{{ csrf_field() }}
-								<button type="submit" class="btn btn-primary">
-							    	Aceptar
-							    </button>
-							</form>
-						</td>
-						<td>
-							<form action="" method="POST">
-								{{ csrf_field() }}
-								<button type="submit" class="btn btn-danger">
-							    	Rechazar
-							    </button>
-							</form>
-						</td>
-					</tr>	
+					</tr>
+					<?php 
+					$total = $total + $data->importe;
+					?>	
 					@endforeach
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><strong>Total: </strong></td>
+						<td>$ {{ $total }}</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>

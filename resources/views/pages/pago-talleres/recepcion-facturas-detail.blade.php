@@ -1,6 +1,9 @@
 @extends("layouts.app")
 
 @section("content")
+<?php 
+$bootbox = true;
+?>
 <div class="modal" tabindex="-1" role="dialog" id="myModal">
 	<div class="modal-dialog" role="document">
 	    <div class="modal-content">
@@ -56,9 +59,74 @@
 					    <td>{{ $data_facts_pendientes->importe }}</td>
 					    @if($flag == 1)
 					    <td>
-					    	<a href="{{ url('pago-a-talleres/recepcion-de-facturas/referencia/'.$data_facts_pendientes->referencia) }}">
-					    		Detalle
-					    	</a>
+					    	<div class="modal fade bd-example-modal-lg" id="exampleModaldetail{{ $data_facts_pendientes->referencia }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-lg" role="document">
+								    <div class="modal-content" style="padding: 10px;">
+							      		<table class="table">
+											<thead>
+											    <tr>
+											      <th scope="col">Dispatch</th>
+											      <th scope="col">Claim</th>
+											      <th scope="col">Referencia</th>
+											      <th scope="col">Fecha</th>
+											      <th scope="col">Cantidad</th>
+											    </tr>
+											</thead>
+											<tbody>
+												<?php
+												$total = 0;
+												$iva = 0;
+												if(isset($data_facts_pendientes_claims[$data_facts_pendientes->referencia]) && !empty($data_facts_pendientes_claims))
+												{
+													$n = count($data_facts_pendientes_claims[$data_facts_pendientes->referencia]);
+												?>
+												@for($i=0; $i<$n; $i++)
+												<tr>
+													<td>
+														{{ $data_facts_pendientes_claims[$data_facts_pendientes->referencia][$i]['dispatch'] }}
+													</td>
+													<td>
+														{{ $data_facts_pendientes_claims[$data_facts_pendientes->referencia][$i]['claim'] }}
+													</td>
+													<td>
+														{{ $data_facts_pendientes_claims[$data_facts_pendientes->referencia][$i]['reference'] }}
+													</td>
+													<td>
+														{{ $data_facts_pendientes_claims[$data_facts_pendientes->referencia][$i]['claim_app_date'] }}
+													</td>
+													<td>
+														{{ $data_facts_pendientes_claims[$data_facts_pendientes->referencia][$i]['total_approved_claim_amount'] }}
+													</td>
+												</tr>
+												<?php 
+												$total = $total + $data_facts_pendientes_claims[$data_facts_pendientes->referencia][$i]['total_approved_claim_amount'];
+												?>
+												@endfor
+												<?php 
+												}	
+												?>
+											</tbody>	
+							      		</table>
+							      		<div style="padding: 10px;">
+											<?php 
+											$iva = $total * .16;
+											$grand_total = $iva + $total;
+											?>
+											<strong>Subtotal:</strong> {{ $total }}<br />
+											<strong>Iva:</strong> {{ $iva }}<br />
+											<strong>Total:</strong> {{ $grand_total }}<br /> 
+							      		</div>
+							      		<div style="padding: 10px;">
+							      			<a href="#">
+							      				Descargar Excel
+							      			</a>
+							      		</div>
+								    </div>
+								</div>
+							</div>
+					    	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModaldetail{{ $data_facts_pendientes->referencia }}">
+							  	Detalle
+							</button>
 					   	</td>
 					    @endif
 					    <?php $importe_final = $importe_final + $data_facts_pendientes->importe; ?>
@@ -68,8 +136,10 @@
 						<div class="modal-dialog" role="document">
 						    <div class="modal-content">
 						      	@if($flag == 2)
-						      	<form action="{{ url('pago-a-talleres/process/recepcion-facturas/admin/') }}" method="POST" enctype="multipart/form-data">
+						      	<form action="{{ url('pago-a-talleres/process/recepcion-facturas/admin/') }}" method="POST" class="generic_form">
 						      		{{ csrf_field() }}
+						      		<input type="hidden" name="ipt_referencia" value="{{ $data_facts_pendientes->referencia }}" />
+						      		<input type="hidden" name="ipt_taller" value="{{ $data_info_taller[0]->taller }}" />
 						      		<div class="modal-header">
 							        	<h5 class="modal-title" id="exampleModalLabel">Recepción de Factura [ {{ $data_facts_pendientes->referencia }} ]</h5>
 							        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -98,6 +168,8 @@
 						      	@else
 						      	<form action="{{ url('pago-a-talleres/process/recepcion-facturas/taller/') }}" method="POST" enctype="multipart/form-data">
 						      		{{ csrf_field() }}
+						      		<input type="hidden" name="ipt_referencia" value="{{ $data_facts_pendientes->referencia }}" />
+						      		<input type="hidden" name="ipt_taller" value="{{ $data_info_taller[0]->taller }}" />
 						      		<div class="modal-header">
 							        	<h5 class="modal-title" id="exampleModalLabel">Recepción de Factura Talleres [ {{ $data_facts_pendientes->referencia }} ]</h5>
 							        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">

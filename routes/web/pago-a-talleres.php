@@ -14,14 +14,16 @@ Route::middleware('auth')->group(function () {
 		Route::get('/recepcion-de-facturas/', 							'PagoTalleresController@recepcion_facturas');
 		Route::post('/process/recepcion-facturas/', 					'PagoTalleresController@recepcion_facturas_detail');
 		Route::get('/recepcion-de-facturas/detalle/{flag}/{taller}', 	'PagoTalleresController@recepcion_facturas_detail_taller');
-		Route::get('/recepcion-de-facturas/referencia/{referencia}', 	'PagoTalleresController@recepcion_facturas_detail_referencia');
 		Route::post('/process/recepcion-facturas/admin/', 				'PagoTalleresController@recepcion_facturas_process_admin');
 		Route::post('/process/recepcion-facturas/taller/', 				'PagoTalleresController@recepcion_facturas_process_taller');
 
 		// Reportes.
-		Route::get('/reportes/', 										'PagoTalleresController@recepcion_facturas_reports');
-		Route::get('/facturas-recibidas/x-tallr/descargar/', 			'PagoTalleresController@recepcion_facturas_descargar_taller');
-		Route::post('/facturas-recibidas/x-tallr/descargar/process', 	'PagoTalleresController@recepcion_facturas_descargar_taller_process');
+		Route::get('/reportes/', 												'PagoTalleresController@recepcion_facturas_reports');
+		Route::get('/facturas-recibidas/x-tallr/descargar/', 					'PagoTalleresController@recepcion_facturas_descargar_taller');
+		Route::post('/facturas-recibidas/x-tallr/descargar/process', 			'PagoTalleresController@recepcion_facturas_descargar_taller_process');
+		Route::get('/facturas-recibidas-aceptadas/x-tallr/descargar/', 			'PagoTalleresController@recepcion_facturas_descargar_taller_aceptadas');
+		Route::post('/facturas-recibidas-aceptadas/x-tallr/descargar/process', 	'PagoTalleresController@recepcion_facturas_descargar_taller_process_aceptadas');
+		Route::get('/facturas/x-tallr/descargar/', 								'PagoTalleresController@recepcion_facturas_taller');
 
     });
 });

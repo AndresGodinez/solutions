@@ -21,10 +21,10 @@ $bootbox = true;
 	<div class="row">
 		<div class="col-sm-4">
 			<h2>
-			  <strong>Reporte de Facturas Recibidas</strong>
+			  <strong>Reporte de Facturas Recibidas Aceptadas</strong>
 			</h2>
 			<div class="pagotaller">
-				<form action="{{ url('pago-a-talleres/facturas-recibidas/x-tallr/descargar/process/') }}" method="POST" style="border: 1px solid #CCCCCC; margin-bottom: 60px; padding: 15px;">
+				<form action="{{ url('pago-a-talleres/facturas-recibidas-aceptadas/x-tallr/descargar/process/') }}" method="POST" style="border: 1px solid #CCCCCC; margin-bottom: 60px; padding: 15px;">
 				  	@csrf
 				  	<div class="form-group">
 				  		<label for="from"><strong>Taller:</strong></label>
