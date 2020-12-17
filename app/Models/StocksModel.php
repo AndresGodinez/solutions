@@ -310,6 +310,7 @@ class StocksModel extends ModelBase
             'fren44',
             'fren_fecha_embarque',
             'fren_vva',
+            'ok',
             'mart45',
             'mart_fecha_embarque',
             'mart_vva',
