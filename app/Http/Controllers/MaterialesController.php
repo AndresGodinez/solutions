@@ -96,8 +96,29 @@ class MaterialesController extends Controller
             ->orWhere('wpx_sustitutos.material', $material->part_number)
             ->get();
 
-        $sustitutos = WpxSustitutos::where('group_rel', $sustitutos_group_rel[0]->group_rel)->get();
-
+        $sustitutos = DB::table('wpx_sustitutos')
+            ->select(
+                'wpx_sustitutos.sustituto',
+                'wpx_sustitutos.sustituto_sug',
+                'wpx_sustitutos.rel',
+                'wpx_sustitutos.fecha_liga',
+                'materiales.part_description',
+                'materiales.part_dchain',
+                'materiales.rs01',
+                'materiales.rs02',
+                'materiales.rs03',
+                'materiales.rs04',
+                'materiales.rs05',
+                'materiales.rs06',
+                'materiales.rs10',
+                'materiales.vnr_sups',
+                'materiales.vnr_rams',
+                'materiales.vnr_cela',
+                'materiales.vnr_plai',
+                'materiales.vnr_hora'
+            )->leftJoin('materiales', 'materiales.part_number', 'wpx_sustitutos.sustituto')->where('group_rel',
+                $sustitutos_group_rel[0]->group_rel)
+            ->get();
         return view('Materiales/show', compact('material', 'sustitutos'));
     }
 
@@ -142,7 +163,7 @@ class MaterialesController extends Controller
         $material = Material::where('part_number', $request->get('ipt_componente'))->first();
 
         if (WpxLigasSustitutos::where('np', $material->part_number)->exists()) {
-            $message = 'Ya existe una slicitud para este material '. $material->part_number;
+            $message = 'Ya existe una slicitud para este material '.$material->part_number;
             return redirect(route('materiales-sustitutos.index'))->with(['message' => $message]);
         }
 
@@ -206,9 +227,7 @@ class MaterialesController extends Controller
             } elseif (WpxLigasSustitutos::where('np', $material->part_number)->exists()) {
                 $response['valid'] = false;
                 $response['message'] = 'El componente ya cuenta con una solicitud';
-            }
-
-            else{
+            } else {
                 $response['valid'] = true;
                 $response['message'] = '';
                 $response['np_description'] = !!$material->part_description
