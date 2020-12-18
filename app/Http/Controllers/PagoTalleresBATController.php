@@ -4,6 +4,11 @@ date_default_timezone_set("America/Mexico_City");
 Class PagoTalleresBATController
 {
 	private $PDO;
+    public $env;
+
+    public function __construct(){
+        $this->env = parse_ini_file(dirname(__FILE__)."\..\..\..\.env");
+    }
 
 	public function generate_report()
 	{
@@ -138,32 +143,32 @@ Class PagoTalleresBATController
         }
         catch(PDOException $e)
         {
-            exit("SLCT Claims ".$e->getMessage());
+            exit(); // exit("SLCT Claims ".$e->getMessage());
         }
 	}
 
 	//Conn PDO
     public function conn_pdo()
-    {
-        $db_host = "mty-mysqlq01";
-        $db_port = "3306";
-        $db_name = "reforig_sol";
-        $db_user = "root";
-        $db_pass = "Whr.Web.Soluciones@1";
+    {        
+        
+        $db_host = $this->env['DB_HOST'];
+        $db_port = $this->env['DB_PORT'];
+        $db_name = $this->env['DB_DATABASE'];
+        $db_user = $this->env['DB_USERNAME'];
+        $db_pass = $this->env['DB_PASSWORD'];
 
         $dbh =  new PDO('mysql:host=' . $db_host . ';port=' . $db_port . ';dbname=' . $db_name,
                          $db_user,
                          $db_pass,
                          array(PDO::ATTR_PERSISTENT => false, PDO::MYSQL_ATTR_LOCAL_INFILE => 1, PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8')
                          );
-
         return $dbh;
     }
 
     public function create_file($result, $file_name)
     {
         $valid = false;
-        $fp = fopen('D:inetpub/wwwroot/Soluciones2/storage/app/pago-a-talleres/'.$file_name.'.csv', 'w');
+        $fp = fopen($this->env['PAGO_A_TALLERES_PATH'].$file_name.'.csv', 'w');
 
         $final_data = "MES , MESNUM , TIPOSERVICIO , DISPATCH , TOTALPARTS_PRORRATEO , TOTALLABOR_PRORRATEO , REFERENCENUM , NUMTALLER , NOMBRETALLER , CIUDAD , REGION , CABECERA , ESTADO , FECHAOS , FECHACOMPLETADO , CODIGODEFECTO , MODELO , MARCA , LINEA , CODPLANTA , PLANTA , IDWARRANTYTYPE , UTB , DISTRIBUIDOR , PEX , DPURCHASEDATE , SCLAIMNUM , MUEBLERIA , GARSAW , CC , TIPO , ZONA , TIPODEPAGO \n";
 
@@ -210,7 +215,7 @@ Class PagoTalleresBATController
             }
             catch(PDOException $e)
             {
-                exit("SLCT plantas_inf ".$e->getMessage());
+                exit(); // exit("SLCT plantas_inf ".$e->getMessage());
             }
 
 

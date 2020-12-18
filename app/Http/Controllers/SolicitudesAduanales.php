@@ -384,6 +384,6 @@ class SolicitudesAduanales extends Controller
             $redirect = url("solicitudes-aduanales/detalle/".$request->np);
         }
         
-        echo '<script>window.location.href = "'.$redirect.'";</script>';
+        return redirect($redirect);
     }
 }

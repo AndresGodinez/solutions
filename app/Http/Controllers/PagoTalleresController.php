@@ -289,9 +289,8 @@ class PagoTalleresController extends Controller
             };
         }
 
-        echo '<script>window.location.href = "'.$redirect.'";</script>';
-                
-        return view("pages.pago-talleres.cargas", ['items' => $items]);
+        
+        return redirect($redirect);       
     }
 
     public function uploads_prorrateo(Request $request)
@@ -345,9 +344,8 @@ class PagoTalleresController extends Controller
             };
         }
 
-        echo '<script>window.location.href = "'.$redirect.'";</script>';
-                
-        return view("pages.pago-talleres.cargas", ['items' => $items]);
+        
+        return redirect($redirect);        
     }
 
     public function uploads_pago_a_talleres(Request $request)
@@ -388,9 +386,8 @@ class PagoTalleresController extends Controller
             };
         }
 
-        echo '<script>window.location.href = "'.$redirect.'";</script>';
-                
-        return view("pages.pago-talleres.cargas", ['items' => $items]);
+        return redirect($redirect);       
+        
     }
 
     public function download_report()
@@ -458,7 +455,7 @@ class PagoTalleresController extends Controller
         {
             PagoTalleresModel::update_pagoataller_taller($request, $final_file_xml, $final_file_pdf);
         }
-
-        echo '<script>window.location.href = "'.$redirect.'";</script>';
+        
+        return redirect($redirect);
     }
 }
