@@ -8,6 +8,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Session;
 use function redirect;
 use function route;
@@ -167,7 +168,10 @@ class LoginController extends Controller
             $_SESSION[$k] = $v;
         }
 
-//        $url = config('pages.globals.url')."main/admin.php";
+        if (Hash::check($user->username, $user->password)){
+            return redirect(route('usuario.editPassword'));
+        }
+
         return redirect(route('home'));
     }
 

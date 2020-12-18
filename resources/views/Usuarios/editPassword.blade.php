@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    @include('Partials.errors')
     <div class="row">
         <div class="container">
             <h5>

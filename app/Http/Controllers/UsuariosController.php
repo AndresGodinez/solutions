@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Country;
 use App\Departamento;
+use App\Http\Requests\ChangePasswordUserRequest;
 use App\Http\Requests\UsuarioStoreRequest;
 use App\Http\Requests\UsuarioUpdateRequest;
 use App\Usuario;
@@ -159,7 +160,7 @@ class UsuariosController extends Controller
         return view('Usuarios.editPassword');
     }
 
-    public function updatePassword(Request $request)
+    public function updatePassword(ChangePasswordUserRequest $request)
     {
         $usuario = Auth::user();
 
