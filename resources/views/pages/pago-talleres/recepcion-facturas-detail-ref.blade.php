@@ -1,6 +1,9 @@
 @extends("layouts.app")
 
 @section("content")
+<?php 
+$bootbox = true;
+?>
 <div class="modal" tabindex="-1" role="dialog" id="myModal">
 	<div class="modal-dialog" role="document">
 	    <div class="modal-content">
@@ -59,20 +62,47 @@
 						<td>{{ $data->pdf }}</td>
 						<td>{{ $data->xml }}</td>
 						<td>
-							<form action="" method="POST">
+							<form action="{{ url('pago-a-talleres/recepcion-fact/process/aut/') }}" method="POST" class="generic_form">
 								{{ csrf_field() }}
+								<input type="hidden" name="ipt_taller" value="{{ $data->taller }}" />
+								<input type="hidden" name="ipt_ref" value="{{ $data->referencia }}" />
+								<input type="hidden" name="ipt_fact" value="{{ $data->numfact }}" />
 								<button type="submit" class="btn btn-primary">
 							    	Aceptar
 							    </button>
 							</form>
 						</td>
 						<td>
-							<form action="" method="POST">
-								{{ csrf_field() }}
-								<button type="submit" class="btn btn-danger">
-							    	Rechazar
-							    </button>
-							</form>
+							<div class="modal fade" id="exampleModal{{ $data->referencia }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+								    <div class="modal-content">
+								      	<form action="{{ url('pago-a-talleres/recepcion-fact/process/rech/') }}" method="POST" class="generic_form">
+									    	<div class="modal-body" style="padding: 10px;">
+												{{ csrf_field() }}
+												<input type="hidden" name="ipt_taller" value="{{ $data->taller }}" />
+												<input type="hidden" name="ipt_ref" value="{{ $data->referencia }}" />
+												<div class="modal-header">
+										        	<h5 class="modal-title" id="exampleModalLabel">Rechazar [ {{ $data->referencia }} ]</h5>
+										        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										          		<span aria-hidden="true">&times;</span>
+										        	</button>
+										      	</div>
+												<div class="form-group">
+										  			<label for="ipt_comentarios"><strong>Comentarios:</strong></label>
+											    	<input class="form-control" type="text" id="ipt_comentarios" name="ipt_comentarios" value="" required="required" />	
+											  	</div>	
+									    	</div>
+										    <div class="modal-footer">
+										        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+										        <button type="submit" class="btn btn-primary">Aceptar</button>
+									      	</div>
+								      	</form>	
+									</div>
+								</div>
+							</div>
+							<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal{{ $data->referencia }}">
+							  	Rechazar
+							</button>
 						</td>
 					</tr>	
 					@endforeach

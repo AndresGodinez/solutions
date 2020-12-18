@@ -581,6 +581,32 @@ class PagoTalleresModel extends ModelBase
         return trim(strip_tags($string));
     }
 
+    public static function update_pagoataller_aut($request)
+    {
+        $status_fact = 'ACEPTADO';
+        $valid = false;
+        
+        DB::table('pagotaller')
+                ->where('pagotaller.taller', $request->ipt_taller)
+                ->where('pagotaller.referencia', $request->ipt_ref)
+                ->update(['status_fact' => (empty($status_fact) ? "" : PagoTalleresModel::clean_string(utf8_encode($status_fact))),
+                        'comentarios' => (empty($request->numfact) ? "" : PagoTalleresModel::clean_string(utf8_encode($request->numfact)))]);
+        $valid = true;
+    }
+
+    public static function update_pagoataller_rech($request)
+    {
+        $status_fact = 'RECHAZADO';
+        $valid = false;
+        
+        DB::table('pagotaller')
+                ->where('pagotaller.taller', $request->ipt_taller)
+                ->where('pagotaller.referencia', $request->ipt_ref)
+                ->update(['status_fact' => (empty($status_fact) ? "" : PagoTalleresModel::clean_string(utf8_encode($status_fact))),
+                        'comentarios' => (empty($request->ipt_comentarios) ? "" : PagoTalleresModel::clean_string(utf8_encode($request->ipt_comentarios)))]);
+        $valid = true;
+    }
+
     public static function update_pagoataller_admin($request)
     {
         $factrecibida = 1;
@@ -594,7 +620,7 @@ class PagoTalleresModel extends ModelBase
                 ->update(['factrecibida' => (empty($factrecibida) ? "" : PagoTalleresModel::clean_string(utf8_encode($factrecibida))),
                         'fecharecepcion' => (empty($fecharecepcion) ? "" : PagoTalleresModel::clean_string(utf8_encode($fecharecepcion))),
                         'numfact' => (empty($request->ipt_no_factura) ? "" : PagoTalleresModel::clean_string(utf8_encode($request->ipt_no_factura))),
-                        'status_fact' => (empty($request->ipt_no_factura) ? "" : PagoTalleresModel::clean_string(utf8_encode($request->ipt_no_factura))),]);
+                        'status_fact' => (empty($status_fact) ? "" : PagoTalleresModel::clean_string(utf8_encode($status_fact))),]);
         $valid = true;
     }
 

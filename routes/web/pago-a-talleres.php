@@ -24,6 +24,8 @@ Route::middleware('auth')->group(function () {
 		Route::get('/facturas-recibidas-aceptadas/x-tallr/descargar/', 			'PagoTalleresController@recepcion_facturas_descargar_taller_aceptadas');
 		Route::post('/facturas-recibidas-aceptadas/x-tallr/descargar/process', 	'PagoTalleresController@recepcion_facturas_descargar_taller_process_aceptadas');
 		Route::get('/facturas/x-tallr/descargar/', 								'PagoTalleresController@recepcion_facturas_taller');
+		Route::post('/recepcion-fact/process/aut/', 							'PagoTalleresController@recepcion_facturas_aut');
+		Route::post('/recepcion-fact/process/rech/', 							'PagoTalleresController@recepcion_facturas_rech');
 
     });
 });
