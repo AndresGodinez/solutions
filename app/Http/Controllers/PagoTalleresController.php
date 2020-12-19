@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use PDO;
+use Mail;
 use App\Models\Menu;
 use App\Models\PagoTalleresModel;
 use Config;
@@ -483,7 +483,7 @@ class PagoTalleresController extends Controller
      public function recepcion_facturas_rech(Request $request)
     {
         $message = "¡Información actualizada correctamente!";
-        $valid =  true;
+        $valid =  false;
         $target = "";
         $redirect = "";
 
@@ -491,7 +491,17 @@ class PagoTalleresController extends Controller
         {
             $message = "¡Hubo un error al actualizar la información!";
             $valid =  false;
+        	
+        	
         }
+
+		Mail::send('mailing.pago-a-talleres-rechazar',
+    					['referencia' => $request->ipt_ref,
+						'comentarios' => $request->ipt_comentarios], 
+						function ($mailing) {
+		    $mailing->from("no-responder@whirlpool.com", "Cancelación de Claim");
+		    $mailing->to("noe_delgado_munoz_proceti@whirlpool.com");
+		});
 
         $response['message'] = $message;
         $response['valid'] = $valid;

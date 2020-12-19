@@ -9,7 +9,7 @@
     <tbody>
             @foreach ($document as $document)
         <tr>
-            <td><a href="{{config('pages.globals.url').'ingexp/abrir_archivo.php?archivo_carga='. $document->archivo_carga}}" target="_blank" >{{$document->titulo}}</a></td>
+            <td><a href="{{config('Pages.globals.url').'ingexp/abrir_archivo.php?archivo_carga='. $document->archivo_carga}}" target="_blank" >{{$document->titulo}}</a></td>
         </tr>
             @endforeach
     </tbody>

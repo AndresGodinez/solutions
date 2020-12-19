@@ -70,7 +70,7 @@
 					@foreach ($details as $detail)
 					<tr>
 						<td>{{$detail->id_sol}}</td>
-						<td><a href="{{ url($detail->ruta.'/show') }}/{{$detail->id_sol}}">{{$detail->dispatch}}</a></td>
+						<td><a href="{{ url($solicitud-a-ingenieria/detail->ruta.'/show') }}/{{$detail->id_sol}}">{{$detail->dispatch}}</a></td>
 						<td>{{$detail->modelo}}</td>
 						<td>{{$detail->serie}}</td>
 						<td>{{$detail->descripcion_problema}}</td>
@@ -169,7 +169,7 @@ function send ()
 		type_slct: $("#type_slct").val(),
 	}
 	$.ajax({
-		url: "{{ url('detalle/filters') }}",
+		url: "{{ url('solicitud-a-ingenieria/detalle/filters') }}",
 		headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
 		type: 'POST',
 		data: data,

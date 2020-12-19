@@ -67,6 +67,7 @@ class SolicitudController extends Controller
      */
     public function create(Request $request){
 
+        $user_name = Session::get('username');
         $region = Session::get('region');
         $email_request = Session::get('mail');
         $regionCode = Session::get('regionCode');
@@ -96,15 +97,22 @@ class SolicitudController extends Controller
         $req->nombre_tecnico = $request->name;
         $req->timestamps = false;
         $req->os_cca = (isset($request->os_cca) ? $request->os_cca : "N/A");
+        $req->user = Session::get('username');
         $req->save();
 
-        $id_sol = $req->id;
+        $id_sol = $req->id_sol;
 
         $image = $request->file('file');
-        if (!empty($image)) {
-             $new_name = Str::uuid().'.' . $image->getClientOriginalExtension();
-             $image->storeAS('dispatch/' . $id_sol . '/', $new_name);
-        } else { $new_name = '';}
+        
+        if (!empty($image)) 
+        {
+            $new_name = Str::uuid().'.' . $image->getClientOriginalExtension();
+            $image->storeAS('dispatch/' . $id_sol . '/', $new_name);
+        } 
+        else 
+        { 
+            $new_name = '';
+        }
 
         Solicitud::where('id_sol', $id_sol)->update(['ruta' => $new_name]);
 
@@ -116,30 +124,47 @@ class SolicitudController extends Controller
         $req_detail->usuario = Session::get('username');
         $req_detail->responsable = "";
         $req_detail->save();
-
+       
         $this->data_questions = json_decode($request->_questions, true);
 
         try
         {
             if($this->data_questions)
-            foreach ($this->data_questions as $key => $question) {
-                $this->id_pregunta = (string) $question["id_pregunta"];
-                $this->answer = "answer" . $this->id_pregunta;
-                $route = '';
+            {    
+                foreach ($this->data_questions as $key => $question) 
+                {
+                    $this->id_pregunta = (string) $question["id_pregunta"];
+                    $this->answer = "answer" . $this->id_pregunta;
+                    $route = '';
 
-                $answerModel = new RespuestaSolicitud;
-                $answerModel->id_solicitud = $id_sol;
-                $answerModel->id_pregunta = $question["id_pregunta"];
-                $answerModel->respuesta = $request[$this->answer];
+                    $answerModel = new RespuestaSolicitud;
+                    $answerModel->id_solicitud = $id_sol;
+                    $answerModel->id_pregunta = $question["id_pregunta"];
+                    $answerModel->respuesta = $request[$this->answer];
 
-                $file = $request['file'.$this->id_pregunta];
-                if ($file) {
-                   $route = DocumentoController::moveFile($id_sol,$file);
+                    $file = $request['file'.$this->id_pregunta];
+                    
+                    if($file) 
+                    {
+                        // Hay problema aqui**
+                        // Hay problema aqui**
+                        // Hay problema aqui**
+                        // Hay problema aqui**
+                        // Hay problema aqui**
+                        // Hay problema aqui**
+                        // Hay problema aqui**
+                        // Hay problema aqui**
+                        // Hay problema aqui**
+                        // Hay problema aqui**
+                        // Hay problema aqui**
+                        // Hay problema aqui**
+                        //$route = DocumentoController::moveFile($id_sol,$file);
+                    }
+
+                    $answerModel->ruta = $route;
+                    $answerModel->timestamps = false;
+                    $answerModel->save();
                 }
-
-                $answerModel->ruta = $route;
-                $answerModel->timestamps = false;
-                $answerModel->save();
             }
 
             // Send Email to Request user.
@@ -159,9 +184,7 @@ class SolicitudController extends Controller
                         ';
             //this->send_mail_php($to, $subject, $e_message, $title);
 
-            $redirect = url('solicitudes-a-ingenieria/');
-
-            echo '<script>window.location.href = "'.$redirect.'";</script>';
+            return response()->json(['ok' => 'true', 'message' => 'Solicitud Creada Correctamente']);
         } catch (\Exception $e) {
             report($e);
         }
@@ -194,7 +217,7 @@ class SolicitudController extends Controller
         $req->timestamps = false;
         $req->save();
 
-        $id_sol = $req->id;
+        $id_sol = $req->id_sol;
 
         $req_rev = new RevisionIngenieria;
         $req_rev->idsol = $id_sol;

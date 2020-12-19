@@ -33,15 +33,15 @@
 					<td>{{$detail->descripcion_problema}}</td>
 					<td>
                     @if(substr($detail->ruta,0,10) != 'documentos')
-                        <a href="{{url('solicitud/descargar').'/'.$detail->id_sol}}"> Documentos</a>
+                        <a href="{{url('solicitud-a-ingenieria/solicitud/descargar').'/'.$detail->id_sol}}"> Documentos</a>
                     @else
-                        <a href="{{config('pages.globals.url').'/'.$detail->ruta}}"> {{$detail->ruta}}</a>
+                        <a href="{{config('Pages.globals.url').'/'.$detail->ruta}}"> {{$detail->ruta}}</a>
                     @endif
                     </td>
 				</tr>
 			</tbody>
 		</table>
-		<form  id="form-sol" enctype="multipart/form-data" method="post" action="{{ url('detalle/taller') }}" onsubmit="event.preventDefault(); send();">
+		<form  id="form-sol" enctype="multipart/form-data" method="post" action="{{ url('solicitud-a-ingenieria/detalle/taller') }}" onsubmit="event.preventDefault(); send();">
 		<!--<form method="post" id="form-sol" enctype="multipart/form-data">-->
 		@csrf
 			<input id="id_request" name="id_request" type="hidden" value="{{$detail->id_sol}}">
@@ -115,7 +115,7 @@
 							<textarea id="comments" name="comments"class="form-control" rows="4" style="resize:none;" readonly>{{$revision->comentarios}}</textarea>
 						</td>
 						<td>
-							<a href="{{ url('detalle/descargar/'.$detail->id_sol) }}" target="_blank" rel="noopener noreferrer">Documentos</a>
+							<a href="{{ url('solicitud-a-ingenieria/detalle/descargar/'.$detail->id_sol) }}" target="_blank" rel="noopener noreferrer">Documentos</a>
 						</td>
 						<td></td>
 						<td>
@@ -134,7 +134,7 @@
 			</table>
             <hr>
             <div class="row">
-                <h4 class="card-title">{{ config('pages.solicitud.table.info') }}</h4>
+                <h4 class="card-title">{{ config('Pages.solicitud.table.info') }}</h4>
             </div>
             <input id="_questions" name="_questions" type="hidden" value="">
             <div class="row" id="info-solicitud">
@@ -151,13 +151,13 @@
                             <td>{{$questions->respuesta}}</td>
                             <td>
                                 @if ($questions->ruta != '')
-                                    <a href="{{ url('documento/descargar/'.$questions->path) }}" target="_blank">
+                                    <a href="{{ url('solicitud-a-ingenieria/documento/descargar/'.$questions->path) }}" target="_blank">
                                     @if($questions->tipo ==  "image")
-                                    <img style=" max-height:100px;" src="{{ url('documento/descargar/'.$questions->path) }}" >
+                                    <img style=" max-height:100px;" src="{{ url('solicitud-a-ingenieria/documento/descargar/'.$questions->path) }}" >
                                     @endif
                                     @if($questions->tipo ==  "video")
                                         <video width="320" height="240" controls>
-                                        <source src="{{ url('documento/descargar/'.$questions->path) }}" type="{{$questions->mimeType}}">
+                                        <source src="{{ url('solicitud-a-ingenieria/documento/descargar/'.$questions->path) }}" type="{{$questions->mimeType}}">
                                         Your browser does not support the video tag.
                                         </video>
                                     @endif
@@ -182,10 +182,10 @@
 						<h4 class="card-title"> Evalua la respuesta de Ingeniería. </h4>
 						<ul>
 							<table>
-								<tr><td><input type="radio" id="ipt_q1_1" name="ipt_q1" value="{{config('pages.poll.scores.1')}}" checked /></td><td><label for="ipt_q1_1">a) {{config('pages.poll.scores.1')}}</label></td></tr>
-								<tr><td><input type="radio" id="ipt_q1_2" name="ipt_q1" value="{{config('pages.poll.scores.2')}}" /></td><td><label for="ipt_q1_2">b) {{config('pages.poll.scores.2')}}</label></td></tr>
-								<tr><td><input type="radio" id="ipt_q1_3" name="ipt_q1" value="{{config('pages.poll.scores.3')}}" /></td><td><label for="ipt_q1_3">c) {{config('pages.poll.scores.3')}}</label></td></tr>
-								<tr><td><input type="radio" id="ipt_q1_4" name="ipt_q1" value="{{config('pages.poll.scores.4')}}" /></td><td><label for="ipt_q1_4">d) {{config('pages.poll.scores.4')}}</label></td></tr>
+								<tr><td><input type="radio" id="ipt_q1_1" name="ipt_q1" value="{{config('Pages.poll.scores.1')}}" checked /></td><td><label for="ipt_q1_1">a) {{config('Pages.poll.scores.1')}}</label></td></tr>
+								<tr><td><input type="radio" id="ipt_q1_2" name="ipt_q1" value="{{config('Pages.poll.scores.2')}}" /></td><td><label for="ipt_q1_2">b) {{config('Pages.poll.scores.2')}}</label></td></tr>
+								<tr><td><input type="radio" id="ipt_q1_3" name="ipt_q1" value="{{config('Pages.poll.scores.3')}}" /></td><td><label for="ipt_q1_3">c) {{config('Pages.poll.scores.3')}}</label></td></tr>
+								<tr><td><input type="radio" id="ipt_q1_4" name="ipt_q1" value="{{config('Pages.poll.scores.4')}}" /></td><td><label for="ipt_q1_4">d) {{config('Pages.poll.scores.4')}}</label></td></tr>
 							</table>
 						</ul>
 					</div>
@@ -227,7 +227,7 @@ function send()
 		}
 		console.log(data);
 		$.ajax({
-			url: "{{ url('detalle/taller') }}",
+			url: "{{ url('solicitud-a-ingenieria/detalle/taller') }}",
 			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
 			type: 'POST',
 			data: data,
@@ -236,7 +236,7 @@ function send()
 				if( data.ok != false && data.ok != 'error')
 				{
                     showNotification('Success',data.message, 'success');
-                    window.location.href = '{{ url('detalle') }}';
+                    window.location.href = "{{ url('solicitud-a-ingenieria/detalle') }}";
 				}
 				else
 				{

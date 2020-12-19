@@ -17,7 +17,7 @@
 				<h5>Puedes cambiarla en las opciónes de la parte de abajo</h5>
 			</div>
 			<div class="col-sm-6">
-				<form class="generic_form" action="{{ url('detalle/process/change-type') }}" method="POST">
+				<form class="generic_form" action="{{ url('solicitud-a-ingenieria/detalle/process/change-type') }}" method="POST">
 					{{ csrf_field() }}
 					<input type="hidden" id="ipt_id" name="ipt_id" value="{{ $detail->id_sol }}" />
 					<div class="form-group">
@@ -78,7 +78,7 @@
 			        		<tr>
 			        		@endif
 		      					<td>
-		      						<a href="{{ (($closed_cases->status == 'CERRADA' || $closed_cases->status == 'RECHAZADA') ? url('solicitud/show').'/'.$closed_cases->id_sol : url('detalle/show').'/'.$closed_cases->id_sol) }}" target="_blank">
+		      						<a href="{{ (($closed_cases->status == 'CERRADA' || $closed_cases->status == 'RECHAZADA') ? url('solicitud-a-ingenieria/solicitud/show').'/'.$closed_cases->id_sol : url('solicitud-a-ingenieria/detalle/show').'/'.$closed_cases->id_sol) }}" target="_blank">
 		      							{{ $closed_cases->id_sol }}
 		      						</a>	
 		      					</td>
@@ -128,9 +128,9 @@
 					<td>{{$detail->descripcion_problema}}</td>
 					<td>
                     @if(substr($detail->ruta,0,10) != 'documentos')
-                        <a href="{{url('solicitud/descargar').'/'.$detail->id_sol}}" target="_blank"> Documentos</a>
+                        <a href="{{url('solicitud-a-ingenieria/solicitud/descargar').'/'.$detail->id_sol}}" target="_blank"> Documentos</a>
                     @else
-                        <a href="{{config('pages.globals.url').'solicitudes_ingenieria/'.$detail->ruta}}" target="_blank"> {{$detail->ruta}}</a>
+                        <a href="{{config('Pages.globals.url').'solicitudes_ingenieria/'.$detail->ruta}}" target="_blank"> {{$detail->ruta}}</a>
                     @endif
 
                     </td>
@@ -231,7 +231,7 @@
 			</table>
             <hr>
             <div class="row">
-                <h4 class="card-title">{{ config('pages.solicitud.table.info') }}</h4>
+                <h4 class="card-title">{{ config('Pages.solicitud.table.info') }}</h4>
             </div>
             <input id="_questions" name="_questions" type="hidden" value="">
             <div class="row" id="info-solicitud">
@@ -248,13 +248,13 @@
                             <td>{{$questions->respuesta}}</td>
                             <td>
                                 @if ($questions->ruta != '')
-                                    <a href="{{ url('documento/descargar/'.$questions->path) }}" target="_blank">
+                                    <a href="{{ url('solicitud-a-ingenieria/documento/descargar/'.$questions->path) }}" target="_blank">
                                     @if($questions->tipo ==  "image")
-                                    <img style=" max-height:100px;" src="{{ url('documento/descargar/'.$questions->path) }}" >
+                                    <img style=" max-height:100px;" src="{{ url('solicitud-a-ingenieria/documento/descargar/'.$questions->path) }}" >
                                     @endif
                                     @if($questions->tipo ==  "video")
                                         <video width="320" height="240" controls>
-                                        <source src="{{ url('documento/descargar/'.$questions->path) }}" type="{{$questions->mimeType}}">
+                                        <source src="{{ url('solicitud-a-ingenieria/documento/descargar/'.$questions->path) }}" type="{{$questions->mimeType}}">
                                         Your browser does not support the video tag.
                                         </video>
                                     @endif
@@ -279,10 +279,10 @@
 						<h4 class="card-title"> Evalua la información del Solicitante. </h4>
 						<ul>
 							<table>
-								<tr><td><input type="radio" id="ipt_q1_1" name="ipt_q1" value="{{config('pages.poll.scores.1')}}" checked /></td><td><label for="ipt_q1_1">a) {{config('pages.poll.scores.1')}}</label></td></tr>
-								<tr><td><input type="radio" id="ipt_q1_2" name="ipt_q1" value="{{config('pages.poll.scores.2')}}" /></td><td><label for="ipt_q1_2">b) {{config('pages.poll.scores.2')}}</label></td></tr>
-								<tr><td><input type="radio" id="ipt_q1_3" name="ipt_q1" value="{{config('pages.poll.scores.3')}}" /></td><td><label for="ipt_q1_3">c) {{config('pages.poll.scores.3')}}</label></td></tr>
-								<tr><td><input type="radio" id="ipt_q1_4" name="ipt_q1" value="{{config('pages.poll.scores.4')}}" /></td><td><label for="ipt_q1_4">d) {{config('pages.poll.scores.4')}}</label></td></tr>
+								<tr><td><input type="radio" id="ipt_q1_1" name="ipt_q1" value="{{config('Pages.poll.scores.1')}}" checked /></td><td><label for="ipt_q1_1">a) {{config('Pages.poll.scores.1')}}</label></td></tr>
+								<tr><td><input type="radio" id="ipt_q1_2" name="ipt_q1" value="{{config('Pages.poll.scores.2')}}" /></td><td><label for="ipt_q1_2">b) {{config('Pages.poll.scores.2')}}</label></td></tr>
+								<tr><td><input type="radio" id="ipt_q1_3" name="ipt_q1" value="{{config('Pages.poll.scores.3')}}" /></td><td><label for="ipt_q1_3">c) {{config('Pages.poll.scores.3')}}</label></td></tr>
+								<tr><td><input type="radio" id="ipt_q1_4" name="ipt_q1" value="{{config('Pages.poll.scores.4')}}" /></td><td><label for="ipt_q1_4">d) {{config('Pages.poll.scores.4')}}</label></td></tr>
 							</table>
 						</ul>
 					</div>
@@ -315,7 +315,7 @@
 						<button type="button" class="btn btn-danger" id="rechazar">Rechazar</button>
 					</div>
 					<div class="col-lg-2 col-md-4 float-right">
-						<a href="{{ url('detalle') }}" class="btn btn-primary from_send"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Regresar</a>
+						<a href="{{ url('solicitud-a-ingenieria/detalle') }}" class="btn btn-primary from_send"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Regresar</a>
 					</div>
 				</div>
 			</div>
@@ -332,7 +332,7 @@ function subtypeChange ()
 		information:	$("#information").val(),
 	}
 	$.ajax({
-		url: "{{ url('detalle/subtypeChange') }}",
+		url: "{{ url('solicitud-a-ingenieria/detalle/subtypeChange') }}",
 		headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
 		type: 'POST',
 		data: data,
@@ -380,7 +380,7 @@ $(document).ready(function()
 		if( ok )
 		{
 			$.ajax({
-				url: "{{ url('detalle/create') }}",
+				url: "{{ url('solicitud-a-ingenieria/detalle/create') }}",
 				method:"POST",
 				data:new FormData(this),
 				dataType:'JSON',
@@ -393,14 +393,14 @@ $(document).ready(function()
 					var ok 		= ( !data.ok ) ? 'success' : data.ok;
 					showNotification('Solicitud', message, ok);
                     $('#form-sol').trigger("reset");
-                    window.location.href = '{{ url('detalle') }}';
+                    window.location.href = "{{ url('solicitud-a-ingenieria/detalle') }}";
 				},
-				error: function(jq,status,message){ showNotification('{{ config('pages.solicitud.scripts.notifications.title.error') }}', '{{ config('pages.solicitud.scripts.form.error') }}', 'error'); }
+				error: function(jq,status,message){ showNotification('{{ config('Pages.solicitud.scripts.notifications.title.error') }}', '{{ config('Pages.solicitud.scripts.form.error') }}', 'error'); }
 			})
 		}
 		else
 		{
-			showNotification('{{ config('pages.solicitud.scripts.notifications.title.error') }}', '{{ config('pages.solicitud.scripts.form.invalid') }}', 'error');
+			showNotification('{{ config('Pages.solicitud.scripts.notifications.title.error') }}', '{{ config('Pages.solicitud.scripts.form.invalid') }}', 'error');
 		}
     });
 
@@ -411,7 +411,7 @@ $(document).ready(function()
     };
 
     $.ajax({
-        url: "{{ url('detalle/rechazar') }}",
+        url: "{{ url('solicitud-a-ingenieria/detalle/rechazar') }}",
         method:"POST",
         data:info,
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -421,9 +421,9 @@ $(document).ready(function()
             var ok 		= ( !data.ok ) ? 'success' : data.ok;
             showNotification('Solicitud', message, ok);
             $('#form-sol').trigger("reset");
-            window.location.href = '{{ url('detalle') }}';
+            window.location.href = '{{ url('solicitud-a-ingenieria/detalle') }}';
         },
-        error: function(jq,status,message){ showNotification('{{ config('pages.solicitud.scripts.notifications.title.error') }}', '{{ config('pages.solicitud.scripts.form.error') }}', 'error'); }
+        error: function(jq,status,message){ showNotification('{{ config('Pages.solicitud.scripts.notifications.title.error') }}', '{{ config('Pages.solicitud.scripts.form.error') }}', 'error'); }
     });
 
     });

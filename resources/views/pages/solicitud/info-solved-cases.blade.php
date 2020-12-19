@@ -10,7 +10,7 @@
     @foreach($faqs as $fq)
 
 	<tr>
-		<td><a href="{{url('solicitud/show').'/'.$fq->id_sol}}" target="_blank">{{$fq->id_sol}}</a></td>
+		<td><a href="{{url('solicitud-a-ingenieria/solicitud/show').'/'.$fq->id_sol}}" target="_blank">{{$fq->id_sol}}</a></td>
 	</tr>
     @endforeach
 </tbody>
