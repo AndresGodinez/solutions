@@ -88,15 +88,15 @@
                         @foreach($sustitutos as $sustituto)
                             <tr class="{{ $sustituto->sustituto_sug == 1 ? 'alert alert-danger' : '' }}" >
                                 <td>{{ $sustituto->sustituto }}</td>
-                                <td>{{ $sustituto->material2->part_description ?? 'no tiene descripción' }}</td>
-                                <td>{{ $material->part_dchain }}</td>
+                                <td>{{ $sustituto->part_description ?? 'No tiene descripción' }}</td>
+                                <td>{{ $sustituto->part_dchain }}</td>
                                 <td>{{ $sustituto->rel }}</td>
                                 <td>{{ $sustituto->fecha_liga }}</td>
-                                <td>{{ $material->rs01 }}</td>
-                                <td>{{ $material->rs02 }}</td>
-                                <td>{{ $material->rs03 }}</td>
-                                <td>{{ $material->rs05 }}</td>
-                                <td>{{ $material->rs06 }}</td>
+                                <td>{{ $sustituto->rs01 }}</td>
+                                <td>{{ $sustituto->rs02 }}</td>
+                                <td>{{ $sustituto->rs03 }}</td>
+                                <td>{{ $sustituto->rs05 }}</td>
+                                <td>{{ $sustituto->rs06 }}</td>
                             </tr>
                         @endforeach
                         </tbody>
