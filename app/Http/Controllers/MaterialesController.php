@@ -163,7 +163,7 @@ class MaterialesController extends Controller
         $material = Material::where('part_number', $request->get('ipt_componente'))->first();
 
         if (WpxLigasSustitutos::where('np', $material->part_number)->exists()) {
-            $message = 'Ya existe una slicitud para este material '.$material->part_number;
+            $message = 'Ya existe una solicitud para este material '.$material->part_number;
             return redirect(route('materiales-sustitutos.index'))->with(['message' => $message]);
         }
 
