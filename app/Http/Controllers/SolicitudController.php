@@ -438,7 +438,7 @@ class SolicitudController extends Controller
                         $email_template
                         );
 
-        $send_email = mail($to, $subject, $body_message, $header);
+        $send_email = mail(filter_var($to, FILTER_SANITIZE_EMAIL), $subject, $body_message, $header);
     }
 
 }
