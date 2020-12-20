@@ -5,7 +5,7 @@
 	<div class="card-body">
 		<h4 class="card-title">{{ config('pages.modofalla.view.index.title') }}</h4>
 		<br>
-		<form class="justify-content-center" id="form-dispatch" enctype="multipart/form-data" method="post" action="{{ url('modo-falla/create') }}" onsubmit="event.preventDefault(); questions();">
+		<form class="justify-content-center" id="form-dispatch" enctype="multipart/form-data" method="post" action="{{ url('solicitudes-a-ingenieria/modo-falla/create') }}" onsubmit="event.preventDefault(); questions();">
 			@csrf
 			<div class="row d-flex justify-content-center">
 				<div class="col-md-4">
@@ -101,7 +101,7 @@
 			id_question:	id_question,
 		}
 		$.ajax({
-			url: "{{ url('modo-falla/search-one') }}",
+			url: "{{ url('solicitudes-a-ingenieria/modo-falla/search-one') }}",
 			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
 			type: 'POST',
 			data: data,
@@ -144,7 +144,7 @@
 		id = ( input_id != null ) ? $( "#"+input_id ).val() : '';
 		$('#'+id_element_to_fill ).html( '<option value=""> Cargando... </option>' );
 		$.ajax({
-			url: "{{ url('modo-falla/get_content_by_id') }}" + "?id=" + id + "&m=" + model,
+			url: "{{ url('solicitudes-a-ingenieria/modo-falla/get_content_by_id') }}" + "?id=" + id + "&m=" + model,
 			method: 'GET',
 			success: function( data )
 			{
@@ -166,7 +166,7 @@
             id_tiposolicitud:	$("#information").val(),
         }
         $.ajax({
-            url: "{{ url('modo-falla/questions') }}",
+            url: "{{ url('solicitudes-a-ingenieria/modo-falla/questions') }}",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
             type: 'POST',
             data: data,
@@ -185,7 +185,7 @@
             event.preventDefault();
             $.ajax({
                 type: "POST",
-                url: "{{ url('modo-falla/update') }}",
+                url: "{{ url('solicitudes-a-ingenieria/modo-falla/update') }}",
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 data: $(this).serialize(),
                 success: function( data )

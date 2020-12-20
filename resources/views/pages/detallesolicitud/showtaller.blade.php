@@ -33,7 +33,7 @@
 					<td>{{$detail->descripcion_problema}}</td>
 					<td>
                     @if(substr($detail->ruta,0,10) != 'documentos')
-                        <a href="{{url('solicitud-a-ingenieria/solicitud/descargar').'/'.$detail->id_sol}}"> Documentos</a>
+                        <a href="{{url('solicitudes-a-ingenieria/solicitud/descargar').'/'.$detail->id_sol}}"> Documentos</a>
                     @else
                         <a href="{{config('Pages.globals.url').'/'.$detail->ruta}}"> {{$detail->ruta}}</a>
                     @endif
@@ -41,7 +41,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<form  id="form-sol" enctype="multipart/form-data" method="post" action="{{ url('solicitud-a-ingenieria/detalle/taller') }}" onsubmit="event.preventDefault(); send();">
+		<form  id="form-sol" enctype="multipart/form-data" method="post" action="{{ url('solicitudes-a-ingenieria/detalle/taller') }}" onsubmit="event.preventDefault(); send();">
 		<!--<form method="post" id="form-sol" enctype="multipart/form-data">-->
 		@csrf
 			<input id="id_request" name="id_request" type="hidden" value="{{$detail->id_sol}}">
@@ -115,7 +115,7 @@
 							<textarea id="comments" name="comments"class="form-control" rows="4" style="resize:none;" readonly>{{$revision->comentarios}}</textarea>
 						</td>
 						<td>
-							<a href="{{ url('solicitud-a-ingenieria/detalle/descargar/'.$detail->id_sol) }}" target="_blank" rel="noopener noreferrer">Documentos</a>
+							<a href="{{ url('solicitudes-a-ingenieria/detalle/descargar/'.$detail->id_sol) }}" target="_blank" rel="noopener noreferrer">Documentos</a>
 						</td>
 						<td></td>
 						<td>
@@ -151,13 +151,13 @@
                             <td>{{$questions->respuesta}}</td>
                             <td>
                                 @if ($questions->ruta != '')
-                                    <a href="{{ url('solicitud-a-ingenieria/documento/descargar/'.$questions->path) }}" target="_blank">
+                                    <a href="{{ url('solicitudes-a-ingenieria/documento/descargar/'.$questions->path) }}" target="_blank">
                                     @if($questions->tipo ==  "image")
-                                    <img style=" max-height:100px;" src="{{ url('solicitud-a-ingenieria/documento/descargar/'.$questions->path) }}" >
+                                    <img style=" max-height:100px;" src="{{ url('solicitudes-a-ingenieria/documento/descargar/'.$questions->path) }}" >
                                     @endif
                                     @if($questions->tipo ==  "video")
                                         <video width="320" height="240" controls>
-                                        <source src="{{ url('solicitud-a-ingenieria/documento/descargar/'.$questions->path) }}" type="{{$questions->mimeType}}">
+                                        <source src="{{ url('solicitudes-a-ingenieria/documento/descargar/'.$questions->path) }}" type="{{$questions->mimeType}}">
                                         Your browser does not support the video tag.
                                         </video>
                                     @endif
@@ -227,7 +227,7 @@ function send()
 		}
 		console.log(data);
 		$.ajax({
-			url: "{{ url('solicitud-a-ingenieria/detalle/taller') }}",
+			url: "{{ url('solicitudes-a-ingenieria/detalle/taller') }}",
 			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
 			type: 'POST',
 			data: data,
@@ -236,7 +236,7 @@ function send()
 				if( data.ok != false && data.ok != 'error')
 				{
                     showNotification('Success',data.message, 'success');
-                    window.location.href = "{{ url('solicitud-a-ingenieria/detalle') }}";
+                    window.location.href = "{{ url('solicitudes-a-ingenieria/detalle') }}";
 				}
 				else
 				{

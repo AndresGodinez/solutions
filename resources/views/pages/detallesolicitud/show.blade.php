@@ -17,7 +17,7 @@
 				<h5>Puedes cambiarla en las opciónes de la parte de abajo</h5>
 			</div>
 			<div class="col-sm-6">
-				<form class="generic_form" action="{{ url('solicitud-a-ingenieria/detalle/process/change-type') }}" method="POST">
+				<form class="generic_form" action="{{ url('solicitudes-a-ingenieria/detalle/process/change-type') }}" method="POST">
 					{{ csrf_field() }}
 					<input type="hidden" id="ipt_id" name="ipt_id" value="{{ $detail->id_sol }}" />
 					<div class="form-group">
@@ -78,7 +78,7 @@
 			        		<tr>
 			        		@endif
 		      					<td>
-		      						<a href="{{ (($closed_cases->status == 'CERRADA' || $closed_cases->status == 'RECHAZADA') ? url('solicitud-a-ingenieria/solicitud/show').'/'.$closed_cases->id_sol : url('solicitud-a-ingenieria/detalle/show').'/'.$closed_cases->id_sol) }}" target="_blank">
+		      						<a href="{{ (($closed_cases->status == 'CERRADA' || $closed_cases->status == 'RECHAZADA') ? url('solicitudes-a-ingenieria/solicitud/show').'/'.$closed_cases->id_sol : url('solicitudes-a-ingenieria/detalle/show').'/'.$closed_cases->id_sol) }}" target="_blank">
 		      							{{ $closed_cases->id_sol }}
 		      						</a>	
 		      					</td>
@@ -128,7 +128,7 @@
 					<td>{{$detail->descripcion_problema}}</td>
 					<td>
                     @if(substr($detail->ruta,0,10) != 'documentos')
-                        <a href="{{url('solicitud-a-ingenieria/solicitud/descargar').'/'.$detail->id_sol}}" target="_blank"> Documentos</a>
+                        <a href="{{url('solicitudes-a-ingenieria/solicitud/descargar').'/'.$detail->id_sol}}" target="_blank"> Documentos</a>
                     @else
                         <a href="{{config('Pages.globals.url').'solicitudes_ingenieria/'.$detail->ruta}}" target="_blank"> {{$detail->ruta}}</a>
                     @endif
@@ -248,13 +248,13 @@
                             <td>{{$questions->respuesta}}</td>
                             <td>
                                 @if ($questions->ruta != '')
-                                    <a href="{{ url('solicitud-a-ingenieria/documento/descargar/'.$questions->path) }}" target="_blank">
+                                    <a href="{{ url('solicitudes-a-ingenieria/documento/descargar/'.$questions->path) }}" target="_blank">
                                     @if($questions->tipo ==  "image")
-                                    <img style=" max-height:100px;" src="{{ url('solicitud-a-ingenieria/documento/descargar/'.$questions->path) }}" >
+                                    <img style=" max-height:100px;" src="{{ url('solicitudes-a-ingenieria/documento/descargar/'.$questions->path) }}" >
                                     @endif
                                     @if($questions->tipo ==  "video")
                                         <video width="320" height="240" controls>
-                                        <source src="{{ url('solicitud-a-ingenieria/documento/descargar/'.$questions->path) }}" type="{{$questions->mimeType}}">
+                                        <source src="{{ url('solicitudes-a-ingenieria/documento/descargar/'.$questions->path) }}" type="{{$questions->mimeType}}">
                                         Your browser does not support the video tag.
                                         </video>
                                     @endif
@@ -315,7 +315,7 @@
 						<button type="button" class="btn btn-danger" id="rechazar">Rechazar</button>
 					</div>
 					<div class="col-lg-2 col-md-4 float-right">
-						<a href="{{ url('solicitud-a-ingenieria/detalle') }}" class="btn btn-primary from_send"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Regresar</a>
+						<a href="{{ url('solicitudes-a-ingenieria/detalle') }}" class="btn btn-primary from_send"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Regresar</a>
 					</div>
 				</div>
 			</div>
@@ -332,7 +332,7 @@ function subtypeChange ()
 		information:	$("#information").val(),
 	}
 	$.ajax({
-		url: "{{ url('solicitud-a-ingenieria/detalle/subtypeChange') }}",
+		url: "{{ url('solicitudes-a-ingenieria/detalle/subtypeChange') }}",
 		headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
 		type: 'POST',
 		data: data,
@@ -380,7 +380,7 @@ $(document).ready(function()
 		if( ok )
 		{
 			$.ajax({
-				url: "{{ url('solicitud-a-ingenieria/detalle/create') }}",
+				url: "{{ url('solicitudes-a-ingenieria/detalle/create') }}",
 				method:"POST",
 				data:new FormData(this),
 				dataType:'JSON',
@@ -393,7 +393,7 @@ $(document).ready(function()
 					var ok 		= ( !data.ok ) ? 'success' : data.ok;
 					showNotification('Solicitud', message, ok);
                     $('#form-sol').trigger("reset");
-                    window.location.href = "{{ url('solicitud-a-ingenieria/detalle') }}";
+                    window.location.href = "{{ url('solicitudes-a-ingenieria/detalle') }}";
 				},
 				error: function(jq,status,message){ showNotification('{{ config('Pages.solicitud.scripts.notifications.title.error') }}', '{{ config('Pages.solicitud.scripts.form.error') }}', 'error'); }
 			})
@@ -411,7 +411,7 @@ $(document).ready(function()
     };
 
     $.ajax({
-        url: "{{ url('solicitud-a-ingenieria/detalle/rechazar') }}",
+        url: "{{ url('solicitudes-a-ingenieria/detalle/rechazar') }}",
         method:"POST",
         data:info,
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -421,7 +421,7 @@ $(document).ready(function()
             var ok 		= ( !data.ok ) ? 'success' : data.ok;
             showNotification('Solicitud', message, ok);
             $('#form-sol').trigger("reset");
-            window.location.href = '{{ url('solicitud-a-ingenieria/detalle') }}';
+            window.location.href = '{{ url('solicitudes-a-ingenieria/detalle') }}';
         },
         error: function(jq,status,message){ showNotification('{{ config('Pages.solicitud.scripts.notifications.title.error') }}', '{{ config('Pages.solicitud.scripts.form.error') }}', 'error'); }
     });

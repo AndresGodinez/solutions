@@ -1,7 +1,7 @@
 @extends("layouts.app")
 
 @section("content")
-<a href="{{ url('modo-falla') }}" class="float">
+<a href="{{ url('solicitudes-a-ingenieria/modo-falla') }}" class="float">
 	<i class="fa fa-backward button-float"></i>
 </a>
 <div class="text-center">
@@ -14,7 +14,7 @@
 				<div class="card-header">Nuevo modo de falla</div>
 				<div class="card-body">
 					<h6 class="card-subtitle mb-2 text-muted">Crear un nuevo modo de falla</h6>
-					<form class="form-inline justify-content-center" id="form-dispatch" enctype="multipart/form-data" method="post" action="{{ url('modo-falla/create-new-mode') }}" onsubmit="event.preventDefault(); send('mode');">
+					<form class="form-inline justify-content-center" id="form-dispatch" enctype="multipart/form-data" method="post" action="{{ url('solicitudes-a-ingenieria/modo-falla/create-new-mode') }}" onsubmit="event.preventDefault(); send('mode');">
 						@csrf
 						<div class="row d-flex justify-content-center">
 							<input type="text" name="modo_falla" id="modo_falla" placeholder="Nuevo modo de falla" required>
@@ -28,7 +28,7 @@
 				</div>
 			</div>
 		</div>
-		<form class="justify-content-center" id="form-dispatch-questions" enctype="multipart/form-data" method="post" action="{{ url('modo-falla/create') }}" onsubmit="event.preventDefault(); send('questions');">
+		<form class="justify-content-center" id="form-dispatch-questions" enctype="multipart/form-data" method="post" action="{{ url('solicitudes-a-ingenieria/modo-falla/create') }}" onsubmit="event.preventDefault(); send('questions');">
 			@csrf
 			<div class="row d-flex justify-content-center">
 				<div class="col-md-3">
@@ -142,7 +142,7 @@
 		id = ( input_id != null ) ? $( "#"+input_id ).val() : '';
 		$('#'+id_element_to_fill ).html( '<option value=""> Cargando... </option>' );
 		$.ajax({
-			url: "{{ url('modo-falla/get_content_by_id') }}" + "?id=" + id + "&m=" + model,
+			url: "{{ url('solicitudes-a-ingenieria/modo-falla/get_content_by_id') }}" + "?id=" + id + "&m=" + model,
 			method: 'GET',
 			success: function( data )
 			{
@@ -164,7 +164,7 @@ function send( form )
 		{
 			modo_falla:  $("#modo_falla").val(),
 		}
-		var url = "{{ url('modo-falla/create-new-mode') }}";
+		var url = "{{ url('solicitudes-a-ingenieria/modo-falla/create-new-mode') }}";
 	}
 	if( form == 'questions' )
 	{
@@ -181,7 +181,7 @@ function send( form )
 			information:	$("#information").val(),
 			questions:  values,
 		}
-		var url = "{{ url('modo-falla/create') }}";
+		var url = "{{ url('solicitudes-a-ingenieria/modo-falla/create') }}";
 	}
 	$.ajax({
 		type: "POST",
