@@ -301,10 +301,10 @@ class IngexpModel extends ModelBase
 
 
             $new_file_name = $idreg."-".$filename;
-            $filenameup = 'public/doctos/convertir/'.$new_file_name;
+            $filenameup = 'doctos/'.$new_file_name;
 
 
-            if($filelarv->storeAS('public/doctos/convertir/', $new_file_name)){
+            if($filelarv->storeAS('public/doctos/', $new_file_name)){
                 DB::table('ing_registro')
                     ->where('idregistro', $idreg)
                     ->update(['archivo_carga' => $filenameup]);

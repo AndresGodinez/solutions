@@ -10,7 +10,7 @@
                 </div>
                 <div class="card-content">
                     <div class="card-body">
-                        <h4>lamentablemente el archivo que busca ha sido movido o eliminado</h4>
+                        <h4>Lamentablemente el archivo que busca ha sido movido o eliminado.</h4>
                     </div>
                 </div>
             </div>

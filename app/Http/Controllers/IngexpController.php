@@ -119,7 +119,7 @@ class IngexpController extends Controller
 
         $id = $request->id;
         $archivo_carga = IngexpModel::visor($id);
-        $archivo_carga = $archivo_carga[0]['archivo_carga'];
+        $archivo_carga = '/public/'.$archivo_carga[0]['archivo_carga'];
 
         if (!Storage::exists($archivo_carga)){
             return view('Bag.file_not_found');
