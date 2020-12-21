@@ -325,6 +325,8 @@ class StocksModel extends ModelBase
             'new_vva',
             'peru49',
             'peru_fecha_embarque',
+            'user_carga',
+            'created_at',
             'peru_vva',
             'comentarios_ing'];
         $data = [];

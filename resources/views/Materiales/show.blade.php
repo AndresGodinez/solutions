@@ -4,7 +4,7 @@
         <div class="row">
             <div class="card">
                 <div class="card-header">
-                    Datos del material
+                    Datos del Material
                 </div>
                 <div class="card-body">
                     <table class="table table-striped table-bordered table-responsive">
@@ -33,7 +33,7 @@
         <div class="row">
             <div class="card">
                 <div class="card-header">
-                    Disponibilidad del material
+                    Disponibilidad del Material
                 </div>
                 <div class="card-body">
                     <table class="table table-striped table-bordered table-responsive">
@@ -68,9 +68,10 @@
         <div class="row">
             <div class="card">
                 <div class="card-header">
-                    Datos del material y sustituto
+                    Datos del Material y Sustitutos
                 </div>
                 <div class="card-body">
+				@if(count($sustitutos))
                     <table class="table table-striped table-bordered table-responsive">
                         <thead>
                         <th>Número de parte</th>
@@ -101,11 +102,16 @@
                         @endforeach
                         </tbody>
                     </table>
+				@else
+					<div class="alert alert-danger alert-dismissible fade show" role="alert">
+						El No. de Parte existe pero no se encontraron sustitutos relacionados
+					</div>					
+				@endif
                 </div>
             </div>
         </div>
         <div class="row">
-            <a href="{{ url('/materiales') }}" class="btn btn-primary"> regresar</a>
+            <a href="{{ url('/materiales') }}" class="btn btn-primary"> Regresar</a>
         </div>
     </div>
 
