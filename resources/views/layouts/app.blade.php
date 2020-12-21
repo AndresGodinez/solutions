@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/assets/css/style.css">
     <!-- END: Custom CSS-->
 
-    <?php 
+    <?php
     if(isset($sol_ing) && $sol_ing == true)
     {
     ?>
@@ -45,7 +45,7 @@
     else
     {
     ?>
-    <?php    
+    <?php
     }
     ?>
 
@@ -136,12 +136,12 @@
 
     <!-- BEGIN: Footer-->
     <footer class="footer footer-static footer-light">
-        <p class="clearfix mb-0"><span class="float-left d-inline-block">2020 &copy; WhirlPool</span><span class="float-right d-sm-inline-block d-none">Powered by<a class="text-uppercase">CONSISS</a></span>
+        <p class="clearfix mb-0"><span class="float-left d-inline-block">2020 &copy; Whirlpool</span><span class="float-right d-sm-inline-block d-none">Powered by<a class="text-uppercase">CONSISS</a></span>
             <button class="btn btn-primary btn-icon scroll-top" type="button"><i class="bx bx-up-arrow-alt"></i></button>
         </p>
     </footer>
 
-    <?php 
+    <?php
     if(isset($bootbox) && $bootbox == true)
     {
     ?>
@@ -152,7 +152,7 @@
     }
     ?>
 
-    <?php 
+    <?php
     if(isset($sol_ing) && $sol_ing == true)
     {
     ?>
@@ -178,7 +178,7 @@
                $("#loading").hide()
            });
        });
-         </script>   
+         </script>
         @yield('scripts')
     <?php
     }
@@ -206,7 +206,7 @@
     <!-- BEGIN: Page JS-->
     <script src="{{ asset('assets') }}/app-assets/js/scripts/navs/navs.js"></script>
     <!-- END: Page JS-->
-    <?php    
+    <?php
     }
     ?>
 
