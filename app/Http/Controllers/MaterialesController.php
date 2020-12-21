@@ -88,37 +88,38 @@ class MaterialesController extends Controller
     public function consulta(ConsultaMaterialesRequest $request)
     {
         $material = Material::where('part_number', $request->get('ipt_material'))->first();
-
+		$sustitutos = [];
         // Agregamos el gpo.
         $sustitutos_group_rel = DB::table('wpx_sustitutos')
             ->select('wpx_sustitutos.group_rel')
             ->where('wpx_sustitutos.material', $material->part_number)
             ->orWhere('wpx_sustitutos.material', $material->part_number)
             ->get();
-
-        $sustitutos = DB::table('wpx_sustitutos')
-            ->select(
-                'wpx_sustitutos.sustituto',
-                'wpx_sustitutos.sustituto_sug',
-                'wpx_sustitutos.rel',
-                'wpx_sustitutos.fecha_liga',
-                'materiales.part_description',
-                'materiales.part_dchain',
-                'materiales.rs01',
-                'materiales.rs02',
-                'materiales.rs03',
-                'materiales.rs04',
-                'materiales.rs05',
-                'materiales.rs06',
-                'materiales.rs10',
-                'materiales.vnr_sups',
-                'materiales.vnr_rams',
-                'materiales.vnr_cela',
-                'materiales.vnr_plai',
-                'materiales.vnr_hora'
-            )->leftJoin('materiales', 'materiales.part_number', 'wpx_sustitutos.sustituto')->where('group_rel',
-                $sustitutos_group_rel[0]->group_rel)
-            ->get();
+		if(count($sustitutos_group_rel)){
+			$sustitutos = DB::table('wpx_sustitutos')
+				->select(
+					'wpx_sustitutos.sustituto',
+					'wpx_sustitutos.sustituto_sug',
+					'wpx_sustitutos.rel',
+					'wpx_sustitutos.fecha_liga',
+					'materiales.part_description',
+					'materiales.part_dchain',
+					'materiales.rs01',
+					'materiales.rs02',
+					'materiales.rs03',
+					'materiales.rs04',
+					'materiales.rs05',
+					'materiales.rs06',
+					'materiales.rs10',
+					'materiales.vnr_sups',
+					'materiales.vnr_rams',
+					'materiales.vnr_cela',
+					'materiales.vnr_plai',
+					'materiales.vnr_hora'
+				)->leftJoin('materiales', 'materiales.part_number', 'wpx_sustitutos.sustituto')->where('group_rel',
+					$sustitutos_group_rel[0]->group_rel)->get();
+		}
+			
         return view('Materiales/show', compact('material', 'sustitutos'));
     }
 
