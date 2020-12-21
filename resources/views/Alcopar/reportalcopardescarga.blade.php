@@ -5,7 +5,7 @@
     <section id="basic-datatable">
         <div class="row">
             <div class="col-sm-12">
-                <h2><strong>Descargar Reporte</strong></h2>
+                <h2><strong>Alta de Partes - Descargar Reporte</strong></h2>
             </div>
         </div>
     </section>
@@ -24,8 +24,8 @@
                             <div class="d-flex align-items-center">
                                 <i class="bx bx-error-circle"></i>
                                 <span>
-                                                    Atención! El tiempo de descarga de este archivo es elevado.
-                                                </span>
+                                    &iexcl;Atención! El tiempo de descarga de este archivo es elevado.
+                                </span>
                             </div>
                         </div>
                         <div class="form-row">

@@ -18,7 +18,7 @@ $data = $get_records;
 <section id="basic-datatable">
 	<div class="row">
 		<div class="col-sm-12">
-			<h2><strong>Revisión de Número de Parte</strong></h2>			
+			<h2><strong>Revisión de Número de Parte - Rev Ingenieria/Alta SAP</strong></h2>			
 		</div>
 	</div>
 </section>

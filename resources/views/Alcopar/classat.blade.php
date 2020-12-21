@@ -5,7 +5,7 @@
 <section id="basic-datatable">
 	<div class="row">
 		<div class="col-sm-12">
-			<h2><strong>Revisión de Números de Parte</strong></h2>			
+			<h2><strong>Revisión de Números de Parte - Clasificación SAT</strong></h2>			
 		</div>
 	</div>
 </section>
