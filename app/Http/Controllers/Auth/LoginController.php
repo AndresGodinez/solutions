@@ -159,9 +159,10 @@ class LoginController extends Controller
         Session::put('stock_nivel', '');
         Session::put('stock_basico', '');
         Session::put('admin', $user->admin);
-        Session::put('regionName', $user->region->name);
-        Session::put('regionCode', $user->region->short_name);
-        //Establecer variables de sesion en el SESSION nativo de PHP para compartir con soluciones1
+        if(!!$user->region){
+            Session::put('regionName', $user->region->name);
+            Session::put('regionCode', $user->region->short_name);
+        }
         session_start();
         foreach(session()->all() as $k=>$v)
         {
