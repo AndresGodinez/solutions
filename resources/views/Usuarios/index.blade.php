@@ -31,6 +31,7 @@
                                 <th class="text-center">Editar</th>
                                 <th class="text-center">Eliminar</th>
                                 <th class="text-center">clonar</th>
+                                <th class="text-center">Cambiar</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -83,6 +84,9 @@
                 },{
                     "render" : buttonClone,
                     "data" : null
+                },{
+                    "render" : buttonChangePassword,
+                    "data" : null
                 },
             ],
 
@@ -106,6 +110,10 @@
 
         return '@can("crear usuarios")<button id="manageBtn" type="button" onclick="clone('+e.id+')" class="btn btn-info btn-xs">Clonar</button>@endcan';
     }
+    function buttonChangePassword(e) {
+
+        return '@can("editar usuarios")<button id="manageBtn" type="button" onclick="changePassword('+e.id+')" class="btn btn-info btn-xs">Pwd</button>@endcan';
+    }
     async function del(e) {
         let value = await Swal.fire({
             title: 'Cuidado',
@@ -124,6 +132,9 @@
 
     function clone(id) {
         location.href = "{{url('usuario-clone')}}/" + id;
+    }
+    function changePassword(id) {
+        location.href = "{{url('usuario-edit-password')}}/" + id;
     }
 </script>
 

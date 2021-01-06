@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 use function compact;
 use function redirect;
 use function response;
@@ -155,26 +156,60 @@ class UsuariosController extends Controller
         ]);
     }
 
-    public function editPassword()
+    public function editPassword($usuario_id = null)
     {
-        return view('Usuarios.editPassword');
+
+        $currUser = Auth::user();
+        $permiso = $currUser->can('editar usuarios');
+      
+        $request_old_password = true;
+        if(!$usuario_id || !$permiso){
+            $usuario = Auth::user();           
+        }elseif($permiso){
+            $usuario = Usuario::find($usuario_id);
+            $request_old_password = false;
+        }
+
+        
+        return view('Usuarios.editPassword')->with(['usuario'=>$usuario, 'request_old_password' => $request_old_password]);
+        
     }
 
     public function updatePassword(ChangePasswordUserRequest $request)
     {
-        $usuario = Auth::user();
 
-        if(Hash::check($request->get('old_password'), $usuario->password)){
-            if ($request->get('new_password') === $request->get('new_password_confirm')){
-                $nPassword = Hash::make($request->get('new_password'));
-                $usuario->password = $nPassword;
-                $usuario->save();
-                return  redirect(route('home'))->with(['message' => 'password actualizado']);
+        
+        $currUser = Auth::user();
+        $permiso = $currUser->can('editar usuarios');
+        $usuario = Usuario::find($request->input('id'));
+        $message = "";
+        
+        $change = false;
+        if($permiso){
+            $change = true;            
+        }else{
+            if(Hash::check($request->get('old_password'), $usuario->password)){                
+                $change = true;                              
+            }else{
+                $message = 'Las contraseñas no coinciden'; 
+            }            
+        }
+
+
+        if($change){           
+            $nPassword = Hash::make($request->get('new_password'));
+            $usuario->password = $nPassword;
+            $usuario->save();
+            if($permiso){
+                return  redirect(route('usuarios.index'))->with(['message' => 'Password actualizado']);                
+            }else{
+                return  redirect(route('home'))->with(['message' => 'Password actualizado']);            
             }
+            
         }
 
         return redirect(route('usuario.editPassword'))->with([
-            'message' => 'Las contraseñas no coinciden'
+            'message' => $message
         ]);
     }
 

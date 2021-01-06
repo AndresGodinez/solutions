@@ -10,19 +10,32 @@
     <div class="container">
         <form action="{{ route('usuario.updatePassword') }}" method="post">
             @csrf
+            <input type="hidden" name="id" id="id" value="{{ $usuario->id }}">
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <label for="username">Nombre del usuario</label>
+                    <label for="username">Login</label>
                     <input type="text"
                            id="username"
                            name="username"
                            class="form-control"
-                           value="{{ Auth::user()->username }}"
+                           value="{{ $usuario->username }}"
                            disabled
                     >
                 </div>
             </div>
-
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="nombre">Nombre del usuario</label>
+                    <input type="text"
+                           id="nombre"
+                           name="nombre"
+                           class="form-control"
+                           value="{{ $usuario->nombre }}"
+                           disabled
+                    >
+                </div>
+            </div>
+            @if($request_old_password)
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="old_password">Contraseña anterior</label>
@@ -34,7 +47,7 @@
                     >
                 </div>
             </div>
-
+            @endif
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="new_password">Nueva Contraseña</label>

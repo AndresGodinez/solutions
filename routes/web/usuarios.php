@@ -8,7 +8,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/delete-usuario', 'UsuariosController@destroy')
         ->name('usuario.delete')->middleware('permission:eliminar usuarios');
 
-    Route::get('usuario-edit-password', 'UsuariosController@editPassword')
+    Route::get('usuario-edit-password/{usuario?}', 'UsuariosController@editPassword')
         ->name('usuario.editPassword');
 
     Route::post('usuario-update-password', 'UsuariosController@updatePassword')
