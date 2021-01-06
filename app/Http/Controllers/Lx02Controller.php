@@ -7,14 +7,19 @@ use App\Http\Requests\ProcessReciboBinsRequest;
 use App\Jobs\ExecuteByConnection;
 use App\Jobs\UpdateLX02Job;
 use App\Utils\MyUtils;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use function response;
 use function view;
 
 class Lx02Controller extends Controller
 {
     public function index()
     {
+        if (!Auth::user()->planta)
+            return response(view('Bag.missing_planta'));
+
         return view('Lx02.index');
     }
 

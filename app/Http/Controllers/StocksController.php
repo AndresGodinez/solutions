@@ -12,7 +12,11 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use function compact;
 use function date;
+use function is_null;
+use function redirect;
 use function report;
+use function response;
+use function view;
 
 
 date_default_timezone_set("America/Mexico_City");
@@ -29,6 +33,9 @@ class StocksController extends Controller
     // Stocks inicial
     public function index()
     {
+        if (is_null(Auth::user()->id_region) || is_null(Auth::user()->id_contry))
+                return response(view('Bag.missing_data'));
+
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
         $id_contry  = Auth::user()->id_contry;
@@ -72,14 +79,13 @@ class StocksController extends Controller
             $get_records = StocksModel::get_all_records_pending_list_stocks_final($id_region, $id_contry);
             return view("Stocks.descargageneral_inicial_nueva", ['get_records' => $get_records]);
         }
-
-
-
-
     }
 
     public function indexPendingList()
     {
+        if (is_null(Auth::user()->id_region) || is_null(Auth::user()->id_contry))
+            return response(view('Bag.missing_data'));
+
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
         $id_contry  = Auth::user()->id_contry;
@@ -92,9 +98,6 @@ class StocksController extends Controller
 
     public function detail(Request $request)
     {
-        $user       = Auth::user()->username;
-        $id_region  = Auth::user()->id_region;
-
         $data       = StocksModel::get_records_by_id($request->id);
         $data_isc   = StocksModel::get_records_by_id_isc($request->id);
 
@@ -103,10 +106,6 @@ class StocksController extends Controller
 
     public function uploads()
     {
-
-        $user       = Auth::user()->username;
-        $items      = Menu::getMenu2($user);
-
         return view("stocks.uploads");
     }
 
@@ -161,6 +160,9 @@ class StocksController extends Controller
     public function upload_stock_inicial_isc(Request $request)
     {
 
+        if (is_null(Auth::user()->id_region) || is_null(Auth::user()->id_contry))
+            return response(view('Bag.missing_data'));
+
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
         $redirect = url("stocks/cargas/?success=1");
@@ -211,6 +213,9 @@ class StocksController extends Controller
     // Stocks inicial
     public function index_stocks_final()
     {
+        if (is_null(Auth::user()->id_region) || is_null(Auth::user()->id_contry))
+            return response(view('Bag.missing_data'));
+
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
 
@@ -223,6 +228,9 @@ class StocksController extends Controller
 
     public function indexPendingList_stocks_final()
     {
+        if (is_null(Auth::user()->id_region) || is_null(Auth::user()->id_contry))
+            return response(view('Bag.missing_data'));
+
         $user       = Auth::user()->username;
         $id_region  = Auth::user()->id_region;
         $id_contry  = Auth::user()->id_contry;
@@ -235,9 +243,6 @@ class StocksController extends Controller
 
     public function detail_stocks_final(Request $request)
     {
-        $user       = Auth::user()->username;
-        $id_region  = Auth::user()->id_region;
-
         $data       = StocksModel::get_records_by_id_stocks_final($request->id);
         $data_isc   = StocksModel::get_records_by_id_isc_stocks_final($request->id);
 
@@ -246,24 +251,17 @@ class StocksController extends Controller
 
     public function uploads_stocks_final()
     {
-        $user       = Auth::user()->username;
-
-
-
         return view("Stocks.uploads");
     }
 
     // Carga para stocks iniciales
     public function upload_stock_final(UploadStockFinalRequest $request)
     {
-
-
         $user       = Auth::user()->username;
         $date   = date("Y-m-d");
         $file   = $request->file('file');
         $valid = true;
         $redirect = url("stocks/");
-
 
         if($file->getClientOriginalExtension() == 'csv'){
                 if (!empty($file)) {

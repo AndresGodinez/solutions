@@ -11,17 +11,23 @@ use App\Utils\MyUtils;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
 use function ceil;
 use function compact;
+use function is_null;
+use function response;
 use function view;
 
 class ConteoCiclosController extends Controller
 {
     public function index(Request $request)
     {
+        if (!Auth::user()->planta)
+            return response(view('Bag.missing_planta'));
+
         return view('ConteoCiclos/index');
     }
 

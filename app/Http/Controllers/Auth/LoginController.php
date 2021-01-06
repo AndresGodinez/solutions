@@ -238,11 +238,11 @@ class LoginController extends Controller
         Session::forget('stock_nivel', '');
         Session::forget('stock_basico', '');
         Session::forget('admin', $user->admin);
-        Session::forget('regionName','');
-        Session::forget('regionCode','');
-        if (session()->all()){
-//            session_destroy();
+        if(isset($_SESSION['regionName']) ){
+            Session::forget('regionName','');
+            Session::forget('regionCode','');
         }
+
         Auth::logout();
         return redirect('/');
     }
