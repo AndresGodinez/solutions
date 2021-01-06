@@ -16,7 +16,9 @@
             @can('solicitudes de acceso')
                 <li><a href="{{url('ingexp/listadeacceso')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Solicitudes de Acceso</span></a></li>
             @endcan
+            <!--
                 <li><a href="{{url('ingexp/solicitaracceso')}}"><i class="bx bx-right-arrow-alt"></i><span class="menu-item" data-i18n="eCommerce">Solicitar Acceso (Ejemplo)</span></a></li>
+            -->
         </ul>
     </li>
 
