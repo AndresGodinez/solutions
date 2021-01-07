@@ -25,12 +25,12 @@ class AlcoparModel extends ModelBase
         descripcion,
         modelo,
         fecha,
-        DATEDIFF(CURDATE(),fecha) as \'dias\', 
+        DATEDIFF(CURDATE(),fecha) as \'dias\',
         DATEDIFF(CURDATE(),fecha) as \'dias2\',
         datediff(curdate(),fechafactible) as dias3,
         taller,
         dispatch,
-        username, 
+        username,
         status,
         motivo')
             ->from('alcopar_partes')
@@ -81,9 +81,7 @@ class AlcoparModel extends ModelBase
     public static function get_factible()
     {
 
-        $data = [];
         $return = [];
-        // Records for Managers.
 
         $data = AlcoparModel::query()->selectRaw('
         id,
@@ -91,8 +89,8 @@ class AlcoparModel extends ModelBase
         descripcion,
         modelo,
         fecha,
-        DATEDIFF(CURDATE(),fechareving) as \'dias\', 
-        DATEDIFF(CURDATE(),fecha) as \'dias2\',        
+        DATEDIFF(CURDATE(),fechareving) as \'dias\',
+        DATEDIFF(CURDATE(),fecha) as \'dias2\',
         motivo')
             ->from('alcopar_partes')
             ->whereRaw('factible =1 or costo=1 ORDER BY FIELD (motivo,\'PROYECTOS, STOCK INICIAL\',\'PROYECTOS, STOCK FINAL\') ASC,fecha ASC')
@@ -128,7 +126,7 @@ class AlcoparModel extends ModelBase
         }
 
 
-        return $return;
+        return array_unique($return);
     }
 
     public static function get_factible_edit($alcopar_id)
@@ -208,18 +206,18 @@ class AlcoparModel extends ModelBase
             ->get();
 
         if(isset($row[0])){
-            if($row[0]['alcopar_tipo_material']!= ''){        
+            if($row[0]['alcopar_tipo_material']!= ''){
                 $extra = AlcoparModel::query()->selectRaw('id,tipo_extra,id_tipo_material')
                 ->from('alcopar_tipo_extra')
                 ->whereRaw('id_tipo_material = ' . $row[0]['alcopar_tipo_material'])
                 ->get();
             }
             else{
-                $extra = array();    
+                $extra = array();
             }
         }else{
             $extra = array();
-        }        
+        }
 
         $data['row'] = $row;
         $data['row1'] = $row1;
@@ -310,21 +308,21 @@ class AlcoparModel extends ModelBase
         $marca = AlcoparModel::query()->selectRaw('id,id_marca,marca,id_tipo_material')
             ->from('alcopar_marca')
             ->get();
-        
+
 
         if(isset($row[0])){
-            if($row[0]['alcopar_tipo_material']!= ''){        
+            if($row[0]['alcopar_tipo_material']!= ''){
                 $extra = AlcoparModel::query()->selectRaw('id,tipo_extra,id_tipo_material')
                 ->from('alcopar_tipo_extra')
                 ->whereRaw('id_tipo_material = ' . $row[0]['alcopar_tipo_material'])
                 ->get();
             }
             else{
-                $extra = array();    
+                $extra = array();
             }
         }else{
             $extra = array();
-        }              
+        }
 
         $data['row'] = $row;
         $data['row1'] = $row1;
@@ -460,27 +458,27 @@ class AlcoparModel extends ModelBase
 
     public static function updateProcesaGeneral($table,$pk, $alcopar_id, $datos)
     {
-                            
+
             DB::table($table)
                 ->where($pk, $alcopar_id)
-                ->update($datos);        
+                ->update($datos);
     }
 
     public static function updateProcesaa($pieza)
     {
 
-        
+
         $rows = AlcoparModel::query()
             ->selectRaw('material,costo')
             ->from('reforig_logistica.materiales_costo')->whereRaw("material = '" . $pieza . "'")->get();
         $num_rows = $rows->count();
-        
+
         if ($num_rows >= 1) {
-            
+
             DB::table('reforig_logistica.materiales_costo')
                 ->where('material', $pieza)
                 ->update([
-                        'costostd' => session('costo'), 
+                        'costostd' => session('costo'),
                         'costo' => session('costo')
                     ]);
         } else {
@@ -577,15 +575,15 @@ class AlcoparModel extends ModelBase
         $alcopar_nivel = session('alcopar_nivel');
         $comentario = session('comentario');
         $username = session('username');
-        
-        
+
+
 
         $rows = AlcoparModel::query()
             ->selectRaw('descripcion,motivo,username,parte,dispatch,tipo_material')
             ->from('alcopar_partes')->whereRaw("id = " . $alcopar_id)->get();
 
         $row = $rows[0];
-        
+
         $descripcion = $row['descripcion'];
         $motivo = $row['motivo'];
         $username_alcopar = $row['username'];
@@ -631,7 +629,7 @@ class AlcoparModel extends ModelBase
                 ->update(['activo' => 1, 'fecha_carga' => date('Ymd')]);
 
 
-            $email_message = "	
+            $email_message = "
             <html>
             <head>
             <title>E-Mail HTML</title>
@@ -657,7 +655,7 @@ class AlcoparModel extends ModelBase
 
             }
             </style>
-                
+
                 <body>
                 <p></p>
                 <p>Por este medio te informamos que se ha creado una nueva solicitudes de stock inicial.<br> </p>
@@ -665,7 +663,7 @@ class AlcoparModel extends ModelBase
                 <p>No. Parte " . $parte . "</p>
                 <p></p>
                 <p></p>
-                
+
             ";
 
 
@@ -683,7 +681,7 @@ class AlcoparModel extends ModelBase
                 ->where('no_parte', $parte)
                 ->update(['activo' => 1, 'fecha_carga' => date('Ymd')]);
 
-            $email_message = "	
+            $email_message = "
             <html>
             <head>
             <title>E-Mail HTML</title>
@@ -709,14 +707,14 @@ class AlcoparModel extends ModelBase
 
             }
             </style>
-                
+
                 <body>
                 <p></p>
                 <p>Por este medio te informamos que se han creado nuevas solicitudes de stock final.<br> </p>
                 <p>Favor de revisarlas.<br> </p>
                 <p></p>
                 <p></p>
-                
+
             ";
 
 
@@ -730,19 +728,19 @@ class AlcoparModel extends ModelBase
 
             $mail_sent = @mail($to, $subject, $email_message, $headers);
         } else {
-                
+
                 $rows = AlcoparModel::query()
                     ->selectRaw("GROUP_CONCAT( mail SEPARATOR ', ') as mail3")
                     ->from('alcopar_partes_mail')->whereRaw("idalcopar = " . $alcopar_id)->get();
-                    
-                $num_rows = $rows->count();                
+
+                $num_rows = $rows->count();
                 if($num_rows > 0){
-                
+
                 $row2 = $rows[0];
-                
+
                 $mail3 = $row2['mail3'];
-                
-                
+
+
                 $rows = AlcoparModel::query()
                     ->selectRaw('talleres.supervisor, a.mail, b.mail AS mail2')
                     ->from('alcopar_partes')
@@ -759,7 +757,7 @@ class AlcoparModel extends ModelBase
 
 
 
-                $email_message = "	
+                $email_message = "
                 <html>
                 <head>
                 <title>E-Mail HTML</title>
@@ -785,12 +783,12 @@ class AlcoparModel extends ModelBase
 
                     }
                     </style>
-                        
+
                         <body>
                         <p></p>
                         <p>Por este medio te informamos que el n&uacute;mero de parte solicitado ya cuenta con Costo</p>
                         <p>Por lo que si fue solicitado para un servicio en garant&iacute;a, el pedido o la reserva ya puede ser colocado en SAP.</p>
-                        <p></p>   
+                        <p></p>
                         <br>
                         <p>De ser requerida para un Servicio con Cargo, en m&aacute;ximo tres d&iacute;as h&aacute;biles quedar&aacute; colocado el precio.</p>
                         <p></p>
@@ -798,7 +796,7 @@ class AlcoparModel extends ModelBase
                         INFORMACION DE LA SOLICITUD
                         <p></p>
                         N&uacute;mero de Parte : " . $parte . "<br>
-                        Descripci&oacute;n : " . $descripcion . "<br>	
+                        Descripci&oacute;n : " . $descripcion . "<br>
                         Dispatch : " . $dispatch . "<br>
                         Comentarios : " . $motivo . "<br>
                         <p></p>
@@ -819,7 +817,7 @@ class AlcoparModel extends ModelBase
 
     public static function reasignarfac()
     {
-        
+
 
         $nombre = session('nombre');
         $username = session('username');
@@ -830,7 +828,7 @@ class AlcoparModel extends ModelBase
         $asigna = session('asigna');
 
         //REVING
-        if ($asigna == 'FACTIBLE') {            
+        if ($asigna == 'FACTIBLE') {
             DB::table('alcopar_partes')
                 ->where('id', $alcopar_id)
                 ->update(
@@ -838,7 +836,7 @@ class AlcoparModel extends ModelBase
                         'reving' => 1, 'factible' => 0, 'status' => 'EN REVISION DE LA INFORMACION DEL NUM DE PARTE'
                     )
                 );
-                
+
             DB::table('alcopar_partes_historial')->insert(
                 [
                     'alcopar_id' => $alcopar_id,
@@ -1035,7 +1033,7 @@ class AlcoparModel extends ModelBase
 
 
 
-        $email_message = "	
+        $email_message = "
                 <html>
                 <head>
                 <title>E-Mail HTML</title>
@@ -1061,7 +1059,7 @@ class AlcoparModel extends ModelBase
 
             }
             </style>
-                
+
                 <body>
                 <p></p>
                 <p>Por este medio te informamos que la solictud de alta de parte ha sido CANCELADA y se agregó a tu bandeja de pedidos la solicitud por motivo de cancelación de alta de parte.<br> </p>
@@ -1071,7 +1069,7 @@ class AlcoparModel extends ModelBase
                 INFORMACION DE LA SOLICITUD
                 <p></p>
                 N&uacute;mero de Parte : " . $parte . "<br>
-                Descripci&oacute;n : " . $descripcion . "<br>	
+                Descripci&oacute;n : " . $descripcion . "<br>
                 Comentarios : " . $motivo . "<br>
                 Dispatch : " . $dispatch . "<br>
                 <p></p>
@@ -1089,7 +1087,7 @@ class AlcoparModel extends ModelBase
         $headers = $headers . "From: Whirlpool Service<no-responder@whirlpool.com>\r\n";
 
 
-        $email_message = "  
+        $email_message = "
                 <html>
                 <head>
                 <title>E-Mail HTML</title>
@@ -1115,7 +1113,7 @@ class AlcoparModel extends ModelBase
 
             }
             </style>
-                
+
                 <body>
                 <p></p>
                 <p>Por este medio te informamos que la solictud de Alta de Parte ha sido cancelada.<br> </p>
@@ -1125,7 +1123,7 @@ class AlcoparModel extends ModelBase
                 INFORMACION DE LA SOLICITUD
                 <p></p>
                 N&uacute;mero de Parte : " . $parte . "<br>
-                Descripci&oacute;n : " . $descripcion . "<br>   
+                Descripci&oacute;n : " . $descripcion . "<br>
                 Comentarios : " . $motivo . "<br>
                 Dispatch : " . $dispatch . "<br>
                 <p></p>
@@ -1164,7 +1162,7 @@ class AlcoparModel extends ModelBase
         // if($alcopar_nivel==0)
         // {
         // header("location:/main/admin.php");
-        // } 
+        // }
         $datos = [
             'fechafactible' => date('Ymd'),
             'factible' => '0',
@@ -1219,10 +1217,10 @@ class AlcoparModel extends ModelBase
 
 
         //     $rows = AlcoparModel::query()
-        // ->selectRaw('usuarios.mail ') 
+        // ->selectRaw('usuarios.mail ')
         // ->from('alcopar_partes')
-        // ->leftJoin('usuarios', 'alcopar_partes.username', '=', 'usuarios.username')        
-        // ->whereRaw("alcopar_partes.parte = '".$parte."'")->get();   
+        // ->leftJoin('usuarios', 'alcopar_partes.username', '=', 'usuarios.username')
+        // ->whereRaw("alcopar_partes.parte = '".$parte."'")->get();
 
         //     $row = $rows[0];
         //     $mail=$row['mail'];
@@ -1243,7 +1241,7 @@ class AlcoparModel extends ModelBase
         // }
 
 
-        $email_message = "	
+        $email_message = "
             <html>
             <head>
             <title>E-Mail HTML</title>
@@ -1269,7 +1267,7 @@ class AlcoparModel extends ModelBase
 
         }
         </style>
-            
+
             <body>
             <p></p>
             <p>Por este medio te informamos que la solictud de Alta de Parte ha sido rechazada.<br> </p>
@@ -1282,7 +1280,7 @@ class AlcoparModel extends ModelBase
             Descripci&oacute;n : " . $descripcion . "<br>
             Modelo : " . $modelo . "<br>
             Taller : " . $taller . "<br>
-            Dispatch : " . $dispatch . "<br>	
+            Dispatch : " . $dispatch . "<br>
             Comentarios : " . $comentario . "<br>
             <p></p>
             <p></p>
@@ -1358,7 +1356,7 @@ class AlcoparModel extends ModelBase
                     ]);
 
 
-                $email_message = "  
+                $email_message = "
                     <html>
                     <head>
                     <title>E-Mail HTML</title>
@@ -1384,7 +1382,7 @@ class AlcoparModel extends ModelBase
 
                     }
                     </style>
-                        
+
                         <body>
                         <p></p>
                         <p>Por este medio te informamos que se ha creado una nueva solicitudes de stock inicial.<br> </p>
@@ -1392,7 +1390,7 @@ class AlcoparModel extends ModelBase
                         <p>No. Parte " . $parte . "</p>
                         <p></p>
                         <p></p>
-                        
+
                     ";
 
 
@@ -1412,7 +1410,7 @@ class AlcoparModel extends ModelBase
                         'activo' => 1, 'fecha_carga' => date('Ymd')
                     ]);
 
-                $email_message = "  
+                $email_message = "
                     <html>
                     <head>
                     <title>E-Mail HTML</title>
@@ -1438,14 +1436,14 @@ class AlcoparModel extends ModelBase
 
                     }
                     </style>
-                        
+
                         <body>
                         <p></p>
                         <p>Por este medio te informamos que se han creado nuevas solicitudes de stock final.<br> </p>
                         <p>Favor de revisarlas.<br> </p>
                         <p></p>
                         <p></p>
-                        
+
                     ";
 
 
@@ -1481,7 +1479,7 @@ class AlcoparModel extends ModelBase
                 $mail2 = $row['mail2'];
             }
 
-            $email_message = "	
+            $email_message = "
                         <html>
                         <head>
                         <title>E-Mail HTML</title>
@@ -1507,7 +1505,7 @@ class AlcoparModel extends ModelBase
 
                     }
                     </style>
-                        
+
                         <body>
                         <p></p>
                         <p>Por este medio te informamos que la solictud de Alta de Parte ha sido rechazada.<br> </p>
@@ -1517,7 +1515,7 @@ class AlcoparModel extends ModelBase
                         INFORMACION DE LA SOLICITUD
                         <p></p>
                         N&uacute;mero de Parte : " . $parte . "<br>
-                        Descripci&oacute;n : " . $descripcion . "<br>	
+                        Descripci&oacute;n : " . $descripcion . "<br>
                         Motivo : " . $motivo . "<br>
                         Modelo : " . $modelo . "<br>
                         Taller : " . $taller . "<br>
@@ -1543,7 +1541,7 @@ class AlcoparModel extends ModelBase
 
     public static function rechazar2()
     {
-        
+
 
         $nombre = Auth::user()->nombre;
         $username = Auth::user()->username;
@@ -1593,7 +1591,7 @@ class AlcoparModel extends ModelBase
                     ->get();
                 $row = $rows[0];
                 $resulta = $row['id'] + 1;
-               
+
 
                 DB::table('altapartes')->insert(
                     [
@@ -1619,11 +1617,11 @@ class AlcoparModel extends ModelBase
                 $row = $rows[0];
                 $_SESSION['alcopar_id'] = $row['alcopar_id'];
 
-                // echo " 
-                // <script language='JavaScript'> 
+                // echo "
+                // <script language='JavaScript'>
                 // window.open( 'https://soluciones.refaccionoriginal.com/altapartes/revsust/procesarechazar.php')
                 // </script>";
-                
+
                 if ($existe == "SI") {
 
                     $rows = AlcoparModel::query()
@@ -1716,7 +1714,7 @@ class AlcoparModel extends ModelBase
                                 ]);
                         }
                     } else {
-                        
+
                         $rows = AlcoparModel::query()
                             ->selectRaw('MAX(id) AS id ')
                             ->from('alcopar_partes')->get();
@@ -2107,7 +2105,7 @@ class AlcoparModel extends ModelBase
             $mail3 = $row['mail3'];
         }
 
-        $email_message = "	
+        $email_message = "
             <html>
             <head>
             <title>E-Mail HTML</title>
@@ -2146,7 +2144,7 @@ class AlcoparModel extends ModelBase
             INFORMACION DE LA NUEVA SOLICITUD
             <p></p>
             N&uacute;mero de Parte : " . $sustituto . "<br>
-            Descripci&oacute;n : " . $descripcion . "<br>	
+            Descripci&oacute;n : " . $descripcion . "<br>
             Comentarios : " . $comentario . "<br>
             Dispatch : " . $dispatch . "<br>
             <p></p>
@@ -2158,7 +2156,7 @@ class AlcoparModel extends ModelBase
         }else{
             $to = $mail . "," . $mail2;
         }
-        
+
         $subject = 'Alta de Parte Cancelada por Ingenieria.';
         $type = "Content-type: text/html\r\n";
         $headers = "MIME-Version: 1.0 \r\n";
@@ -2348,15 +2346,15 @@ class AlcoparModel extends ModelBase
 
     public static function altamaterial($username,$mail,$depto,$descripcion,$modelo,$taller,$dispatch,$donde,$otro,$tipo_material,$categoria,$familia,$marca1,$marca2,$categoria_extra,$motivo)
     {
-        $parte= session("parte");        
+        $parte= session("parte");
         $rows = AlcoparModel::query()
         ->selectRaw('parte, status')
         ->from('alcopar_partes')
         ->whereRaw("parte='" . $parte . "'")
         ->get();
-        
+
         $renglones = $rows->count();
-        
+
 
         if ($donde == 0) {
             $donde = 'Del Explosionado';
@@ -2418,7 +2416,7 @@ class AlcoparModel extends ModelBase
                     'nomenclatura_service' => $concatenate
                 ]
             );
-                      
+
 
             if ($taller == '') {
                 $rows = AlcoparModel::query()
@@ -2428,7 +2426,7 @@ class AlcoparModel extends ModelBase
                 ->whereRaw("alcopar_partes.parte = '" . $parte . "'")
                 ->get();
 
-                $row = $rows[0];                              
+                $row = $rows[0];
                 $mail = $row['mail'];
 
             } else {
@@ -2443,11 +2441,11 @@ class AlcoparModel extends ModelBase
                 ->whereRaw("alcopar_partes.parte = '" . $parte . "'")
                 ->get();
 
-                $row = $rows[0];                                              
+                $row = $rows[0];
                 $mail = $row['mail'];
                 $mail2 = $row['mail2'];
             }
-            $email_message = "	
+            $email_message = "
             <html>
             <head>
             <title>E-Mail HTML</title>
@@ -2497,7 +2495,7 @@ class AlcoparModel extends ModelBase
             }else{
                 $to = $mail;
             }
-            
+
             $subject = 'Proceso de Alta de Parte ha Iniciado.';
             $type = "Content-type: text/html\r\n";
             $headers = "MIME-Version: 1.0 \r\n";
@@ -2508,7 +2506,7 @@ class AlcoparModel extends ModelBase
 
             return true;
         } else {
-            $row1 = $rows[0];        
+            $row1 = $rows[0];
             $status = $row1['status'];
             if ($status == 'CANCELADA') {
 
@@ -2544,7 +2542,7 @@ class AlcoparModel extends ModelBase
                         'tipo_extra' => $categoria_extra,
                         'nomenclatura_service' => $concatenate
                     ]
-                );                        
+                );
 
                 if ($taller == '') {
                     $rows = AlcoparModel::query()
@@ -2552,26 +2550,26 @@ class AlcoparModel extends ModelBase
                     ->from('alcopar_partes')
                     ->leftJoin('usuarios', 'alcopar_partes.username', '=', 'usuarios.username')
                     ->whereRaw("alcopar_partes.parte = '" . $parte . "'")
-                    ->get();    
-                    $row = $rows[0];                              
-                    $mail = $row['mail'];    
-                } else {    
+                    ->get();
+                    $row = $rows[0];
+                    $mail = $row['mail'];
+                } else {
                     $rows = AlcoparModel::query()
                     ->selectRaw('talleres.supervisor, a.mail, b.mail AS mail2')
                     ->from('alcopar_partes')
                     ->leftJoin('usuarios AS a', 'alcopar_partes.username', '=', 'a.username')
                     ->leftJoin('talleres', 'alcopar_partes.taller', '=', 'talleres.taller')
-                    ->leftJoin('usuarios AS b', 'talleres.supervisor', '=', 'b.nombre')    
+                    ->leftJoin('usuarios AS b', 'talleres.supervisor', '=', 'b.nombre')
                     ->whereRaw("alcopar_partes.parte = '" . $parte . "'")
                     ->get();
-    
-                    $row = $rows[0];                                              
+
+                    $row = $rows[0];
                     $mail = $row['mail'];
                     $mail2 = $row['mail2'];
                 }
 
-                
-                $email_message = "	
+
+                $email_message = "
                 <html>
                 <head>
                 <title>E-Mail HTML</title>
@@ -2643,20 +2641,20 @@ class AlcoparModel extends ModelBase
             ->from('alcopar_partes')->whereRaw("parte = '" . session('parte')."'")->get();
 
         $data['partes'] = $rows[0];
-           
+
         $rows = AlcoparModel::query()
         ->selectRaw('descripcion,dispatch, motivo,taller,modelo, username, parte, comentario,comentario_reving,descripcion,clasif_sat,nomenclatura_service,fecha,status')
         ->from('alcopar_partes')->whereRaw("parte = '" . $rows[0]['']."'")->get();
 
         $data['row1'] = $rows->count();
         $data['row2'] = $rows[0];
-        
-        return $data;        
+
+        return $data;
     }
     public static function altamaterialexistentegrabar(){
-        $username = Auth::user()->username;                            
+        $username = Auth::user()->username;
         $motivo= session('motivo');
-        $depto = Auth::user()->depto;          
+        $depto = Auth::user()->depto;
         $rows = AlcoparModel::query()
             ->selectRaw('MAX(id) AS id ')
             ->from('altapartes')->get();
@@ -2692,7 +2690,7 @@ class AlcoparModel extends ModelBase
                 'reving'=>'1'
             ]
         );
-            
+
 
         if ($taller == '') {
             $rows = AlcoparModel::query()
@@ -2700,24 +2698,24 @@ class AlcoparModel extends ModelBase
             ->from('alcopar_partes')
             ->leftJoin('usuarios', 'alcopar_partes.username', '=', 'usuarios.username')
             ->whereRaw("alcopar_partes.parte = '" . session('parte') . "'")
-            ->get();    
-            $row = $rows[0];                              
-            $mail = $row['mail'];    
-        } else {    
+            ->get();
+            $row = $rows[0];
+            $mail = $row['mail'];
+        } else {
             $rows = AlcoparModel::query()
             ->selectRaw('talleres.supervisor, a.mail, b.mail AS mail2')
             ->from('alcopar_partes')
             ->leftJoin('usuarios AS a', 'alcopar_partes.username', '=', 'a.username')
             ->leftJoin('talleres', 'alcopar_partes.taller', '=', 'talleres.taller')
-            ->leftJoin('usuarios AS b', 'talleres.supervisor', '=', 'b.nombre')    
+            ->leftJoin('usuarios AS b', 'talleres.supervisor', '=', 'b.nombre')
             ->whereRaw("alcopar_partes.parte = '" . session('parte') . "'")
             ->get();
 
-            $row = $rows[0];                                              
+            $row = $rows[0];
             $mail = $row['mail'];
             $mail2 = $row['mail2'];
         }
-        $email_message = "	
+        $email_message = "
             <html>
             <head>
             <title>E-Mail HTML</title>
@@ -2743,7 +2741,7 @@ class AlcoparModel extends ModelBase
 
         }
         </style>
-            
+
             <body>
             <p></p>
             <p>Por este medio te informamos que se ha dado seguimiento al proceso de Alta de Parte.<br> </p>
@@ -2757,14 +2755,14 @@ class AlcoparModel extends ModelBase
             Modelo : ".$modelo."<br>
             Taller : ".$taller."<br>
             Dispatch : ".$dispatch."<br>
-            
+
             Comentarios : ".$motivo."<br>
             <p></p>
             <p>
         ";
 
         $to = $mail . "," . $mail2;
-        $subject = 'Proceso de Alta de Parte ha Iniciado.'; 
+        $subject = 'Proceso de Alta de Parte ha Iniciado.';
         $type = "Content-type: text/html\r\n";
         $headers = "MIME-Version: 1.0 \r\n";
         $headers = $headers."Content-type: text/html;charset=iso-8859-1\r\n";
@@ -2774,15 +2772,15 @@ class AlcoparModel extends ModelBase
 
     }
     public static function altamaterialexistenteagregar(){
-        $mail = Auth::user()->mail;             
-        $id_alcopar=session('id');                
+        $mail = Auth::user()->mail;
+        $id_alcopar=session('id');
         DB::table('alcopar_partes_mail')->insert(
             [
                 'idalcopar'=>$id_alcopar,
-                'mail'=>$mail               
+                'mail'=>$mail
             ]
-        );                      
-    }    
+        );
+    }
 
 
     public static function get_classat()
@@ -2799,8 +2797,8 @@ class AlcoparModel extends ModelBase
         descripcion,
         modelo,
         fecha,
-        DATEDIFF(CURDATE(),fechareving) as \'dias\', 
-        DATEDIFF(CURDATE(),fecha) as \'dias2\',        
+        DATEDIFF(CURDATE(),fechareving) as \'dias\',
+        DATEDIFF(CURDATE(),fecha) as \'dias2\',
         motivo')
             ->from('alcopar_partes')
             ->whereRaw('clasif_sat =1 or costo=1 ORDER BY FIELD (motivo,\'PROYECTOS, STOCK INICIAL\',\'PROYECTOS, STOCK FINAL\') ASC,fecha ASC')
@@ -2837,8 +2835,8 @@ class AlcoparModel extends ModelBase
 
 
         return $return;
-    }    
-    
+    }
+
 
 
 
@@ -2847,10 +2845,10 @@ class AlcoparModel extends ModelBase
 
     public static function get_precio()
     {
-        
 
 
-        
+
+
 
         $data = [];
         $return = [];
@@ -2858,15 +2856,15 @@ class AlcoparModel extends ModelBase
 
         $data = AlcoparModel::query()->selectRaw('
                     alcopar_partes.id,
-                    parte, 
-                    descripcion, 
+                    parte,
+                    descripcion,
                     modelo ,
-                    fecha, 
-                    DATEDIFF(CURDATE(),fechacosto) as \'dias\', 
-                    DATEDIFF(CURDATE(),fecha) as \'dias4\', 
-                    DATEDIFF(CURDATE(),fechafactible) as \'dias2\', 
-                    precio, 
-                    factible, 
+                    fecha,
+                    DATEDIFF(CURDATE(),fechacosto) as \'dias\',
+                    DATEDIFF(CURDATE(),fecha) as \'dias4\',
+                    DATEDIFF(CURDATE(),fechafactible) as \'dias2\',
+                    precio,
+                    factible,
                     alta, costo ,
                     alcopar_categoria.categoria,
                     alcopar_tipo_extra.tipo_extra,
@@ -2888,10 +2886,10 @@ class AlcoparModel extends ModelBase
 
             $row2 = AlcoparModel::query()->selectRaw('DATEDIFF(CURDATE(),fecha_asignacion) as \'dias3\', modulo_act')
                 ->from('alcopar_partes_historial')->whereRaw("alcopar_id='" . $id . "' ORDER BY fecha_asignacion DESC")->get();
-            
+
             $dias3 = @$row2[0]['dias'];
             $modulo_act = @$row2[0]['modulo_act'];
-            
+
 
             $return[$k]['id'] = $row['id'];
             $return[$k]['parte'] = $row['parte'];
@@ -2907,7 +2905,7 @@ class AlcoparModel extends ModelBase
              }
              else{
                 $return[$k]['diasd'] = $row['dias2'];
-             }            
+             }
             $return[$k]['taller'] = $row['taller'];
             $return[$k]['dispatch'] = $row['dispatch'];
             $return[$k]['status'] = $row['status'];
@@ -2916,7 +2914,7 @@ class AlcoparModel extends ModelBase
             $return[$k]['tipo_material'] = $row['tipo_material'];
             $return[$k]['categoria'] = $row['categoria'];
             $return[$k]['familia'] = $row['familia'];
-            $return[$k]['marca'] = $row['marca'];       
+            $return[$k]['marca'] = $row['marca'];
         }
 
 
@@ -2926,7 +2924,7 @@ class AlcoparModel extends ModelBase
 
     public static function get_oow()
     {
-        
+
         $data = [];
         $return = [];
         // Records for Managers.
@@ -2938,8 +2936,8 @@ class AlcoparModel extends ModelBase
         descripcion,
         modelo,
         fecha,
-        DATEDIFF(CURDATE(),fechareving) as \'dias\', 
-        DATEDIFF(CURDATE(),fecha) as \'dias2\',        
+        DATEDIFF(CURDATE(),fechareving) as \'dias\',
+        DATEDIFF(CURDATE(),fecha) as \'dias2\',
         motivo')
             ->from('alcopar_partes')
             ->whereRaw('oow =1 ORDER BY FIELD (motivo,\'PROYECTOS, STOCK INICIAL\',\'PROYECTOS, STOCK FINAL\') ASC,fecha ASC')
@@ -2977,7 +2975,7 @@ class AlcoparModel extends ModelBase
 
 
         return $return;
-    }   
+    }
 
 
     public static function reasignaroow()
@@ -2990,7 +2988,7 @@ class AlcoparModel extends ModelBase
         $alcopar_nivel = session('alcopar_nivel');
         $comentarios = session('comentario');
         $asigna = session('asigna');
-      
+
         //REVING
         if ($asigna == 'REVMAT') {
             DB::table('alcopar_partes')
@@ -3011,13 +3009,13 @@ class AlcoparModel extends ModelBase
                     'modulo_act' => 'REV MATERIALES'
                 ]
             );
-        } 
+        }
         elseif ($asigna == 'REVING') {
             DB::table('alcopar_partes')
                 ->where('id', $alcopar_id)
                 ->update(
                     array(
-                        'status' => 'EN REVISION DE LA INFORMACION DEL NUM DE PARTE', 
+                        'status' => 'EN REVISION DE LA INFORMACION DEL NUM DE PARTE',
                         'oow' => 0, 'reving' => 1,  'factible' => 0
                     )
                 );
@@ -3037,7 +3035,7 @@ class AlcoparModel extends ModelBase
                 ->where('id', $alcopar_id)
                 ->update(
                     array(
-                        'status' => 'PARTE AUTORIZADA POR DARSE DE ALTA EN SAP', 
+                        'status' => 'PARTE AUTORIZADA POR DARSE DE ALTA EN SAP',
                         'oow' => 0, 'alta' => 1
                     )
                 );
@@ -3142,13 +3140,13 @@ class AlcoparModel extends ModelBase
                     'modulo_act' => 'REV MATERIALES'
                 ]
             );
-        } 
+        }
         elseif ($asigna == 'REVING') {
             DB::table('alcopar_partes')
                 ->where('id', $alcopar_id)
                 ->update(
                     array(
-                        'status' => 'EN REVISION DE LA INFORMACION DEL NUM DE PARTE', 
+                        'status' => 'EN REVISION DE LA INFORMACION DEL NUM DE PARTE',
                         'precio' => 0, 'factible' => 0, 'reving' => 1
                     )
                 );
@@ -3168,7 +3166,7 @@ class AlcoparModel extends ModelBase
                 ->where('id', $alcopar_id)
                 ->update(
                     array(
-                        'status' => 'PARTE AUTORIZADA POR DARSE DE ALTA EN SAP', 
+                        'status' => 'PARTE AUTORIZADA POR DARSE DE ALTA EN SAP',
                         'precio' => 0, 'alta' => 1, 'factible' => 0, 'reving' => 0
                     )
                 );

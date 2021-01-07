@@ -216,8 +216,6 @@ class AlcoparController extends Controller
     // factible
     public function factible()
     {
-        $user       = Auth::user()->username;
-        $id_region  = Auth::user()->id_region;
         $get_records = AlcoparModel::get_factible();
         return view("Alcopar.factible", compact('get_records'));
     }
