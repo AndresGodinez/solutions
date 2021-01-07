@@ -5,7 +5,7 @@
 <section id="basic-datatable">
 	<div class="row">
 		<div class="col-sm-12">
-			<h2><strong>Revisión de Números de Parte - Rev Materiales/Alta Costo</strong></h2>			
+			<h2><strong>Revisión de Números de Parte - Rev Materiales/Alta Costo</strong></h2>
 		</div>
 	</div>
 </section>
@@ -18,6 +18,7 @@
 				<table class="table table-striped table-bordered complex-headers table-responsive">
 					<thead>
 						<tr>
+						<th style="display: none">ID</th>
 						<th>NUM PARTE</th>
 						<th>DESCRIPCIÓN</th>
 						<th>MODELO</th>
@@ -30,9 +31,11 @@
 					<tbody>
 						<?php $n = 1; ?>
 						@foreach($get_records as $get_records)
-						
+
 						<tr>
-							<td>
+                            <td style="display: none">{{ $get_records['id'] }}</td>
+
+                            <td>
 								<a href="{{	url('alcopar/factible/edit/'.$get_records['id']) }}">
 									<strong>{{ $get_records['parte'] }}</strong>
 								</a>
@@ -41,9 +44,9 @@
 							<td>{{ $get_records['modelo'] }}</td>
 							<td>{{ $get_records['fecha'] }}</td>
 							<td>{{ $get_records['dias2'] }}</td>
-							<td>{{ $get_records['diasd'] }}</td>											
+							<td>{{ $get_records['diasd'] }}</td>
 							<td>{{ $get_records['motivo'] }}</td>
-							
+
 						</tr>
 						@endforeach
 					</tbody>
@@ -64,7 +67,7 @@
             }
 		});
 
-		<?php 
+		<?php
 		if(@$_GET['success'] == 1){
 			?>
 			Swal.fire({
@@ -76,6 +79,6 @@
 			<?php
 		}
 		?>
-		
+
 </script>
 @endsection

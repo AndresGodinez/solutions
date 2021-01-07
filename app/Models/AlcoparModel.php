@@ -81,8 +81,6 @@ class AlcoparModel extends ModelBase
     public static function get_factible()
     {
 
-        $return = [];
-
         $data = AlcoparModel::query()->selectRaw('
         id,
         parte,
@@ -95,6 +93,8 @@ class AlcoparModel extends ModelBase
             ->from('alcopar_partes')
             ->whereRaw('factible =1 or costo=1 ORDER BY FIELD (motivo,\'PROYECTOS, STOCK INICIAL\',\'PROYECTOS, STOCK FINAL\') ASC,fecha ASC')
             ->get();
+
+        $return = [];
 
         foreach ($data as $k => $row) {
 
@@ -126,7 +126,7 @@ class AlcoparModel extends ModelBase
         }
 
 
-        return array_unique($return);
+        return $return;
     }
 
     public static function get_factible_edit($alcopar_id)
