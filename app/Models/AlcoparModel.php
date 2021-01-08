@@ -125,7 +125,7 @@ class AlcoparModel extends ModelBase
             $return[$k]['motivo'] = $row['motivo'];
         }
 
-
+        dd($return);
         return $return;
     }
 

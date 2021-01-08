@@ -794,4 +794,33 @@ class TicketsAbiertosModel extends ModelBase
                 ['date' => $date,
                 'user' => $username]);
     }
+
+    public static function process_tickets_servicios_abiertos($file, $username){
+
+
+        $handle = fopen($file, "r+");
+            $start = 0;
+            
+            $date_today = date("Y-m-d");
+
+            if(!self::select_log($date_today))
+            {
+                self::insert_log($date_today, $username);
+                self::truncate_table("tickets_servicios_abiertos");
+            }  
+
+            while (($data = fgetcsv($handle)) !== FALSE) 
+            {
+                if($start > 0) 
+                {   
+                    // most be insert
+                    if(!empty($data[1]))
+                    {
+                        self::insert_load_data_tickets_sa($data, $username, date("Y-m-d H:i:s"));
+                    }
+                }
+
+                $start++;
+            };
+    }
 }

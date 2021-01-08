@@ -14,6 +14,8 @@ use Illuminate\Support\Str;
 use App\Exports\SimpleExport;
 use App\Utils\MyUtils;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Jobs\TicketsServiciosAbiertosJob;
+
 
 date_default_timezone_set("America/Mexico_City");
 
@@ -284,7 +286,8 @@ class TicketsAbiertosController extends Controller
         if (!empty($file)) 
         {
             $final_file = Str::uuid().'.' . $file->getClientOriginalExtension();
-            $file->storeAS('tickets-abiertos/tickets-servicios-abiertos/' . $date . '/', $final_file);
+            $f = $file->storeAS('tickets-abiertos/tickets-servicios-abiertos/' . $date, $final_file);
+            
         } 
         else
         { 
@@ -294,30 +297,10 @@ class TicketsAbiertosController extends Controller
 
         if($valid)
         {
-            $handle = fopen("D:inetpub\\wwwroot\\Soluciones2\\storage\\app\\tickets-abiertos\\tickets-servicios-abiertos\\".$date."\\".$final_file, "r+");
-            $start = 0;
+            $file_path = storage_path().'/app/'.$f;
+            TicketsServiciosAbiertosJob::dispatch($file_path, Session::get('username'));
             
-            $date_today = date("Y-m-d");
-
-            if(!TicketsAbiertosModel::select_log($date_today))
-            {
-                TicketsAbiertosModel::insert_log($date_today, Session::get('username'));
-                TicketsAbiertosModel::truncate_table("tickets_servicios_abiertos");
-            }  
-
-            while (($data = fgetcsv($handle)) !== FALSE) 
-            {
-                if($start > 0) 
-                {   
-                    // most be insert
-                    if(!empty($data[1]))
-                    {
-                        TicketsAbiertosModel::insert_load_data_tickets_sa($data, Session::get('username'), date("Y-m-d H:i:s"));
-                    }
-                }
-
-                $start++;
-            };
+            //$this->dispatch(new TicketsServiciosAbiertosJob('test'));
         }
 
         echo '<script>window.location.href = "'.$redirect.'";</script>';
