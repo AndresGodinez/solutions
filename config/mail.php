@@ -133,4 +133,21 @@ return [
 
     'log_channel' => env('MAIL_LOG_CHANNEL'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Configuración SSL
+    |--------------------------------------------------------------------------
+    |
+    | Configuración necesaria para que salgan los correos con el
+    | mailhost de Whirlpool
+    |
+    */
+    'stream' => [
+        'ssl' => [
+            'allow_self_signed' => true,
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+        ],
+    ],
+
 ];
