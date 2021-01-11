@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use App\Models\TicketsAbiertosModel;
 use App\Usuario;
-
+use Mail;
 
 class TicketsServiciosAbiertosJob implements ShouldQueue
 {
@@ -42,14 +42,14 @@ class TicketsServiciosAbiertosJob implements ShouldQueue
     public function handle()
     {
         
-        $usuario = Usuario::where(['username', '=', $this->username])->first();
+        $usuario = Usuario::where('username', '=', $this->username)->first();
         Log::info("TicketsServiciosAbiertosJob - path_file = ".$this->path_file.' - '.$this->username.' - inicia proceso ');
         TicketsAbiertosModel::process_tickets_servicios_abiertos($this->path_file, $this->username);   
         Log::info("TicketsServiciosAbiertosJob - path_file = ".$this->path_file.' - '.$this->username.' - termina proceso ');
         
         Mail::send('mailing.tickets-abiertos-servicios-abiertos',
                         ['usuario' => $usuario], 
-                        function ($mailing) {
+                        function ($mailing) use ($usuario) {
             $mailing->from("no-responder@whirlpool.com", "Centro de Soluciones");
             $mailing->to($usuario->mail);
             $mailing->subject('CS - Carga de Servicios Abiertos Finalizada');
