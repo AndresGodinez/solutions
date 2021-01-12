@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\IngLinea;
+use App\IngTipo;
 use App\Models\IngexpModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,7 +55,7 @@ class IngexpController extends Controller
 
         IngexpModel::cargaredit($_POST, $user, $_FILES, $file);
 
-        $urldirv = url('/ingexp/editar/'.$request->get('id').'?success=1');        
+        $urldirv = url('/ingexp/editar/'.$request->get('id').'?success=1');
         return redirect($urldirv);
 
     }
@@ -83,23 +85,12 @@ class IngexpController extends Controller
 
     public function buscar(Request $request)
     {
-        $user = Auth::user()->username;
-        $id_region = Auth::user()->id_region;
+        $get_records = IngexpModel::get_list($request);
 
+        $lineas = IngLinea::get();
+        $tipos = IngTipo::get();
 
-        $tipo = false;
-        $linea = false;
-
-        if (!!$request->get('tipo')) {
-            $tipo = $request->get('tipo');
-        }
-        if ($request->get('linea')) {
-            $linea = $request->get('linea');
-        }
-        $get_records = IngexpModel::get_list($tipo, $linea);
-
-        $datos = IngexpModel::get_records();
-        return view("Ingexp.buscar", compact('get_records', 'datos'));
+        return view("Ingexp.buscar", compact('get_records', 'lineas', 'tipos'));
     }
 
 
@@ -531,7 +522,7 @@ class IngexpController extends Controller
             $request->session()->put(['sol_acceso_login' => trim(strtoupper($_POST["login"]))]);
             $request->session()->put(['sol_acceso_token' => trim(strtoupper($_POST["_token"]))]);
             $request->session()->put(['sol_acceso_nombre' => trim(strtoupper($get_records["nombre"]))]);
-        }        
+        }
         return response()->json($get_records);
     }
 
