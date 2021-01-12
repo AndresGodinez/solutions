@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\IngLinea;
+use App\IngRegistro;
 use App\IngTipo;
 use App\Models\IngexpModel;
 use Illuminate\Http\Request;
@@ -10,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use function compact;
-use function dd;
 use function response;
 use function view;
 
@@ -85,7 +85,7 @@ class IngexpController extends Controller
 
     public function buscar(Request $request)
     {
-        $get_records = IngexpModel::get_list($request);
+        $get_records = IngRegistro::orderBy('idregistro', 'DESC')->paginate();
 
         $lineas = IngLinea::get();
         $tipos = IngTipo::get();
