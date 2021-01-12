@@ -1,7 +1,6 @@
 @extends("layouts.app")
 
 @section("content")
-
     <link rel="stylesheet" type="text/css"
           href="{{ asset('assets') }}/app-assets/vendors/css/tables/datatable/datatables.min.css">
     <section id="basic-datatable">
@@ -22,27 +21,28 @@
                             <form action="#">
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="model">Modelo</label>
-                                        <input type="text" id="model" name="model" class="form-control"
-                                               placeholder="Modelo">
+                                        <label for="modelo">Modelo</label>
+                                        <input type="text" id="modelo" name="modelo" class="form-control"
+                                               placeholder="Modelo" value="{{ request()->get('modelo') ?? '' }}"
+                                        >
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="linea">LINEA DE PRODUCTO:</label>
-                                        <select class="form-control filtro" name="linea" id="linea" require="true">
-                                            <option value="0">Seleccionar Linea</option>
+                                        <select class="form-control filtro" name="linea" id="linea">
+                                            <option value="">Seleccionar Linea</option>
                                             @foreach($lineas as $linea)
-                                                <option value="{{ $linea->idlinea }}"> {{ $linea->linea }}</option>
+                                                <option value="{{ $linea->idlinea }}" {{ request()->get('linea') == $linea->idlinea ? 'selected' : '' }}> {{ $linea->linea }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="tipo">TIPO ARCHIVO:</label>
                                         <select class="form-control filtro" name="tipo" id="tipo">
-                                            <option value="0">Seleccionar Tipo</option>
+                                            <option value="">Seleccionar Tipo</option>
                                             @foreach($tipos as $tipo)
-                                                <option value="{{ $tipo->idtipo }}">{{ $tipo->tipo }}</option>
+                                                <option value="{{ $tipo->idtipo }}" {{ request()->get('tipo') == $tipo->idtipo ? 'selected' : '' }}>{{ $tipo->tipo }}</option>
                                             @endforeach
                                         </select>
                                     </div>
