@@ -187,7 +187,7 @@ body.vertical-layout.vertical-menu-modern.menu-collapsed .footer {
     margin-left: 260px;
   }
 }
-
+/*testingtheme*/
 @media (max-width: 1199.98px) {
   body.vertical-layout.vertical-menu-modern .main-menu {
     width: 0;
