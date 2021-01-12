@@ -19,7 +19,7 @@
                 <div class="card p-1">
                     <div class="row">
                         <div class="col-md-12">
-                            <form action="">
+                            <form action="#">
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="model">Modelo</label>
@@ -52,11 +52,8 @@
                                         <input type="submit" class="btn btn-info" value="Buscar">
                                     </div>
                                 </div>
-
                             </form>
-
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -76,17 +73,17 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($get_records as $get_records)
+                        @foreach($get_records as $record)
                             <tr>
                                 <td><a target="_blank"
-                                       href="{{	url('ingexp/visor/'.$get_records['idregistro']) }}"><?=substr($get_records['titulo'],
+                                       href="{{	url('ingexp/visor/'.$get_records['idregistro']) }}"><?=substr($record->titulo,
                                             0, 40)?></a></td>
-                                <td>{{ $get_records['categoria'] }}</td>
-                                <td><?=substr($get_records['modelo'], 0, 40)?></td>
-                                <td>{{ $get_records['linea'] }}</td>
-                                <td>{{ $get_records['tipo'] }}</td>
-                                <td>{{ $get_records['comentarios'] }}</td>
-                                <td>{{ $get_records['fecha'] }}</td>
+                                <td>{{ $record->categoria }}</td>
+                                <td><?=substr($record->modelo, 0, 40)?></td>
+                                <td>{{ $record->lineaRel->linea ?? ''}}</td>
+                                <td>{{ $record->tipoRel->tipo ?? ''}}</td>
+                                <td>{{ $record->comentarios }}</td>
+                                <td>{{ $record->fecha }}</td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -94,39 +91,10 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-sm-12 p-1">
+                {!! $get_records->appends(request()->all())->links() !!}
+            </div>
         </div>
-        <script src="{{ asset('assets') }}/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
-        <script
-            src="{{ asset('assets') }}/app-assets/vendors/js/tables/datatable/dataTables.bootstrap4.min.js"></script>
-        <script src="{{ asset('assets') }}/app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
-
-        <script>
-
-            $('.filtro').on('change', function() {
-                var tipo = $('#tipo').val();
-                var linea = $('#linea').val();
-                window.location = '<?php echo url('/ingexp/buscar/'); ?>?tipo=' + tipo + '&linea=' + linea;
-            });
-
-            $('.table').DataTable({
-                'responsive': true,
-                'language': {
-                    'url': "{{ asset('assets') }}/dt-lang/Spanish.json",
-                },
-            });
-
-            <?php
-            if(@$_GET['success'] == 1){
-            ?>
-            Swal.fire({
-                type: 'success',
-                title: '¡Ejecutado con éxito!',
-                text: '',
-                confirmButtonClass: 'btn btn-success',
-            });
-            <?php
-            }
-            ?>
-
-        </script>
+    </section>
 @endsection
