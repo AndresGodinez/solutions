@@ -2845,14 +2845,7 @@ class AlcoparModel extends ModelBase
     public static function get_precio()
     {
 
-
-
-
-
-        $data = [];
         $return = [];
-        // Records for Managers.
-
         $data = AlcoparModel::query()->selectRaw('
                     alcopar_partes.id,
                     parte,

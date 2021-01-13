@@ -493,19 +493,17 @@ class AlcoparController extends Controller
 
 
 
-    public function precio(Request $request)
+    public function precio()
     {
-        $user       = Auth::user()->username;
-        $id_region  = Auth::user()->id_region;
         $get_records = AlcoparModel::get_precio();
         return view("Alcopar.precio", compact('get_records'));
     }
 
-    public function descargaPrecio(Request $request)
+    public function descargaPrecio()
     {
         set_time_limit(0);
         ini_set('memory_limit', '1000M');
-        header('Content-type: application/vnd.ms-excel;charset=iso-8859-15');
+        header('Content-type: application/vnd.ms-excel;charset=UTF-8');
         header('Content-Disposition: attachment; filename=Reporte de precios.xls');
 
         $getRecords = AlcoparModel::get_precio();
