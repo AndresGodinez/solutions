@@ -503,6 +503,9 @@ class AlcoparController extends Controller
         ini_set('memory_limit', '1000M');
         header('Content-type: application/vnd.ms-excel;charset=UTF-8');
         header('Content-Disposition: attachment; filename=Reporte de precios.xls');
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        echo "\xEF\xBB\xBF"; //UTF-8 BOM
 
         $getRecords = AlcoparModel::get_precio();
 
