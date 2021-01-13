@@ -58,38 +58,53 @@
                 </div>
             </div>
 
-            <div class="col-sm-12">
-                <div class="card p-1">
-                    <table class="table table-striped table-bordered complex-headers table-responsive">
-                        <thead>
-                        <tr>
-                            <th>TITULO</th>
-                            <th>CATEGORIA</th>
-                            <th>MODELO</th>
-                            <th>LINEA</th>
-                            <th>TIPO</th>
-                            <th>COMENTARIOS</th>
-                            <th>FECHA ACTUALIZACION</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($get_records as $record)
+            @if(count($get_records))
+                <div class="col-sm-12">
+                    <div class="card p-1">
+                        <table class="table table-striped table-bordered table-responsive-lg">
+                            <thead>
                             <tr>
-                                <td><a target="_blank"
-                                       href="{{	url('ingexp/visor/'.$get_records['idregistro']) }}"><?=substr($record->titulo,
-                                            0, 40)?></a></td>
-                                <td>{{ $record->categoria }}</td>
-                                <td><?=substr($record->modelo, 0, 40)?></td>
-                                <td>{{ $record->lineaRel->linea ?? ''}}</td>
-                                <td>{{ $record->tipoRel->tipo ?? ''}}</td>
-                                <td>{{ $record->comentarios }}</td>
-                                <td>{{ $record->fecha }}</td>
+                                <th>TITULO</th>
+                                <th>CATEGORIA</th>
+                                <th>MODELO</th>
+                                <th>LINEA</th>
+                                <th>TIPO</th>
+                                <th>COMENTARIOS</th>
+                                <th>FECHA ACTUALIZACION</th>
                             </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            @foreach($get_records as $record)
+                                <tr>
+                                    <td><a target="_blank"
+                                           href="{{	url('ingexp/visor/'.$get_records['idregistro']) }}"><?=substr($record->titulo,
+                                                0, 40)?></a></td>
+                                    <td>{{ $record->categoria }}</td>
+                                    <td><?=substr($record->modelo, 0, 40)?></td>
+                                    <td>{{ $record->lineaRel->linea ?? ''}}</td>
+                                    <td>{{ $record->tipoRel->tipo ?? ''}}</td>
+                                    <td>{{ $record->comentarios }}</td>
+                                    <td>{{ $record->fecha }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
+
+            @else
+                <div class="col-sm-12">
+                    <div class="card p-1">
+                        <div class="card-header alert alert-danger">
+                            <div class="card-title">
+                                No se encontraron registros, que coincidan con la búsqueda.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            @endif
+
         </div>
         <div class="row">
             <div class="col-sm-12 p-1">
