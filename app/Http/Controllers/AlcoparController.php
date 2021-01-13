@@ -557,8 +557,6 @@ class AlcoparController extends Controller
     public function oow(Request $request)
     {
         set_time_limit(0);
-        $user       = Auth::user()->username;
-        $id_region  = Auth::user()->id_region;
         $get_records = AlcoparModel::get_oow();
         //print_r($get_records);
         return view("Alcopar.oow", compact('get_records'));
@@ -607,8 +605,6 @@ class AlcoparController extends Controller
     }
 
     public function reportalcopardescarga(){
-        $user       = Auth::user()->username;
-        $id_region  = Auth::user()->id_region;
         return view("Alcopar.reportalcopardescarga");
     }
 
@@ -934,6 +930,9 @@ class AlcoparController extends Controller
         header("Expires: 0");
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
             header("content-disposition: attachment;filename=alcopar_partes.xls");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        echo "\xEF\xBB\xBF"; //UTF-8 BOM
             echo $return;
     }
 
