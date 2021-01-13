@@ -881,15 +881,7 @@ class AlcoparController extends Controller
                     <td>'.$v[' comentario_alta'].'</td>
                     <td>'.$v[' tiempo_alta'].'</td>';
 
-                    // if($v['fechaalta'] = '0000-00-00'){
-                    //     $return .= '<td>'.$v['fechaalta'].'</td>';
-                    // }else if($v['fechaalta'] = '0'){
-                    //     $return .= '<td>'.$v['fechaalta'].'</td>';
-                    // }else{
-                    //     $return .= '<td>'.htmlspecialchars(date('d/m/Y H:i:s',$v['fechaalta']));
-                    // }
                     $return .= '<td>'.$v['fechaalta'].'</td>';
-                    //$return .= '<td>'.htmlspecialchars(date('d/m/Y H:i:s',$v['fechaalta']));
 
                     $return .= '<td>'.$v[' mat2'].'</td>
                     <td>'.$v[' comentario_costo'].'</td>
@@ -924,16 +916,14 @@ class AlcoparController extends Controller
 
 
             }
-            #Cambiando el content-type mÃ¡s las <table> se pueden exportar formatos como csv
+        set_time_limit(0);
+        ini_set('memory_limit', '1000M');
         header('Content-type: application/vnd.ms-excel;charset=UTF-8');
-
-        header("Expires: 0");
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            header("content-disposition: attachment;filename=alcopar_partes.xls");
+        header('Content-Disposition: attachment; filename=alcopar_partes.xls');
         header("Pragma: no-cache");
         header("Expires: 0");
         echo "\xEF\xBB\xBF"; //UTF-8 BOM
-            echo $return;
+        echo $return;
     }
 
     public function historial(Request $request){
