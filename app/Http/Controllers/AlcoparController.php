@@ -930,8 +930,9 @@ class AlcoparController extends Controller
 
             }
             #Cambiando el content-type mÃ¡s las <table> se pueden exportar formatos como csv
-            header("Content-Type: application/vnd.ms-excel");
-            header("Expires: 0");
+        header('Content-type: application/vnd.ms-excel;charset=UTF-8');
+
+        header("Expires: 0");
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
             header("content-disposition: attachment;filename=alcopar_partes.xls");
             echo $return;
