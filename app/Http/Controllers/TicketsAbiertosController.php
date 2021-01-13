@@ -56,7 +56,7 @@ class TicketsAbiertosController extends Controller
         if (!empty($file)) 
         {
             $final_file = Str::uuid().'.' . $file->getClientOriginalExtension();
-            $file->storeAS('tickets-abiertos/guias/' . $date . '/', $final_file);
+            $file_path = storage_path().'/app/'.$file->storeAS('tickets-abiertos/guias/' . $date . '/', $final_file);
         } 
         else
         { 
@@ -66,7 +66,7 @@ class TicketsAbiertosController extends Controller
 
         if($valid)
         {
-            $handle = fopen("D:inetpub\\wwwroot\\Soluciones2\\storage\\app\\tickets-abiertos\\guias\\".$date."\\".$final_file, "r+");
+            $handle = fopen($file_path, "r+");
             $start = 0;
             
             TicketsAbiertosModel::truncate_table("tickets_abiertos_guias");
@@ -86,7 +86,7 @@ class TicketsAbiertosController extends Controller
             };
         }
 
-        echo '<script>window.location.href = "'.$redirect.'";</script>';
+        return redirect($redirect);
     }
 
     // Carga para pedidos
@@ -102,7 +102,7 @@ class TicketsAbiertosController extends Controller
         if (!empty($file)) 
         {
             $final_file = Str::uuid().'.' . $file->getClientOriginalExtension();
-            $file->storeAS('tickets-abiertos/pedidos/' . $date . '/', $final_file);
+            $file_path = storage_path().'/app/'.$file->storeAS('tickets-abiertos/pedidos/' . $date . '/', $final_file);
         } 
         else
         { 
@@ -112,7 +112,7 @@ class TicketsAbiertosController extends Controller
 
         if($valid)
         {
-            $handle = fopen("D:inetpub\\wwwroot\\Soluciones2\\storage\\app\\tickets-abiertos\\pedidos\\".$date."\\".$final_file, "r+");
+            $handle = fopen($file_path, "r+");
             $start = 0;
             
             TicketsAbiertosModel::truncate_table("tickets_abiertos_pedidos");
@@ -132,7 +132,7 @@ class TicketsAbiertosController extends Controller
             };
         }
 
-        echo '<script>window.location.href = "'.$redirect.'";</script>';
+        return redirect($redirect);
     }
 
     // Carga para reservas
@@ -148,7 +148,7 @@ class TicketsAbiertosController extends Controller
         if (!empty($file)) 
         {
             $final_file = Str::uuid().'.' . $file->getClientOriginalExtension();
-            $file->storeAS('tickets-abiertos/reservas/' . $date . '/', $final_file);
+            $file_path = storage_path().'/app/'.$file->storeAS('tickets-abiertos/reservas/' . $date . '/', $final_file);
         } 
         else
         { 
@@ -158,7 +158,7 @@ class TicketsAbiertosController extends Controller
 
         if($valid)
         {
-            $handle = fopen("D:inetpub\\wwwroot\\Soluciones2\\storage\\app\\tickets-abiertos\\reservas\\".$date."\\".$final_file, "r+");
+            $handle = fopen($file_path, "r+");
             $start = 0;
             
             TicketsAbiertosModel::truncate_table("tickets_abiertos_reservas");
@@ -178,7 +178,7 @@ class TicketsAbiertosController extends Controller
             };
         }
 
-        echo '<script>window.location.href = "'.$redirect.'";</script>';
+        return redirect($redirect);
     }
 
     // Carga para pex
@@ -194,7 +194,7 @@ class TicketsAbiertosController extends Controller
         if (!empty($file)) 
         {
             $final_file = Str::uuid().'.' . $file->getClientOriginalExtension();
-            $file->storeAS('tickets-abiertos/pex/' . $date . '/', $final_file);
+            $file_path = storage_path().'/app/'.$file->storeAS('tickets-abiertos/pex/' . $date . '/', $final_file);
         } 
         else
         { 
@@ -204,7 +204,7 @@ class TicketsAbiertosController extends Controller
 
         if($valid)
         {
-            $handle = fopen("D:inetpub\\wwwroot\\Soluciones2\\storage\\app\\tickets-abiertos\\pex\\".$date."\\".$final_file, "r+");
+            $handle = fopen($file_path, "r+");
             $start = 0;
             
             TicketsAbiertosModel::truncate_table("tickets_abiertos_pex");
@@ -223,7 +223,7 @@ class TicketsAbiertosController extends Controller
             };
         }
 
-        echo '<script>window.location.href = "'.$redirect.'";</script>';
+        return redirect($redirect);
     }
 
     // Carga para tickets
@@ -239,7 +239,7 @@ class TicketsAbiertosController extends Controller
         if (!empty($file)) 
         {
             $final_file = Str::uuid().'.' . $file->getClientOriginalExtension();
-            $file->storeAS('tickets-abiertos/tickets-abiertos/' . $date . '/', $final_file);
+            $file_path = storage_path().'/app/'.$file->storeAS('tickets-abiertos/tickets-abiertos/' . $date . '/', $final_file);
         } 
         else
         { 
@@ -249,7 +249,7 @@ class TicketsAbiertosController extends Controller
 
         if($valid)
         {
-            $handle = fopen("D:inetpub\\wwwroot\\Soluciones2\\storage\\app\\tickets-abiertos\\tickets-abiertos\\".$date."\\".$final_file, "r+");
+            $handle = fopen($file_path, "r+");
             $start = 0;
             
             TicketsAbiertosModel::truncate_table("tickets_abiertos");
@@ -269,7 +269,7 @@ class TicketsAbiertosController extends Controller
             };
         }
 
-        echo '<script>window.location.href = "'.$redirect.'";</script>';
+        return redirect($redirect);
     }
 
     // Carga para tickets servicios abiertos
@@ -286,7 +286,8 @@ class TicketsAbiertosController extends Controller
         if (!empty($file)) 
         {
             $final_file = Str::uuid().'.' . $file->getClientOriginalExtension();
-            $f = $file->storeAS('tickets-abiertos/tickets-servicios-abiertos/' . $date, $final_file);
+            $file_path = storage_path().'/app/'.$file->storeAS('tickets-abiertos/tickets-servicios-abiertos/' . $date, $final_file);
+
             
         } 
         else
@@ -296,14 +297,11 @@ class TicketsAbiertosController extends Controller
         }
 
         if($valid)
-        {
-            $file_path = storage_path().'/app/'.$f;
-            TicketsServiciosAbiertosJob::dispatch($file_path, Session::get('username'));
-            
-            //$this->dispatch(new TicketsServiciosAbiertosJob('test'));
+        {            
+            TicketsServiciosAbiertosJob::dispatch($file_path, Session::get('username'));                      
         }
 
-        echo '<script>window.location.href = "'.$redirect.'";</script>';
+        return redirect($redirect);
     }
 
 
