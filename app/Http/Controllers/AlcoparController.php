@@ -512,14 +512,10 @@ class AlcoparController extends Controller
 
     public function precioedit(Request $request)
     {
-        $user       = Auth::user()->username;
-        $id_region  = Auth::user()->id_region;
         $get_records = AlcoparModel::get_factible_edit($request->id);
         $id = $request->id;
         $request->session()->put(['alcopar_id'=>$id]);
         $request->session()->put(['pieza_alcopar'=>trim(strtoupper($get_records['row'][0]['partes']))]);
-        #$request->session()->put(['x'=>'b']);
-        ##echo session('x');
         return view("Alcopar.precioedit", compact('get_records','id'));
     }
 

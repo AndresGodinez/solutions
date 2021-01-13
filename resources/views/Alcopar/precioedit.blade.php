@@ -25,288 +25,281 @@ $data = $get_records;
 	<div class="card-body">
 		<form name='forma' action="{{ url('/alcopar/precio/precioprocess/')}}" id='formID' method='POST'>
 		@csrf
-			<div class="row">
-				<div class="col-md-4 col-12">
-						<fieldset class="form-group">
-							<label for="basicInput"> No Parte:</label>
-							<input name="parte" class="form-control" type="text" readonly id="parte" size="40" value="<?php echo($row['parte']);?>">
-						</fieldset>
-				</div>
-				<div class="col-md-4 col-12">
-					<fieldset class="form-group">
-						<label for="basicInput"> Modelo:</label>
-						<input name="modelo" class="form-control" type="text" readonly id="modelo" size="40" value="<?php echo($row['modelo']);?>">
-					</fieldset>
-				</div>
-				<div class="col-md-4 col-12">
-					<fieldset class="form-group">
-						<label for="basicInput"> Descripción:</label>
-					<input name="descripcion" class="form-control" type="text"  id="descripcion" size="40" value="<?php echo($row['descripcion']);?>">
-					</fieldset>
-				</div>
-				<div class="col-md-4 col-12">
-					<fieldset class="form-group">
-						<label for="basicInput"> Taller:</label>
 
-					<input name="taller" type="text" class="form-control" readonly id="descripcion" size="40" value="<?php echo($row['taller']);?>">
-					</fieldset>
-				</div>
+            <div class="form-group row">
+                <label for="parte" class="col-sm-2 col-form-label">No Parte:</label>
+                <div class="col-sm-10">
+                    <input name="parte" class="form-control" type="text" readonly id="parte" size="40" value="<?php echo($row['parte']);?>">
+                </div>
+            </div>
 
-				<div class="col-md-4 col-12">
-					<fieldset class="form-group">
-						<label for="basicInput"> Dispatch:</label>
+            <div class="form-group row">
+                <label for="modelo" class="col-sm-2 col-form-label">Modelo:</label>
+                <div class="col-sm-10">
+                    <input name="modelo" class="form-control" type="text" readonly id="modelo" size="40" value="<?php echo($row['modelo']);?>">
+                </div>
+            </div>
 
-						<input name="Dispatch" type="text" class="form-control" readonly id="Dispatch" size="40" value="<?php echo($row['dispatch']);?>">
-					</fieldset>
-				</div>
+            <div class="form-group row">
+                <label for="descripcion" class="col-sm-2 col-form-label">Descripción:</label>
+                <div class="col-sm-10">
+                    <input name="descripcion" class="form-control" type="text"  id="descripcion" size="40" value="<?php echo($row['descripcion']);?>">
+                </div>
+            </div>
 
-				<?php
-				if($row['status']=='RECHAZADA')
-				{
-				?>
-				<div class="col-md-12 col-12">
-					<fieldset class="form-group">
-						<label for="basicInput"> Motivo Rechazo Materiales:</label>
-						<input name="motivo" type="text" readonly id="motivo" size="40" value="<?php echo($row['comentario']);?>" class="form-control">
-					</fieldset>
-				</div>
+            <div class="form-group row">
+                <label for="taller" class="col-sm-2 col-form-label">Taller:</label>
+                <div class="col-sm-10">
+                    <input name="taller" type="text" class="form-control" readonly id="taller" size="40" value="<?php echo($row['taller']);?>">
+                </div>
+            </div>
 
+            <div class="form-group row">
+                <label for="Dispatch" class="col-sm-2 col-form-label">Dispatch:</label>
+                <div class="col-sm-10">
+                    <input name="Dispatch" type="text" class="form-control" readonly id="Dispatch" size="40" value="<?php echo($row['dispatch']);?>">
+                </div>
+            </div>
 
-				<?php
-				}
-				?>
-				<div class="col-md-4 col-12">
-					<fieldset class="form-group">
-						<label for="basicInput">&iquest;De d&oacute;nde se obtuvo el n&uacute;mero?:</label>
-						<input name="donde" type="text" readonly id="donde" size="40" value="<?php echo($row['pregunta']);?>" class="form-control">
-					</fieldset>
-				</div>
+            <?php
+            if($row['status']=='RECHAZADA')
+            {
+            ?>
+            <div class="form-group row">
+                <label for="motivo" class="col-sm-2 col-form-label">Motivo Rechazo Materiales:</label>
+                <div class="col-sm-10">
+                    <input name="motivo" type="text" readonly id="motivo" size="40" value="<?php echo($row['comentario']);?>" class="form-control">
+                </div>
+            </div>
+            <?php
+            }
+            ?>
 
+            <div class="form-group row">
+                <label for="donde" class="col-sm-2 col-form-label">&iquest;De d&oacute;nde se obtuvo el n&uacute;mero?:</label>
+                <div class="col-sm-10">
+                    <input name="donde" type="text" readonly id="donde" size="40" value="<?php echo($row['pregunta']);?>" class="form-control">
 
-
-				<?php
-				if($row['pregunta']=='Otros')
-				{
-				?>
-				<div class="col-md-12 col-12">
-					<fieldset class="form-group">
-						<input name="otro" class="form-control" type="text" readonly id="otro" size="40" value="<?php echo($row['otros']);?>">
-					</fieldset>
-				</div>
-				<?php
-				}
-				?>
-				<div class="col-md-6 col-12">
-					<fieldset class="form-group">
-						<label for="basicInput">Usuario:</label>
-						<input name='username' type='text' readonly id='username' size="40" value='<?php echo $get_records['nombre_usuario'];?>' class="form-control">
-					</fieldset>
-				</div>
-
-				<div class="col-md-6 col-12">
-					<fieldset class="form-group">
-						<label for="basicInput">Motivo:</label>
-						<input name='motivo' type='text' readonly id='motivo' size='40' value='<?php echo $row['motivo'];?>' class="form-control">
-					</fieldset>
-				</div>
+                </div>
+            </div>
 
 
-				<div class="col-md-4 col-12">
-					<fieldset class="form-group">
-						<label for="basicInput">Tipo de Material:</label>
+            <?php
+            if($row['pregunta']=='Otros')
+            {
+            ?>
+            <div class="form-group row">
+                <label for="donde" class="col-sm-2 col-form-label">otros:</label>
+
+                <div class="col-sm-10">
+                    <input name="otro" class="form-control" type="text" readonly id="otro" size="40" value="<?php echo($row['otros']);?>">
+                </div>
+            </div>
+
+            <?php
+            }
+            ?>
 
 
+            <div class="form-group row">
+                <label for="username" class="col-sm-2 col-form-label">Usuario:</label>
+                <div class="col-sm-10">
+                    <input name='username' type='text' readonly id='username' size="40" value='<?php echo $get_records['nombre_usuario'];?>' class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="motivo" class="col-sm-2 col-form-label">Motivo:</label>
+                <div class="col-sm-10">
+                    <input name='motivo' type='text' readonly id='motivo' size='40' value='<?php echo $row['motivo'];?>' class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="tipo_material" class="col-sm-2 col-form-label">Tipo de Material:</label>
+                <div class="col-sm-10">
+                    <select name='tipo_material' disabled id='tipo_material' onChange='return validateR(this.value);' class='validate[required] code_generator form-control'>
+                        <option value="">Seleccionar Tipo de Material...</option>
+                        <?php
+                        $get_tipo_material = "";
+                        $get_selected_tipo_material = "";
+                        foreach($data['tipo'] as $k => $rowp)
+                        {
+                        $selected = ($row['alcopar_tipo_material'] == $rowp['id_tipo_material'] ? 'selected' : '');
+                        if($get_tipo_material == "")
+                        {
+                            $get_tipo_material = ($selected == "" ? "" : $rowp['id_tipo_material']);
+                            $get_selected_tipo_material = $rowp['id_tipo_material'];
+                        }
+                        ?>
+                        <option <?php echo $selected;?>  value="<?php echo $rowp['id_tipo_material'];?>">
+                            <?php  echo $rowp['tipo_material'];?>
+                        </option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="motivo" class="col-sm-2 col-form-label">Categor&iacute;a:</label>
+                <div class="col-sm-10">
+                    <select name='categoria' disabled id='categoria'  class='validate[required] code_generator form-control'>
+                        <?php
+
+                        ?>
+                        <option value=''>Seleccionar Categoria...</option>
+                        <?php
+                        $get_categoria = "";
+                        $get_categoria_selected = "";
+                        foreach($data['categoria'] as $k => $rowp)
+                        {
+                        $selected = ($row['alcopar_categoria'] == $rowp['id_categoria'] ? 'selected' : '');
+                        if($get_categoria == "")
+                        {
+                            $get_categoria = ($selected == "" ? "" : $rowp['id_categoria']);
+                            $get_categoria_selected = $rowp['id_categoria'];
+                        }
+
+                        if($get_selected_tipo_material == '2')
+                        {
+                        if($rowp['id'] >= 6)
+                        {
+                        ?>
+                        <option <?php echo $selected;?>  value="<?php  echo $rowp['id_categoria'];?>">
+                            <?php  echo $rowp['categoria'];?>
+                        </option>
+                        <?php
+                        }
+                        }
+                        else
+                        {
+                        if($rowp['id'] < 6)
+                        {
+                        ?>
+                        <option <?php echo $selected;?>  value="<?php  echo $rowp['id_categoria'];?>">
+                            <?php  echo $rowp['categoria'];?>
+                        </option>
+                        <?php
+                        }
+                        }
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="familia" class="col-sm-2 col-form-label">Familia:</label>
+                <div class="col-sm-10">
+                    <select name="familia" disabled id="familia" class='validate[required] code_generator form-control'>
+                        <option value=''>
+                            <?php echo (!isset($row['alcopar_familia']) ? 'categoria de familia no ingresada' : 'Seleccionar Familia...');?>
+                        </option>
+                        <?php
+                        $get_familia = "";
+                        if(isset($row['alcopar_categoria']))
+                        {
 
 
+                        foreach($data['familia'] as $k => $rowp)
+                        {
+                        $selected = ($row['alcopar_familia'] == $rowp['id_familia'] ? 'selected' : '');
+                        if($get_familia == "")
+                        {
+                            $get_familia = ($selected == "" ? "" : $rowp['id_familia']);
+                        }
+                        ?>
+                        <option <?php echo $selected;?>  value="<?php  echo $rowp['id_familia'];?>">
+                            <?php  echo $rowp['familia'];?>
+                        </option>
+                        <?php
+                        }
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div>
 
-						<select name='tipo_material' disabled id='tipo_material' onChange='return validateR(this.value);' class='validate[required] code_generator form-control'>
+            <div class="form-group row">
+                <label for="marca1" class="col-sm-2 col-form-label">Marca:</label>
+                <div class="col-sm-10">
+                    <select name='marca1' id='marca1' disabled  class='validate[required] code_generator form-control'>
 
-							<option value="">Seleccionar Tipo de Material...</option>
-							<?php
-							$get_tipo_material = "";
-							$get_selected_tipo_material = "";
-							foreach($data['tipo'] as $k => $rowp)
-							{
-							$selected = ($row['alcopar_tipo_material'] == $rowp['id_tipo_material'] ? 'selected' : '');
-							if($get_tipo_material == "")
-							{
-								$get_tipo_material = ($selected == "" ? "" : $rowp['id_tipo_material']);
-								$get_selected_tipo_material = $rowp['id_tipo_material'];
-							}
-							?>
-							<option <?php echo $selected;?>  value="<?php echo $rowp['id_tipo_material'];?>">
-								<?php  echo $rowp['tipo_material'];?>
-							</option>
-							<?php
-							}
-							?>
-						</select>
-					</fieldset>
-				</div>
-				<div class="col-md-4 col-12">
-					<fieldset class="form-group">
-						<label for="basicInput">Categor&iacute;a:</label>
+                        <option value=''>Seleccionar Tipo de Marca...</option>
+                        <?php
+                        $get_marca = "";
+                        foreach($data['marca'] as $k => $rowp)
+                        {
+                        $selected = ($row['alcopar_marca'] == $rowp['id'] ? 'selected' : '');
+                        if($get_marca == "")
+                        {
+                            $get_marca = ($selected == "" ? "" : $rowp['id']);
+                        }
+                        ?>
+                        <option <?php echo $selected;?>  value="<?php echo $rowp['id_marca'];?>">
+                            <?php echo $rowp['marca'];?>
+                        </option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div>
 
-
-						<select name='categoria' disabled id='categoria'  class='validate[required] code_generator form-control'>
-							<?php
-
-							?>
-							<option value=''>Seleccionar Categoria...</option>
-							<?php
-							$get_categoria = "";
-							$get_categoria_selected = "";
-							foreach($data['categoria'] as $k => $rowp)
-							{
-								$selected = ($row['alcopar_categoria'] == $rowp['id_categoria'] ? 'selected' : '');
-								if($get_categoria == "")
-								{
-									$get_categoria = ($selected == "" ? "" : $rowp['id_categoria']);
-									$get_categoria_selected = $rowp['id_categoria'];
-								}
-
-								if($get_selected_tipo_material == '2')
-								{
-									if($rowp['id'] >= 6)
-									{
-									?>
-									<option <?php echo $selected;?>  value="<?php  echo $rowp['id_categoria'];?>">
-										<?php  echo $rowp['categoria'];?>
-									</option>
-									<?php
-									}
-								}
-								else
-								{
-									if($rowp['id'] < 6)
-									{
-									?>
-									<option <?php echo $selected;?>  value="<?php  echo $rowp['id_categoria'];?>">
-										<?php  echo $rowp['categoria'];?>
-									</option>
-									<?php
-									}
-								}
-							}
-							?>
-						</select>
-						</fieldset>
-				</div>
-				<div class="col-md-4 col-12">
-					<fieldset class="form-group">
-						<label for="basicInput">Familia:</label>
+            <div class="form-group row">
+                <label for="categoria_extra" class="col-sm-2 col-form-label">Tipo Categor&iacute;a Extra:</label>
+                <div class="col-sm-10">
+                    <select name="categoria_extra" disabled id="categoria_extra" class='validate[required] code_generator form-control'>
+                        <option value='0'>
+                            <?php //echo (!isset($row['id_tipo_material']) ? 'No tiene tipo de Material' : 'Seleccionar Categor&iacute;a Extra...');?>
+                            Selecciónar Categoría extra...
+                        </option>
+                        <?php
 
 
-						<select name="familia" disabled id="familia" class='validate[required] code_generator form-control'>
-						<option value=''>
-							<?php echo (!isset($row['alcopar_familia']) ? 'categoria de familia no ingresada' : 'Seleccionar Familia...');?>
-						</option>
-						<?php
-						$get_familia = "";
-						if(isset($row['alcopar_categoria']))
-						{
+                        $get_tipo_cat_ext = "";
+                        foreach($data['extra'] as $k => $rowp)
+                        {
+                        $selected = ($row['id_tipo_material'] == $rowp['id_tipo_material'] ? 'selected' : '');
+                        if($get_tipo_cat_ext == "")
+                        {
+                            $get_tipo_cat_ext = ($selected == "" ? "" : $rowp['id']);
+                        }
+                        ?>
+                        <option <?php echo $selected;?>  value="<?php echo $rowp['id'];?>">
+                            <?php echo $rowp['tipo_extra'];?>
+                        </option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="motivo" class="col-sm-2 col-form-label">Comentario Rev Ingenieria:</label>
+                <div class="col-sm-10">
+                    <textarea rows="4" cols="35" class="form-control" readonly ><?php echo $row['comentario_reving'];?></textarea>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="asigna" class="col-sm-2 col-form-label">Módulo a Reasignar:</label>
+                <div class="col-sm-10">
+                    <select name="asigna" id='aigna' class="form-control">
+                        <option value="">Escoge un m&oacute;dulo </option>
+                        <option value="reving">Rev Ingenieria</option>
+                        <option value="revmat">Rev Materiales</option>
+                        <option value="oow">Alta OOW</option>
+                    </select>
+                </div>
+            </div>
 
 
-							foreach($data['familia'] as $k => $rowp)
-							{
-							$selected = ($row['alcopar_familia'] == $rowp['id_familia'] ? 'selected' : '');
-								if($get_familia == "")
-								{
-									$get_familia = ($selected == "" ? "" : $rowp['id_familia']);
-								}
-							?>
-							<option <?php echo $selected;?>  value="<?php  echo $rowp['id_familia'];?>">
-								<?php  echo $rowp['familia'];?>
-							</option>
-							<?php
-							}
-						}
-						?>
-						</select>
-						</fieldset>
-				</div>
-				<div class="col-md-6 col-12">
-					<fieldset class="form-group">
-						<label for="basicInput">Marca:</label>
-
-
-						<select name='marca1' id='marca1' disabled  class='validate[required] code_generator form-control'>
-
-						<option value=''>Seleccionar Tipo de Marca...</option>
-						<?php
-						$get_marca = "";
-						foreach($data['marca'] as $k => $rowp)
-						{
-						$selected = ($row['alcopar_marca'] == $rowp['id'] ? 'selected' : '');
-						if($get_marca == "")
-						{
-							$get_marca = ($selected == "" ? "" : $rowp['id']);
-						}
-						?>
-						<option <?php echo $selected;?>  value="<?php echo $rowp['id_marca'];?>">
-							<?php echo $rowp['marca'];?>
-						</option>
-						<?php
-						}
-						?>
-						</select>
-						</div>
-				<div class="col-md-6 col-12">
-					<fieldset class="form-group">
-						<label for="basicInput">Tipo Categor&iacute;a Extra:</label>
-
-
-
-						<select name="categoria_extra" disabled id="categoria_extra" class='validate[required] code_generator form-control'>
-							<option value='0'>
-								<?php //echo (!isset($row['id_tipo_material']) ? 'No tiene tipo de Material' : 'Seleccionar Categor&iacute;a Extra...');?>
-								Selecciónar Categoría extra...
-							</option>
-							<?php
-
-
-							$get_tipo_cat_ext = "";
-							foreach($data['extra'] as $k => $rowp)
-							{
-							$selected = ($row['id_tipo_material'] == $rowp['id_tipo_material'] ? 'selected' : '');
-							if($get_tipo_cat_ext == "")
-							{
-								$get_tipo_cat_ext = ($selected == "" ? "" : $rowp['id']);
-							}
-							?>
-							<option <?php echo $selected;?>  value="<?php echo $rowp['id'];?>">
-								<?php echo $rowp['tipo_extra'];?>
-							</option>
-							<?php
-							}
-							?>
-						</select>
-						</div>
-				<div class="col-md-12 col-12">
-					<fieldset class="form-group">
-					<label for="basicInput">Comentario Rev Ingenieria:</label>
-						<textarea rows="4" cols="35" class="form-control" readonly ><?php echo $row['comentario_reving'];?></textarea>
-					</fieldset>
-				</div>
-
-				<div class="col-md-12 col-12">
-					<fieldset class="form-group">
-						<label for="basicInput">Módulo a Reasignar
-					</label>
-
-
-
-						<select name="asigna" class="form-control">
-							<option value="">Escoge un m&oacute;dulo </option>
-							<option value="reving">Rev Ingenieria</option>
-							<option value="revmat">Rev Materiales</option>
-							<option value="oow">Alta OOW</option>
-						</select>
-						</fieldset>
-				</div>
-
-
-
+            <div class="row">
 
 				<div class="col-md-12 col-12">
 					<fieldset class="form-group">
@@ -346,13 +339,7 @@ $data = $get_records;
 	</div>
 </div>
 
-<!-- <div id="myCeroModal">
-    <div style="text-align: right;">
-        <a href="#" class="lnk-cerrar">Cerrar x</a>
-    </div>
-    <h2>Código generado:</h2>
-    <div id="code"></div>
-</div> -->
+
 <div class="modal fade text-left" id="historial" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" style="display: none;" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable  modal-lg" role="document">
 		<div class="modal-content">
