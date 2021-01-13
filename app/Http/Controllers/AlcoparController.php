@@ -308,10 +308,8 @@ class AlcoparController extends Controller
     public function altamaterial()
     {
         $user       = Auth::user()->username;
-        $id_region  = Auth::user()->id_region;
         $nombre  = Auth::user()->nombre;
         $get_records = AlcoparModel::get_material_alta();
-        //$get_records = '';
         return view("Alcopar.altamaterial", compact('get_records','nombre','user'));
     }
     public function  altamaterialupdate_addcorreo (Request $request){
