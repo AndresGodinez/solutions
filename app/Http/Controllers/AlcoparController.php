@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;
 use function header;
 use function ini_set;
 use function set_time_limit;
+use function strtolower;
 use function view;
 
 
@@ -611,7 +612,7 @@ class AlcoparController extends Controller
     public function reportalcopar(Request $request){
         ini_set('memory_limit', '-1');
         if (!!$request->get('modelo')){
-            $modeloR = $request->get('modelo');
+            $modeloR = strtolower($request->get('modelo'));
 
             $row = AlcoparModel::query()->selectRaw('
         alcopar_partes.id,
