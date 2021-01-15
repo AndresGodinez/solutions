@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
 use function ceil;
 use function compact;
@@ -90,6 +91,10 @@ class ConteoCiclosController extends Controller
 
     public function obtenerHojas(Request $request)
     {
+        if(!$this->existRows($request->user()->planta)){
+            throw ValidationException::withMessages(['No hay registros en la planta que el usuario tiene asignada']);
+        }
+
         if($request->get('xls')){
             return Excel::download(new HojasConteoExport($request->user()->planta), 'conteo.xlsx');
         }
@@ -132,6 +137,22 @@ class ConteoCiclosController extends Controller
             return $pdf->download('conteo.pdf');
         }
 
+    }
+
+    public function existRows(string $planta): bool
+    {
+        $exist = DB::connection('logistica')->table('ciclicos')->select(
+            'material',
+            'descripcion',
+            'bin',
+            'stock',
+            'type',
+            'invrec',
+            'costo'
+        )
+            ->where('planta', $planta)
+            ->first();
+        return !is_null($exist);
     }
 
 
