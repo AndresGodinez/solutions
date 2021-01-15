@@ -611,6 +611,8 @@ class AlcoparController extends Controller
     public function reportalcopar(Request $request){
         ini_set('memory_limit', '-1');
         if (!!$request->get('modelo')){
+            $modeloR = $request->get('modelo');
+
             $row = AlcoparModel::query()->selectRaw('
         alcopar_partes.id,
                 alcopar_partes.fecha,
@@ -697,7 +699,7 @@ class AlcoparController extends Controller
                 ->leftJoin('alcopar_marca', 'alcopar_partes.marca', '=', 'alcopar_marca.id')
                 ->leftJoin('alcopar_tipo_extra', 'alcopar_partes.tipo_extra', '=', 'alcopar_tipo_extra.id')
                 ->leftJoin('alcopar_tipo_material', 'alcopar_partes.tipo_material', '=', 'alcopar_tipo_material.id_tipo_material')
-                ->where('alcopar_partes.modelo', $request->get('modelo'))
+                ->where('alcopar_partes.modelo', 'like',  "%$modeloR%")
                 // ->limit(10)
                 ->get();
         }else{
