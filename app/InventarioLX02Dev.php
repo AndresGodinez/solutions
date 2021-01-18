@@ -26,7 +26,7 @@ class InventarioLX02Dev extends Model
                     SELECT planta, material, bin
                     FROM reforig_logistica.inventario_lx02
                     WHERE inventario_lx02.sloc='0001'
-                    AND inventario_lx02.planta='$planta'
+                    AND inventario_lx02.planta='.$planta.'
                     GROUP BY inventario_lx02.material
                     ORDER BY inventario_lx02.bin";
 
@@ -40,7 +40,7 @@ class InventarioLX02Dev extends Model
                         reforig_logistica.inventario_lx02
                     WHERE
                         inventario_lx02.sloc='0099'
-                    AND inventario_lx02.planta='$planta'
+                    AND inventario_lx02.planta='.$planta.'
                     GROUP BY
                         inventario_lx02.material
                     ORDER BY
