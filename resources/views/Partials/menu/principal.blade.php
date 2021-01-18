@@ -25,6 +25,7 @@
         @include('Partials.menu.items.lx02')
         @include('Partials.menu.items.impresion-etiquetas')
         @include('Partials.menu.items.recibo-materiales')
+        @include('Partials.menu.items.talleres')
 
     </ul>
 </div>
