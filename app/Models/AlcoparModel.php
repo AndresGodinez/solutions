@@ -163,7 +163,7 @@ class AlcoparModel extends ModelBase
             ->leftJoin('alcopar_marca', 'alcopar_partes.marca', '=', 'alcopar_marca.id')
             ->leftJoin('alcopar_tipo_extra', 'alcopar_partes.tipo_extra', '=', 'alcopar_tipo_extra.id')
             ->leftJoin('alcopar_tipo_material', 'alcopar_partes.tipo_material', '=', 'alcopar_tipo_material.id_tipo_material')
-            ->whereRaw(' alcopar_partes.id = ' . $alcopar_id)
+            ->whereRaw( 'alcopar_partes.id = ' . $alcopar_id)
             ->get();
 
         $status = $row[0]['status'];
@@ -268,7 +268,7 @@ class AlcoparModel extends ModelBase
             ->leftJoin('alcopar_marca', 'alcopar_partes.marca', '=', 'alcopar_marca.id')
             ->leftJoin('alcopar_tipo_extra', 'alcopar_partes.tipo_extra', '=', 'alcopar_tipo_extra.id')
             ->leftJoin('alcopar_tipo_material', 'alcopar_partes.tipo_material', '=', 'alcopar_tipo_material.id_tipo_material')
-            ->whereRaw(' alcopar_partes.id = ' . $alcopar_id)
+            ->whereRaw( 'alcopar_partes.id = ' . $alcopar_id)
             ->get();
 
         $status = $row[0]['status'];
@@ -1540,8 +1540,6 @@ class AlcoparModel extends ModelBase
 
     public static function rechazar2()
     {
-
-
         $nombre = Auth::user()->nombre;
         $username = Auth::user()->username;
 
@@ -1693,8 +1691,8 @@ class AlcoparModel extends ModelBase
                             $rows = AlcoparModel::query()
                                 ->selectRaw('usuarios.username')
                                 ->from('alcopar_partes')
-                                ->leftJoin('talleres', ' alcopar_partes.taller', '=', 'talleres.taller')
-                                ->leftJoin('usuarios', ' talleres.supervisor', '=', 'usuarios.nombre')
+                                ->leftJoin('talleres',  'alcopar_partes.taller', '=', 'talleres.taller')
+                                ->leftJoin('usuarios', 'talleres.supervisor', '=', 'usuarios.nombre')
                                 ->whereRaw("alcopar_partes.parte = '" . $parte . "'")
                                 ->get();
                             $row_sql = $rows[0];
@@ -1924,7 +1922,7 @@ class AlcoparModel extends ModelBase
                             $rows = AlcoparModel::query()
                                 ->selectRaw('usuarios.username')
                                 ->from('alcopar_partes')
-                                ->leftJoin('talleres', ' alcopar_partes.taller', '=', 'talleres.taller')
+                                ->leftJoin('talleres',  'alcopar_partes.taller', '=', 'talleres.taller')
                                 ->leftJoin('usuarios', ' talleres.supervisor', '=', 'usuarios.nombre')
                                 ->whereRaw("alcopar_partes.parte = '" . $parte . "'")
                                 ->get();
