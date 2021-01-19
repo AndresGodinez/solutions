@@ -66,6 +66,8 @@ class Lx02Controller extends Controller
             new ExecuteByConnection($query, $connection)
         );
 
+        dd('done');
+
         $this->dispatch(
             new UpdateLX02Job($planta)
         );
