@@ -37,14 +37,26 @@ class Lx02Controller extends Controller
 
         $connection = 'logistica';
 
-        $query = 'LOAD DATA LOCAL INFILE "'.$nameFile.'"
+        $originalQuery = 'LOAD DATA LOCAL INFILE "'.$nameFile.'"
                     INTO TABLE reforig_logistica.inventario_lx02
                     FIELDS TERMINATED BY "|"
-                    LINES TERMINATED BY "\r\n" IGNORE 7 LINES
-                    (@ignora1, @material, @descripcion, @planta, @sloc, @nivel, @bin, @stock, @fecha)
+                    LINES TERMINATED BY "\r\n"
+                    IGNORE 7 LINES
+
+                    (@ignora1,
+                    @material,
+                    @descripcion,
+                    @planta,
+                    @sloc,
+                    @nivel,
+                    @bin,
+                    @stock,
+                    @fecha
+                    )
+
                     SET
-                        material = TRIM(@material),
-                        descripcion = TRIM(@descripcion),
+                        material=TRIM(@material),
+                        descripcion=TRIM(@descripcion),
                         planta = TRIM(@planta),
                         sloc = TRIM(@sloc),
                         nivel = TRIM(@nivel),
@@ -53,10 +65,10 @@ class Lx02Controller extends Controller
                         fecha = STR_TO_DATE(@fecha, "%m/%d/%Y")';
 
         $this->dispatch(
-            new ExecuteByConnection($query, $connection)
+            new ExecuteByConnection($originalQuery, $connection)
         );
 
-        dd($query);
+        dd($originalQuery);
 
         dd('done');
 
