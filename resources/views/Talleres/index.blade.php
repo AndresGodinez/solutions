@@ -40,7 +40,7 @@
                 </div>
                 <div class="card-content">
                     <div class="card-body card-dashboard">
-                        <table id="data_talleres" class="table table-striped table-bordered table-responsive complex-headers dataTable" style="width:100%">
+                        <table id="data_talleres" class="table table-striped table-bordered table-responsive-lg complex-headers dataTable" style="width:100%">
                             <thead>
                             <tr>
                                 <th class="text-center"></th>
