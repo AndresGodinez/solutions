@@ -53,17 +53,19 @@ class Lx02Controller extends Controller
                     )
                     SET
                         material=TRIM(@material),
-                        descripcion=UPPER(replace(TRIM(@descripcion),"\"","")),
+                        descripcion=TRIM(@descripcion)),
                         planta=TRIM(@planta),
                         sloc=TRIM(@sloc),
                         nivel=TRIM(@nivel),
                         bin=TRIM(@bin),
-                        stock=replace(@stock,",",""),
+                        stock=TRIM(@stock),
                         fecha=STR_TO_DATE(@fecha, "%m/%d/%Y")';
 
         $this->dispatch(
             new ExecuteByConnection($query, $connection)
         );
+
+        dd($query);
 
         dd('done');
 
