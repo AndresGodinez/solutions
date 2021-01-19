@@ -17,8 +17,9 @@ class Lx02Controller extends Controller
 {
     public function index()
     {
-        if (!Auth::user()->planta)
+        if (!Auth::user()->planta) {
             return response(view('Bag.missing_planta'));
+        }
 
         return view('Lx02.index');
     }
@@ -41,19 +42,10 @@ class Lx02Controller extends Controller
                     FIELDS TERMINATED BY '|'
                     LINES TERMINATED BY '\r\n'
                     IGNORE 7 LINES
-                    (@ignora1,
-                    @material,
-                    @descripcion,
-                    @planta,
-                    @sloc,
-                    @nivel,
-                    @bin,
-                    @stock,
-                    @fecha
-                    )
+                    (@ignora1, @material, @descripcion, @planta, @sloc, @nivel, @bin, @stock, @fecha)
                     SET
                         material=TRIM(@material),
-                        descripcion=TRIM(@descripcion)),
+                        descripcion=TRIM(@descripcion),
                         planta=TRIM(@planta),
                         sloc=TRIM(@sloc),
                         nivel=TRIM(@nivel),
