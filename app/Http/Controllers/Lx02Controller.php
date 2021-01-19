@@ -37,20 +37,19 @@ class Lx02Controller extends Controller
         $connection = 'logistica';
 
         $query = 'LOAD DATA LOCAL INFILE "'.$nameFile.'"
-                    INTO TABLE reforig_logistica.inventario_lx02
+                    INTO TABLE inventario_lx02
                     FIELDS TERMINATED BY "|"
                     LINES TERMINATED BY "\r\n"
                     IGNORE 7 LINES
-                    (
-                        @ignora1,
-                        @material,
-                        @descripcion,
-                        @planta,
-                        @sloc,
-                        @nivel,
-                        @bin,
-                        @stock,
-                        @fecha
+                    (@ignora1,
+                    @material,
+                    @descripcion,
+                    @planta,
+                    @sloc,
+                    @nivel,
+                    @bin,
+                    @stock,
+                    @fecha
                     )
                     SET
                         material=TRIM(@material),
