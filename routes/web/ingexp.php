@@ -13,8 +13,8 @@ Route::group(['prefix' => 'ingexp'], function () {
     Route::get('/editar', 'IngexpController@editar')->middleware('permission:Editar existente');;
     Route::get('/editar/{id}', 'IngexpController@editardetail')->middleware('permission:Editar existente');;
 
+    Route::get('/visor/{id}', 'IngexpController@visor')->middleware('permission:buscar');
     Route::get('/buscar', 'IngexpController@buscar')->middleware('permission:buscar');
-    Route::get('/visor/{id}', 'IngexpController@visor');
 
 
     Route::get('/confirmarpago/{id}/{token}', 'IngexpController@confirmarpago');

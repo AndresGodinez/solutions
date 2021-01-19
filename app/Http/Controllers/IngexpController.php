@@ -111,7 +111,6 @@ class IngexpController extends Controller
 
     public function visor(Request $request)
     {
-
         $id = $request->id;
         $archivo_carga = IngexpModel::visor($id);
         $archivo_carga = '/public/'.$archivo_carga[0]['archivo_carga'];

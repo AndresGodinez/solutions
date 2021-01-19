@@ -77,7 +77,7 @@
                             @foreach($get_records as $record)
                                 <tr>
                                     <td><a target="_blank"
-                                           href="{{	url('ingexp/visor/'.$get_records['idregistro']) }}"><?=substr($record->titulo,
+                                           href="{{	url('ingexp/visor/'.$record['idregistro']) }}"><?=substr($record->titulo,
                                                 0, 40)?></a></td>
                                     <td>{{ $record->categoria }}</td>
                                     <td><?=substr($record->modelo, 0, 40)?></td>
