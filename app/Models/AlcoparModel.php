@@ -1303,6 +1303,7 @@ class AlcoparModel extends ModelBase
         $razon = session('razon');
         $username = session('username');
         $comentario = session('comentario');
+        $mail2 ='';
 
         $alcopar_id = session('alcopar_id');
 
