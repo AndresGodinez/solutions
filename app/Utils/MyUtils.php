@@ -27,7 +27,8 @@ class MyUtils
         $name = time().'-'.$file->hashName();
         $path = 'public/uploads/'.date('Y/m/');
         $file->move($path, $name);
-        return $path.$name;
+        $public_path = addslashes(public_path()).'/';
+        return $public_path.$path.$name;
     }
 
 
