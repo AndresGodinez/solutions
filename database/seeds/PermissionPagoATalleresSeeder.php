@@ -19,27 +19,33 @@ class PermissionPagoATalleresSeeder extends Seeder
         $parent = Permission::create(['name' => 'pago a talleres']);
 
         Permission::create([
-            'name' => 'reportes',
+            'name' => 'facturas recibidas de pago a talleres',
             'parent' => $parent->id,
             'order' => 0
         ]);
 
         Permission::create([
-            'name' => 'recepcion de facturas',
+            'name' => 'facturas aceptadas admin de pago a talleres',
             'parent' => $parent->id,
             'order' => 1
         ]);
         
         Permission::create([
-            'name' => 'facturas pendientes por aceptar',
+            'name' => 'facturas taller',
             'parent' => $parent->id,
             'order' => 2
         ]);
 
         Permission::create([
-            'name' => 'carga de datos',
+            'name' => 'reporte ts',
             'parent' => $parent->id,
             'order' => 3
+        ]);
+
+        Permission::create([
+            'name' => 'carga de datos talleres',
+            'parent' => $parent->id,
+            'order' =>4
         ]);
     	
 

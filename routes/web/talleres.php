@@ -20,8 +20,8 @@ Route::middleware('auth')->group(function () {
         ->middleware('permission:consulta talleres');
 
     Route::get('/talleres-json', 'TalleresController@index_json')
-        ->name('talleres.index_json');
-        //->middleware('permission:consulta talleres');
+        ->name('talleres.index_json')
+        ->middleware('permission:consulta talleres', 'permission:administrar talleres');
 
     Route::get('/taller-edit/{taller}', 'TalleresController@edit')
         ->name('taller.edit')

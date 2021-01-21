@@ -1,4 +1,4 @@
-@canany(['crear talleres', 'editar talleres', 'consulta talleres', 'eliminar talleres'])
+@canany(['crear talleres', 'editar talleres', 'administrar talleres' ,'consulta talleres', 'eliminar talleres'])
 <li class="nav-item">
     <a href="">
         <i class="bx bx-home" data-icon="desktop"></i>

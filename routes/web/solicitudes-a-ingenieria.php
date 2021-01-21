@@ -3,7 +3,12 @@ Route::middleware('auth')->group(function () {
     Route::group( ['prefix' => 'solicitudes-a-ingenieria'], function()
     {
     	// Solicitudes
-        Route::resource('/', 'SolicitudController');
+        Route::resource('/', 'SolicitudController',[
+		    'names' => [
+		        'index' => 'crear-solicitudes-ing'		        
+		    ]])        	
+        	->middleware('permission:crear solicitudes ing');
+
 		Route::post('/solicitud/questions', 'SolicitudController@questions');
 		Route::post('/solicitud/create', 'SolicitudController@create');
 		Route::post('/solicitud/search', 'SolicitudController@search');
@@ -16,7 +21,11 @@ Route::middleware('auth')->group(function () {
 
 	    // Modo de falla.
 	    Route::get('/modo-falla/', 'ModoFallasController@index');
-		Route::get('/modo-falla/form', 'ModoFallasController@showForm');
+
+		Route::get('/modo-falla/form', 'ModoFallasController@showForm')
+			->name('modo-de-falla-ing')
+        	->middleware('permission:modo de falla ing');
+
 		Route::get('/modo-falla/get_content_by_id', 'ModoFallasController@fillSelect');
 		Route::post('/modo-falla/create', 'ModoFallasController@create');
 		Route::post('/modo-falla/questions', 'ModoFallasController@questionsExists');
@@ -29,8 +38,15 @@ Route::middleware('auth')->group(function () {
 
 		// Detalle solicitud.
 		Route::get('/detalle/', 'DetalleController@index');
-		Route::get('/detalle/cerradas-rechazadas', 'DetalleController@cerradas_rechazadas');
-		Route::get('/detalle/abiertas-en-revision', 'DetalleController@abiertas_en_revision');
+
+		Route::get('/detalle/cerradas-rechazadas', 'DetalleController@cerradas_rechazadas')
+			->name('solicitudes-ing-canceladas-y-rechazadas')
+        	->middleware('permission:solicitudes ing canceladas y rechazadas');
+
+		Route::get('/detalle/abiertas-en-revision', 'DetalleController@abiertas_en_revision')
+			->name('solicitudes-ing-abiertas-y-revision')
+        	->middleware('permission:solicitudes-ing-abiertas-y-revisión');
+
 		Route::get('/detalle/show/{id}', 'DetalleController@detail');
 		Route::post('/detalle/create', 'DetalleController@create');
 		Route::post('/detalle/taller', 'DetalleController@taller');
@@ -41,7 +57,10 @@ Route::middleware('auth')->group(function () {
 	    Route::get('/detalle/descargar/{id}', 'DetalleController@descargar');
 
 	    //Reporte.
-	    Route::get('/reporte/', 'ReporteController@index');
+	    Route::get('/reporte/', 'ReporteController@index')
+	    	->name('reporte-solicitudes-ing')
+        	->middleware('permission:reporte solicitudes ing');
+
 		Route::post('/reporte/generate', 'ReporteController@report');
 		Route::get('/reporte/excel', 'ReporteController@report');
 

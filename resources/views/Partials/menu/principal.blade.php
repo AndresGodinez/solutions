@@ -10,15 +10,10 @@
 
         @include('Partials.menu.items.usuarios')
         @include('Partials.menu.items.roles')
-
         @include('Partials.menu.items.stocks')
-
         @include('Partials.menu.items.stock-basico')
-
         @include('Partials.menu.items.alcopar')
-
         @include('Partials.menu.items.ingexp')
-
         @include('Partials.menu.items.sustitutos')
         @include('Partials.menu.items.fechas-promesas')
         @include('Partials.menu.items.conteo-ciclicos')
@@ -26,6 +21,10 @@
         @include('Partials.menu.items.impresion-etiquetas')
         @include('Partials.menu.items.recibo-materiales')
         @include('Partials.menu.items.talleres')
+        @include('Partials.menu.items.pago-a-talleres')
+        @include('Partials.menu.items.solicitudes-a-ingenieria')
+        @include('Partials.menu.items.solicitudes-aduanales')
+        @include('Partials.menu.items.sepomex')
 
     </ul>
 </div>
