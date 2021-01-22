@@ -7,6 +7,7 @@ use Illuminate\Validation\Rule;
 
 class TalleresStoreRequest extends FormRequest
 {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,27 +27,27 @@ class TalleresStoreRequest extends FormRequest
     {
 
         return [
-            'taller.taller' =>  ['required',
-                Rule::unique('talleres', 'taller')->ignore($this->input('taller.taller_tmp'),'taller')
+            'taller.taller' =>  ['required', 'numeric',
+                Rule::unique('talleres', 'taller')->ignore($this->input('taller_tmp'),'taller')
             ],
             'taller.nombre' => 'required',
             'taller_info.correo' => 'required|email',
             'taller_info.direccion' => 'required',             
             'taller_info.colonia' => 'required',             
-            'taller_info.cp' => 'required',             
+            'taller_info.cp' => 'required|numeric',             
             'taller_info.telefono' => 'required',             
             'taller.ciudad' => 'required',             
             'taller_info.estado' => 'required',             
             'taller_info.contacto' => 'required',             
             'taller_info.responsable' => 'required',
 
-            'taller.sbid' => 'required',             
+            'taller.sbid' => 'required|numeric',             
             'taller.vendor' => 'required',             
             'taller.zona' => 'required',             
             'taller.tipo' => 'required',             
             'taller.subtipo' => 'required',             
             'taller.subzona' => 'required',             
-            'taller.cc' => 'required',             
+            'taller.cc' => 'required|numeric',             
             'taller.supervisor' => 'required',
         ];
     }

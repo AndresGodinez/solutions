@@ -7,14 +7,33 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Taller extends Model
 {
     protected $table = 'talleres';
-    protected $primaryKey  = 'taller';
+    protected $primaryKey  = 'id';
     public $timestamps = false;
-    protected $fillable = ['taller'];
+    protected $fillable = [
+        'id',
+        'taller',
+        'sbid',
+        'vendor',
+        'tipo',
+        'subtipo',
+        'zona',
+        'subzona',
+        'supervisor',
+        'username_sup',
+        'nombre',
+        'ciudad',
+        'estado',
+        'mail',
+        'cc',
+        'status',
+        'encuesta',
+        'kpi'
+    ];
 
 
     public static function getAll(){
     	return datatables()->of(Taller::query()->selectRaw("
-                CONCAT('id_',talleres.taller) AS taller_id,
+                talleres.id,
                 talleres.taller,
                 talleres.nombre,
                 CONCAT(talleres.taller, ' - ', talleres.nombre) AS numero_nombre_taller,               

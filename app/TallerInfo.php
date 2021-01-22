@@ -10,6 +10,18 @@ class TallerInfo extends Model
     protected $table = 'talleres_info';
     protected $primaryKey  = 'taller';
     public $timestamps = false;
-    protected $fillable = ['taller'];
+    protected $fillable = [
+    	'taller',
+		'direccion',
+		'estado',
+		'cp',
+		'contacto',
+		'responsable',
+		'colonia',
+		'cabecera',
+		'correo',
+		'fecha_centralizado',
+		'telefono'
+    ];
    
 }

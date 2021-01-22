@@ -3,7 +3,12 @@
     <div class="row">
         <div class="container">
             <h5>
-                Nuevo Taller
+                @if(!$taller->id)
+                  Nuevo 
+                @else
+                  Editar 
+                @endif
+                Taller
             </h5>
         </div>
     </div>
@@ -28,8 +33,13 @@
                            value="{{ $taller->taller }}" 
                     >
                     <input type="hidden"
-                           id="taller_taller_tmp"
-                           name="taller[taller_tmp]"                          
+                           id="id"
+                           name="taller[id]"                          
+                           value="{{ $taller->id }}" 
+                    >
+                    <input type="hidden"
+                           id="taller_tmp"
+                           name="taller_tmp"                          
                            value="{{ $taller->taller }}" 
                     >
                     <input type="hidden"

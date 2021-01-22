@@ -222,25 +222,25 @@
 <script type="text/javascript">
     function buttonEdit(e) {
 
-        return '@can("editar talleres")<button id="manageBtn" type="button" onclick="edit('+e.taller+')" class="btn btn-success btn-xs">Editar</button>@endcan';
+        return '@can("editar talleres")<button id="manageBtn" type="button" onclick="edit('+e.id+')" class="btn btn-success btn-xs">Editar</button>@endcan';
     }
-    function edit(taller) {
-        location.href = "{{url('taller-edit')}}/" + taller;
+    function edit(id) {
+        location.href = "{{url('taller-edit')}}/" + id;
     }
     function buttonDelete(e) {
 
-        return '@can("eliminar talleres")<button id="manageBtn" type="button" onclick="del('+e.taller+')" class="btn btn-danger btn-xs">Eliminar</button>@endcan';
+        return '@can("eliminar talleres")<button id="manageBtn" type="button" onclick="del('+e.id+')" class="btn btn-danger btn-xs">Eliminar</button>@endcan';
     }
    
-    async function del(taller) {
+    async function del(id) {
         let value = await Swal.fire({
             title: 'Cuidado',
-            text: '¿Desea eliminar el Taller '+taller+'?',
+            text: '¿Desea eliminar el Taller?',
             icon: 'warning',
             confirmButtonText: 'Aceptar'
         });
         if (value.isConfirmed){
-            let responseDelete = await axios.post('/taller-destroy/'+taller);
+            let responseDelete = await axios.post('/taller-destroy/'+id);
 
             if (responseDelete){
                 location.href = "{{url('talleres')}}";
