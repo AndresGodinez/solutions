@@ -297,8 +297,13 @@ class TicketsAbiertosController extends Controller
         }
 
         if($valid)
-        {            
-            TicketsServiciosAbiertosJob::dispatch($file_path, Session::get('username'));                      
+        { 
+            $queueManager = new \Illuminate\Queue\QueueManager(app());      
+            $defaultDriver = $queueManager->getDefaultDriver();
+            $queueManager->setDefaultDriver('database');           
+            \Queue::push(new TicketsServiciosAbiertosJob($file_path, Session::get('username')));
+            $queueManager->setDefaultDriver($defaultDriver);
+            
         }
 
         return redirect($redirect);
