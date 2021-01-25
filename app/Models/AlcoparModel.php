@@ -1924,7 +1924,7 @@ class AlcoparModel extends ModelBase
                                 ->selectRaw('usuarios.username')
                                 ->from('alcopar_partes')
                                 ->leftJoin('talleres',  'alcopar_partes.taller', '=', 'talleres.taller')
-                                ->leftJoin('usuarios', ' talleres.supervisor', '=', 'usuarios.nombre')
+                                ->leftJoin('usuarios', 'talleres.supervisor', '=', 'usuarios.nombre')
                                 ->whereRaw("alcopar_partes.parte = '" . $parte . "'")
                                 ->get();
                             $row_sql = $rows[0];
