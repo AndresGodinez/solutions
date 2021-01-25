@@ -175,7 +175,7 @@
                     </select>                    
                 </div>
                 <div class="form-group col-md-3">
-                    <label for="taller_status">ZONA</label>
+                    <label for="taller_status">STATUS</label>
                     <select name="taller[status]" id="taller_zona" class="form-control">
                         <option value="">Seleccione</option>
                         @foreach($taller::getStatus() as $value)
