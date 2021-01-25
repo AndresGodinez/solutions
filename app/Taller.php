@@ -107,5 +107,10 @@ class Taller extends Model
     	return $ret;
     }
 
+    static function getStatus(){
+        $ret = self::select('status')->where('status','<>','')->distinct()->get()->pluck('status'); 
+        return $ret;
+    }
+
 
 }

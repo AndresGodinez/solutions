@@ -172,8 +172,16 @@
                         @foreach($taller::getZonas() as $key=>$value)
                             <option value="{{ $key }}" @if($taller->zona == $key) selected="" @endif>{{ $value }}</option>
                         @endforeach
-                    </select>
-                    
+                    </select>                    
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="taller_status">ZONA</label>
+                    <select name="taller[status]" id="taller_zona" class="form-control">
+                        <option value="">Seleccione</option>
+                        @foreach($taller::getStatus() as $value)
+                            <option value="{{ $value }}" @if($taller->status == $value) selected="" @endif>{{ $value }}</option>
+                        @endforeach
+                    </select>                    
                 </div>
             </div>
             <div class="form-row">
