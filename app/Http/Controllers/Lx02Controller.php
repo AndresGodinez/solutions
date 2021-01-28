@@ -43,10 +43,10 @@ class Lx02Controller extends Controller
                     IGNORE 7 LINES
                     (
                         @ignora1,
-                        @material,
-                        @descripcion,
+                        @material,                        
                         @planta,
                         @sloc,
+                        @descripcion,
                         @nivel,
                         @bin,
                         @stock,
