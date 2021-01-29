@@ -24,6 +24,8 @@
         @include('Partials.menu.items.pago-a-talleres')
         @include('Partials.menu.items.solicitudes-a-ingenieria')
         @include('Partials.menu.items.solicitudes-aduanales')
+        @include('Partials.menu.items.kpi')
+        @include('Partials.menu.items.etiquetas-nom')
         @include('Partials.menu.items.sepomex')
 
     </ul>
