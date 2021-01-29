@@ -37,7 +37,7 @@
                 <strong>No reg: </strong> {{ $data->report_n_reg  }} <br />
                 <strong>Fecha actualización: </strong> {{ $data->updated_at  }}
             </div>
-            <a href="{{ url('pago-a-talleres/reporte-ts-crm/download/'.$data->report_label_name.'.csv') }}" class="btn btn-primary" target="_blank">
+            <a href="{{ url('pago-a-talleres/reporte-ts-crm/download/ts/'.$data->report_label_name.'.csv') }}" class="btn btn-primary" target="_blank">
                 Descargar Archivo {{ $data->report_label_name }}
             </a>
         </div>
@@ -54,7 +54,7 @@
       $old_date = date($log[0]->end_process);
       $new_date = date('Y-m-d', strtotime($old_date));
       ?>
-      <a href="{{ url('pago-a-talleres/reporte-ts-crm/download/reporte-ts-'.$new_date.'.csv') }}" class="btn btn-primary" target="_blank">
+      <a href="{{ url('pago-a-talleres/reporte-ts-crm/download/ts/reporte-ts-'.$new_date.'.csv') }}" class="btn btn-primary" target="_blank">
         Descargar Archivo {{ $log[0]->end_process }}
       </a>
       @endif

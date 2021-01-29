@@ -1,4 +1,7 @@
 @extends("layouts.app") @section("content")
+<?php 
+$sol_ing = true;
+?>
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
@@ -35,7 +38,7 @@
                                     <tr>
                                     @endif
                                         <td>
-                                            <a href="{{ (($closed_cases->status == 'CERRADA' || $closed_cases->status == 'RECHAZADA') ? url('solicitud/show').'/'.$closed_cases->id_sol : url('detalle/show').'/'.$closed_cases->id_sol) }}" target="_blank">
+                                            <a href="{{ (($closed_cases->status == 'CERRADA' || $closed_cases->status == 'RECHAZADA') ? url('solicitudes-a-ingenieria/solicitud/show').'/'.$closed_cases->id_sol : url('solicitudes-a-ingenieria/detalle/show').'/'.$closed_cases->id_sol) }}" target="_blank">
                                                 {{ $closed_cases->id_sol }}
                                             </a>    
                                         </td>
@@ -61,17 +64,17 @@
 </div>
 <div class="text-center">
     <div class="card-body">
-        <h4 class="card-title">{{ config('pages.solicitud.title') }}</h4>
-        <h6 class="card-subtitle mb-2 text-muted">{{ config('pages.solicitud.subtitle') }}</h6> @foreach($solicitud as $solicitud)
+        <h4 class="card-title">{{ config('Pages.solicitud.title') }}</h4>
+        <h6 class="card-subtitle mb-2 text-muted">{{ config('Pages.solicitud.subtitle') }}</h6> @foreach($solicitud as $solicitud)
             @csrf
             <table id="table" class=" justify-content-center display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                     <tr>
-                        <th>{{ config('pages.solicitud.table.dispatch') }}</th>
-                        <th>{{ config('pages.solicitud.table.model') }}</th>
-                        <th>{{ config('pages.solicitud.table.serie') }}</th>
-                        <th>{{ config('pages.solicitud.table.brand') }}</th>
-                        <th>{{ config('pages.solicitud.table.problem') }}</th>
+                        <th>{{ config('Pages.solicitud.table.dispatch') }}</th>
+                        <th>{{ config('Pages.solicitud.table.model') }}</th>
+                        <th>{{ config('Pages.solicitud.table.serie') }}</th>
+                        <th>{{ config('Pages.solicitud.table.brand') }}</th>
+                        <th>{{ config('Pages.solicitud.table.problem') }}</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -99,11 +102,11 @@
             <table id="table" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                     <tr>
-                        <th>{{ config('pages.solicitud.table.fail') }}</th>
-                        <th>{{ config('pages.solicitud.table.line') }}</th>
-                        <th>{{ config('pages.solicitud.table.type') }}</th>
-                        <th>{{ config('pages.solicitud.table.name') }}</th>
-                        <th>{{ config('pages.solicitud.table.phone') }}</th>
+                        <th>{{ config('Pages.solicitud.table.fail') }}</th>
+                        <th>{{ config('Pages.solicitud.table.line') }}</th>
+                        <th>{{ config('Pages.solicitud.table.type') }}</th>
+                        <th>{{ config('Pages.solicitud.table.name') }}</th>
+                        <th>{{ config('Pages.solicitud.table.phone') }}</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -146,7 +149,7 @@
             <div class="row">
                 <div class="col-md-5">
                     <div class="form-group">
-                        <label>{{ config('pages.solicitud.table.comment') }}</label>
+                        <label>{{ config('Pages.solicitud.table.comment') }}</label>
                         <textarea id="comment" name="comment" class="form-control" rows="4" readonly>{{$solicitud->comentario}}</textarea>
                     </div>
                     <div class="form-group">
@@ -157,10 +160,15 @@
                             <a href="{{$solicitud->ruta}}" target="_blank">Documento disponible</a>
                         @endif
                         -->
+                        <label>Archivos adjuntos</label>
                         @if(substr($solicitud->ruta,0,10) != 'documentos')
-                            <a href="{{ url('solicitud/descargar').'/'.$id }}" target="_blank"> Documentos</a>
+                            <a href="{{ url('solicitudes-a-ingenieria/solicitud/descargar').'/'.$id }}" target="_blank">
+                                <img src="{{ url('solicitudes-a-ingenieria/solicitud/descargar').'/'.$id }}" alt="Sin documentos adjuntos" style="width: 450px;" />
+                            </a>
                         @else
-                            <a href="{{ config('pages.globals.url').'solicitudes_ingenieria/'.$solicitud->ruta }}" target="_blank"> {{$solicitud->ruta}}</a>
+                            <a href="{{ config('Pages.globals.url').'solicitudes_ingenieria/'.$solicitud->ruta }}" target="_blank">
+                                <img src="{{ config('Pages.globals.url').'solicitudes_ingenieria/'.$solicitud->ruta }}" alt="Sin documentos adjuntos" style="width: 450px;" />
+                            </a>
                         @endif
                     </div>
                 </div>
@@ -173,7 +181,7 @@
             </div>
             <hr>
             <div class="row">
-                <h4 class="card-title">{{ config('pages.solicitud.table.info') }}</h4>
+                <h4 class="card-title">{{ config('Pages.solicitud.table.info') }}</h4>
             </div>
             <input id="_questions" name="_questions" type="hidden" value="">
             <div class="row" id="info-solicitud">
@@ -190,9 +198,9 @@
                             <td>{{$questions->respuesta}}</td>
                             <td>
                                 @if ($questions->ruta != '')
-                                    <a href="{{ url('documento/descargar/'.$questions->path) }}" target="_blank">
+                                    <a href="{{ url('solicitudes-a-ingenieria/documento/descargar/'.$questions->path) }}" target="_blank">
                                     @if($questions->tipo ==  "image")
-                                    <img style=" max-height:100px;" src="{{ url('documento/descargar/'.$questions->path) }}" >
+                                    <img style=" max-height:100px;" src="{{ url('solicitudes-a-ingenieria/documento/descargar/'.$questions->path) }}" >
                                     @endif
                                     @if($questions->tipo ==  "video")
                                         <video width="320" height="240" controls>
@@ -211,7 +219,7 @@
             <hr>
             <div class="main-quest-ing">
                 @if($depto == 'TALLER' || $depto == 'IT')
-            <form method="post" id="form-sol" enctype="multipart/form-data" action="{{ url('detalle/quests-ing') }}">
+            <form method="post" id="form-sol" enctype="multipart/form-data" action="{{ url('solicitudes-a-ingenieria/detalle/quests-ing') }}">
                 @csrf   
                     <input id="id_request" name="id_request" type="hidden" value="{{$solicitud->id_sol}}">
                     
@@ -226,10 +234,10 @@
                             <h4 class="card-title"> Evalua la información de Ingeniería. </h4>
                             <ul>
                                 <table>
-                                    <tr><td><input type="radio" id="ipt_q1_1" name="ipt_q1" value="{{config('pages.poll.scores.1')}}" checked /></td><td><label for="ipt_q1_1">a) {{config('pages.poll.scores.1')}}</label></td></tr>
-                                    <tr><td><input type="radio" id="ipt_q1_2" name="ipt_q1" value="{{config('pages.poll.scores.2')}}" /></td><td><label for="ipt_q1_2">b) {{config('pages.poll.scores.2')}}</label></td></tr>
-                                    <tr><td><input type="radio" id="ipt_q1_3" name="ipt_q1" value="{{config('pages.poll.scores.3')}}" /></td><td><label for="ipt_q1_3">c) {{config('pages.poll.scores.3')}}</label></td></tr>
-                                    <tr><td><input type="radio" id="ipt_q1_4" name="ipt_q1" value="{{config('pages.poll.scores.4')}}" /></td><td><label for="ipt_q1_4">d) {{config('pages.poll.scores.4')}}</label></td></tr>
+                                    <tr><td><input type="radio" id="ipt_q1_1" name="ipt_q1" value="{{config('Pages.poll.scores.1')}}" checked /></td><td><label for="ipt_q1_1">a) {{config('Pages.poll.scores.1')}}</label></td></tr>
+                                    <tr><td><input type="radio" id="ipt_q1_2" name="ipt_q1" value="{{config('Pages.poll.scores.2')}}" /></td><td><label for="ipt_q1_2">b) {{config('Pages.poll.scores.2')}}</label></td></tr>
+                                    <tr><td><input type="radio" id="ipt_q1_3" name="ipt_q1" value="{{config('Pages.poll.scores.3')}}" /></td><td><label for="ipt_q1_3">c) {{config('Pages.poll.scores.3')}}</label></td></tr>
+                                    <tr><td><input type="radio" id="ipt_q1_4" name="ipt_q1" value="{{config('Pages.poll.scores.4')}}" /></td><td><label for="ipt_q1_4">d) {{config('Pages.poll.scores.4')}}</label></td></tr>
                                 </table>
                             </ul>
                         </div>
@@ -260,7 +268,7 @@
             </div>
             <div class="row" style="height: 30px;"></div>
             <div class="row">
-                <h4 class="card-title">{{ config('pages.solicitud.table.ingeniero') }}</h4>
+                <h4 class="card-title">{{ config('Pages.solicitud.table.ingeniero') }}</h4>
             </div>
             <div class="row">
                 <table id="table" class="text-center display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
@@ -283,16 +291,16 @@
                                     @if($revisions->ruta == null || empty($revisions->ruta) || $revisions->ruta == "Ningún archivo subido.")
                                         Sin Documento adjunto
                                     @else
-                                    <a href="{{ url('detalle/descargar/'.$revisions->idsol) }}" target="_blank" rel="noopener noreferrer">
-                                        Documentos
+                                    <a href="{{ url('solicitudes-a-ingenieria/detalle/descargar/'.$revisions->idsol) }}" target="_blank" rel="noopener noreferrer">
+                                        <img src="{{ url('solicitudes-a-ingenieria/detalle/descargar/'.$revisions->idsol) }}" alt="Sin documentos adjuntos" style="width: 250px;" />
                                     </a>
                                     @endif    
                                 @else
                                      @if($revisions->ruta == null || empty($revisions->ruta) || $revisions->ruta == "Ningún archivo subido.")
                                         Sin Documento adjunto
                                     @else
-                                        <a href="{{config('pages.globals.url').'/solicitudes_ingenieria/'.$revisions->ruta}}" target="_blank">
-                                            Documentos
+                                        <a href="{{config('Pages.globals.url').'/solicitudes_ingenieria/'.$revisions->ruta}}" target="_blank">
+                                            <img src="{{config('Pages.globals.url').'/solicitudes_ingenieria/'.$revisions->ruta}}" alt="Sin documentos adjuntos" style="width: 250px;" />
                                         </a>
                                     @endif
                                 @endif
@@ -308,7 +316,7 @@
             <div class="card-footer bg-transparent">
                 <div class="form-group text-center">
                     <div class="col-lg-2 col-md-4 float-right">
-                        <a onclick="window.close()" class="btn btn-primary from_send"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Regresar</a>
+                        <a onclick="window.history.back()" class="btn btn-primary from_send"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Regresar</a>
                     </div>
                 </div>
             </div>
@@ -389,7 +397,7 @@ function subtypeChange ()
         information:    $("#information").val(),
     }
     $.ajax({
-        url: "{{ url('detalle/subtypeChange') }}",
+        url: "{{ url('solicitudes-a-ingenieria/detalle/subtypeChange') }}",
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
         type: 'POST',
         data: data,
@@ -436,7 +444,7 @@ $(document).ready(function()
         //var ok = validateForm();
         
         $.ajax({
-            url: "{{ url('detalle/quests-ing') }}",
+            url: "{{ url('solicitudes-a-ingenieria/detalle/quests-ing') }}",
             method:"POST",
             data:new FormData(this),
             dataType:'JSON',
@@ -447,9 +455,9 @@ $(document).ready(function()
             {   
                 showNotification('Solicitud', data.message, data.ok);
                 $('#form-sol').trigger("reset");
-                //window.location.href = '{{ url('detalle') }}';
+                //window.location.href = '{{ url('solicitudes-a-ingenieria/detalle') }}';
             },
-            error: function(jq,status,message){ showNotification('{{ config('pages.solicitud.scripts.notifications.title.error') }}', '{{ config('pages.solicitud.scripts.form.error') }}', 'error'); }
+            error: function(jq,status,message){ showNotification('{{ config('Pages.solicitud.scripts.notifications.title.error') }}', '{{ config('Pages.solicitud.scripts.form.error') }}', 'error'); }
         });
     });
 
@@ -460,7 +468,7 @@ $(document).ready(function()
     };
 
     $.ajax({
-        url: "{{ url('detalle/rechazar') }}",
+        url: "{{ url('solicitudes-a-ingenieria/detalle/rechazar') }}",
         method:"POST",
         data:info,
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -470,9 +478,9 @@ $(document).ready(function()
             var ok      = ( !data.ok ) ? 'success' : data.ok;
             showNotification('Solicitud', message, ok);
             $('#form-sol').trigger("reset");
-            window.location.href = '{{ url('detalle') }}';
+            window.location.href = "{{ url('solicitudes-a-ingenieria/detalle') }}";
         },
-        error: function(jq,status,message){ showNotification('{{ config('pages.solicitud.scripts.notifications.title.error') }}', '{{ config('pages.solicitud.scripts.form.error') }}', 'error'); }
+        error: function(jq,status,message){ showNotification('{{ config('Pages.solicitud.scripts.notifications.title.error') }}', '{{ config('Pages.solicitud.scripts.form.error') }}', 'error'); }
     });
 
     });

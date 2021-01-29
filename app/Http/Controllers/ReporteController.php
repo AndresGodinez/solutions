@@ -9,6 +9,9 @@ use App\Models\Region;
 
 use Maatwebsite\Excel\Facades\Excel;
 
+use App\Exports\SimpleExport;
+use App\Utils\MyUtils;
+
 use Session;
 use DB;
 
@@ -138,15 +141,14 @@ class ReporteController extends Controller
 
 	}
 
-	public function report( Request $request )
+	public function report(Request $request)
 	{
        // DB::connection()->enableQueryLog();
-
         $query  = Solicitud::reporte($request->date_start, $request->date_end);
 
-		if( $request->region != '')
+		if($request->region != '')
 		{
-			$query = $query->where("usuarios.id_region","=", $request->region);
+			$query = $query->where("usuarios.id_contry","=", $request->region);
 		}
 
         $results_data = $query->get();
@@ -158,7 +160,7 @@ class ReporteController extends Controller
 			return json_decode(json_encode($val), true);
 		}, $results_data->toArray());
 
-		$results[] = array(
+		$head[] = array(
 			'SOLICITUD',
 			'DISPATCH',
 			'MODELO',
@@ -188,12 +190,12 @@ class ReporteController extends Controller
 			'¿MEJORAR DOCUMENTACION?',
 			'CONTESTO TALL',
 			'EMBAJADOR',
-			'REGION'
+			'PAIS'
 		);
 
-
-
-		foreach( $results_data as $key => $result)
+		$data = array();
+		$i = 0;
+		foreach($results_data as $key => $result)
 		{
 			$creacion  = $result['fecha_envio'];
 			$cerrada   = $result['fecha_cerrada'];
@@ -220,45 +222,50 @@ class ReporteController extends Controller
 				$dia = 0;
 			}
 
-            $results[] = array(
-				'SOLICITUD'                => $result['id_sol'],
-				'DISPATCH'                 => $result['dispatch'],
-				'MODELO'                   => $result['modelo'],
-				'SERIE'                    => $result['serie'],
-				'DESCRIPCION DEL PROBLEMA' => $result['descripcion_problema'],
-				'LINEA'                    => $result['linea'],
-				'TIPO DE INFORMACION'      => $result['informacion'],
-				'COMENTARIOS'              => $result['comentario'],
-				'COMENTARIOS INGENIERO'    => $result['comentarios'],
-				'FECHA DE CREACION'        => $result['fecha_envio'],
-				'USUARIO'                  => $result['usuario'],
-				'NOMBRE DE USUARIO'        => $result['nombre'],
-				'CORREO DE USUARIO'        => $result['mail'],
-				'RESPONSABLE'              => $result['responsable'],
-				'STATUS'                   => $result['status'],
-				'FECHA DE RESPUESTA'       => $result['fecha_respuesta'],
-				'DIAS'                     => "".$dia,
-				'TALLER'                   => $result['taller'],
-				'ESTADO'                   => $result['estado'],
-				'ZONA'                     => $result['zona'],
-				'SUB-TIPO DE INFORMACION'  => $result['sub_tipo'],
-				'RECOMENDARIA EL SERVICIO' => $result['ing_q3'],
-				'EVALUA INFO SOLICITANTE'  => $result['ing_q1'],
-				'¿MEJORAR DOCUMENTACION?'  => $result['ing_q2'],
-				'CONTESTO ING'             => $result['ing_usr_agnt'],
-				'EVALUA INFO SOLICITANTE '  => $result['tall_q1'],
-				'¿MEJORAR DOCUMENTACION? '  => $result['tall_q2'],
-				'CONTESTO TALL'            => $result['tall_usr_agnt'],
-				'EMBAJADOR'                => $result['embajador'],
-				'REGION'                   => $result['regionName']
-			);
+			$data[$i]['id_sol']					= $result['id_sol'];
+			$data[$i]['dispatch']				= $result['dispatch'];
+			$data[$i]['modelo']					= $result['modelo'];
+			$data[$i]['serie']					= $result['serie'];
+			$data[$i]['descripcion_problema']	= $result['descripcion_problema'];
+			$data[$i]['linea']					= $result['linea'];
+			$data[$i]['informacion']			= $result['informacion'];
+			$data[$i]['comentario']				= $result['comentario'];
+			$data[$i]['comentarios']			= $result['comentarios'];
+			$data[$i]['fecha_envio']			= $result['fecha_envio'];
+			$data[$i]['usuario']				= $result['usuario'];
+			$data[$i]['nombre']					= $result['nombre'];
+			$data[$i]['mail']					= $result['mail'];
+			$data[$i]['responsable']			= $result['responsable'];
+			$data[$i]['status']					= $result['status'];
+			$data[$i]['fecha_respuesta']		= $result['fecha_respuesta'];
+			$data[$i]['dia']					= "".$dia;
+			$data[$i]['taller']					= $result['taller'];
+			$data[$i]['estado']					= $result['estado'];
+			$data[$i]['zona']					= $result['zona'];
+			$data[$i]['sub_tipo']				= $result['sub_tipo'];
+			$data[$i]['ing_q3']					= $result['ing_q3'];
+			$data[$i]['ing_q1']					= $result['ing_q1'];
+			$data[$i]['ing_q2']					= $result['ing_q2'];
+			$data[$i]['ing_usr_agnt']			= $result['ing_usr_agnt'];
+			$data[$i]['tall_q1']				= $result['tall_q1'];
+			$data[$i]['tall_q2']				= $result['tall_q2'];
+			$data[$i]['tall_usr_agnt']			= $result['tall_usr_agnt'];
+			$data[$i]['embajador']				= $result['embajador'];
+			$data[$i]['contryName']				= $result['contryName'];
+			$i++;
         }
 
-		return Excel::create('Solicitud', function($excel) use ($results){
+        $name = 'Solicitudes a Ingeniería';
+        $extension = '.xlsx';
+
+        $fileName = MyUtils::getName($name, $extension);
+
+        return Excel::download(new SimpleExport($head, $data), $fileName);
+		/*return Excel::create('Solicitud', function($excel) use ($results){
 			$excel->setTitle('Solicitud');
 			$excel->sheet('Solicitud', function($sheet) use ($results){
 				$sheet->fromArray($results, null, 'A1', false, false);
 			});
-		})->download('xlsx');
+		})->download('xlsx');*/
 	}
 }

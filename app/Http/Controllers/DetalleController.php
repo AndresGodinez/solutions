@@ -27,8 +27,14 @@ class DetalleController extends Controller
 {
     public function index()
 	{
+        $user = Session::get('username');
+        $depto = DB::table('usuarios')
+                    ->select('usuarios.depto')
+                    ->where('username', $user)
+                    ->get();
+                    
         $filter = [];
-        if( Session::get('depto') == 'TALLER') {
+        if($depto[0]->depto == 'TALLER') {
             $filter[] = ['detalle_solicitud.usuario', '=', session('username')];
         }
 
@@ -71,17 +77,26 @@ class DetalleController extends Controller
             $regions = Region::all();
             $line = LineaProducto::all();
             $username = Session::get('username');
-            $depto = Session::get('depto');
+            $depto = DB::table('usuarios')
+                    ->select('usuarios.depto')
+                    ->where('username', $username)
+                    ->get();
             $items = Menu::getMenu2($username);
             $type_slct = "";
-		return view("pages.detallesolicitud.index", ['details' => $details, "information" => $information, "line" => $line, "username" => $username, "depto" => $depto, 'items' => $items,'regions'=>$regions, "type_slct" => $type_slct]);
+		return view("pages.detallesolicitud.index", ['details' => $details, "information" => $information, "line" => $line, "username" => $username, "depto" => $depto[0]->depto, 'items' => $items,'regions'=>$regions, "type_slct" => $type_slct]);
     }
 
 
     // Condition for cerradas rechazadas exeptions.!
     public function cerradas_rechazadas()
     {
-        if( Session::get('depto') == 'TALLER') { 
+        $user = Session::get('username');
+        $depto = DB::table('usuarios')
+                    ->select('usuarios.depto')
+                    ->where('username', $user)
+                    ->get();
+
+        if($depto[0]->depto == 'TALLER') { 
             $user = session('username');
             $details = Solicitud::consulta()->whereRaw('detalle_solicitud.usuario = "'.$user.'" AND (detalle_solicitud.status = "CERRADA" OR detalle_solicitud.status = "RECHAZADA"  OR detalle_solicitud.status = "SALVADO")')->get();
         }
@@ -129,18 +144,27 @@ class DetalleController extends Controller
             $regions = Region::all();
             $line = LineaProducto::all();
             $username = Session::get('username');
-            $depto = Session::get('depto');
+            $depto = DB::table('usuarios')
+                    ->select('usuarios.depto')
+                    ->where('username', $username)
+                    ->get();
             $items = Menu::getMenu2($username);
             $type_slct = "cerradas_rechazadas";
 
-        return view("pages.detallesolicitud.index", ['details' => $details, "information" => $information, "line" => $line, "username" => $username, "depto" => $depto, 'items' => $items,'regions'=>$regions, "type_slct" => $type_slct]);
+        return view("pages.detallesolicitud.index", ['details' => $details, "information" => $information, "line" => $line, "username" => $username, "depto" => $depto[0]->depto, 'items' => $items,'regions'=>$regions, "type_slct" => $type_slct]);
     }
 
 
     // Condition for abiertas en revision exeptions.!
     public function abiertas_en_revision()
     {
-        if( Session::get('depto') == 'TALLER') { 
+        $user = Session::get('username');
+        $depto = DB::table('usuarios')
+                    ->select('usuarios.depto')
+                    ->where('username', $user)
+                    ->get();
+
+        if($depto[0]->depto == 'TALLER') { 
             $user = session('username');
             $details = Solicitud::consulta()->whereRaw('detalle_solicitud.usuario = "'.$user.'" AND (detalle_solicitud.status = "ABIERTO" OR detalle_solicitud.status = "EN REVISION")')->get();
         }
@@ -150,47 +174,51 @@ class DetalleController extends Controller
                                             ->orWhere('detalle_solicitud.status', '=', 'EN REVISION')->get();
         }
 
-            foreach ($details as $row)
-            {
-                $creacion=$row->fecha_envio;
-                $cerrada=$row->fecha_cerrada;
-                $rechazada=$row->fecha_rechazada;
-                $status=$row->status;
-                $row->ruta = 'detalle';
+        foreach ($details as $row)
+        {
+            $creacion=$row->fecha_envio;
+            $cerrada=$row->fecha_cerrada;
+            $rechazada=$row->fecha_rechazada;
+            $status=$row->status;
+            $row->ruta = 'detalle';
 
-                switch($status){
-                    case 'RECHAZADA':
-                        $resta=strtotime($rechazada) - strtotime($creacion);
-                        $dia=intval($resta/60/60/24);
-                        $row->dia = $dia;
-                        $row->ruta = 'solicitud';
-                    break;
-                    case 'CERRADA':
-                        $resta=strtotime($cerrada) - strtotime($creacion);
-                        $dia=intval($resta/60/60/24);
-                        $row->dia = $dia;
-                        $row->ruta = 'solicitud';
-                    break;
-                    case 'EN REVISION';
-                        if(Session::get('depto') != 'TALLER')
-                            $row->ruta = 'detalle';
-                    break;
-                    default:
-                        $resta=strtotime('now') - strtotime($creacion);
-                        $dia=intval($resta/60/60/24);
-                        $row->dia = $dia;
-                    break;
-                }
+            switch($status){
+                case 'RECHAZADA':
+                    $resta=strtotime($rechazada) - strtotime($creacion);
+                    $dia=intval($resta/60/60/24);
+                    $row->dia = $dia;
+                    $row->ruta = 'solicitud';
+                break;
+                case 'CERRADA':
+                    $resta=strtotime($cerrada) - strtotime($creacion);
+                    $dia=intval($resta/60/60/24);
+                    $row->dia = $dia;
+                    $row->ruta = 'solicitud';
+                break;
+                case 'EN REVISION';
+                    if(Session::get('depto') != 'TALLER')
+                        $row->ruta = 'detalle';
+                break;
+                default:
+                    $resta=strtotime('now') - strtotime($creacion);
+                    $dia=intval($resta/60/60/24);
+                    $row->dia = $dia;
+                break;
             }
+        }
 
-            $information = TipoInformacion::all();
-            $regions = Region::all();
-            $line = LineaProducto::all();
-            $username = Session::get('username');
-            $depto = Session::get('depto');
-            $items = Menu::getMenu2($username);
-            $type_slct = "abiertas_en_revision";
-        return view("pages.detallesolicitud.index", ['details' => $details, "information" => $information, "line" => $line, "username" => $username, "depto" => $depto, 'items' => $items,'regions'=>$regions, "type_slct" => $type_slct]);
+        $information = TipoInformacion::all();
+        $regions = Region::all();
+        $line = LineaProducto::all();
+        $username = Session::get('username');
+        $depto = DB::table('usuarios')
+                ->select('usuarios.depto')
+                ->where('username', $username)
+                ->get();
+        $items = Menu::getMenu2($username);
+        $type_slct = "abiertas_en_revision";
+
+        return view("pages.detallesolicitud.index", ['details' => $details, "information" => $information, "line" => $line, "username" => $username, "depto" => $depto[0]->depto, 'items' => $items,'regions'=>$regions, "type_slct" => $type_slct]);
     }
 
     public function detail($id_sol)
@@ -200,11 +228,15 @@ class DetalleController extends Controller
         $information = TipoInformacion::all();
         $line = LineaProducto::all();
         $subtype = SubTipoInformacion::where('id_tipo', $detail->informacion)->get();
-        $depto = Session::get('depto');
-        $view = ($depto != 'TALLER') ? 'show' : 'showtaller' ;
-        $revision = ($depto == 'TALLER') ? RevisionIngenieria::where('idsol', $detail->id_sol)->get() : '';
         $user = Session::get('username');
+        
+        $depto = DB::table('usuarios')
+                    ->select('usuarios.depto')
+                    ->where('username', $user)
+                    ->get();
 
+        $view = ($depto[0]->depto != 'TALLER') ? 'show' : 'showtaller' ; 
+        $revision = ($depto[0]->depto == 'TALLER') ? RevisionIngenieria::where('idsol', $detail->id_sol)->get() : '';
         $questions = DB::table('respuestas_solicitud')
         ->join('preguntas_solicitud', 'respuestas_solicitud.id_pregunta', '=', 'preguntas_solicitud.id_pregunta')
         ->join('solicitud_ingenieria', 'respuestas_solicitud.id_solicitud', '=', 'solicitud_ingenieria.id_sol')
@@ -219,7 +251,7 @@ class DetalleController extends Controller
             ->where('solicitud_ingenieria.id_sol', $id_sol)->first();
         
         // Validamos si esta abierto y al ingresar el ingeniero se debe de poner el update de que esta EN REVISION.
-        if($detail_status->status == "ABIERTO" && $depto == "INGENIERIA")
+        if($detail_status->status == "ABIERTO" && $depto[0]->depto == "INGENIERIA")
         { 
             DetalleSolicitud::where('id_sol', $detail_status->id_sol)->update(['status' => 'EN REVISION', 'responsable' => $user, 'fecha_revision' => date('Y-m-d H:i:s')]);
         }
@@ -238,17 +270,15 @@ class DetalleController extends Controller
                                     ->get();
         }
 
-
-        foreach ($questions as $value) {
+        foreach ($questions as $value) 
+        {
             $mime = DocumentoController::mimeType($value->ruta);
             $value->mimeType = $mime;
             $result = explode('/', $mime);
             $value->tipo =  $result[0];
         }
 
-        $items = Menu::getMenu2($user);
-
-		return view("pages.detallesolicitud.$view", ['questions'=> $questions, 'items' => $items, "detail" => $detail, "subtype" => $subtype, "information" => $information, "line" => $line, "revision" => $revision, "closed_cases" => $closed_cases]);
+		return view("pages.detallesolicitud.$view", ['questions'=> $questions, "detail" => $detail, "subtype" => $subtype, "information" => $information, "line" => $line, "revision" => $revision, "closed_cases" => $closed_cases]);
     }
 
     // Funcion para contestar las solicitudes a Ing.
@@ -331,7 +361,7 @@ class DetalleController extends Controller
                         <p style="color: #393939; font-size: 14px;">
                             Por este medio te informamos que la solicitud a Ingeniería que realizaste ha sido <strong>Contestada</strong>, para mas información te invitamos a darle seguimiento a la misma en Centro de Soluciones con el No. de Folio: <strong>'.$request->id_request.'</strong>. <br />
                             1) Para revisar los comentarios ingresa primero a Centro de Soluciones e Inicia sesión.
-                            2) Ingresa a la siguiente liga: <a href="https://soluciones.refaccionoriginal.com/lar/solicitud/show/'.$request->id_request.'">https://soluciones.refaccionoriginal.com/lar/solicitud/show/'.$request->id_request.'</a>
+                            2) Ingresa a la siguiente liga: <a href="https://soluciones.refaccionoriginal.com/solicitudes-a-ingenieria/solicitud/show/'.$request->id_request.'">https://soluciones.refaccionoriginal.com/solicitudes-a-ingenieria/solicitud/show/'.$request->id_request.'</a>
                         </p>
                         <p style="color: #393939; font-size: 14px;">
                             Recuerda que el medio oficial de comunicacion es a traves del Centro de Soluciones. 
@@ -383,7 +413,7 @@ class DetalleController extends Controller
                     <p style="color: #393939; font-size: 14px;">
                         Por este medio te informamos que la solicitud a Ingeniería que realizaste ha sido <strong>Rechazada</strong>, para mas información te invitamos a darle seguimiento a la misma en Centro de Soluciones con el No. de Folio: <strong>'.$request->id_request.'</strong>. <br />
                         1) Para revisar los comentarios ingresa primero a Centro de Soluciones e Inicia sesión.
-                        2) Ingresa a la siguiente liga: <a href="https://soluciones.refaccionoriginal.com/lar/solicitud/show/'.$request->id_request.'">https://soluciones.refaccionoriginal.com/lar/solicitud/show/'.$request->id_request.'</a>
+                        2) Ingresa a la siguiente liga: <a href="https://soluciones.refaccionoriginal.com/solicitudes-a-ingenieria/solicitud/show/'.$request->id_request.'">https://soluciones.refaccionoriginal.com/solicitudes-a-ingenieria/solicitud/show/'.$request->id_request.'</a>
                     </p>
                     <p style="color: #393939; font-size: 14px;">
                         Recuerda que el medio oficial de comunicacion es a traves del Centro de Soluciones. 
@@ -423,32 +453,46 @@ class DetalleController extends Controller
         $filterThree = "";
         $filterFour = "";
         $filterFive = "";
+        $filterDispatch = "";
 
-        if($request->region != '')
+        if($request->dispatch != '')
         {
-            $filterOne = 'usuarios.id_region = '.$request->region;
+            $filterDispatch = "solicitud_ingenieria.dispatch = '".$request->dispatch."'";      
+            $filter = $filterDispatch." AND ";
         }
-        if($request->information != '' )
+        else
         {
-            $filterTwo = 'solicitud_ingenieria.informacion = '.$request->information;
-        }
-        if($request->line != '' )
-        {
-            $filterThree = 'solicitud_ingenieria.linea_producto = '.$request->line;
-        }
-        if($request->user != '' )
-        {
-            $filterFour = 'detalle_solicitud.usuario = "'.$request->user.'"';
-        }
-        if(Session::get('depto') == 'TALLER')
-        {
-            $filterFive = 'AND (detalle_solicitud.usuario = "'.session('username').'")';
-        }
+            if($request->region != '')
+            {
+                $prefix_contry = DB::table('wpx_menu_contry')
+                        ->select('wpx_menu_contry.short_name')
+                        ->where('id', $request->region)
+                        ->get();
 
-        $filter =   (empty($filterOne) ? $filterOne : $filterOne." AND ").
-                    (empty($filterTwo) ? $filterTwo : $filterTwo." AND ").
-                    (empty($filterThree) ? $filterThree : $filterThree." AND ").
-                    (empty($filterFour) ? $filterFour : $filterFour." AND "); 
+                $filterOne = 'solicitud_ingenieria.dispatch like "%'.$prefix_contry[0]->short_name.'%"';
+            }
+            if($request->information != '' )
+            {
+                $filterTwo = 'solicitud_ingenieria.informacion = '.$request->information;
+            }
+            if($request->line != '' )
+            {
+                $filterThree = 'solicitud_ingenieria.linea_producto = '.$request->line;
+            }
+            if($request->user != '' )
+            {
+                $filterFour = 'detalle_solicitud.usuario = "'.$request->user.'"';
+            }
+            if(Session::get('depto') == 'TALLER')
+            {
+                $filterFive = 'AND (detalle_solicitud.usuario = "'.session('username').'")';
+            }
+            
+            $filter =   (empty($filterOne) ? $filterOne : $filterOne." AND ").
+                        (empty($filterTwo) ? $filterTwo : $filterTwo." AND ").
+                        (empty($filterThree) ? $filterThree : $filterThree." AND ").
+                        (empty($filterFour) ? $filterFour : $filterFour." AND ");
+        }
     
         if(!empty($filter))
         {
@@ -456,7 +500,7 @@ class DetalleController extends Controller
         }
         else
         {
-            $filterFive = 'detalle_solicitud.usuario = "'.session('username').'"';
+            $filterFive = '';
         }
 
 
@@ -530,13 +574,14 @@ class DetalleController extends Controller
         $html .= '   </tr>';
         }
         $html .= '</tbody>';
+        
         return response()->json(['ok' => true,'html' => $html, 'detalle' => $details]);
     }
 
     // Send mail.
     public function send_mail_php($to, $subject, $e_message, $title)
     {
-        $base_url = "https://soluciones.refaccionoriginal.com/lar/";
+        $base_url = "https://soluciones.refaccionoriginal.com/solicitudes-a-ingenieria/";
         if(!isset($to))
         {
             $to = 'noe_delgado_munoz_proceti@whirlpool.com';
@@ -551,18 +596,59 @@ class DetalleController extends Controller
         
         $body_message = $e_message;
         
+        $email_template = "<!DOCTYPE html>
+                            <html>
+                            <head>
+                                <meta charset='utf-8' />
+                                <meta name='viewport' content='width=device-width' />
+                                <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+                                
+                                <title>".$title."</title>
+                                <style>
+                                    body {
+                                        font-family: Arial !important;
+                                    }
+                                </style>
+                            </head>
+                            <body style='margin: 0; min-width: 100% !important; padding: 0;'>
+                                <table width='100%' border='0' cellpadding='0' cellspacing='0' style='font-family: Arial; font-size: 14px; font-weight: normal;'>
+                                    <tr>
+                                        <td>
+                                            <table align='center' cellpadding='0' cellspacing='0' border='0' style='background: #FFFFFF; border: 1px solid #F1F1F1; color: #393939; font-family: Arial; font-size: 12px; margin: auto; max-width: 600px; padding: 15px; width: 100%;'>
+                                                <tr>
+                                                    <td style='text-align: left; background: #FFFFFF; padding-top: 30px;'>
+                                                        <h1 style='color: #393939; margin-bottom: 0; margin-top: 0; padding-bottom: 25px; text-align: center;'>
+                                                            <img src='https://www.google.com/a/whirlpool.com/images/logo.gif?alpha=1&service=google_default' alt='WHIRLPOOL' style='display: inline-block; width: 220px; '/>
+                                                        </h1>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div style='color: #393939; font-family: Tahoma; font-size: 12px; padding: 10px 15px; text-align: left;'>
+                                                            ".$body_message."
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='text-align: center;'>
+                                                        <p style='color: #393939; font-family: Tahoma; font-size: 10px; padding: 10px 15px; text-align: center;'>
+                                                            <strong style='color: #393939;'>
+                                                                &copy; 
+                                                                <a href='{base_url}' target='_blank' style='color: #393939;'>
+                                                                    Whirlpool.com
+                                                                </a>
+                                                            </strong>
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </body>
+                            </html>";
 
-        $email_template = file_get_contents("D:/inetpub/wwwroot/soluciones/wpx_includes/mailing/email_template.html");
-        $body_message = str_replace(array("{base_url}",
-                          "{body_message}",
-                          "{title}"
-                          ),
-                        array($base_url,
-                          $body_message,
-                          $title
-                          ),
-                        $email_template
-                        );
+        $body_message = $email_template;
 
         $send_email = mail(filter_var($to, FILTER_SANITIZE_EMAIL), $subject, $body_message, $header);
     }

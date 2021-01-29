@@ -49,7 +49,7 @@
 						<td>{{ $data->vendor }}</td>
 						<td>{{ $data->taller }}</td>
 						<td>{{ $data->nombre }}</td>
-						<td>{{ date('d-m-Y',strtotime($data->fecharecepcion)) }}</td>
+						<td>{{ $data->fecharecepcion }}</td>
 						<td>{{ $data->numfact }}</td>
 						<td>{{ $data->referencia }}</td>
 						<td>{{ $data->importe }}</td>

@@ -19,8 +19,8 @@ use Artisan;
 use App\Exports\SimpleExport;
 use App\Utils\MyUtils;
 
-error_reporting(E_ALL);
 date_default_timezone_set("America/Mexico_City");
+ini_set('MAX_EXECUTION_TIME', '-1');
 
 class PagoTalleresController extends Controller
 {
@@ -96,29 +96,6 @@ class PagoTalleresController extends Controller
         }
 
         return view("pages.pago-talleres.recepcion-facturas-detail-ref", ['data' => $data]);
-
-       /* $name = 'Facturas recibidas';
-        $extension = '.xlsx';
-
-        $fileName = MyUtils::getName($name, $extension);
-
-        $head = [
-            'Material',
-            'Sustituto',
-            'Relacion'
-        ];
-
-        $sustitutos = Sustituto::all()->take(10);
-
-        $data = $this->getDataSustitutos($sustitutos);
-        return Excel::download(new SimpleExport($head, $data), $fileName); */
-
-        /*$response['message'] = $message;
-        $response['valid'] = $valid;
-        $response['target'] = $target;
-        $response['redirect'] = $redirect;
-
-        echo(json_encode($response));*/
     }
 
     public function recepcion_facturas_taller()
@@ -253,7 +230,7 @@ class PagoTalleresController extends Controller
     public function uploads_claims(Request $request)
     {
         $user       = Session::get('username');
-        $dir        = "D:inetpub\\wwwroot\\Soluciones3\\storage\\app\\pago-a-talleres\\pago-a-talleres\\";
+        $dir        = "D:inetpub\\wwwroot\\Soluciones3_0\\storage\\app\\pago-a-talleres\\claims\\";
 
         $date   = date("Y-m-d--His");
         $file   = $request->file('file');
@@ -270,22 +247,22 @@ class PagoTalleresController extends Controller
             $valid = false;
             $redirect = url("pago-a-talleres/reporte-ts-crm/cargas/");
         }
-
+        
         if($valid)
         {
             $handle = fopen($dir.$date."\\".$final_file, "r+");
             $start = 0;
+            PagoTalleresModel::create_table_if_not_exist();
 
             while (($data = fgetcsv($handle)) !== FALSE)
             {
                 if($start > 0)
                 {
                     // most be insert
-                    PagoTalleresModel::create_table_if_not_exist();
                     PagoTalleresModel::insert_load_claims($data, date("Y-m-d"));
                 }
 
-                $start++;
+              	$start++;
             };
         }
 
@@ -296,7 +273,7 @@ class PagoTalleresController extends Controller
     public function uploads_prorrateo(Request $request)
     {
         $user       = Session::get('username');
-        $dir        = "D:inetpub\\wwwroot\\Soluciones3\\storage\\app\\pago-a-talleres\\pago-a-talleres\\";
+        $dir        = "D:inetpub\\wwwroot\\Soluciones3_0\\storage\\app\\pago-a-talleres\\claims\\";
 
         $date   = date("Y-m-d--His");
         $file   = $request->file('file');
@@ -329,21 +306,7 @@ class PagoTalleresController extends Controller
 
                 $start++;
             };
-
-            $handle_x = fopen($dir.$date."\\".$final_file, "r+");
-            $start_x = 0;
-            while (($data_x = fgetcsv($handle_x)) !== FALSE)
-            {
-                if($start_x > 0)
-                {
-                    // most be insert
-                    PagoTalleresModel::insert_load_total_approved_parts($data_x, date("Y-m-d"));
-                }
-
-                $start_x++;
-            };
         }
-
 
         return redirect($redirect);
     }
@@ -351,7 +314,7 @@ class PagoTalleresController extends Controller
     public function uploads_pago_a_talleres(Request $request)
     {
         $user       = Session::get('username');
-        $dir        = "D:inetpub\\wwwroot\\Soluciones3\\storage\\app\\pago-a-talleres\\pago-a-talleres\\";
+        $dir        = "D:inetpub\\wwwroot\\Soluciones3_0\\storage\\app\\pago-a-talleres\\pago-a-talleres\\";
 
         $date   = date("Y-m-d--His");
         $file   = $request->file('file');
@@ -405,9 +368,20 @@ class PagoTalleresController extends Controller
         return trim(strip_tags($string));
     }
 
-    public function download_file($date)
+    public function download_file_reporte_ts(Request $request)
     {
-    	return Storage::download('/pago-a-talleres/'.$date);
+        return Storage::download('pago-a-talleres/'.$request->file_name);
+    }
+
+    public function download_file(Request $request)
+    {
+    	return Storage::download('public/pago-a-talleres/facturas/'.$request->taller."/".$request->referencia."/".$request->archivo, 
+									strtoupper($request->extension).'_'.$request->taller.'_'.$request->referencia.'.'.$request->extension);
+    }
+
+    public function show_calendar_file(Request $request)
+    {
+        return Storage::download('public/pago-a-talleres/calendar/calendar.jpg', 'calendar.jpg');
     }
 
     public function recepcion_facturas_process_admin(Request $request)
@@ -442,9 +416,9 @@ class PagoTalleresController extends Controller
         if (!empty($ipt_file_xml) && !empty($ipt_file_pdf))
         {
             $final_file_xml = Str::uuid().'.' . $ipt_file_xml->getClientOriginalExtension();
-            $ipt_file_xml->storeAS('pago-a-talleres/facturas/' . $request->ipt_taller . '/' . $request->ipt_referencia . '/' , $final_file_xml);
+            $ipt_file_xml->storeAS('public/pago-a-talleres/facturas/' . $request->ipt_taller . '/' . $request->ipt_referencia . '/' , $final_file_xml);
             $final_file_pdf = Str::uuid().'.' . $ipt_file_pdf->getClientOriginalExtension();
-            $ipt_file_pdf->storeAS('pago-a-talleres/facturas/' . $request->ipt_taller . '/' . $request->ipt_referencia . '/' , $final_file_pdf);
+            $ipt_file_pdf->storeAS('public/pago-a-talleres/facturas/' . $request->ipt_taller . '/' . $request->ipt_referencia . '/' , $final_file_pdf);
         }
         else
         {
@@ -509,5 +483,28 @@ class PagoTalleresController extends Controller
         $response['redirect'] = $redirect;
 
         echo(json_encode($response));
+    }
+
+    public function download_excel(Request $request)
+    {
+        $data_facts_pendientes_claims   = array();
+        $data_facts_pendientes          = PagoTalleresModel::get_data_facts_pendientes($request->taller);
+        $data_facts_pendientes_claims   = PagoTalleresModel::get_data_facts_pendientes_claims($data_facts_pendientes);
+
+        $name = 'Detalle Claims';
+        $extension = '.xlsx';
+
+        $fileName = MyUtils::getName($name, $extension);
+
+        $head = [
+            'Dispatch',
+            'Claim',
+            'Referencia',
+            'Fecha',
+            'Cantidad'
+        ];
+
+        $data = $data_facts_pendientes_claims;
+        return Excel::download(new SimpleExport($head, $data), $fileName); 
     }
 }

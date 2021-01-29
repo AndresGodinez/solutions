@@ -59,8 +59,19 @@ $bootbox = true;
 							</a>
 						</td>
 						<td>{{ $data->importe }}</td>
-						<td>{{ $data->pdf }}</td>
-						<td>{{ $data->xml }}</td>
+						<td>
+							@if(!empty($data->pdf))
+							<a href="{{url('pago-a-talleres/show-file/'.$data->taller.'/'.$data->referencia.'/'.$data->pdf.'/pdf')}}">
+								Descargar Pdf
+							</a>
+							@endif
+						</td>
+						<td>
+							@if(!empty($data->xml))
+							<a href="{{url('pago-a-talleres/show-file/'.$data->taller.'/'.$data->referencia.'/'.$data->xml.'/xml')}}">
+								Descargar Xml
+							</a>
+							@endif
 						<td>
 							<form action="{{ url('pago-a-talleres/recepcion-fact/process/aut/') }}" method="POST" class="generic_form">
 								{{ csrf_field() }}

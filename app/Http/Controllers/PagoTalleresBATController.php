@@ -10,6 +10,113 @@ Class PagoTalleresBATController
         $this->env = parse_ini_file(dirname(__FILE__)."\..\..\..\.env");
     }
 
+    public function update_prorrateo()
+    {
+        $this->PDO = $this->conn_pdo();
+
+        try
+        {
+            $query_txt = "SELECT SUM(costo_prorrateo) AS costo_prorrateo, claim FROM claims_aprobados_prorrateo GROUP BY claim";
+            $QUERY_SLCT = $this->PDO->prepare($query_txt);
+            $QUERY_SLCT->execute();
+
+            if($QUERY_SLCT->rowCount() > 0)
+            {
+                $result_prrt = $QUERY_SLCT->fetchAll(PDO::FETCH_ASSOC);
+                $result_prrt[0]['valid'] = true;
+            }
+            else
+            {
+                $result_prrt[0]['valid'] = false;
+            }
+        }
+        catch(PDOException $e)
+        {
+            exit("Error upt prrt");
+        }
+
+        if($result_prrt[0]['valid'])
+        {
+            $day = date("d");
+            $year = date("Y");
+            $month = date("m");
+
+            switch ($month)
+            {
+                case '01':
+                    $month = 1;
+                    break;
+
+                case '02':
+                    $month = 2;
+                    break;
+
+                case '03':
+                    $month = 3;
+                    break;
+
+                case '04':
+                    $month = 4;
+                    break;
+
+                case '05':
+                    $month = 5;
+                    break;
+
+                case '06':
+                    $month = 6;
+                    break;
+
+                case '07':
+                    $month = 7;
+                    break;
+
+                case '08':
+                    $month = 8;
+                    break;
+
+                case '09':
+                    $month = 9;
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+
+            if($day == '01')
+            {
+                if($month == '01')
+                {
+                    $year = $year - 1;
+                    $month = '12';
+                }
+                else
+                {
+                    $month = $month - 1;
+                }
+            }
+
+            $table = $year."_".$month."_claims_aprobados";
+            $table_2 = 'claims_aprobados';
+
+            foreach ($result_prrt as $result_prrt)
+            {
+                $query = "UPDATE ".$table." SET total_approved_parts = :total_approved_parts WHERE claim = :claim";
+                $update = $this->PDO->prepare($query);
+                $update->bindParam(':total_approved_parts', $result_prrt['costo_prorrateo']);
+                $update->bindParam(':claim', $result_prrt['claim']);
+                $update->execute(); 
+
+                $query_two = "UPDATE ".$table_2." SET total_approved_parts = :total_approved_parts WHERE claim = :claim";
+                $update_two = $this->PDO->prepare($query_two);
+                $update_two->bindParam(':total_approved_parts', $result_prrt['costo_prorrateo']);
+                $update_two->bindParam(':claim', $result_prrt['claim']);
+                $update_two->execute(); 
+            }
+        }
+    }
+
 	public function generate_report()
 	{
 		$day = date("d");
@@ -139,11 +246,93 @@ Class PagoTalleresBATController
                 	$this->set_log("bat_process", date("Y-m-d H:i:s"), 'Reporte-ts-'.$year."-".$month, $table, $QUERY_SLCT->rowCount(), $month);
                 }
             }
-
         }
         catch(PDOException $e)
         {
-            exit(); // exit("SLCT Claims ".$e->getMessage());
+            exit("Err rpt");
+        }
+
+        if($month == 1)
+        {
+            $month = 12;
+            $year = $year - 1;
+        }
+        else
+        {
+            $month = $month - 1;
+        }
+
+        $table = $year."_".$month."_claims_aprobados";
+        $this->PDO = $this->conn_pdo();
+
+        try
+        {
+           $query_txt = "
+                    SELECT distinct (".$table.".claim),
+                    UPPER(DATE_FORMAT(".$table.".claim_app_date,'%M')) AS MES,
+                    DATE_FORMAT(".$table.".claim_app_date,'%c') AS MESNUM,
+                    ".$table.".clasificacion,
+                    ".$table.".dispatch,
+                    ".$table.".total_approved_parts,
+                    ".$table.".total_approved_claim_amount,
+                    ".$table.".reference,
+                    ".$table.".taller,
+                    talleres.nombre,
+                    talleres.ciudad,
+                    talleres.subzona,
+                    talleres.estado,
+                    talleres.estado,
+                    ".$table.".service_req_date,
+                    ".$table.".serv_complete_date,
+                    ".$table.".service_code,
+                    ".$table.".modelo,
+                    ".$table.".serie,
+                    ".$table.".marca,
+                   IF(".$table.".repeat_repair='SI','W',
+                        IF(".$table.".extra_status='706','CNX',
+                            IF(".$table.".extra_status='704','CNX',
+                                IF(".$table.".extra_status='703','CNX',
+                                    IF(".$table.".clasificacion='CONEXION','X',
+                                        IF(".$table.".clasificacion='ENTREGA POLIZA' OR ".$table.".clasificacion='EXTENDED WARRANTIES','P',
+                                            IF(".$table.".clasificacion='NEG RENTABLE','C','G')
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )   AS IDWARRTYPE,
+                    IF(".$table.".extra_status='702','Y','N') AS UTB,
+                    IF(".$table.".clasificacion='ATT A DISTRIBUIDOR','Y','N') AS DISTRIBUIDOR,
+                    IF(".$table.".extra_status='714','Y','N') AS PEX,
+                    ".$table.".fecha_compra,
+                    ".$table.".muebleria,
+                    ".$table.".repeat_repair,
+                    IF(pex_acp.cc ='', talleres.cc, if(pex_acp.cc is null,talleres.cc,pex_acp.cc )) as cc,
+                    IF(talleres.tipo LIKE 'MODU%','INTERNO','EXTERNO') AS tipo,
+                    ".$table.".tipo_servicio as tipo_servicio
+                    FROM
+                    ".$table."
+                    LEFT JOIN talleres ON ".$table.".taller = talleres.taller
+                    LEFT JOIN zonas ON talleres.zona = zonas.id
+                    LEFT JOIN pex_acp ON ".$table.".dispatch = pex_acp.dispatch
+                    GROUP BY claim";
+
+            $QUERY_SLCT = $this->PDO->prepare($query_txt);
+            $QUERY_SLCT->execute();
+
+            if($QUERY_SLCT->rowCount() > 0)
+            {
+                $result = $QUERY_SLCT->fetchAll(PDO::FETCH_ASSOC);
+
+                if($this->create_file($result, 'Reporte-ts-'.$year."-".$month))
+                {
+                    $this->set_log("bat_process", date("Y-m-d H:i:s"), 'Reporte-ts-'.$year."-".$month, $table, $QUERY_SLCT->rowCount(), $month);
+                }
+            }
+        }
+        catch(PDOException $e)
+        {
+            exit("Err rpt 2");
         }
 	}
 
@@ -215,7 +404,7 @@ Class PagoTalleresBATController
             }
             catch(PDOException $e)
             {
-                exit(); // exit("SLCT plantas_inf ".$e->getMessage());
+                exit("Error to gf");
             }
 
 
@@ -226,7 +415,7 @@ Class PagoTalleresBATController
             $this->clean_string($result['dispatch']).",".
             $this->clean_string($result['total_approved_parts']).",".
             $this->clean_string($result['total_approved_claim_amount']).",".
-            $this->clean_string($result['reference']).",".
+            $this->clean_string("'".$result['reference']).",".
             $this->clean_string($result['taller']).",".
             $this->clean_string($result['nombre']).",".
             $this->clean_string($result['ciudad']).",".
@@ -370,7 +559,7 @@ Class PagoTalleresBATController
         }
         catch(PDOException $e)
         {
-            report($e);
+            exit("Err inrt inf");
         }
     }
 
@@ -381,5 +570,6 @@ Class PagoTalleresBATController
 }
 
 $PagoTalleresBATController = new PagoTalleresBATController;
+$PagoTalleresBATController->update_prorrateo();
 $PagoTalleresBATController->generate_report();
 ?>

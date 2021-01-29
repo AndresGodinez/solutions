@@ -33,7 +33,8 @@ class Solicitud extends ModelBase
         ->leftJoin('sol_ing_csat', 'solicitud_ingenieria.id_sol', '=', 'sol_ing_csat.id_sol')
         ->leftJoin('sol_ing_sub_tipo', 'solicitud_ingenieria.id_sub_tipo', '=', 'sol_ing_sub_tipo.id')
         ->leftJoin('wpx_sol_ing_exep_disp', 'solicitud_ingenieria.dispatch', '=', 'wpx_sol_ing_exep_disp.dispatch') // Agrego para los dispatch de programa embajador.
-        ->leftJoin('wpx_menu_region', 'wpx_menu_region.id', '=', 'usuarios.id_region')
+        // ND ->leftJoin('wpx_menu_region', 'wpx_menu_region.id', '=', 'usuarios.id_region')
+        ->leftJoin('wpx_menu_contry', 'wpx_menu_contry.id', '=', 'usuarios.id_contry')
         ->where('detalle_solicitud.fecha_envio', '>=', $date_start)
         ->where('detalle_solicitud.fecha_envio', '<=', $date_end)
         ->orderBy("detalle_solicitud.fecha_envio","ASC")
@@ -57,7 +58,8 @@ class Solicitud extends ModelBase
         'detalle_solicitud.usuario',
         'usuarios.nombre',
         'usuarios.mail',
-        'usuarios.id_region',
+        // ND 'usuarios.id_region',
+        'usuarios.id_contry',
         'solicitud_ingenieria.comentario',
         'revision_ingenieria.comentarios',
         'detalle_solicitud.fecha_cerrada',
@@ -73,7 +75,8 @@ class Solicitud extends ModelBase
         'sol_ing_csat.tall_q2',
         'sol_ing_csat.tall_usr_agnt',
         \DB::raw("IF(wpx_sol_ing_exep_disp.dispatch is not null, 1,0) as embajador"),
-        'wpx_menu_region.name as regionName');
+        // ND 'wpx_menu_region.name as regionName');
+        'wpx_menu_contry.name as contryName');
 
     }
 

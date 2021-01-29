@@ -3,16 +3,16 @@
 @section("content")
 <div class="text-center">
 	<div class="card-body">
-		<h4 class="card-title">{{ config('pages.modofalla.view.index.title') }}</h4>
+		<h4 class="card-title">{{ config('Pages.modofalla.view.index.title') }}</h4>
 		<br>
 		<form class="justify-content-center" id="form-dispatch" enctype="multipart/form-data" method="post" action="{{ url('solicitudes-a-ingenieria/modo-falla/create') }}" onsubmit="event.preventDefault(); questions();">
 			@csrf
 			<div class="row d-flex justify-content-center">
 				<div class="col-md-4">
 					<div class="form-group">
-						<label for="fails">{{ config('pages.modofalla.view.index.form.fail') }}</label>
+						<label for="fails">{{ config('Pages.modofalla.view.index.form.fail') }}</label>
 						<select name="fails" id="fails" class="form-control" required>
-							<option value=""> {{ config('pages.modofalla.view.controls.empty_select') }} </option>
+							<option value=""> {{ config('Pages.modofalla.view.controls.empty_select') }} </option>
 							@foreach ($mode_fail as $fails)
 								<option value="{{ $fails->id_modofalla }}">{{ $fails->modo_falla }}</option>
 							@endforeach
@@ -21,9 +21,9 @@
 				</div>
 				<div class="col-md-4">
 					<div class="form-group">
-						<label for="line">{{ config('pages.modofalla.view.index.form.line') }}</label>
+						<label for="line">{{ config('Pages.modofalla.view.index.form.line') }}</label>
 						<select name="line" id="line" class="form-control" required>
-							<option value=""> {{ config('pages.modofalla.view.controls.empty_select') }} </option>
+							<option value=""> {{ config('Pages.modofalla.view.controls.empty_select') }} </option>
 							@foreach ($line as $line)
 								<option value="{{ $line->id }}">{{ $line->linea }}</option>
 							@endforeach
@@ -32,9 +32,9 @@
 				</div>
 				<div class="col-md-4">
 					<div class="form-group">
-						<label for="information">{{ config('pages.modofalla.view.index.form.type') }}</label>
+						<label for="information">{{ config('Pages.modofalla.view.index.form.type') }}</label>
 						<select name="information" id="information" class="form-control" required>
-							<option value=""> {{ config('pages.modofalla.view.controls.empty_select') }} </option>
+							<option value=""> {{ config('Pages.modofalla.view.controls.empty_select') }} </option>
 							@foreach ($information as $information)
 								<option value="{{ $information->id }}">{{ $information->informacion }}</option>
 							@endforeach
@@ -44,12 +44,12 @@
 			</div>
 			<div class=" justify-content-center">
 				<div class="form-group">
-					<button type="submit">{{ config('pages.modofalla.view.index.form.button') }}</button>
+					<button type="submit">{{ config('Pages.modofalla.view.index.form.button') }}</button>
 				</div>
 			</div>
 		</form>
 		<hr>
-		<h4 class="card-title">{{ config('pages.modofalla.view.index.subtitle') }}</h4>
+		<h4 class="card-title">{{ config('Pages.modofalla.view.index.subtitle') }}</h4>
 		<br>
 			<div id="questions"></div>
 		<hr>
@@ -63,27 +63,27 @@
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-		<h4 class="modal-title">{{ config('pages.modofalla.view.index.popup.title_edit') }}</h4>
+		<h4 class="modal-title">{{ config('Pages.modofalla.view.index.popup.title_edit') }}</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
 			<form id="question_edit" method="post" enctype="multipart/form-data" >
 				<input id="id_question" name="id_question" type="hidden">
 				<div class="form-group">
-					<label for="question">{{ config('pages.modofalla.view.index.popup.label_question') }}</label>
+					<label for="question">{{ config('Pages.modofalla.view.index.popup.label_question') }}</label>
 					<input type="text" name="question" id="question" class="form-control">
 				</div>
 				<div class="form-group">
-					<label for="tooltip">{{ config('pages.modofalla.view.index.popup.label_comment') }}</label>
+					<label for="tooltip">{{ config('Pages.modofalla.view.index.popup.label_comment') }}</label>
 					<input type="text" name="tooltip" id="tooltip" class="form-control">
 				</div>
                 <div class="form-group">
-                <label for="questionType">{{ config('pages.modofalla.view.index.popup.label_tipo') }}</label>
+                <label for="questionType">{{ config('Pages.modofalla.view.index.popup.label_tipo') }}</label>
                 {{Form::select('questionType',$questionType,null,array('id' => 'questionType','required' => 'required','class' => 'form-control') )}}
                  </div>
 				<div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ config('pages.modofalla.view.index.popup.cancel') }}</button>
-					<button type="submit" class="btn btn-success" id="save">{{ config('pages.modofalla.view.index.popup.button') }}</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ config('Pages.modofalla.view.index.popup.cancel') }}</button>
+					<button type="submit" class="btn btn-success" id="save">{{ config('Pages.modofalla.view.index.popup.button') }}</button>
 				</div>
 			</form>
         </div>
@@ -116,7 +116,7 @@
 				}
 				else
 				{
-					showNotification('Error','{{ config('pages.modofalla.view.scripts.succcess.without_data') }}', 'warning');
+					showNotification('Error','{{ config('Pages.modofalla.view.scripts.succcess.without_data') }}', 'warning');
 				}
 			},
 			error: function(jq,status,message)
