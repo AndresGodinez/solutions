@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+<?php 
+$sol_ing = true;
+?>
 <div class="container">
 	<div class="row">
 		<div class="col-sm-12">
@@ -128,9 +131,13 @@
 					<td>{{$detail->descripcion_problema}}</td>
 					<td>
                     @if(substr($detail->ruta,0,10) != 'documentos')
-                        <a href="{{url('solicitudes-a-ingenieria/solicitud/descargar').'/'.$detail->id_sol}}" target="_blank"> Documentos</a>
+                        <a href="{{url('solicitudes-a-ingenieria/solicitud/descargar').'/'.$detail->id_sol}}" target="_blank">
+                        	<img src="{{url('solicitudes-a-ingenieria/solicitud/descargar').'/'.$detail->id_sol}}" alt="Sin archivos adjuntos" style="width: 450px;" />
+                        </a>
                     @else
-                        <a href="{{config('Pages.globals.url').'solicitudes_ingenieria/'.$detail->ruta}}" target="_blank"> {{$detail->ruta}}</a>
+                        <a href="{{config('Pages.globals.url').'solicitudes_ingenieria/'.$detail->ruta}}" target="_blank">
+                        	<img src="{{config('Pages.globals.url').'solicitudes_ingenieria/'.$detail->ruta}}" alt="Sin archivos adjuntos" style="width: 450px;" />
+                        </a>
                     @endif
 
                     </td>
@@ -315,7 +322,7 @@
 						<button type="button" class="btn btn-danger" id="rechazar">Rechazar</button>
 					</div>
 					<div class="col-lg-2 col-md-4 float-right">
-						<a href="{{ url('solicitudes-a-ingenieria/detalle') }}" class="btn btn-primary from_send"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Regresar</a>
+						<a href="{{ url('solicitudes-a-ingenieria/detalle/abiertas-en-revision') }}" class="btn btn-primary from_send"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Regresar</a>
 					</div>
 				</div>
 			</div>

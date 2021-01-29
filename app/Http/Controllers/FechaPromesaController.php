@@ -27,6 +27,10 @@ use function set_time_limit;
 use function substr;
 use function view;
 
+
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+
 class FechaPromesaController extends Controller
 {
     public function search()
@@ -220,16 +224,23 @@ class FechaPromesaController extends Controller
     {
         $file = $request->file('promesa_tracker_file');
 
-        $nameFile = MyUtils::saveAndReturnCompleteNameFile($file);
+        //$nameFile = MyUtils::saveAndReturnCompleteNameFile($file);
 
-//        TODO REMOVE COMMENT
-//        DB::connection('logistica')->table('fpromesa_tracker')->truncate();
+        $saved_file = 'tracker.'. $file->getClientOriginalExtension();
+        $file->storeAS('public\\fechas-promesa\\', $saved_file);
+        $load_file = storage_path('app\\public\\fechas-promesa\\'.$saved_file);
+        $load_file = str_replace("\\", "/", $load_file);
+
+        //        TODO REMOVE COMMENT
+        //        DB::connection('logistica')->table('fpromesa_tracker')->truncate();
 
         $table = "fpromesa_tracker";
 
         $connection = 'logistica';
 
-        $query = "LOAD DATA LOCAL INFILE '".$nameFile."'
+        DB::connection($connection)->table($table)->truncate();
+
+        $query = "LOAD DATA LOCAL INFILE '".$load_file."'
 						    INTO TABLE ".$table."
 						    FIELDS TERMINATED BY ','
 						    LINES TERMINATED BY '\r\n'
@@ -251,16 +262,21 @@ class FechaPromesaController extends Controller
     {
         $file = $request->file('lead_time');
 
-        $nameFile = MyUtils::saveAndReturnCompleteNameFile($file);
+        //$nameFile = MyUtils::saveAndReturnCompleteNameFile($file);
 
-//        TODO REMOVE COMMENT
-//        DB::connection('logistica')->table('fpromesa_tracker')->truncate();
+        $saved_file = 'lt.'. $file->getClientOriginalExtension();
+        $file->storeAS('public\\fechas-promesa\\', $saved_file);
+        $load_file = storage_path('app\\public\\fechas-promesa\\'.$saved_file);
+        $load_file = str_replace("\\", "/", $load_file);
+
+        //        TODO REMOVE COMMENT
+        //        DB::connection('logistica')->table('fpromesa_tracker')->truncate();
 
         $table = "fecha_promesa_vendor";
 
         $connection = 'logistica';
 
-        $query = "LOAD DATA LOCAL INFILE '".$nameFile."'
+        $query = "LOAD DATA LOCAL INFILE '".$load_file."'
 						    INTO TABLE ".$table."
 						    FIELDS TERMINATED BY ','
 						    LINES TERMINATED BY '\r\n'
@@ -280,19 +296,26 @@ class FechaPromesaController extends Controller
 
     public function uploadBackorder(UploadBackorderRequest $request)
     {
+        //$file = $request->file('backorder_file');
+
+        //$nameFile = MyUtils::saveAndReturnCompleteNameFile($file);
+
+
         $file = $request->file('backorder_file');
 
-        $nameFile = MyUtils::saveAndReturnCompleteNameFile($file);
+        $saved_file = 'bo.'. $file->getClientOriginalExtension();
+        $file->storeAS('public\\fechas-promesa\\', $saved_file);
+        $load_file = storage_path('app\\public\\fechas-promesa\\'.$saved_file);
+        $load_file = str_replace("\\", "/", $load_file);
 
         $table = "fprom_bo";
 
         DB::connection('logistica')
             ->table($table)->truncate();
 
-
         $connection = 'logistica';
 
-        $query = "LOAD DATA LOCAL INFILE '".$nameFile."'
+        $query = "LOAD DATA LOCAL INFILE '".$load_file."'
 						    INTO TABLE ".$table."
 						    FIELDS TERMINATED BY ','
 						    LINES TERMINATED BY '\r\n'
@@ -329,7 +352,7 @@ class FechaPromesaController extends Controller
 
     public function actualizarFechasPromesas()
     {
-        $routeFile = "php D:/inetpub/wwwroot/solucionesGIT/wpx_includes/controllers/backend/fecha_promesa/exec.php";
+        $routeFile = "php D:/inetpub/wwwroot/soluciones/wpx_includes/controllers/backend/fecha_promesa/exec.php";
 
         $this->dispatch(
             new ExecuteFileJob($routeFile)
@@ -341,4 +364,165 @@ class FechaPromesaController extends Controller
         return Redirect::back()->with('message', $message);
     }
 
+    public function uploads_view()
+    {
+        return view('FechaPromesa/uploads');
+    }
+
+    public function uploadBackorderMain(UploadBackorderRequest $request)
+    {
+        $file = $request->file('backorder_file');
+
+        $saved_file = 'bomain.'. $file->getClientOriginalExtension();
+        $file->storeAS('public\\fechas-promesa\\', $saved_file);
+        $load_file = storage_path('app\\public\\fechas-promesa\\'.$saved_file);
+        $load_file = str_replace("\\", "/", $load_file);
+
+        $table = "bo";
+
+        DB::connection('logistica')
+            ->table($table)->truncate();
+
+        $connection = 'logistica';
+
+        $query = "LOAD DATA LOCAL INFILE '".$load_file."' 
+                     INTO TABLE ".$table."
+                     FIELDS TERMINATED BY '|' 
+                     IGNORE 2 LINES
+
+                    (@ignora1,
+                    @planta,
+                    @linea,
+                    @material,
+                    @pedido,
+                    @cantidad,
+                    @fecha_pedido,
+                    @dias, 
+                    @fecha_entrega,
+                    @tipo_pedido,
+                    @descripcion,
+                    @vendor,
+                    @planner,
+                    @dchain,
+                    @invrs01,
+                    @invrs02,
+                    @invrs03,
+                    @invrs04,
+                    @invrs05,
+                    @invrs06,
+                    @invrs10,
+                    @inv,
+                    @q1,
+                    @q2,
+                    @q3,
+                    @q4,
+                    @q5,
+                    @q6,
+                    @q10,
+                    @mismo_mat,
+                    @saldo_inv,
+                    @estado,
+                    @pendientes,
+                    @fecha_vencepo,
+                    @nombre_cliente2,
+                    @precio,
+                    @ignora4,
+                    @credito,
+                    @cliente,
+                    @nombre_cliente,
+                    @debe_cliente,
+                    @limite_cred,
+                    @ignora9
+                    )
+
+                    SET
+                    planta=TRIM(@planta),
+                    linea = TRIM(@linea), 
+                    material=TRIM(@material),
+                    pedido=@pedido,
+                    fecha_pedido=STR_TO_DATE(@fecha_pedido, '%m-%d-%y'),
+                    dias=@dias,
+                    fecha_entrega=STR_TO_DATE(@fecha_entrega, '%m-%d-%y'),
+                    cantidad=@cantidad,
+                    precio=@precio,
+                    tipo_pedido=TRIM(@tipo_pedido),
+                    descripcion=UPPER(TRIM(@descripcion)),
+                    vendor=TRIM(@vendor),
+                    planner=TRIM(@planner),
+                    dchain=TRIM(@dchain),
+                    invrs01=@invrs01,
+                    invrs02=@invrs02,
+                    invrs03=@invrs03,
+                    invrs04=@invrs04,
+                    invrs05=@invrs05,
+                    invrs06=@invrs06,
+                    invrs10=@invrs10,
+                    inv=@inv,
+                    q1=@q1,
+                    q2=@q2,
+                    q3=@q3,
+                    q4=@q4,
+                    q5=@q5,
+                    q6=@q6,
+                    q10=@q10,
+                    mismo_mat=@mismo_mat,
+                    saldo_inv=@saldo_inv,
+                    estado=TRIM(@estado),
+                    pendientes=@pendientes,
+                    fecha_vencepo=STR_TO_DATE(@fecha_vencepo, '%m-%d-%y'),
+                    credito=TRIM(@credito),
+                    cliente=@cliente,
+                    nombre_cliente=TRIM(@nombre_cliente),
+                    nombre_cliente2=TRIM(@nombre_cliente2),
+                    debe_cliente=@debe_cliente, 
+                    limite_cred=@limite_cred";
+
+        $this->dispatch(
+            new ExecuteByConnection($query, $connection)
+        );
+
+        return Redirect::route('fechas-promesa.search')->with('message', 'El archivo está siendo procesado');
+
+    }
+
+    public function uploadDchain(Request $request)
+    {
+        $file = $request->file('backorder_file');
+
+        $saved_file = 'dchain.'. $file->getClientOriginalExtension();
+        $file->storeAS('public\\fechas-promesa\\', $saved_file);
+        $load_file = storage_path('app\\public\\fechas-promesa\\'.$saved_file);
+        $load_file = str_replace("\\", "/", $load_file);
+
+        $table = "materiales_dchain";
+
+        DB::connection('logistica')
+            ->table($table)->truncate();
+
+
+        $connection = 'logistica';
+
+        $query = "LOAD DATA LOCAL INFILE '".$load_file."' 
+                    INTO TABLE ".$table."
+                    FIELDS TERMINATED BY '|' 
+                    LINES TERMINATED BY '\r\n' 
+                    IGNORE 5 LINES
+
+                    (@ignora1,
+                    @ignora2,
+                    @material,
+                    @dchain
+                    )
+
+                    SET
+                    material=TRIM(@material),
+                    dchain=TRIM(@dchain)";
+
+        $this->dispatch(
+            new ExecuteByConnection($query, $connection)
+        );
+
+        return Redirect::route('fechas-promesa.search')->with('message', 'El archivo está siendo procesado');   
+
+    }
 }

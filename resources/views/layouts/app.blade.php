@@ -29,6 +29,9 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/app-assets/css/core/menu/menu-types/vertical-menu.css">
     <!-- END: Page CSS-->
 
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/assets/css/style.css">
+    <!-- END: Custom CSS-->
 
     <?php
     if(isset($sol_ing) && $sol_ing == true)
@@ -186,7 +189,13 @@
     else
     {
     ?>
-     <!-- END: Footer-->
+        <script src="{{ asset('assets') }}/app-assets/js/scripts/components.js"></script>
+        <script src="{{ asset('assets') }}/app-assets/js/scripts/footer.js"></script>
+    <?php
+    }
+    ?>
+
+    <!-- END: Footer-->
 
 
     <!-- BEGIN: Vendor JS-->
@@ -200,16 +209,13 @@
     <script src="{{ asset('assets') }}/app-assets/js/scripts/configs/vertical-menu-dark.js"></script>
     <script src="{{ asset('assets') }}/app-assets/js/core/app-menu.js"></script>
     <script src="{{ asset('assets') }}/app-assets/js/core/app.js"></script>
-    <script src="{{ asset('assets') }}/app-assets/js/scripts/components.js"></script>
-    <script src="{{ asset('assets') }}/app-assets/js/scripts/footer.js"></script>
+   
+   
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
     <script src="{{ asset('assets') }}/app-assets/js/scripts/navs/navs.js"></script>
     <!-- END: Page JS-->
-    <?php
-    }
-    ?>
 
 </body>
 <!-- END: Body-->

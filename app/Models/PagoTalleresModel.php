@@ -14,8 +14,7 @@ class PagoTalleresModel extends ModelBase
 {
     public static function insert_load_claims($data, $date)
     {
-        $table = date("Y")."_".date("n", strtotime($data[24]))."_claims_aprobados";
-
+        $table = date("Y", strtotime($data[24]))."_".date("n", strtotime($data[24]))."_claims_aprobados";
         // precondiciones 
         $clasificacion = "Sin clasificacion";
         $total_approved_parts = 0;
@@ -85,12 +84,13 @@ class PagoTalleresModel extends ModelBase
             }
         }
 
+        
         $data[1] = utf8_decode($data[1]);
 
         $exist_claim = DB::table($table)
                         ->where($table.'.claim', $data[23])
                         ->get();
-
+        
         if(count($exist_claim) == 0)
         {
             // Insertamos en la tabla ligera
@@ -183,57 +183,37 @@ class PagoTalleresModel extends ModelBase
                         'total_approved_claim_amount' => (empty($data[28]) ? "" : PagoTalleresModel::clean_string(utf8_encode($data[28]))),
                         'date' => $date,
                         'clasificacion' => $clasificacion,
-                        'total_approved_parts' => $total_approved_parts]);     
+                        'total_approved_parts' => $total_approved_parts]);   
         }
     }
 
     public static function insert_load_prorrateo($data, $date)
     {
         $costo_prorrateo = 0;
-        // preguntamos que exista el claim
-        $exist_claim = DB::table('claims_aprobados_prorrateo')
-                        ->where('claims_aprobados_prorrateo.claim', $data[0])
-                        ->get();
 
         // Consultamos el costo del material.
-        $mat_costo = DB::connection('reforig_logistica')
+        $mat_costo = DB::connection('logistica')
                         ->table('materiales_costo')
                         ->where('materiales_costo.material', $data[2])
                         ->get();
 
         if(isset($mat_costo[0]->costo) && ($mat_costo[0]->costo) > 0)
         {
-            $costo_x_pza = $mat_costo[0]->costo;            
+            $costo_prorrateo = $mat_costo[0]->costo * str_replace(" UN", "", $data[4]);            
         }
         else
         {
             $costo_x_pza = 0;
         }
-        
-        if($costo_x_pza > 0)
-        {   
-            $costo_prorrateo = $costo_x_pza * str_replace(" UN", "", $data[4]);
-        }
 
-        if(count($exist_claim) == 0)
-        {
-            DB::table('claims_aprobados_prorrateo')->insert(
-                ['claim' => (empty($data[0]) ? "" : PagoTalleresModel::clean_string(utf8_encode($data[0]))),
-                'np' => (empty($data[2]) ? "" : PagoTalleresModel::clean_string(utf8_encode($data[2]))),
-                'cantidad' => (empty($data[4]) ? "" : PagoTalleresModel::clean_string(utf8_encode(str_replace(" UN", "", $data[4])))),
-                'date' => $date,
-                'costo_prorrateo' => $costo_prorrateo]
-            );
-        }
-        else
-        {
-            DB::table('claims_aprobados_prorrateo')
-                ->where('claims_aprobados_prorrateo.claim', $data[0])
-                ->where('claims_aprobados_prorrateo.np', $data[2])
-                ->update(['cantidad' => (empty($data[4]) ? "" : PagoTalleresModel::clean_string(utf8_encode(str_replace(" UN", "", $data[4])))),
-                        'date' => $date,
-                        'costo_prorrateo' => $costo_prorrateo]);     
-        }
+        DB::table('claims_aprobados_prorrateo')->insert(
+            ['claim' => (empty($data[0]) ? "" : PagoTalleresModel::clean_string(utf8_encode($data[0]))),
+            'np' => (empty($data[2]) ? "" : PagoTalleresModel::clean_string(utf8_encode($data[2]))),
+            'cantidad' => (empty($data[4]) ? "" : PagoTalleresModel::clean_string(utf8_encode(str_replace(" UN", "", $data[4])))),
+            'date' => $date,
+            'costo_prorrateo' => $costo_prorrateo]
+        );
+        
     }
 
     public static function insert_load_pago_a_talleres($data, $date)
@@ -256,37 +236,6 @@ class PagoTalleresModel extends ModelBase
             'status_fact' => $status_fact,
             'factrecibida' => $factrecibida]
         );
-    }
-
-    public static function insert_load_total_approved_parts($data, $date)
-    {
-
-        $year = date("Y");
-        $total_approved_parts = 0;
-
-        $costo_prorrateo = DB::table('claims_aprobados_prorrateo')
-                        ->where('claims_aprobados_prorrateo.claim', $data[0])
-                        ->get();
-        
-        if(count($costo_prorrateo) > 0)
-        {
-            foreach ($costo_prorrateo as $costo_prorrateo) 
-            {
-                $total_approved_parts = $total_approved_parts + $costo_prorrateo->costo_prorrateo;                
-            }
-        }
-
-        for($i = 1; $i <= 12; $i++)
-        {
-            $table = $year.'_'.$i.'_claims_aprobados';
-            
-            if(Schema::hasTable($table)) 
-            {
-                DB::table($table)
-                    ->where($table.'.claim', $data[0])
-                    ->update(['total_approved_parts' => $total_approved_parts]);  
-            } 
-        }
     }
 
     public static function create_table_if_not_exist()
@@ -467,8 +416,11 @@ class PagoTalleresModel extends ModelBase
         $data = DB::table('pagotaller')
                     ->select('pagotaller.*')
                     ->where('taller', $taller)
-                    ->where('status_fact', 'RECIBIDA')
                     ->whereNotNull('factrecibida')
+                    ->where(function($q){
+                        $q->where('status_fact', 'RECIBIDA')
+                            ->orWhere('status_fact', 'RECHAZADO');
+                    })
                     ->orderBy('fecha', 'ASC')
                     ->get();
 
@@ -639,7 +591,7 @@ class PagoTalleresModel extends ModelBase
                         'fecharecepcion' => (empty($fecharecepcion) ? "" : PagoTalleresModel::clean_string(utf8_encode($fecharecepcion))),
                         'numfact' => (empty($request->ipt_no_factura) ? "" : PagoTalleresModel::clean_string(utf8_encode($request->ipt_no_factura))),
                         'electronica' => (empty($electronica) ? "" : PagoTalleresModel::clean_string(utf8_encode($electronica))),
-                        'status_fact' => (empty($request->ipt_no_factura) ? "" : PagoTalleresModel::clean_string(utf8_encode($request->ipt_no_factura))),
+                        'status_fact' => (empty($status_fact) ? "" : PagoTalleresModel::clean_string(utf8_encode($status_fact))),
                         'xml' => $xml,
                         'pdf' => $pdf]);
 
@@ -655,10 +607,10 @@ class PagoTalleresModel extends ModelBase
             $i = 0;
             $data = DB::table('claims_aprobados')
                     ->select('claims_aprobados.dispatch', 
-                                'claims_aprobados.claim_app_date', 
-                                'claims_aprobados.total_approved_claim_amount', 
                                 'claims_aprobados.claim',
-                                'claims_aprobados.reference')
+                                'claims_aprobados.reference',
+                                'claims_aprobados.claim_app_date', 
+                                'claims_aprobados.total_approved_claim_amount')
                     ->where('claims_aprobados.taller', $data_facts_pendientes->taller)
                     ->where('claims_aprobados.reference', $data_facts_pendientes->referencia)
                     ->get();

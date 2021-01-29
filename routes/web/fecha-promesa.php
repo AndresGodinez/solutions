@@ -55,5 +55,9 @@ Route::middleware('auth')->group(function () {
             ->name('download-template-fechas-promesas-backorder')
             ->middleware('permission:carga archivo fechas promesas backorder');
 
+        Route::get('/uploads', 'FechaPromesaController@uploads_view');
+        Route::post('upload-backorder-main', 'FechaPromesaController@uploadBackorderMain');
+        Route::post('upload-dchain', 'FechaPromesaController@uploadDchain');
+
     });
 });

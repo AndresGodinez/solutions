@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+<?php 
+$sol_ing = true;
+?>
 <div class="text-left">
 	<div class="card-body">
 		<h4 class="card-title">Revisión de Solicitud </h4>
@@ -10,7 +13,7 @@
 		<div class="row form-group justify-content-center">
         @if ($depto != 'TALLER')
 			<div class="form-group col-md-4  justify-content-center" style="width: 20rem;">
-				<label for="region">Region:&nbsp;</label>
+				<label for="region">País:&nbsp;</label>
 				<select name="region" id="region" class="form-control" onchange="send()">
 					<option value="">Todas</option>
 					@foreach ($regions as $region)
@@ -47,6 +50,12 @@
 				</select>
 		</div>
 		@endif
+        </div>
+        <div class="row">
+        	<div class="form-group col-md-4  justify-content-center" style="width: 20rem;">
+				<label for="dispatch">Buscar:</label>
+				<input type="text" name="dispatch" id="dispatch" class="form-control" onclick="send()" />
+			</div>
         </div>
 		<div id="body_tbl"class="form-group">
 			<table id="dtBasicExample" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -162,8 +171,9 @@ function send ()
 {
 	var data =
 	{
+		dispatch: $('#dispatch').val(),
 		region:	$("#region").val(),
-		information:	$("#information").val(),
+		information: $("#information").val(),
 		line:	$("#line").val(),
 		user:	$("#user").val(),
 		type_slct: $("#type_slct").val(),
@@ -178,6 +188,7 @@ function send ()
 			if( data.ok != false)
 			{
 				$('#body_tbl' ).html( data.html );
+				showNotification('Realizando busqueda',"Encontrando coincidencias... ", 'ok');
 			}
 			else
 			{

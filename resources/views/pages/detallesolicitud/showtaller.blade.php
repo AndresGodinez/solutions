@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+<?php 
+$sol_ing = true;
+?>
 <div class="text-center">
 	<div class="card-body">
 		
@@ -33,9 +36,13 @@
 					<td>{{$detail->descripcion_problema}}</td>
 					<td>
                     @if(substr($detail->ruta,0,10) != 'documentos')
-                        <a href="{{url('solicitudes-a-ingenieria/solicitud/descargar').'/'.$detail->id_sol}}"> Documentos</a>
+                        <a href="{{url('solicitudes-a-ingenieria/solicitud/descargar').'/'.$detail->id_sol}}" target="_blank">
+                        	<img src="{{url('solicitudes-a-ingenieria/solicitud/descargar').'/'.$detail->id_sol}}" alt="Sin documentos adjuntos" style="width: 450px;" />
+                        </a>
                     @else
-                        <a href="{{config('Pages.globals.url').'/'.$detail->ruta}}"> {{$detail->ruta}}</a>
+                        <a href="{{'solicitudes-a-ingenieria/'.$detail->ruta}}" target="_blank"> 
+                        	<img src="{{'solicitudes-a-ingenieria/'.$detail->ruta}}" alt="Sin documentos adjuntos" style="width: 450px;" />
+                        </a>
                     @endif
                     </td>
 				</tr>
@@ -236,7 +243,7 @@ function send()
 				if( data.ok != false && data.ok != 'error')
 				{
                     showNotification('Success',data.message, 'success');
-                    window.location.href = "{{ url('solicitudes-a-ingenieria/detalle') }}";
+                    window.location.href = "{{ url('solicitudes-a-ingenieria/detalle/abiertas-en-revision') }}";
 				}
 				else
 				{

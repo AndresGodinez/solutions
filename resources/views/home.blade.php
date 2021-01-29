@@ -20,4 +20,13 @@
         </div>
     </div>
 </div>
+@if(Auth::user()->username == 'munoznd' || Auth::user()->username == 'guerrsm' || Auth::user()->username == 'PEREM26' || is_numeric(Auth::user()->username))
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <img src="{{ url('pago-a-talleres/show-calendar/') }}" alt="" />
+        </div>
+    </div>
+</div>
+@endif
 @endsection

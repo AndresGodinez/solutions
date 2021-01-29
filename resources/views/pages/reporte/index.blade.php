@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+<?php 
+$sol_ing = true;
+?>
 <div class="text-center">
 	<div class="card-body">
 		<div class="row d-flex justify-content-center">
@@ -9,7 +12,7 @@
 				<div class="card-body">
 					<h6 class="card-subtitle mb-2 text-muted">Seleccion el rango de fechas y region</h6>
 					<br>
-					<form class="form-inline justify-content-center" id="form-dispatch" enctype="multipart/form-data" method="post" action="" onsubmit="event.preventDefault(); send();">
+					<form class="form-inline justify-content-center" id="form-dispatch" enctype="multipart/form-data" method="post" action="{{ url('solicitudes-a-ingenieria/reporte/generate') }}" onsubmit="send();">
 					@csrf
 						<div class="row">
 							<div class="form-group">
@@ -26,7 +29,7 @@
 							</div>
 							<div class="form-group">
 								<div class="row d-flex justify-content-center" style="width: 20rem;">
-										<label for="region">Region:&nbsp;</label>
+										<label for="region">País:&nbsp;</label>
 										<select name="region" id="region" class="form-control" onchange="send()">
 											<option value="">Todas</option>
 											@foreach ($regions as $region)
@@ -59,39 +62,11 @@ function send ()
 	removeOrAddStyleClass(element='date_end',style='is-invalid', action='remove');
 	if( $("#date_start").val() != '' && $("#date_end").val() != '' )
 	{
-		var data =
-		{
-			date_start:		$("#date_start").val(),
-			date_end:		$("#date_end").val(),
-			region:			$("#region").val(),
-		}
-		$.ajax({
-			//url: "{{ url('reporte/generate') }}",
-			url: "{{ url('reporte/excel') }}",
-			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-			type: 'GET',
-			data: data,
-			success: function( data )
-			{
-				if( data.ok != false)
-				{
-					$('#report' ).html( data.html );
-					var uri = "{{ url('reporte/excel') }}"+"?date_start="+$("#date_start").val()+"&date_end="+$("#date_end").val()+"&region="+$("#region").val();
-					var w = window.open(uri);
-				}
-				else
-				{
-					$('#report' ).html( '<div></div>' );
-				}
-			},
-			error: function(jq,status,message)
-			{
-				showNotification('Error',"Error al cargar datos...", 'error');
-			}
-		});
+		$("#form-dispatch").submit();
 	}
 	else
 	{
+		event.preventDefault();
 		showNotification('Error',"Indique el rango de fechas.", 'error');
 		if( $("#date_start").val() == '') removeOrAddStyleClass(element='date_start',style='is-invalid', action='add');
 		if( $("#date_end").val() == '' ) removeOrAddStyleClass(element='date_end',style='is-invalid', action='add');

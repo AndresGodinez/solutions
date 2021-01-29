@@ -21,7 +21,6 @@ Route::middleware('auth')->group(function () {
 
 	    // Modo de falla.
 	    Route::get('/modo-falla/', 'ModoFallasController@index');
-
 		Route::get('/modo-falla/form', 'ModoFallasController@showForm')
 			->name('modo-de-falla-ing')
         	->middleware('permission:modo de falla ing');
@@ -38,14 +37,13 @@ Route::middleware('auth')->group(function () {
 
 		// Detalle solicitud.
 		Route::get('/detalle/', 'DetalleController@index');
-
 		Route::get('/detalle/cerradas-rechazadas', 'DetalleController@cerradas_rechazadas')
 			->name('solicitudes-ing-canceladas-y-rechazadas')
         	->middleware('permission:solicitudes ing canceladas y rechazadas');
 
 		Route::get('/detalle/abiertas-en-revision', 'DetalleController@abiertas_en_revision')
 			->name('solicitudes-ing-abiertas-y-revision')
-        	->middleware('permission:solicitudes-ing-abiertas-y-revisión');
+        	->middleware('permission:solicitudes ing abiertas y revisión');
 
 		Route::get('/detalle/show/{id}', 'DetalleController@detail');
 		Route::post('/detalle/create', 'DetalleController@create');
@@ -62,7 +60,6 @@ Route::middleware('auth')->group(function () {
         	->middleware('permission:reporte solicitudes ing');
 
 		Route::post('/reporte/generate', 'ReporteController@report');
-		Route::get('/reporte/excel', 'ReporteController@report');
 
 		// Mail Sender.
 		Route::get('/mail/', 'MailController@index');

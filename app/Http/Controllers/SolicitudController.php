@@ -37,12 +37,17 @@ class SolicitudController extends Controller
         $line = LineaProducto::all();
         $questions = PreguntaSolicitud::all();
         $document = TipoAyuda::all();
-        $region = Session::get('region');
-
-        $regionCode = Session::get('regionCode');
-
-        if ($regionCode != 'MX') {
-            $dispatch = $regionCode . '0000000';
+        $region = Session::get('contry');
+        $username = Session::get('username');
+        
+        $data_us = DB::table('usuarios')
+                        ->leftJoin('wpx_menu_contry', 'wpx_menu_contry.id', '=', 'usuarios.id_contry')
+                        ->select('usuarios.id_contry', 'wpx_menu_contry.short_name', 'wpx_menu_contry.id')
+                        ->where('usuarios.username', $username)
+                        ->get();
+        
+        if ($data_us[0]->short_name != 'MX') {
+            $dispatch = $data_us[0]->short_name . '0000000';
         } else {
             $dispatch = '';
         }
@@ -68,15 +73,19 @@ class SolicitudController extends Controller
     public function create(Request $request){
 
         $user_name = Session::get('username');
-        $region = Session::get('region');
-        $email_request = Session::get('mail');
-        $regionCode = Session::get('regionCode');
+        $data_us = DB::table('usuarios')
+                        ->leftJoin('wpx_menu_contry', 'wpx_menu_contry.id', '=', 'usuarios.id_contry')
+                        ->select('usuarios.id_contry', 'wpx_menu_contry.short_name', 'wpx_menu_contry.id')
+                        ->where('usuarios.username', $user_name)
+                        ->get();
 
-        if ($regionCode != 'MX') {
-            $rowSelect = Solicitud::select('id_sol')->where('dispatch', 'like', '%' . $regionCode . '%')->get();
+        $email_request = Session::get('mail');
+
+        if ($data_us[0]->short_name != 'MX') {
+            $rowSelect = Solicitud::select('id_sol')->where('dispatch', 'like', '%' . $data_us[0]->short_name . '%')->get();
             $count = count($rowSelect) + 1;
             $countSize = strlen($count);
-            $dispatch = $regionCode . str_pad($count, (10 - $countSize), "0", STR_PAD_LEFT);
+            $dispatch = $data_us[0]->short_name . str_pad($count, (10 - $countSize), "0", STR_PAD_LEFT);
         } else {
             $dispatch = $request->dispatch;
         }
@@ -146,19 +155,7 @@ class SolicitudController extends Controller
                     
                     if($file) 
                     {
-                        // Hay problema aqui**
-                        // Hay problema aqui**
-                        // Hay problema aqui**
-                        // Hay problema aqui**
-                        // Hay problema aqui**
-                        // Hay problema aqui**
-                        // Hay problema aqui**
-                        // Hay problema aqui**
-                        // Hay problema aqui**
-                        // Hay problema aqui**
-                        // Hay problema aqui**
-                        // Hay problema aqui**
-                        //$route = DocumentoController::moveFile($id_sol,$file);
+                        $route = DocumentoController::moveFile($id_sol,$file);
                     }
 
                     $answerModel->ruta = $route;
@@ -184,7 +181,7 @@ class SolicitudController extends Controller
                         ';
             //this->send_mail_php($to, $subject, $e_message, $title);
 
-            return response()->json(['ok' => 'true', 'message' => 'Solicitud Creada Correctamente']);
+            return response()->json(['ok' => 'success', 'message' => 'Solicitud Creada Correctamente', 'dispatch'=>$dispatch]);
         } catch (\Exception $e) {
             report($e);
         }
@@ -393,6 +390,7 @@ class SolicitudController extends Controller
             return response()->json(['ok' => false, 'data_search' => '']);
         }
     }
+    
     public function infoHelpDocuments(Request $request)
     {
         if (!empty($request->model)) {

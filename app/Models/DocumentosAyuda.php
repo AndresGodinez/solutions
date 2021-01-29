@@ -8,5 +8,5 @@ class DocumentosAyuda extends ModelBase
 {
     //
     protected $table    = "ing_registro";
-	protected $fillable = ['titulo','archivo_carga','modelo'];
+	protected $fillable = ['idregistro','titulo','archivo_carga','modelo'];
 }

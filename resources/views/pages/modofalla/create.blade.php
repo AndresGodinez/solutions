@@ -58,9 +58,9 @@
 			<table id="table_questions" class=" justify-content-center display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
 				<thead>
 					<tr>
-						<th>{{ config('pages.modofalla.view.index.popup.label_question') }}</th>
-						<th>{{ config('pages.modofalla.view.index.popup.label_comment') }}</th>
-						<th>{{ config('pages.modofalla.view.index.popup.label_tipo') }}</th>
+						<th>{{ config('Pages.modofalla.view.index.popup.label_question') }}</th>
+						<th>{{ config('Pages.modofalla.view.index.popup.label_comment') }}</th>
+						<th>{{ config('Pages.modofalla.view.index.popup.label_tipo') }}</th>
 					</tr>
 				</thead>
 				<tfoot>

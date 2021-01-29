@@ -437,6 +437,8 @@ $(document).ready(function()
 					$('#faqs' ).html( '<div></div>' );
 					$('#info-solicitud').html( '<div></div>' );
 
+					showNotification('{{ config('Pages.solicitud.scripts.notifications.title.error') }}', '{{ config('Pages.solicitud.fileError') }}'+  data.message, 'error');
+
 				},
 				error: function(jq,status,message){ showNotification('{{ config('Pages.solicitud.scripts.notifications.title.error') }}', '{{ config('Pages.solicitud.scripts.form.error') }}', 'error'); }
 			})
