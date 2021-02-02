@@ -117,7 +117,7 @@ $bootbox = true;
 											<strong>Total:</strong> {{ $grand_total }}<br /> 
 							      		</div>
 							      		<div style="padding: 10px;">
-							      			<a href="{{ url('pago-a-talleres/facts-pendientes/reporte/descargar/'.$data_info_taller[0]->taller) }}">
+							      			<a href="{{ url('pago-a-talleres/facts-pendientes/reporte/descargar/'.$data_info_taller[0]->taller.'/'.$data_facts_pendientes->referencia) }}">
 							      				Descargar Excel
 							      			</a>
 							      		</div>

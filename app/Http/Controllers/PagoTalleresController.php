@@ -262,7 +262,7 @@ class PagoTalleresController extends Controller
                     PagoTalleresModel::insert_load_claims($data, date("Y-m-d"));
                 }
 
-              	$start++;
+                $start++;
             };
         }
 
@@ -375,8 +375,8 @@ class PagoTalleresController extends Controller
 
     public function download_file(Request $request)
     {
-    	return Storage::download('public/pago-a-talleres/facturas/'.$request->taller."/".$request->referencia."/".$request->archivo, 
-									strtoupper($request->extension).'_'.$request->taller.'_'.$request->referencia.'.'.$request->extension);
+        return Storage::download('public/pago-a-talleres/facturas/'.$request->taller."/".$request->referencia."/".$request->archivo, 
+                                    strtoupper($request->extension).'_'.$request->taller.'_'.$request->referencia.'.'.$request->extension);
     }
 
     public function show_calendar_file(Request $request)
@@ -465,17 +465,17 @@ class PagoTalleresController extends Controller
         {
             $message = "¡Hubo un error al actualizar la información!";
             $valid =  false;
-        	
-        	
+            
+            
         }
 
-		Mail::send('mailing.pago-a-talleres-rechazar',
-    					['referencia' => $request->ipt_ref,
-						'comentarios' => $request->ipt_comentarios], 
-						function ($mailing) {
-		    $mailing->from("no-responder@whirlpool.com", "Cancelación de Claim");
-		    $mailing->to("noe_delgado_munoz_proceti@whirlpool.com");
-		});
+        Mail::send('mailing.pago-a-talleres-rechazar',
+                        ['referencia' => $request->ipt_ref,
+                        'comentarios' => $request->ipt_comentarios], 
+                        function ($mailing) {
+            $mailing->from("no-responder@whirlpool.com", "Cancelación de Claim");
+            $mailing->to("noe_delgado_munoz_proceti@whirlpool.com");
+        });
 
         $response['message'] = $message;
         $response['valid'] = $valid;
@@ -491,7 +491,7 @@ class PagoTalleresController extends Controller
         $data_facts_pendientes          = PagoTalleresModel::get_data_facts_pendientes($request->taller);
         $data_facts_pendientes_claims   = PagoTalleresModel::get_data_facts_pendientes_claims($data_facts_pendientes);
 
-        $name = 'Detalle Claims';
+        $name = 'Detalle Claims '.$request->taller."-".$request->referencia;
         $extension = '.xlsx';
 
         $fileName = MyUtils::getName($name, $extension);
@@ -504,7 +504,21 @@ class PagoTalleresController extends Controller
             'Cantidad'
         ];
 
-        $data = $data_facts_pendientes_claims;
+        $data_order_array = $data_facts_pendientes_claims[$request->referencia];
+        $data_ordered_array = array();
+        $i = 0;
+        foreach ($data_order_array as $data_order_array) 
+        {
+            $data_ordered_array[$i]['dispatch'] = $data_order_array['dispatch'];
+            $data_ordered_array[$i]['claim'] = $data_order_array['claim'];
+            $data_ordered_array[$i]['referencia'] = $data_order_array['reference'];
+            $data_ordered_array[$i]['fecha'] = $data_order_array['claim_app_date'];
+            $data_ordered_array[$i]['cantidad'] = $data_order_array['total_approved_claim_amount'];
+            $i++;
+        }
+
+        $data = $data_ordered_array;
+        
         return Excel::download(new SimpleExport($head, $data), $fileName); 
     }
 }

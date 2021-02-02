@@ -413,10 +413,12 @@ class PagoTalleresModel extends ModelBase
 
     public static function get_data_facts_pendientes($taller)
     {
+        $exeption_date_app_claim = '2017-01-01';
         $data = DB::table('pagotaller')
                     ->select('pagotaller.*')
                     ->where('taller', $taller)
                     ->whereNotNull('factrecibida')
+                    ->where('fecha', '>', $exeption_date_app_claim)
                     ->where(function($q){
                         $q->where('status_fact', 'RECIBIDA')
                             ->orWhere('status_fact', 'RECHAZADO');
