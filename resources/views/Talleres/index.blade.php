@@ -125,7 +125,7 @@
             "language": {
                 "url": "{{ asset('assets') }}/dt-lang/Spanish.json"
             },
-            "ajax": "{{ url('talleres-json')}}",
+            "ajax": "{{ url('talleres-json-administrar')}}",
             "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
             buttons: [
             {
