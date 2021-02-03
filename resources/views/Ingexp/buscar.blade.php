@@ -131,7 +131,10 @@
 
             async function ff(query){
                 let linea = $('#linea').val();
+                console.log({linea});
                 let tipo = $('#tipo').val();
+                console.log({tipo});
+
                 let filter ={
                     query,
                     linea,
