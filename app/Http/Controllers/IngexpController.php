@@ -86,7 +86,7 @@ class IngexpController extends Controller
     public function buscar(Request $request)
     {
         $get_records = IngRegistro::orderBy('idregistro', 'DESC')
-            ->modelo($request->get('modelo'))
+            ->modelo($request->get('query'))
             ->palabra($request->get('query'))
             ->titulo($request->get('query'))
             ->categoria($request->get('query'))
