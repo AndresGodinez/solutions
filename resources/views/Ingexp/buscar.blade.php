@@ -33,7 +33,8 @@
                                         <select class="form-control filtro" name="linea" id="linea">
                                             <option value="">Seleccionar Linea</option>
                                             @foreach($lineas as $linea)
-                                                <option value="{{ $linea->idlinea }}" {{ request()->get('linea') == $linea->idlinea ? 'selected' : '' }}> {{ $linea->linea }}</option>
+                                                <option
+                                                    value="{{ $linea->idlinea }}" {{ request()->get('linea') == $linea->idlinea ? 'selected' : '' }}> {{ $linea->linea }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -42,7 +43,8 @@
                                         <select class="form-control filtro" name="tipo" id="tipo">
                                             <option value="">Seleccionar Tipo</option>
                                             @foreach($tipos as $tipo)
-                                                <option value="{{ $tipo->idtipo }}" {{ request()->get('tipo') == $tipo->idtipo ? 'selected' : '' }}>{{ $tipo->tipo }}</option>
+                                                <option
+                                                    value="{{ $tipo->idtipo }}" {{ request()->get('tipo') == $tipo->idtipo ? 'selected' : '' }}>{{ $tipo->tipo }}</option>
                                             @endforeach
                                         </select>
                                     </div>
