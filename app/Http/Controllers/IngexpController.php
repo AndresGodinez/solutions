@@ -87,6 +87,10 @@ class IngexpController extends Controller
     {
         $get_records = IngRegistro::orderBy('idregistro', 'DESC')
             ->modelo($request->get('modelo'))
+            ->palabra($request->get('query'))
+            ->titulo($request->get('query'))
+            ->categoria($request->get('query'))
+            ->comentario($request->get('query'))
             ->tipo($request->get('tipo'))
             ->linea($request->get('linea'))
             ->paginate();
