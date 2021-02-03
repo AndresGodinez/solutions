@@ -97,6 +97,35 @@ class IngexpController extends Controller
         return view("Ingexp.buscar", compact('get_records', 'lineas', 'tipos'));
     }
 
+    public function getDataTable(Request $request)
+    {
+        $get_records =  IngRegistro::orderBy('idregistro', 'DESC')
+            ->modelo($request->get('query'))
+            ->palabra($request->get('query'))
+            ->titulo($request->get('query'))
+            ->categoria($request->get('query'))
+            ->comentario($request->get('query'))
+            ->tipo($request->get('tipo'))
+            ->linea($request->get('linea'))
+            ->paginate();
+
+        return view('ingexp.dataTable', compact('get_records'));
+    }
+
+    public function getDataTablePagination(Request $request)
+    {
+        $get_records =  IngRegistro::orderBy('idregistro', 'DESC')
+            ->modelo($request->get('query'))
+            ->palabra($request->get('query'))
+            ->titulo($request->get('query'))
+            ->categoria($request->get('query'))
+            ->comentario($request->get('query'))
+            ->tipo($request->get('tipo'))
+            ->linea($request->get('linea'))
+            ->paginate();
+
+        return view('ingexp.dataTablePagination', compact('get_records'));
+    }
 
     public function editardetail(Request $request)
     {

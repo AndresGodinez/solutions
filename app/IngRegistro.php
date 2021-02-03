@@ -29,6 +29,34 @@ class IngRegistro extends Model
             : $query;
     }
 
+    public function scopePalabra(Builder $query, $palabra = null):Builder
+    {
+        return !is_null($palabra)
+            ? $query->orWhere('palabra', 'like', "%$palabra%")
+            : $query;
+    }
+
+    public function scopeCategoria(Builder $query, $categoria = null):Builder
+    {
+        return !is_null($categoria)
+            ? $query->orWhere('palabra', 'like', "%$categoria%")
+            : $query;
+    }
+
+    public function scopeTitulo(Builder $query, $titulo = null):Builder
+    {
+        return !is_null($titulo)
+            ? $query->orWhere('titulo', 'like', "%$titulo%")
+            : $query;
+    }
+
+    public function scopeComentario(Builder $query, $comentario = null):Builder
+    {
+        return !is_null($comentario)
+            ? $query->orWhere('comentarios', 'like', "%$comentario%")
+            : $query;
+    }
+
     public function scopeTipo(Builder $query, $tipo = null):Builder
     {
         return !is_null($tipo)

@@ -16,6 +16,9 @@ Route::group(['prefix' => 'ingexp'], function () {
     Route::get('/visor/{id}', 'IngexpController@visor')->middleware('permission:buscar');
     Route::get('/buscar', 'IngexpController@buscar')->middleware('permission:buscar');
 
+    Route::post('/get-data-table', 'IngexpController@getDataTable');
+    Route::post('/get-data-table-pagination', 'IngexpController@getDataTablePagination');
+
 
     Route::get('/confirmarpago/{id}/{token}', 'IngexpController@confirmarpago');
 

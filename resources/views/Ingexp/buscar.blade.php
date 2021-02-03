@@ -21,9 +21,9 @@
                             <form action="#">
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="modelo">Modelo</label>
-                                        <input type="text" id="modelo" name="modelo" class="form-control"
-                                               placeholder="Modelo" value="{{ request()->get('modelo') ?? '' }}"
+                                        <label for="query">Buscar</label>
+                                        <input type="text" id="query" name="query" class="form-control"
+                                               placeholder="Buscar" value="{{ request()->get('query') ?? '' }}"
                                         >
                                     </div>
                                 </div>
@@ -75,7 +75,7 @@
                                 <th>FECHA ACTUALIZACION</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="data-result">
                             @foreach($get_records as $record)
                                 <tr>
                                     <td><a target="_blank"
@@ -89,6 +89,7 @@
                                     <td>{{ $record->fecha }}</td>
                                 </tr>
                             @endforeach
+
                             </tbody>
                         </table>
                     </div>
@@ -109,9 +110,43 @@
 
         </div>
         <div class="row">
-            <div class="col-sm-12 p-1">
-                {!! $get_records->appends(request()->all())->links() !!}
+            <div class="col-sm-12 p-1" id="dataPagination">
+                @include('ingexp.dataTablePagination')
             </div>
         </div>
     </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js" integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg==" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            console.log('inter');
+
+            $("#query").keyup(function(){
+                console.log("key press");
+                let query = $('#query').val();
+                if (query !== ''){
+                    ff(query);
+                }
+            });
+
+            async function ff(query){
+                let linea = $('#linea').val();
+                let tipo = $('#tipo').val();
+                let filter ={
+                    query,
+                    linea,
+                    tipo
+                }
+                let data = await axios.post('/ingexp/get-data-table', filter)
+                let pagination = await axios.post('/ingexp/get-data-table-pagination', filter)
+                let content = $('#data-result');
+                let paginationSelector = $('#dataPagination');
+                content.empty();
+                paginationSelector.empty();
+                content.load(data.data);
+                paginationSelector.load(pagination.data)
+            }
+        });
+    </script>
+
 @endsection
