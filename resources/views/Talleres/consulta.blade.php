@@ -111,7 +111,7 @@
             "language": {
                 "url": "{{ asset('assets') }}/dt-lang/Spanish.json"
             },
-            "ajax": "{{ url('talleres-json')}}",
+            "ajax": "{{ url('talleres-json-consulta')}}",
             "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
             "order": [
                 [1, "desc"]

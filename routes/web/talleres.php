@@ -19,9 +19,13 @@ Route::middleware('auth')->group(function () {
         ->name('talleres.consulta')
         ->middleware('permission:consulta talleres');
 
-    Route::get('/talleres-json', 'TalleresController@index_json')
-        ->name('talleres.index_json')
-        ->middleware('permission:consulta talleres', 'permission:administrar talleres');
+    Route::get('/talleres-json-consulta', 'TalleresController@index_json')
+        ->name('talleres.index_json_consulta')
+        ->middleware('permission:consulta talleres');
+
+    Route::get('/talleres-json-administrar', 'TalleresController@index_json')
+        ->name('talleres.index_json_administrar')
+        ->middleware('permission:administrar talleres');
 
     Route::get('/taller-edit/{taller}', 'TalleresController@edit')
         ->name('taller.edit')
