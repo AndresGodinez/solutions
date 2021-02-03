@@ -143,8 +143,8 @@
                 let paginationSelector = $('#dataPagination');
                 content.empty();
                 paginationSelector.empty();
-                content.load(data.data);
-                paginationSelector.load(pagination.data)
+                content.html(data.data);
+                paginationSelector.html(pagination.data)
             }
         });
     </script>
