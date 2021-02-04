@@ -39,7 +39,7 @@ class IngRegistro extends Model
     public function scopeCategoria(Builder $query, $categoria = null):Builder
     {
         return !is_null($categoria)
-            ? $query->orWhere('palabra', 'like', "%$categoria%")
+            ? $query->orWhere('categoria', 'like', "%$categoria%")
             : $query;
     }
 
